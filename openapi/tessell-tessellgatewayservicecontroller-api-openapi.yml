@@ -1,0 +1,116 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center tessellGatewayServiceController API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: tessellGatewayServiceController
+paths:
+  /tessell-agent/{taId}:
+    get:
+      tags:
+      - tessellGatewayServiceController
+      summary: Get the status of tessell agent
+      operationId: getTessellAgentStatus
+      parameters:
+      - in: path
+        name: taId
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asyncStatusResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    JWTCredentials:
+      type: object
+      description: JWT Credentials
+      properties:
+        userName:
+          type: string
+          description: Name of the user
+        publicKey:
+          type: string
+          description: Public Key
+        seed:
+          type: string
+          description: Seed
+        jwt:
+          type: string
+          description: JWT of the user
+    AgentStatus:
+      type: string
+      description: Agent Status
+      enum:
+      - CONNECTED
+      - DISCONNECTED
+    asyncStatusResponse:
+      type: object
+      description: Information for getting status asynchronously
+      properties:
+        response:
+          type: string
+          description: command response
+        agentStatus:
+          $ref: '#/components/schemas/AgentStatus'
+        subject:
+          type: string
+          description: NATS Subject to subscribe to
+        commandCredentials:
+          $ref: '#/components/schemas/JWTCredentials'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

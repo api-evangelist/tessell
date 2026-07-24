@@ -1,0 +1,619 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center VPC Peering Governance API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: VPC Peering Governance
+paths:
+  /network/governance/vpc/{vpcName}/vpc-peerings:
+    get:
+      tags:
+      - VPC Peering Governance
+      summary: Get a list of VPC Peerings of a VPC
+      operationId: getVpcPeeringsGovernance
+      parameters:
+      - name: vpcName
+        in: path
+        description: VPC Name
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/subscriptionNameMandatoryOldConvention'
+      - $ref: '#/components/parameters/cloudTypeOldConventionMandatory'
+      - $ref: '#/components/parameters/cloudRegionMandatory'
+      - name: status
+        in: query
+        description: status
+        required: false
+        schema:
+          $ref: '#/components/schemas/VpcPeeringStatus'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VpcPeeringServiceConsumer'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+      - VPC Peering Governance
+      summary: Create a Peering between VPCs
+      operationId: createVpcPeeringGovernance
+      parameters:
+      - name: vpcName
+        in: path
+        description: VPC Name
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: VPC Peering Information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVpcPeeringServiceConsumerPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VpcPeeringServiceConsumer'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /network/governance/vpc/{vpcName}/vpc-peerings/{name}:
+    get:
+      tags:
+      - VPC Peering Governance
+      summary: Get VPC Peering by Name for a given VPC
+      operationId: getVpcPeeringByNameGovernance
+      parameters:
+      - $ref: '#/components/parameters/nameInPath'
+      - name: vpcName
+        in: path
+        description: VPC Name
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/subscriptionNameMandatoryOldConvention'
+      - $ref: '#/components/parameters/cloudTypeOldConventionMandatory'
+      - $ref: '#/components/parameters/cloudRegionMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VpcPeeringServiceConsumer'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - VPC Peering Governance
+      summary: Delete Vpc Peering
+      operationId: deleteVpcPeeringGovernance
+      parameters:
+      - $ref: '#/components/parameters/nameInPath'
+      - name: vpcName
+        in: path
+        description: VPC Name
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/subscriptionNameMandatoryOldConvention'
+      - $ref: '#/components/parameters/cloudTypeOldConventionMandatory'
+      - $ref: '#/components/parameters/cloudRegionMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /network/governance/vpc/{vpcName}/vpc-peerings/aws-cloudformation:
+    post:
+      tags:
+      - VPC Peering Governance
+      summary: Create a VPC Peering using AWS Cloudformation
+      operationId: createVpcPeeringAwsCloudformation
+      parameters:
+      - name: vpcName
+        in: path
+        description: VPC Name
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: VPC Peering Information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVpcPeeringAwsCloudformationPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VpcPeeringServiceConsumer'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /network/governance/vpc/{vpcName}/vpc-peerings-cloudformation-url:
+    get:
+      tags:
+      - VPC Peering Governance
+      summary: Get Cloudformation URL for VPC Peering
+      operationId: getVpcPeeringCloudformationUrlGovernance
+      parameters:
+      - name: vpcName
+        in: path
+        description: VPC Name
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/subscriptionNameMandatoryOldConvention'
+      - $ref: '#/components/parameters/cloudTypeOldConventionMandatory'
+      - $ref: '#/components/parameters/cloudRegionMandatory'
+      - name: clientVpcRegion
+        in: query
+        description: Region of the Client VPC to be peered
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VpcPeeringAwsCloudformationLink'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    VpcPeeringMetadata:
+      description: Metadata about Vpc Peering
+      type: object
+      properties:
+        azurePendingPeerMetadata:
+          $ref: '#/components/schemas/AzurePendingPeerVpcPeeringMetadata'
+    CreateVpcPeeringAwsCloudformationPayload:
+      description: Create VPC Peering Payload using AWS Cloudformation Payload for Service Consumer
+      type: object
+      required:
+      - subscriptionName
+      - cloudType
+      - region
+      - clientAccountId
+      - clientVpcId
+      - clientVpcRegion
+      - clientAcceptRoleArn
+      properties:
+        subscriptionName:
+          type: string
+          description: Name of the subscription
+          minLength: 1
+          maxLength: 255
+          example: default
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        region:
+          type: string
+          description: Region of the Tessell VPC
+          minLength: 1
+          maxLength: 128
+          example: us-east-1
+        clientAccountId:
+          type: string
+          description: Account Id of the Client VPC
+          minLength: 1
+          maxLength: 64
+          example: 123456789
+        clientVpcId:
+          type: string
+          description: Id of the Client VPC
+          minLength: 1
+          maxLength: 255
+          example: vpc-1a2b3c4d
+        clientVpcRegion:
+          type: string
+          description: Region of the Client VPC
+          minLength: 1
+          maxLength: 128
+          example: us-east-2
+        clientAcceptRoleArn:
+          type: string
+          description: ARN of the client AWS Role to accept Peering
+          minLength: 1
+          maxLength: 255
+    AwsClientInfoServiceConsumer:
+      description: AWS VPC Peering Client Info for Service Consumer
+      type: object
+      properties:
+        clientVpcId:
+          type: string
+          description: Id of the client VPC
+        clientVpcRegion:
+          type: string
+          description: Region of the client VPC
+        clientAccountId:
+          type: string
+          description: Account Id of the client VPC
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    VpcPeeringAwsCloudformationLink:
+      description: Tessell VPC Peering Status
+      type: object
+      properties:
+        link:
+          type: string
+          description: URL for VPC Peering
+    AzureClientInfoServiceConsumer:
+      description: Azure VPC Peering Client Info
+      type: object
+      properties:
+        clientSubscriptionId:
+          type: string
+          description: Azure Subscription Id of the client VPC
+        clientResourceGroup:
+          type: string
+          description: Azure Resource Group of the client VPC
+        clientVpcName:
+          type: string
+          description: Name of the client VPC
+    CreateAwsClientVpcInfoPayload:
+      description: AWS VPC Peering Client Info
+      type: object
+      required:
+      - clientAccountId
+      - clientVpcId
+      - clientVpcRegion
+      properties:
+        clientAccountId:
+          type: string
+          description: AWS Account Id of the client VPC
+          minLength: 1
+          maxLength: 64
+          example: 123456789
+        clientVpcId:
+          type: string
+          description: Id of the client VPC
+          minLength: 1
+          maxLength: 255
+          example: vpc-1a2b3c4d
+        clientVpcRegion:
+          type: string
+          description: Region of the client VPC
+          minLength: 1
+          maxLength: 128
+          example: us-east-2
+    VpcPeeringStatus:
+      description: Tessell VPC Peering Status
+      type: string
+      enum:
+      - CREATING
+      - PENDING_PEER
+      - ACTIVE
+      - FAILED
+      - DELETING
+      - DELETION_FAILED
+    CreateVpcPeeringServiceConsumerPayload:
+      description: Create VPC Peering Payload for Service Consumer
+      type: object
+      required:
+      - subscriptionName
+      - cloudType
+      - region
+      properties:
+        subscriptionName:
+          type: string
+          description: Name of the subscription
+          minLength: 1
+          maxLength: 255
+          example: default
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        region:
+          type: string
+          description: Region of the Tessell VPC
+          minLength: 1
+          maxLength: 128
+          example: us-east-1
+        awsClientVpcInfo:
+          $ref: '#/components/schemas/CreateAwsClientVpcInfoPayload'
+        azureClientVpcInfo:
+          $ref: '#/components/schemas/AzureClientVpcInfo'
+        clientVpcInfo:
+          $ref: '#/components/schemas/ClientVpcInfo'
+    AzureClientVpcInfo:
+      description: Azure VPC Peering Client Info
+      type: object
+      required:
+      - clientSubscriptionId
+      - clientResourceGroup
+      - clientVpcName
+      - clientActiveDirectoryTenantId
+      - clientApplicationObjectId
+      properties:
+        clientSubscriptionId:
+          type: string
+          description: Azure Subscription Id of the client VPC
+          minLength: 1
+          maxLength: 512
+          example: 12345678-abcd-1234-abcd-1234abcd5678
+        clientResourceGroup:
+          type: string
+          description: Azure Resource Group of the client VPC
+          minLength: 1
+          maxLength: 512
+          example: prod-resources-ab1234cd
+        clientVpcName:
+          type: string
+          description: Name of the client VPC
+          minLength: 1
+          maxLength: 512
+          example: prod-eastUS-default-vnet-01
+        clientActiveDirectoryTenantId:
+          type: string
+          description: Tenant Id of the client Active Directory
+          minLength: 1
+          maxLength: 512
+          example: 12345678-abcd-1234-abcd-1234abcd5678
+        clientApplicationObjectId:
+          type: string
+          description: Id of the client AD App Object
+          minLength: 1
+          maxLength: 512
+          example: 12345678-abcd-1234-abcd-1234abcd5678
+    ClientVpcInfo:
+      description: Information about the Tessell created VPC to be peered
+      type: object
+      required:
+      - subscriptionName
+      - cloudType
+      - region
+      - name
+      properties:
+        subscriptionName:
+          type: string
+          description: Subscription name of the Tessell client VPC
+          minLength: 1
+          maxLength: 255
+          example: default
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        region:
+          type: string
+          description: Region of the Tessell VPC
+          minLength: 1
+          maxLength: 128
+          example: us-east-1
+        name:
+          type: string
+          description: Name of the Tessell VPC
+          minLength: 1
+          maxLength: 512
+          example: tessell-default-a1b2c3
+        owner:
+          type: string
+          description: Owner of the Tessell client VPC
+    VpcPeeringServiceConsumer:
+      description: VPC Peering details for Service Consumer
+      type: object
+      properties:
+        name:
+          type: string
+        cloudId:
+          type: string
+          description: CloudId of Peering Connection
+        metadata:
+          $ref: '#/components/schemas/VpcPeeringMetadata'
+        status:
+          $ref: '#/components/schemas/VpcPeeringStatus'
+        awsClientInfo:
+          $ref: '#/components/schemas/AwsClientInfoServiceConsumer'
+        azureClientInfo:
+          $ref: '#/components/schemas/AzureClientInfoServiceConsumer'
+        clientVpcInfo:
+          $ref: '#/components/schemas/ClientVpcInfo'
+    AzurePendingPeerVpcPeeringMetadata:
+      description: Metadata about Azure VPC Peering in Pending Peer Status
+      type: object
+      properties:
+        tenantId:
+          type: string
+        vnetResourceId:
+          type: string
+  parameters:
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    nameInPath:
+      name: name
+      in: path
+      required: true
+      description: Name of the Entity
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 512
+      example: entity-123
+    cloudRegionMandatory:
+      name: region
+      in: query
+      description: Cloud Region
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+      examples:
+        aws:
+          value: us-east-1
+          summary: aws region example
+        azure:
+          value: eastUS
+          summary: azure region example
+    cloudTypeOldConventionMandatory:
+      name: cloudType
+      in: query
+      description: Name of the Cloud
+      required: true
+      schema:
+        $ref: '#/components/schemas/cloudType'
+    subscriptionNameMandatoryOldConvention:
+      name: subscriptionName
+      in: query
+      description: Name of the Subscription
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 255
+      example: default
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

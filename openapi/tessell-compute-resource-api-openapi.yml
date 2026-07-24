@@ -1,0 +1,2005 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Compute Resource API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Compute Resource
+paths:
+  /compute-resources/dbservers:
+    get:
+      tags:
+      - Compute Resource
+      summary: View a list of available Compute Resources
+      operationId: getDbserverComputeResources
+      parameters:
+      - name: name
+        in: query
+        description: Filter Compute Resource based on name
+        required: false
+        style: form
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 128
+      - name: load-db-services
+        in: query
+        description: Flag to load DB Service instances hosted on the DB Servers
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: false
+      - name: machine-type
+        in: query
+        description: machine-type
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/MachineType'
+      - name: providerAccountId
+        in: query
+        description: Filter Compute Resource provider Id
+        required: false
+        style: form
+        schema:
+          type: string
+          format: uuid
+      - name: providerSubAcctId
+        in: query
+        description: Filter Compute Resource provider sub account Id
+        style: form
+        schema:
+          type: string
+          format: uuid
+      - name: load-updates-info
+        in: query
+        description: Include update availability information for each DB Server
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: false
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellDbserverComputeResourceListResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /compute-resources/dbservers/{id}:
+    get:
+      tags:
+      - Compute Resource
+      summary: Get a Compute Resource by ID
+      operationId: getDbserverComputeResource
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the Compute Resource
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: load-updates-info
+        in: query
+        description: Include update availability information for the DB Server
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: false
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellDbserverComputeResourceDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - Compute Resource
+      summary: Delete a Database Server
+      operationId: deleteDbserverComputeResource
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - Compute Resource
+      summary: Update a DB server
+      operationId: updateDbServer
+      x-terraform-resource: DBServer
+      x-terraform-operation: Update
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the DB Server
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDbServerPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellDbserverComputeResourceDTO'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /compute-resources/dbservers/sharing-enabled:
+    get:
+      tags:
+      - Compute Resource
+      summary: View a list of available Compute Resources that can be used for newer provisioning
+      operationId: getSharingEnabledDbserverComputeResources
+      parameters:
+      - name: subscription-id
+        in: query
+        description: Filter Compute Resources based on subscription ID
+        required: false
+        style: form
+        schema:
+          type: string
+          format: uuid
+      - name: engine-type
+        in: query
+        description: Filter Compute Resources based on engine type
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/databaseEngineType'
+      - name: cloud
+        in: query
+        description: Filter Compute Resources based on cloud type
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/cloudType'
+      - name: region
+        in: query
+        description: Filter Compute Resources based on cloud region
+        required: false
+        style: form
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 128
+      - name: load-updates-info
+        in: query
+        description: Include update availability information for each DB Server
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: false
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SharableDbserverComputeResourceListResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /compute-resources/dbservers/{id}/enable-compute-sharing:
+    patch:
+      tags:
+      - Compute Resource
+      summary: Enable compute resource sharing
+      operationId: enableComputeResourceSharing
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnableComputeSharingPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /compute-resources/dbservers/{id}/owner:
+    patch:
+      tags:
+      - Compute Resource
+      summary: Update compute resource owner
+      operationId: updateComputeResourceOwner
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateComputeResourceOwnerPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /compute-resources/dbservers/owner/{email-id}:
+    patch:
+      tags:
+      - Compute Resource
+      summary: Update owner for all compute resources of a given owner
+      description: Bulk update the owner for all compute resources currently owned by the specified user
+      operationId: bulkUpdateComputeResourceOwner
+      parameters:
+      - name: email-id
+        in: path
+        description: Id of the owner
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateComputeResourceOwnerPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /compute-resources/dbservers/{id}/timeline:
+    get:
+      tags:
+      - Compute Resource
+      summary: Get a Compute Resource by ID
+      operationId: getDbServerTimeline
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DbServerTimelineResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /compute-resources/dbservers/{id}/resize:
+    patch:
+      tags:
+      - Compute Resource
+      summary: Resize a Database Server Compute Resource
+      operationId: resizeDbServerComputeResource
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResizeDbServerComputeResourceRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /compute-resources/dbservers/{id}/start:
+    patch:
+      tags:
+      - Compute Resource
+      summary: Starts Database Server Compute Resource
+      operationId: startDbServer
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartDbServerPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+              examples:
+                generic:
+                  $ref: '#/components/examples/StartDbServerSummary'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /compute-resources/dbservers/{id}/stop:
+    patch:
+      tags:
+      - Compute Resource
+      summary: Stops the DB Service
+      operationId: stopDbServer
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StopDbServerPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+              examples:
+                generic:
+                  $ref: '#/components/examples/StopDbServerSummary'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /compute-resources/dbservers/{id}/maintenance-windows:
+    patch:
+      tags:
+      - Compute Resource
+      summary: Patch request for compute resource maintenance window
+      operationId: updateMaintenanceWindowForDbServer
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComputeResourceMaintenanceWindow'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComputeResourceMaintenanceWindow'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /compute-resources/dbservers/{id}/tags:
+    get:
+      tags:
+      - Compute Resource
+      summary: View tags for the DB Server
+      operationId: getDbServerTags
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TessellTag'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - Compute Resource
+      summary: Create/update (override) tags for the DB Server
+      operationId: upsertDbServerTags
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the DB Server
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUpdateTessellTagPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TessellTag'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - Compute Resource
+      summary: Delete tags for a DB Server
+      operationId: deleteDbServerTags
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the DB Server
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteTagPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /compute-resources/dbservers/{id}/integrations:
+    patch:
+      tags:
+      - Compute Resource
+      summary: Add/update an integration for the DB Server
+      operationId: updateComputeResourceIntegration
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/TessellUpdateDatabaseIntegrationDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    TessellServiceInstanceRole:
+      type: string
+      description: DB Service instance role
+      enum:
+      - primary
+      - read_only_replica
+      - failover_replica
+      - dr
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    PatchType:
+      type: string
+      enum:
+      - CRITICAL
+      - NON_CRITICAL
+      description: Type of patch
+    EnableComputeSharingPayload:
+      type: object
+      properties:
+        enableSharing:
+          type: boolean
+    TessellIntegrationRequestType:
+      type: string
+      description: Request type enum for the addition/removal/updation of the Integration for the DB Service.
+      enum:
+      - ADD
+      - UPDATE
+      - REMOVE
+    AzureNetAppCapacityPoolServiceLevel:
+      type: string
+      enum:
+      - Standard
+      - Premium
+      - Ultra
+      x-enum-varnames:
+      - STANDARD
+      - PREMIUM
+      - ULTRA
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    EntityAclSharingInfo:
+      title: EntityAclSharingInfo
+      description: Tessell Entity ACL Sharing Info
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityUserAclSharingInfo'
+    TessellTag:
+      title: TessellTag
+      type: object
+      nullable: true
+      properties:
+        name:
+          description: Case sensitive, tag name
+          type: string
+          maxLength: 128
+          minLength: 1
+        value:
+          description: Case sensitive, tag value
+          type: string
+          maxLength: 256
+          minLength: 0
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    TessellServiceStatus:
+      type: string
+      description: The current status of the DB Service
+      enum:
+      - CREATING
+      - FAILED
+      - READY
+      - STOPPING
+      - STOPPED
+      - DEGRADED
+      - HEALING
+      - DOWN
+      - STARTING
+      - DELETING
+      - SWITCHOVER
+      - REBUILDING
+      - PATCHING
+      - PATCH_FAILED
+      - UPDATING
+      - UNDER_MAINTENANCE
+      - REFRESHING
+      - RESTORING
+      - RESTORE_FAILED
+    ParameterProfileStatus:
+      type: string
+      description: Association status of the instance to the parameter profile
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+      - PENDING_REBOOT
+    DbServerStorageConfig:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/StorageProviderType'
+    UpdateDbServerPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          description: If not specified, this field will be ignored and the existing value will be assumed.
+        description:
+          type: string
+          description: If not specified, this field will be ignored and the existing value will be assumed.
+        enableDeletionProtection:
+          type: boolean
+          description: If not specified, this field will be ignored and the existing setting will be assumed.
+        enableStopProtection:
+          type: boolean
+          description: If not specified, this field will be ignored and the existing setting will be assumed.
+        restrictProvision:
+          type: boolean
+          description: If not specified, this field will be ignored and the existing setting will be assumed.
+    ComputeResourceSubStatus:
+      type: string
+      description: DB Server could have a sub status associated along with status
+      enum:
+      - REBUILDING
+      - REBUILD_FAILED
+      - START_FAILED
+      - STOP_FAILED
+      - UPDATING_SECURITY_CONFIG
+      - SECURITY_CONFIG_UPDATE_FAILED
+    TaskStatus:
+      type: string
+      description: The status of Task
+      enum:
+      - AVAILABLE
+      - QUEUED
+      - CANCELLED
+      - OVERRIDDEN
+      - IN_PROGRESS
+      - SUCCESS
+      - FAILED
+    InstanceStorageConfig:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/StorageProviderType'
+        volumeType:
+          type: string
+          description: Data disk volume type
+        fsxNetAppConfig:
+          $ref: '#/components/schemas/InstanceFsxNetAppConfig'
+        azureNetAppConfig:
+          $ref: '#/components/schemas/InstanceAzureNetAppConfig'
+    CrMaintenanceWindowPreference:
+      enum:
+      - MONTHLY
+      - WEEKLY
+      - QUARTERLY
+      - NO_PREFERENCE
+    tessellServiceTopology:
+      type: string
+      description: DB Service topology. This would specify whether the DB Service is single-node, or multi-node.
+      enum:
+      - single_instance
+      - high_availability
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    ResizeDbServerComputeResourceRequest:
+      type: object
+      required:
+      - computeType
+      properties:
+        computeType:
+          type: string
+          description: The new compute type for the DB Server
+    ComputeConfig:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/ComputeProviderType'
+        exadataConfig:
+          $ref: '#/components/schemas/ExadataComputeConfig'
+    DBServiceOnComputeResource:
+      description: DB Service details hosted on a compute resource
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of the DB Service
+        name:
+          type: string
+          description: Name of the DB Service
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        topology:
+          $ref: '#/components/schemas/tessellServiceTopology'
+        dbServiceStatus:
+          $ref: '#/components/schemas/TessellServiceStatus'
+        instanceId:
+          type: string
+          format: uuid
+        instanceName:
+          type: string
+          minLength: 1
+          maxLength: 128
+        role:
+          $ref: '#/components/schemas/TessellServiceInstanceRole'
+        instanceStatus:
+          $ref: '#/components/schemas/TessellServiceInstanceStatus'
+        parameterProfileId:
+          type: string
+          format: uuid
+        parameterProfileName:
+          type: string
+        parameterProfileStatus:
+          $ref: '#/components/schemas/ParameterProfileStatus'
+        maxMemory:
+          type: integer
+          format: int64
+          description: The allocated max memory (in bytes) for this instance
+          default: 0
+          minimum: 0
+        storage:
+          type: integer
+          format: int64
+          description: The storage (in bytes) that has been provisioned for the DB Service instance
+          default: 0
+          minimum: 0
+        servicePort:
+          type: integer
+          format: int32
+          minimum: 0
+        allowedIpAddresses:
+          type: array
+          description: The list of allowed ipv4 addresses that can connect to the DB Service. If not specified, this field will be ignored and the existing setting will be assumed.
+          items:
+            type: string
+            format: ip4
+        databases:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        sid:
+          type: string
+        owner:
+          type: string
+          description: This field specifies who is the owner for the DB Service
+        computeConfig:
+          $ref: '#/components/schemas/ComputeConfig'
+        storageConfig:
+          $ref: '#/components/schemas/DbServerStorageConfig'
+        archiveStorageConfig:
+          $ref: '#/components/schemas/InstanceStorageConfig'
+        dateCreated:
+          type: string
+          format: date-time
+        softwareImageVersion:
+          type: string
+    taskSummary:
+      title: taskSummary
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        taskType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        associatedResourceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        details:
+          type: object
+          additionalProperties:
+            type: string
+    ComputeResourceContextInfo:
+      type: object
+      description: Provide more context of DB Server state
+      properties:
+        subStatus:
+          $ref: '#/components/schemas/ComputeResourceSubStatus'
+        description:
+          type: string
+    PatchActivity:
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        versionNo:
+          type: string
+        typeOfPatch:
+          $ref: '#/components/schemas/PatchType'
+        impact:
+          type: string
+        scheduledBy:
+          type: string
+        status:
+          $ref: '#/components/schemas/TaskStatus'
+    TessellUpdateDatabaseIntegrationDTO:
+      title: TessellUpdateDatabaseIntegrationDTO
+      type: object
+      properties:
+        request:
+          $ref: '#/components/schemas/TessellIntegrationRequestType'
+        id:
+          type: string
+          format: uuid
+          description: ID of the integration to add/remove/update from database
+        tenantId:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: Tenant ID of the integration to add/remove/update from database
+    ComputeProviderType:
+      type: string
+      enum:
+      - AWS_EC2
+      - AZURE_VM
+      - GCP_GCE
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    EntityUserAclSharingInfo:
+      title: EntityUserAclSharingInfo
+      description: Tessell Entity ACL Sharing Info for a user
+      properties:
+        emailId:
+          type: string
+        role:
+          type: string
+        sharedBy:
+          type: string
+          description: Email of the user who shared the entity
+        sharedOn:
+          type: string
+          format: date-time
+          description: Date when the entity was shared
+    CreateUpdateTessellTagPayload:
+      title: CreateUpdateTessellTagPayload
+      description: Create or update Tessell tag Payload
+      properties:
+        tags:
+          description: List of tags
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellTag'
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    TessellResourceUpdateInfo:
+      title: TessellResourceUpdateInfo
+      description: In progress update information for a Tessell Resource
+      properties:
+        updateType:
+          x-computed: true
+          type: string
+          description: Type of the update
+        referenceId:
+          x-computed: true
+          type: string
+          format: uuid
+          description: The reference-id of the update request
+        submittedAt:
+          x-computed: true
+          type: string
+          format: date-time
+          description: Timestamp when the resource update was requested
+        updateInfo:
+          x-computed: true
+          type: object
+          description: The specific details for a Tessell resource that are being updated
+          additionalProperties: {}
+    SecurityConfigOps:
+      type: object
+      properties:
+        securityProfile:
+          $ref: '#/components/schemas/SecurityProfileInfoOps'
+    UpcomingMaintenanceWindowInfo:
+      type: object
+      description: Information about the upcoming maintenance window
+      properties:
+        maintenanceWindowId:
+          type: string
+          format: uuid
+          description: Unique identifier of the maintenance window
+        cadence:
+          $ref: '#/components/schemas/MaintenanceCadence'
+        date:
+          type: string
+          format: date
+          description: Date in YYYY-MM-DD format (ISO 8601)
+          example: '2026-03-15'
+        time:
+          type: string
+          description: Time in HH:mm format
+          example: 02:00
+        duration:
+          type: integer
+          description: Duration in minutes
+          example: 30
+        downtime:
+          type: string
+          description: Expected downtime description
+          example: 05 min downtime
+        associatedActivities:
+          $ref: '#/components/schemas/AssociatedActivities'
+    DbServerUpdates:
+      type: object
+      description: Update availability information for a DB Server
+      properties:
+        availableUpdates:
+          $ref: '#/components/schemas/AvailableUpdatesSimple'
+        upcomingMaintenanceWindow:
+          $ref: '#/components/schemas/UpcomingMaintenanceWindowInfo'
+    ScriptInfo:
+      title: ScriptInfo
+      type: object
+      nullable: true
+      properties:
+        scriptId:
+          type: string
+          format: uuid
+          description: The Tessell Script ID
+        scriptName:
+          type: string
+          description: The Tessell Script Name
+        scriptVersion:
+          type: string
+          description: The Tessell Script version
+        useActiveVersion:
+          type: boolean
+          default: false
+          description: 'When set to true, the scriptVersion field should be null and the system
+
+            will automatically use the active version of the script.
+
+            When set to false (default), the scriptVersion field specifies the
+
+            exact version to use.
+
+            '
+    ExadataComputeConfig:
+      type: object
+      required:
+      - infrastructureId
+      - infrastructureName
+      - vmClusterId
+      - vmClusterName
+      properties:
+        infrastructureId:
+          type: string
+          format: uuid
+        infrastructureName:
+          type: string
+        vmClusterId:
+          type: string
+          format: uuid
+        vmClusterName:
+          type: string
+        ocpu:
+          type: integer
+        memoryInGbs:
+          type: integer
+        floatingIpAddress:
+          type: string
+        dbServer:
+          type: string
+        privateIpAddress:
+          type: string
+        localStorageInGbs:
+          type: integer
+        dnsName:
+          type: string
+    MachineType:
+      type: string
+      description: Infrastructure behind the Compute Resource
+      enum:
+      - BARE_METAL
+      - VM
+      - CONTAINER
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    AzureNetAppNetworkFeature:
+      description: Azure NetApp network feature configuration for creating volume
+      type: string
+      enum:
+      - Standard
+      - Basic
+      x-enum-varnames:
+      - STANDARD
+      - BASIC
+    SecurityProfileInfoOps:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Id of the Security Profile
+        versionId:
+          type: string
+          format: uuid
+          description: Version Id of the Security Profile
+        status:
+          $ref: '#/components/schemas/SecurityProfileSyncStatus'
+    AzureNetAppEncryptionKeySource:
+      enum:
+      - Microsoft.NetApp
+      - Microsoft.KeyVault
+      x-enum-varnames:
+      - MICROSOFT_NET_APP
+      - MICROSOFT_KEY_VAULT
+    TessellServiceInstanceStatus:
+      type: string
+      description: DB Service instance status
+      enum:
+      - CREATING
+      - DELETING
+      - UP
+      - DOWN
+      - STOPPED
+      - REBUILDING
+      - REBUILD_FAILED
+      - PATCHING
+      - PATCH_FAILED
+      - UPDATING_PARAMETER_PROFILE
+      - UPDATING_OPTION_PROFILE
+      - UPDATING_SECURITY_CONFIG
+      - OPTION_PROFILE_UPDATE_FAILED
+      - PARAMETER_PROFILE_UPDATE_FAILED
+      - SECURITY_CONFIG_UPDATE_FAILED
+      - REFRESHING
+    SharableDbserverComputeResourceListResponse:
+      title: SharableDbserverComputeResourceListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/SharableDbserverComputeResourceDTO'
+    InstanceFsxNetAppConfig:
+      type: object
+      properties:
+        fileSystemName:
+          type: string
+        svmName:
+          type: string
+        volumeName:
+          type: string
+        fileSystemId:
+          description: File System Id of the FSx NetApp registered with Tessell
+          type: string
+          format: uuid
+        svmId:
+          description: Storage Virtual Machine Id of the FSx NetApp registered with Tessell
+          type: string
+          format: uuid
+    SecurityProfileSyncStatus:
+      type: string
+      description: Sync status of the security profile applied on an instance/server
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+    AssociatedActivities:
+      type: object
+      properties:
+        dbPatch:
+          $ref: '#/components/schemas/PatchActivity'
+        osPatch:
+          $ref: '#/components/schemas/PatchActivity'
+        parameterProfileUpdate:
+          $ref: '#/components/schemas/PatchActivity'
+    UpdateComputeResourceOwnerPayload:
+      type: object
+      properties:
+        owner:
+          type: string
+    TessellDbserverComputeResourceDTO:
+      required:
+      - name
+      type: object
+      description: This is the definition for Compute Resource
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The ID of the Compute Resource
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The name of the Compute Resource
+        description:
+          type: string
+          description: The description of the Compute Resource
+        subscription:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The subscription under which this resource is created
+        servicePort:
+          type: integer
+          format: int32
+          minimum: 0
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        status:
+          $ref: '#/components/schemas/ComputeResourceStatus'
+        machineType:
+          $ref: '#/components/schemas/MachineType'
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+        region:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The region where the Compute Resource is hosted
+        availabilityZone:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The availability zone where the Compute Resource is hosted
+        availabilitySet:
+          type: string
+          description: The availability set to which the Compute Resource belongs
+          minLength: 1
+          maxLength: 80
+        computeType:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The compute type to be used for provisioning the DB Service
+        computeSharingEnabled:
+          type: boolean
+          default: false
+          description: Whether the Compute Resource is shared across multiple DB Services
+        vpc:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The VPC which is used for provisioning the Compute Resource
+        privateSubnet:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The private subnet which is used for provisioning the Compute Resource
+        publicSubnet:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The public subnet which is used for provisioning the Compute Resource, we only return public subnet when public access is enabled.
+        encryptionKey:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: The encryption key which is used to encrypt the data at rest
+        reservedMemory:
+          type: integer
+          format: int64
+          default: 0
+          minimum: 0
+          description: The memory (in bytes) that has been collectively reserved for all hosted DB Services
+        enablePublicAccess:
+          type: boolean
+          description: Whether public access is enabled on the Compute Resource
+        enableSSL:
+          type: boolean
+          description: Whether SSL is enabled on the Compute Resource
+        securityConfiguration:
+          $ref: '#/components/schemas/SecurityConfigOps'
+        owner:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: The email address of the owner of the Compute Resource
+        dateCreated:
+          type: string
+          format: date-time
+          description: Timestamp when the entity was created
+        dateModified:
+          type: string
+          format: date-time
+          description: Timestamp when the entity was last modified
+        timezone:
+          $ref: '#/components/schemas/TimeZone'
+        contextInfo:
+          $ref: '#/components/schemas/ComputeResourceContextInfo'
+        dbServicesCount:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+        dbServices:
+          type: array
+          items:
+            $ref: '#/components/schemas/DBServiceOnComputeResource'
+        optimizedVcpus:
+          type: integer
+          description: vcpus usable by the db service(s)
+        softwareImageInfo:
+          type: object
+          properties:
+            softwareImage:
+              type: string
+              description: The software image available to create the DB Service on the Compute Resource
+            softwareImageVersionFamily:
+              type: string
+              description: The software image family DB Service belongs to
+            softwareImageVersions:
+              type: array
+              items:
+                type: object
+                properties:
+                  softwareImageVersion:
+                    type: string
+                    description: The software image version available to create the DB Service on the Compute Resource
+                  supported:
+                    type: boolean
+                    description: Whether the image version is supported on the Compute Resource
+        computeConfig:
+          $ref: '#/components/schemas/ComputeConfig'
+        storageConfig:
+          $ref: '#/components/schemas/DbServerStorageConfig'
+        tsm:
+          type: boolean
+          default: false
+        enableDeletionProtection:
+          type: boolean
+          default: false
+          description: Specifies whether to enable deletion protection for the DB Server
+        enableStopProtection:
+          type: boolean
+          default: false
+          description: Specifies whether to enable stop protection for the DB Server
+        restrictProvision:
+          type: boolean
+          default: false
+          description: Specifies whether to allow provision the service on the DB server
+        tags:
+          description: The tags associated with the DB servers
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellTag'
+        maintenanceWindow:
+          $ref: '#/components/schemas/ComputeResourceMaintenanceWindow'
+        sharedWith:
+          $ref: '#/components/schemas/EntityAclSharingInfo'
+        loggedInUserRole:
+          type: string
+          description: Access role for the currently logged in user
+        allowedIpAddresses:
+          type: array
+          description: The list of allowed ipv4 addresses that can connect to the DB Service. If not specified, this field will be ignored and the existing setting will be assumed.
+          items:
+            type: string
+            format: ip4
+        integrationsConfig:
+          $ref: '#/components/schemas/ServerIntegrationsInfo'
+        updatesInProgress:
+          description: The updates that are in progress for DB server
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellResourceUpdateInfo'
+        updatesInfo:
+          $ref: '#/components/schemas/DbServerUpdates'
+          description: Information about available updates for this DB Server. Only populated when load-updates-info=true in the request.
+        isHostingHAService:
+          type: boolean
+          description: Whether the Compute Resource is hosting HA service
+    MaintenanceCadence:
+      type: string
+      enum:
+      - DAILY
+      - WEEKLY
+      - MONTHLY
+      description: Frequency of maintenance window
+    ServerIntegrationsInfo:
+      description: Tessell provides support to integrate third party softwares with DB Server. This fields details the information about what third-party integrations are configured with the DB Server.
+      type: object
+      properties:
+        integrations:
+          type: array
+          items:
+            type: string
+            format: uuid
+    DeleteTagPayload:
+      title: DeleteTagPayload
+      description: Delete Tessell tag Payload
+      properties:
+        tagNames:
+          description: List of tag names to be deleted
+          type: array
+          items:
+            type: string
+    EntityTimelineDTO:
+      type: object
+      description: This is a definition of the Entity Timeline object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the entity.
+        initiatedBy:
+          type: string
+          description: User id of person who initiated the action
+        initiatedTime:
+          type: string
+          description: Time at which action was initiated
+          format: date-time
+        completedTime:
+          type: string
+          description: Time at which action was completed
+          format: date-time
+        comment:
+          type: string
+          description: User specified comment for the action
+        initiationMessage:
+          type: string
+          description: System generated description at the start of action
+        completionMessage:
+          type: string
+          description: System generated description after action is successfully completed
+        eventType:
+          type: string
+          description: System generated description of action
+        contextInfo:
+          type: array
+          description: Contextual information for the action, if any.
+          nullable: true
+          items:
+            type: string
+    AzureNetAppEncryptionKeyInfo:
+      description: Details of encryption key
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the encryption key
+          format: uuid
+        name:
+          type: string
+          description: name of the encryption key
+        keyVaultCloudResourceId:
+          type: string
+          description: name of the encryption key vault in cloud
+        keySource:
+          $ref: '#/components/schemas/AzureNetAppEncryptionKeySource'
+    SharableDbserverComputeResourceDTO:
+      required:
+      - name
+      type: object
+      description: This is a definition for compute resource
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The ID of the Compute Resource
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The name of the Compute Resource
+        subscription:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The subscription under which this resource is created
+        owner:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: The email address of the owner of the Compute Resource
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+        region:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The region where the Compute Resource is hosted
+        availabilityZone:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The availability zone where the Compute Resource is hosted
+        availabilitySet:
+          type: string
+          description: The availability set to which the Compute Resource belongs
+          minLength: 1
+          maxLength: 80
+        computeType:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The compute type to be used for provisioning the DB Service
+        vpc:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The VPC which is used for provisioning the compute resource
+        privateSubnet:
+          type: string
+          description: The private subnet which is used for provisioning the compute resource
+        publicSubnet:
+          type: string
+          description: The public subnet which is used for provisioning the compute resource, we return public subnet only when public access is enabled
+        encryptionKey:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: The encryption key which is used to encrypt the data at rest
+        servicePort:
+          type: integer
+          format: int32
+          minimum: 0
+        optimizedVcpus:
+          type: integer
+          description: vcpus usable by the db service(s)
+        hostedDbServices:
+          type: array
+          items:
+            type: object
+            title: HostedDbServiceOnCr
+            properties:
+              dbServiceId:
+                type: string
+                format: uuid
+              databases:
+                type: array
+                uniqueItems: true
+                items:
+                  type: string
+        reservedMemory:
+          type: integer
+          format: int64
+          default: 0
+          minimum: 0
+          description: The memory (in bytes) that has been reserved for other DB Services
+        enablePublicAccess:
+          type: boolean
+          description: Whether public access is enabled for the Compute Resource
+        enableSSL:
+          type: boolean
+          description: Whether SSL is enabled for the Compute Resource
+        timezone:
+          $ref: '#/components/schemas/TimeZone'
+        softwareImageInfo:
+          type: object
+          properties:
+            softwareImage:
+              type: string
+              minLength: 1
+              maxLength: 128
+            softwareImageVersions:
+              type: array
+              items:
+                type: string
+                minLength: 1
+                maxLength: 128
+        computeConfig:
+          $ref: '#/components/schemas/ComputeConfig'
+        restrictProvision:
+          type: boolean
+        storageConfig:
+          $ref: '#/components/schemas/DbServerStorageConfig'
+        securityConfig:
+          $ref: '#/components/schemas/SecurityConfigOps'
+        maintenanceWindow:
+          $ref: '#/components/schemas/ComputeResourceMaintenanceWindow'
+        isHostingHAService:
+          type: boolean
+          description: Whether the Compute Resource is hosting HA service
+        updatesInfo:
+          $ref: '#/components/schemas/DbServerUpdates'
+          description: Information about available updates for this DB Server. Only populated when load-updates-info=true in the request.
+    ComputeResourceMaintenanceWindow:
+      title: ComputeResourceMaintenanceWindow
+      type: object
+      description: 'Base class for compute resource maintenance window configurations.
+
+        Supports multiple preferences: Weekly, Monthly, Quarterly, and No Preference.
+
+        Use concrete subclasses: CrWeeklyMaintenanceWindow, CrMonthlyMaintenanceWindow, CrQuarterlyMaintenanceWindow, CrNoPreferenceMaintenanceWindow.'
+      required:
+      - preference
+      - time
+      - duration
+      properties:
+        preference:
+          $ref: '#/components/schemas/CrMaintenanceWindowPreference'
+        time:
+          type: string
+          description: Time value in (hh:mm) format. ex. "02:00"
+          pattern: ^([0-1][0-9]|2[0-3]):[0-5][0-9]$
+          example: 02:00
+        duration:
+          type: integer
+          format: int32
+          minimum: 30
+          description: The duration during which the maintenance window will be allowed to trigger (in minutes)
+        autoMinorVersionUpgrade:
+          type: boolean
+          description: Enable automatic minor version upgrades during maintenance window
+        preScriptInfo:
+          $ref: '#/components/schemas/ScriptInfo'
+          description: Pre-script to run before patching
+        postScriptInfo:
+          $ref: '#/components/schemas/ScriptInfo'
+          description: Post-script to run after patching
+        ignorePreScriptFailure:
+          type: boolean
+          default: false
+          description: Ignore pre-script failure and continue with patching
+        ignorePostScriptFailure:
+          type: boolean
+          default: false
+          description: Ignore post-script failure and mark patching as successful
+      discriminator:
+        propertyName: preference
+        mapping:
+          WEEKLY: '#/components/schemas/CrWeeklyMaintenanceWindow'
+          MONTHLY: '#/components/schemas/CrMonthlyMaintenanceWindow'
+          QUARTERLY: '#/components/schemas/CrQuarterlyMaintenanceWindow'
+          NO_PREFERENCE: '#/components/schemas/CrNoPreferenceMaintenanceWindow'
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    TessellDbserverComputeResourceListResponse:
+      title: TessellDbserverComputeResourceListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellDbserverComputeResourceDTO'
+    AvailableUpdatesSimple:
+      type: object
+      description: Simple boolean flags indicating available updates
+      properties:
+        osPatch:
+          type: boolean
+          description: Whether an OS patch update is available
+          example: true
+        dbPatch:
+          type: boolean
+          description: Whether a DB patch update is available
+          example: true
+    DbServerTimelineResponse:
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/EntityTimelineDTO'
+    InstanceAzureNetAppConfig:
+      description: Service instance level Azure NetApp config
+      type: object
+      properties:
+        azureNetAppName:
+          type: string
+        capacityPoolName:
+          type: string
+        volumeName:
+          type: string
+        azureNetAppId:
+          description: Azure NetApp Id registered with Tessell
+          type: string
+          format: uuid
+        capacityPoolId:
+          description: Capacity Pool Id of the Azure NetApp registered with Tessell
+          type: string
+          format: uuid
+        delegatedSubnetId:
+          description: Delegated Subnet name registered with Tessell for the Azure NetApp volume
+          type: string
+          format: uuid
+        delegatedSubnetName:
+          description: Delegated Subnet Id registered with Tessell for the Azure NetApp volume
+          type: string
+        encryptionKeyInfo:
+          $ref: '#/components/schemas/AzureNetAppEncryptionKeyInfo'
+        networkFeatures:
+          $ref: '#/components/schemas/AzureNetAppNetworkFeature'
+        serviceLevel:
+          $ref: '#/components/schemas/AzureNetAppCapacityPoolServiceLevel'
+    StopDbServerPayload:
+      allOf:
+      - $ref: '#/components/schemas/ActionWithCommentPayload'
+    ComputeResourceStatus:
+      type: string
+      description: The current status of the Compute Resource
+      enum:
+      - CREATING
+      - RUNNING
+      - STOPPING
+      - STOPPED
+      - STARTING
+      - REBUILDING
+      - REBUILD_FAILED
+    StorageProviderType:
+      description: Storage Type in the cloud
+      enum:
+      - AWS_EBS
+      - AWS_FSX_NETAPP
+      - AWS_HPC
+      - AWS_S3
+      - AZURE_HPC
+      - AZURE_MANAGED_DISK
+      - GCP_HYPERDISK
+      - GCP_GCS
+      - AZURE_BLOB
+      - MINIO
+      - AZURE_NETAPP
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    TimeZone:
+      type: string
+      description: The timezone detail
+      maxLength: 256
+    StartDbServerPayload:
+      allOf:
+      - $ref: '#/components/schemas/ActionWithCommentPayload'
+    ActionWithCommentPayload:
+      type: object
+      properties:
+        comment:
+          type: string
+          description: Comment for the action
+  parameters:
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+  examples:
+    StopDbServerSummary:
+      summary: Summary for DB Server stop request
+      value:
+        taskId: ae101e0a-0ca3-4644-8621-0d761aa25e3a
+        taskType: stop_tessell_server
+        resourceId: 65fed0c0-8dcc-42e1-8b9f-233518951a2d
+        details:
+          workflowName: stop-db-server
+          action: stop_db_server
+          serverName: finance-db-server
+          serverId: 65fed0c0-8dcc-42e1-8b9f-233518951a2d
+    StartDbServerSummary:
+      summary: Summary for DB Server start request
+      value:
+        taskId: ae101e0a-0ca3-4644-8621-0d761aa25e3a
+        taskType: start_db_server
+        resourceId: 65fed0c0-8dcc-42e1-8b9f-233518951a2d
+        details:
+          workflowName: start-db-server
+          action: start_db_server
+          serverName: finance-db-server
+          serverId: 65fed0c0-8dcc-42e1-8b9f-233518951a2d
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

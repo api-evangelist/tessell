@@ -1,0 +1,501 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: activity-center
+paths:
+  /activity-center/activities:
+    get:
+      tags:
+      - activity-center
+      summary: Return all activities to the user
+      operationId: getActivities
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - $ref: '#/components/parameters/activity-id'
+      - $ref: '#/components/parameters/entity-type'
+      - $ref: '#/components/parameters/entity-id'
+      - $ref: '#/components/parameters/status'
+      - $ref: '#/components/parameters/action-type'
+      - $ref: '#/components/parameters/app-family'
+      - $ref: '#/components/parameters/app'
+      - $ref: '#/components/parameters/from-time'
+      - $ref: '#/components/parameters/to-time'
+      - $ref: '#/components/parameters/initiated-by'
+      - $ref: '#/components/parameters/load-child-activities'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetActivitiesResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /activity-center/notifications:
+    patch:
+      tags:
+      - activity-center
+      operationId: updateActivityNotifications
+      summary: Provides ability to marks one/all notifications as read/notified for the current logged-in user
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNotificationsRequest'
+      responses:
+        '200':
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    UpdateNotificationsRequest:
+      type: object
+      properties:
+        markReadIds:
+          type: array
+          items:
+            type: string
+        markNotifiedIds:
+          type: array
+          items:
+            type: string
+        markAllAsRead:
+          type: boolean
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    ActivityDTO:
+      type: object
+      required:
+      - activityId
+      - entityType
+      - entityId
+      - tenantId
+      - entityName
+      - app
+      - appFamily
+      - description
+      - actionType
+      - status
+      - initiatedBy
+      - initiatedAt
+      - completedAt
+      - exception
+      - metadata
+      - isNotified
+      - isRead
+      properties:
+        activityId:
+          type: string
+          description: Unique Id of the Activity
+        entityType:
+          $ref: '#/components/schemas/entityType'
+        entityId:
+          type: string
+          format: uuid
+        tenantId:
+          type: string
+          format: uuid
+        entityName:
+          type: string
+        app:
+          type: string
+          description: Tessell App
+        appFamily:
+          type: string
+          description: Tessell App Family
+        description:
+          type: string
+          description: User friendly detailed description of the task
+        actionType:
+          type: string
+          description: Action taken on the entity. Actions can differ in reference to entityType
+        status:
+          $ref: '#/components/schemas/ActivityStatus'
+        initiatedBy:
+          type: string
+          description: Who initiated the action
+        initiatedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+        exception:
+          $ref: '#/components/schemas/ExceptionDTO'
+        metadata:
+          $ref: '#/components/schemas/ActivityMetadata'
+        isNotified:
+          type: boolean
+          description: To store if floating popup notification has been served
+        isRead:
+          type: boolean
+          description: To store if user has read/acknowledged the notification
+        childActivities:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityDTO'
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    entityType:
+      description: Tessell Entity Type
+      type: string
+      enum:
+      - TENANT
+      - COMPUTE_RESOURCE
+      - STORAGE
+      - COMPUTE_RESOURCE_METADATA
+      - DBSERVER_SYETEM
+      - DBSERVER_SUB_SYETEM
+      - DBSERVER_SYETEM_COMPUTE_RESOURCE
+      - DATABASE_SYETEM
+      - DATABASE
+      - DATABASE_NODE
+      - DATABASE_METADATA
+      - DMM
+      - DMM_AVAILABILITY
+      - DB_BACKUP
+      - DB_SNAPSHOT
+      - DB_LOG
+      - TASK
+      - SUB_TASK
+      - SLA
+      - RPO_POLICY
+      - SCHEDULE
+      - CLOUD_ACCOUNT
+      - CLOUD_LOCATION
+      - COMPUTE_TYPE
+      - SOFTWARE_IMAGE
+      - SOFTWARE_IMAGE_VERSION
+      - SUBSCRIPTION
+      - SCRIPT
+      - CUSTOM_SCRIPT
+      - DEPLOYMENT
+      - TERRAFORM
+      - DB_EXPORTER
+      - USER
+      - IDENTITY_PROVIDER
+      - ENCRYPTION_KEY
+      - TESSELL_SERVICE
+      - DEDICATED_SERVICE
+      - NETWORK
+      - SUBNET
+      - NETWORK_PEERING
+      - SECRET
+      - PERSONA
+      - ACL
+      - API_KEY
+      - TICKET
+      - TICKET_GLOBAL_WATCHLIST
+      - INVOICE
+      - BILL
+      - PAYMENT_OPTION
+      - BILLING_PROFILE
+      - PRIVATE_LINK
+      - VPC_PEERING
+      - VPC
+      - FSX_NETAPP
+      - FSX_NETAPP_SVM
+      - AZURE_NETAPP
+      - AZURE_NETAPP_CAPACITY_POOL
+      - EXADATA_INFRASTRUCTURE
+      - EXADATA_VM_CLUSTER
+      - DB_PARAM_PROFILE
+      - DATA_PIPELINE
+      - AI_INFRA
+      - ALERT_POLICY_ASSOCIATION
+      - DNS_RECORD
+      - LICENSE
+      - SECURITY_PROFILE
+    GetActivitiesResponse:
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/ActivityDTO'
+    ActivityStatus:
+      x-gorm-column-attrs: not null
+      x-gorm-index: true
+      description: The status of Activity
+      type: string
+      enum:
+      - QUEUED
+      - RUNNING
+      - SKIPPED
+      - SUSPENDED
+      - SUCCESS
+      - FAILED
+      - UNKNOWN
+    TessellHTTPErrorCode:
+      type: object
+      properties:
+        httpCode:
+          type: integer
+          description: HTTP code
+        code:
+          type: string
+          description: Tessell's specific code with more context on error
+    ActivityMetadata:
+      type: object
+      x-gorm-column-type: json
+      properties:
+        data:
+          type: object
+          additionalProperties: {}
+        applicableAcls:
+          type: array
+          description: ACLs for which given activity should be shown. The ACLs are in respect to current activity's entityType.
+          items:
+            type: string
+        entityDeletedFromUI:
+          type: boolean
+    ExceptionDTO:
+      type: object
+      required:
+      - errorCode
+      - occurredAt
+      - contextId
+      - sessionId
+      - message
+      - resolution
+      properties:
+        errorCode:
+          $ref: '#/components/schemas/TessellHTTPErrorCode'
+        tessellErrorCode:
+          type: string
+          description: Will be used to enumerate all unique errors
+        occurredAt:
+          type: string
+          format: date-time
+          description: Time of occurrence of error
+        contextId:
+          type: string
+        sessionId:
+          type: string
+        message:
+          type: string
+          description: Details about the error
+        resolution:
+          type: string
+          description: Details on how a particular exception can be fixed
+        externalStackTrace:
+          type: string
+          description: Any stack trace from third party libraries/tools that should be retained for better debugging
+  parameters:
+    initiated-by:
+      name: initiated-by
+      in: query
+      description: Filter based on initiated by user
+      required: false
+      schema:
+        type: string
+        maxLength: 128
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    action-type:
+      name: action-type
+      in: query
+      description: Filter based on action taken on entity
+      required: false
+      schema:
+        type: string
+        maxLength: 128
+    status:
+      name: status
+      in: query
+      description: Filter Activities based on status
+      required: false
+      schema:
+        $ref: '#/components/schemas/ActivityStatus'
+    app-family:
+      name: app-family
+      in: query
+      description: Filter based on appfamily (E.g. "DB Services", "Governance")
+      required: false
+      schema:
+        type: string
+        maxLength: 128
+    app:
+      name: app
+      in: query
+      description: Filter based on app name (E.g. "My Services", "Dataflix" etc)
+      required: false
+      schema:
+        type: string
+        maxLength: 128
+    to-time:
+      name: to-time
+      in: query
+      description: Filter based on time of completion
+      required: false
+      schema:
+        type: string
+        maxLength: 128
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
+    from-time:
+      name: from-time
+      in: query
+      description: Filter based on time range
+      required: false
+      schema:
+        type: string
+        maxLength: 128
+    entity-id:
+      name: entity-id
+      in: query
+      description: Filter based on entity ID
+      required: false
+      schema:
+        type: string
+        format: uuid
+        maxLength: 128
+    activity-id:
+      name: activity-id
+      in: query
+      description: Filter based on activity ID
+      required: false
+      schema:
+        type: string
+        maxLength: 128
+    load-child-activities:
+      name: load-child-activities
+      in: query
+      description: Whether to load child-activities as well or not
+      required: false
+      schema:
+        type: boolean
+    entity-type:
+      name: entity-type
+      in: query
+      description: Filter based on entity
+      required: false
+      schema:
+        $ref: '#/components/schemas/entityType'
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

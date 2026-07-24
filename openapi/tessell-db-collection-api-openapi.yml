@@ -1,0 +1,925 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center DB Collection API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: DB Collection
+paths:
+  /services/{service-id}/databases/{database-id}/collections:
+    get:
+      tags:
+      - DB Collection
+      summary: Get all collections for the given database-id
+      operationId: getDbCollections
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - $ref: '#/components/parameters/database-id'
+      - name: name
+        in: query
+        required: false
+        style: form
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 128
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DbCollectionsResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+      - DB Collection
+      summary: Create a collection for given database ID
+      operationId: createDbCollection
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - $ref: '#/components/parameters/database-id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DbCollectionCreatePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{service-id}/databases/{database-id}/collections/{collection-id}:
+    get:
+      tags:
+      - DB Collection
+      summary: Get all collections for given database ID
+      operationId: getDbCollectionById
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - $ref: '#/components/parameters/database-id'
+      - $ref: '#/components/parameters/collection-id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DbCollectionDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - DB Collection
+      summary: Update collection for given collection ID
+      operationId: updateDbCollection
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - $ref: '#/components/parameters/database-id'
+      - $ref: '#/components/parameters/collection-id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DbCollectionCreatePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DbCollectionDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - DB Collection
+      summary: Delete collection for given collection ID
+      operationId: deleteDbCollection
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - $ref: '#/components/parameters/database-id'
+      - $ref: '#/components/parameters/collection-id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteDbCollectionPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{service-id}/databases/{database-id}/collections/{collection-id}/load:
+    post:
+      tags:
+      - DB Collection
+      summary: Load collection into memory for given collection ID
+      operationId: loadDbCollection
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - $ref: '#/components/parameters/database-id'
+      - $ref: '#/components/parameters/collection-id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoadCollectionPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{service-id}/databases/{database-id}/collections/{collection-id}/release:
+    post:
+      tags:
+      - DB Collection
+      summary: Release collection from memory for given collection name
+      operationId: releaseDbCollection
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - $ref: '#/components/parameters/database-id'
+      - $ref: '#/components/parameters/collection-id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoadCollectionPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{service-id}/databases/{database-id}/collections/{collection-id}/indices:
+    get:
+      tags:
+      - DB Collection
+      summary: Get all indices for the given collection ID
+      operationId: getDbCollectionIndices
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - $ref: '#/components/parameters/database-id'
+      - $ref: '#/components/parameters/collection-id'
+      - name: column-name
+        in: query
+        description: Column name
+        required: false
+        style: form
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DbCollectionsIndexResponse'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+      - DB Collection
+      summary: Create a index for given collection ID
+      operationId: createDbCollectionIndex
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - $ref: '#/components/parameters/database-id'
+      - $ref: '#/components/parameters/collection-id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DbCollectionIndexPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{service-id}/databases/{database-id}/collections/{collection-id}/indices/{index-id}:
+    get:
+      tags:
+      - DB Collection
+      summary: Get index for the given index ID
+      operationId: getDbCollectionIndexById
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - $ref: '#/components/parameters/database-id'
+      - $ref: '#/components/parameters/collection-id'
+      - name: index-id
+        in: path
+        description: Index ID
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DbCollectionIndexDTO'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - DB Collection
+      summary: Delete collection for given collection name
+      operationId: deleteDbCollectionIndex
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - $ref: '#/components/parameters/database-id'
+      - $ref: '#/components/parameters/collection-id'
+      - name: index-id
+        in: path
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteDbCollectionIndexPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    MilvusIndexMetricType:
+      type: string
+      enum:
+      - L2
+      - IP
+      - JACCARD
+      - TANIMOTO
+      - HAMMING
+      - SUPERSTRUCTURE
+      - SUBSTRUCTURE
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    IndexSpecification:
+      type: object
+      properties:
+        indexType:
+          $ref: '#/components/schemas/MilvusIndexType'
+        metricType:
+          $ref: '#/components/schemas/MilvusIndexMetricType'
+        parameters:
+          $ref: '#/components/schemas/MilvusIndexParameters'
+    DbCollectionStatus:
+      type: string
+      enum:
+      - CREATING
+      - READY
+      - LOADING
+      - LOADED
+      - UNLOADED
+      - RELEASING
+      - DELETED
+      - DELETING
+      - FAILED
+      - CREATION_FAILED
+      - DELETION_FAILED
+    DbCollectionIndexStatus:
+      type: string
+      description: The status of the DB collection index
+      enum:
+      - CREATING
+      - READY
+      - DELETED
+      - DELETING
+      - FAILED
+      - CREATION_FAILED
+      - DELETION_FAILED
+    DbCollectionsResponse:
+      title: TessellServicesResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/DbCollectionDTO'
+    MilvusIndexConfig:
+      type: object
+      properties:
+        indexSpecifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndexSpecification'
+    DeleteDbCollectionIndexPayload:
+      title: DeleteCollectionPayload
+      type: object
+      properties:
+        comment:
+          type: string
+          description: Comment for the action
+    taskSummary:
+      title: taskSummary
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        taskType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        associatedResourceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        details:
+          type: object
+          additionalProperties:
+            type: string
+    MilvusIndexParameters:
+      type: object
+      properties:
+        m:
+          type: integer
+          nullable: true
+        nlist:
+          type: integer
+          nullable: true
+        efconstructions:
+          type: integer
+          nullable: true
+        ntrees:
+          type: integer
+          nullable: true
+    MilvusCreateCollectionConfig:
+      title: MilvusCreateCollectionConfig
+      type: object
+      nullable: true
+      properties:
+        name:
+          type: string
+          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
+          minLength: 1
+          maxLength: 255
+        shardNums:
+          type: integer
+          nullable: true
+          minimum: 1
+          maximum: 16
+        numPartitions:
+          type: integer
+          nullable: true
+          minimum: 1
+          maximum: 4096
+        schema:
+          type: object
+          properties:
+            description:
+              type: string
+              nullable: true
+            enableDynamicField:
+              type: boolean
+            fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/MilvusCreateCollectionField'
+    MilvusCollectionConfig:
+      title: MilvusCollectionConfig
+      type: object
+      nullable: true
+      properties:
+        shardNums:
+          type: integer
+          nullable: true
+          minimum: 1
+          maximum: 16
+        numPartitions:
+          type: integer
+          nullable: true
+          minimum: 1
+          maximum: 4096
+        schema:
+          type: object
+          properties:
+            description:
+              type: string
+              nullable: true
+            enableDynamicField:
+              type: boolean
+            fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/MilvusCollectionField'
+    DbCollectionDTO:
+      type: object
+      description: Db collection
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the collection
+        name:
+          type: string
+          nullable: false
+          description: The name of the collection
+        databaseId:
+          type: string
+          format: uuid
+          description: The ID of the database which the collection falls under
+        serviceId:
+          type: string
+          format: uuid
+          description: The ID of the service which the database falls under
+        createdByUser:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: The user who created the collection
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        status:
+          $ref: '#/components/schemas/DbCollectionStatus'
+        collectionConfig:
+          $ref: '#/components/schemas/DbCollectionConfig'
+        dateModified:
+          type: string
+          format: date-time
+          description: Timestamp when the entity was last modified by user
+    MilvusIndexType:
+      type: string
+      enum:
+      - BIN_FLAT
+      - BIN_IVF_FLAT
+      - FLAT
+      - IVF_FLAT
+      - IVF_SQ8
+      - IVF_PQ
+      - HNSW
+      - IVF_HNSW
+      - RHNSW_FLAT
+      - RHNSW_SQ
+      - RHNSW_PQ
+      - ANNOY
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    DbCollectionCreatePayload:
+      type: object
+      properties:
+        name:
+          type: string
+          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
+          minLength: 1
+          maxLength: 255
+        milvusCollectionConfig:
+          $ref: '#/components/schemas/MilvusCreateCollectionConfig'
+    DbCollectionIndexPayload:
+      type: object
+      properties:
+        fieldName:
+          type: string
+        indexName:
+          type: string
+        milvusIndexConfig:
+          $ref: '#/components/schemas/MilvusIndexConfig'
+    MilvusCollectionField:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: false
+        description:
+          type: string
+          nullable: true
+        dtype:
+          $ref: '#/components/schemas/MilvusDatatype'
+        isPrimary:
+          type: boolean
+          nullable: false
+        autoId:
+          type: boolean
+          nullable: false
+        defaultValue:
+          type: string
+          nullable: true
+        isPartitionKey:
+          type: boolean
+          default: false
+        maxLength:
+          type: integer
+        dim:
+          type: integer
+        status:
+          $ref: '#/components/schemas/DbCollectionStatus'
+        indexConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/DbCollectionIndexDTO'
+        dateModified:
+          type: string
+          format: date
+    LoadCollectionPayload:
+      title: LoadCollectionPayload
+      type: object
+      properties:
+        comment:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: Comment for the action
+    DeleteDbCollectionPayload:
+      title: DeleteCollectionPayload
+      type: object
+      properties:
+        comment:
+          type: string
+          description: Comment for the action
+          minLength: 0
+          maxLength: 512
+    DbCollectionIndexDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the collection index
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The name of the column on which collection index is built
+        indexName:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The name of the collection index
+        collectionId:
+          type: string
+          format: uuid
+          description: ID of the collection the index belongs to
+        createdByUser:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: User who created the collection index
+        status:
+          $ref: '#/components/schemas/DbCollectionIndexStatus'
+        indexConfig:
+          $ref: '#/components/schemas/DbCollectionIndexPayload'
+        dateModified:
+          type: string
+          format: date-time
+          description: Timestamp when the entity was last modified, either by system or by user
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    DbCollectionsIndexResponse:
+      title: TessellServicesResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/DbCollectionIndexDTO'
+    DbCollectionConfig:
+      type: object
+      properties:
+        milvusCollectionConfig:
+          $ref: '#/components/schemas/MilvusCollectionConfig'
+    MilvusCreateCollectionField:
+      type: object
+      properties:
+        name:
+          type: string
+          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+          nullable: true
+        dtype:
+          $ref: '#/components/schemas/MilvusDatatype'
+        isPrimary:
+          type: boolean
+          default: false
+        autoId:
+          type: boolean
+          default: false
+        defaultValue:
+          type: string
+          nullable: true
+        isPartitionKey:
+          type: boolean
+          default: false
+        maxLength:
+          type: integer
+        dim:
+          type: integer
+        indexCreatePayload:
+          $ref: '#/components/schemas/DbCollectionIndexPayload'
+    MilvusDatatype:
+      type: string
+      enum:
+      - VARCHAR
+      - INT64
+      - BOOL
+      - INT8
+      - INT16
+      - INT32
+      - FLOAT
+      - DOUBLE
+      - JSON
+      - BINARY_VECTOR
+      - FLOAT_VECTOR
+  parameters:
+    collection-id:
+      name: collection-id
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    service-id:
+      name: service-id
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    database-id:
+      name: database-id
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

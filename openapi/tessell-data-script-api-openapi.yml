@@ -1,0 +1,1127 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Data Script API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Data Script
+paths:
+  /scripts:
+    get:
+      tags:
+      - Data Script
+      summary: Get a list of Scripts
+      operationId: getScriptsServiceView
+      parameters:
+      - name: name
+        in: query
+        description: Filter result based on the specified name
+        required: false
+        style: form
+        schema:
+          type: string
+      - name: engine-type
+        in: query
+        description: Filter result based on the specified database engine type
+        required: false
+        style: form
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/databaseEngineType'
+      - name: script-type
+        in: query
+        description: Filter result based on the specified script types
+        required: false
+        style: form
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScriptType'
+      - name: load-versions
+        in: query
+        description: Specify if the versions are to be fetched for the script
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: true
+      - $ref: '#/components/parameters/loadAcls'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/timeZone'
+      - $ref: '#/components/parameters/owners'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetScriptsServiceApiResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+      - Data Script
+      summary: Request to create a new Script
+      operationId: createScriptServiceView
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateScriptPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellScriptServiceViewDTO'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /scripts/{id}:
+    get:
+      tags:
+      - Data Script
+      summary: Get information about a Script
+      operationId: getScriptServiceView
+      parameters:
+      - name: id
+        in: path
+        description: ID of the Script
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: load-versions
+        in: query
+        description: Specify if the versions are to be fetched for the script
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: true
+      - name: load-subscriptions-inuse
+        in: query
+        description: When set to true, this specifies the subscriptions of the script that are currently in use
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: false
+      - $ref: '#/components/parameters/loadAcls'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellScriptServiceViewDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - Data Script
+      summary: Update the specified Script
+      operationId: updateScriptServiceView
+      parameters:
+      - name: id
+        in: path
+        description: ID of the Script
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTessellScriptServicePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellScriptServiceViewDTO'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - Data Script
+      summary: Delete the specified Script
+      operationId: deleteScriptServiceView
+      parameters:
+      - name: id
+        in: path
+        description: ID of the Script
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /scripts/{id}/{action}:
+    patch:
+      tags:
+      - Data Script
+      summary: Update the Script's maturity status
+      operationId: updateScriptMaturity
+      parameters:
+      - name: id
+        in: path
+        description: ID of the Script
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: action
+        in: path
+        description: Maturity status for the Script, which could be any of - DRAFT, PUBLISH, or UNPUBLISH
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /scripts/{id}/versions:
+    get:
+      tags:
+      - Data Script
+      summary: Get Tessell Script versions
+      operationId: getScriptVersionsServiceView
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Tessell Script
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: version
+        in: query
+        description: Script version
+        required: false
+        style: form
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetScriptVersionsServiceApiResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+      - Data Script
+      summary: Create a new Tessell Script Version
+      operationId: createScriptVersionServiceView
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Tessell Script
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateScriptVersionPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellScriptVersionServiceView'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /scripts/{id}/versions/{version}:
+    get:
+      tags:
+      - Data Script
+      summary: Get Tessell Script versions
+      operationId: getScriptVersionServiceView
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Tessell Script
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: version
+        in: path
+        description: Version of the Tessell Script
+        required: true
+        style: simple
+        schema:
+          type: string
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellScriptVersionServiceView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - Data Script
+      summary: Delete a new Tessell Script Version
+      operationId: deleteScriptVersionServiceView
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Tessell Script
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: version
+        in: path
+        description: Version of the Tessell Script
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /scripts/{id}/versions/{version}/content:
+    get:
+      tags:
+      - Data Script
+      summary: Download Tessell Script Content
+      operationId: downloadScriptContentServiceView
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Tessell Script
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: version
+        in: path
+        description: Version of the Tessell Script
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: byte
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+      - Data Script
+      summary: Upload Tessell Script Version blob
+      operationId: uploadScriptContentServiceView
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Tessell Script
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: version
+        in: path
+        description: Version of the Tessell Script
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateTessellScriptVersionServicePayloadDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellScriptVersionServiceView'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /scripts/{id}/acls:
+    get:
+      tags:
+      - Data Script
+      summary: Get list of ACLs for the Script
+      operationId: getScriptAcls
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Script
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityAclSharingInfo'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - Data Script
+      summary: Create/update the Script ACLs
+      operationId: createScriptAcls
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Script
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AclPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AclPayload'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - Data Script
+      summary: Revoke Script ACLs
+      operationId: revokeScriptAcls
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Script
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AclRevokePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /scripts/{id}/acls/eligible-users:
+    get:
+      tags:
+      - Data Script
+      summary: Get list of all the users by privileges
+      operationId: getEligibleUsersForScript
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Script
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: roles
+        in: query
+        description: roles
+        required: false
+        style: form
+        schema:
+          type: array
+          items:
+            type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AclEligibleUser'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    AclRevokePayload:
+      title: AclRevokePayload
+      description: Payload to revoke Tessell ACLs
+      required:
+      - users
+      properties:
+        users:
+          description: List of users to be deleted
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          minItems: 1
+          maxItems: 100
+    ScriptType:
+      type: string
+      description: Purpose of the script
+      enum:
+      - MASKING
+      - PRE
+      - POST
+    EntityAclSharingInfo:
+      title: EntityAclSharingInfo
+      description: Tessell Entity ACL Sharing Info
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityUserAclSharingInfo'
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    CreateScriptVersionPayload:
+      title: CreateScriptVersionPayload
+      description: Payload to create a Script Version
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 128
+          description: Name of version
+    AclPayload:
+      title: AclPayload
+      description: Payload to create an entity ACL
+      required:
+      - users
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/AclUserPayload'
+          minItems: 1
+          maxItems: 100
+    GetScriptsServiceApiResponse:
+      title: GetScriptsServiceApiResponse
+      allOf:
+      - $ref: '#/components/schemas/TessellApiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/TessellScriptServiceViewDTO'
+    UpdateTessellScriptServicePayload:
+      title: UpdateTessellScriptServicePayload
+      description: Tessell Update Script Service payload
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 128
+          description: Name of the script.
+        description:
+          type: string
+          maxLength: 512
+          description: Description for the script.
+        activeVersion:
+          type: string
+          description: version of the script
+        subscriptions:
+          $ref: '#/components/schemas/ScriptSubscriptionsPayload'
+          description: List of subscription names to be present in the script
+    GetScriptVersionsServiceApiResponse:
+      title: GetScriptVersionsServiceApiResponse
+      allOf:
+      - $ref: '#/components/schemas/TessellApiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/TessellScriptVersionServiceView'
+    CreateTessellScriptVersionServicePayloadDTO:
+      description: Create Script Version payload
+      type: object
+      properties:
+        blob:
+          type: string
+          format: binary
+          description: File content
+    ScriptSubscriptionsPayload:
+      description: A collection of unique subscription names
+      type: array
+      uniqueItems: true
+      items:
+        type: string
+    TessellScriptVersionServiceView:
+      type: object
+      description: Information about a Script Version
+      properties:
+        scriptId:
+          type: string
+          format: uuid
+          description: ID of the associated script
+        name:
+          type: string
+          maxLength: 128
+          description: Version (identifier or name) of the script-version.
+        version:
+          type: integer
+          format: int32
+          description: System assigned version of the script.
+        status:
+          $ref: '#/components/schemas/ScriptStatus'
+          description: Status of the version
+        fileName:
+          type: string
+          description: Name of the associated version file
+        fileType:
+          $ref: '#/components/schemas/ScriptFileType'
+          description: Type of the associated version file
+        dateCreated:
+          type: string
+          format: date-time
+          description: Timestamp when the version was created at
+    EntityUserAclSharingInfo:
+      title: EntityUserAclSharingInfo
+      description: Tessell Entity ACL Sharing Info for a user
+      properties:
+        emailId:
+          type: string
+        role:
+          type: string
+        sharedBy:
+          type: string
+          description: Email of the user who shared the entity
+        sharedOn:
+          type: string
+          format: date-time
+          description: Date when the entity was shared
+    TessellScriptServiceViewDTO:
+      type: object
+      description: Information about a Script
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of the script
+        name:
+          type: string
+          maxLength: 128
+          description: Name of the script
+        description:
+          type: string
+          maxLength: 512
+          description: Description for the script
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+          description: Database engine type for the script
+        scriptType:
+          $ref: '#/components/schemas/ScriptType'
+          description: Type of the script
+        status:
+          $ref: '#/components/schemas/ScriptStatus'
+          description: Status of the script
+        activeVersion:
+          type: string
+          description: Current active version for the script
+        tenantId:
+          type: string
+          description: ID of the tenant under which the script is effective
+        ownerId:
+          type: string
+          description: Owner of this script
+        sharedWith:
+          $ref: '#/components/schemas/EntityAclSharingInfo'
+          description: List of users who have access to this script
+        loggedInUserRole:
+          type: string
+          description: The role of the logged in user for accessing the Script
+        oob:
+          type: boolean
+          default: false
+          description: Whether the script is a out-of-the-box script or created by user explicitly
+        dateCreated:
+          type: string
+          format: date-time
+          description: Timestamp when this script was created at
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellScriptVersionServiceView'
+          description: The associated versions for this script
+        subscriptions:
+          $ref: '#/components/schemas/ScriptSubscriptionsPayload'
+          description: List of subscription names present in the script
+        subscriptionsInUse:
+          $ref: '#/components/schemas/ScriptSubscriptionsPayload'
+          description: List of subscription names associated with the script that are currently in use by other entities.
+    ScriptStatus:
+      type: string
+      description: Status of the script
+      enum:
+      - ENABLED
+      - PENDING
+      - DELETED
+    AclUserPayload:
+      title: AclUserPayload
+      description: Payload to create an user's entity ACL
+      required:
+      - emailId
+      - role
+      properties:
+        emailId:
+          description: Email id of the user
+          type: string
+          minLength: 1
+          maxLength: 256
+        role:
+          description: Role Info
+          type: string
+          minLength: 1
+          maxLength: 64
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    CreateScriptPayload:
+      title: CreateScriptPayload
+      type: object
+      description: Payload to create a Script
+      required:
+      - name
+      - engineType
+      - scriptType
+      properties:
+        name:
+          type: string
+          maxLength: 128
+          description: Name of the script
+        description:
+          type: string
+          maxLength: 512
+          description: Description for the script
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+          description: Associated database engine type for the script
+        scriptType:
+          $ref: '#/components/schemas/ScriptType'
+          description: Type for the script
+        version:
+          $ref: '#/components/schemas/CreateScriptVersionPayload'
+          description: Payload to create the script version
+        subscriptions:
+          $ref: '#/components/schemas/ScriptSubscriptionsPayload'
+          description: List of subscription names present in the script
+    TessellApiResponse:
+      title: TessellApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+    ScriptFileType:
+      type: string
+      description: File type of script e.g. shell, python, sql
+      enum:
+      - BASH_SHELL
+      - PYTHON3
+      - SQL
+      - POWERSHELL
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    AclEligibleUser:
+      title: AclEligibleUser
+      description: Eligible user for sharing the entity
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        emailId:
+          type: string
+        eligibleRoles:
+          type: array
+          items:
+            type: string
+        accessibleSubscriptions:
+          type: array
+          items:
+            type: string
+          description: List of subscriptions user has access to
+  parameters:
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    loadAcls:
+      name: load-acls
+      in: query
+      description: Load ACL information
+      required: false
+      schema:
+        type: boolean
+        default: false
+    owners:
+      name: owners
+      in: query
+      description: List of Email Addresses for entity or resource owners
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

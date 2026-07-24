@@ -1,0 +1,2616 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Subscription API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Subscription
+paths:
+  /subscriptions:
+    get:
+      tags:
+      - Subscription
+      summary: Returns details about the Tessell Subscriptions
+      description: It returns the details about the Tessell Subscriptions
+      operationId: getUserViewSubscriptions
+      parameters:
+      - name: status
+        in: query
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/subscriptionStatus'
+        required: false
+        description: List of subscription statuses
+      - $ref: '#/components/parameters/timeZone'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of subscriptions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionsUserViewApiResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/governance/subscriptions:
+    post:
+      tags:
+      - Subscription
+      description: Creates a new Tessell subscription based on deployment type(shared/byoa) and cloud configurations.
+      summary: Create a new Tessell subscription.
+      operationId: createSubscription
+      requestBody:
+        description: Subscription Information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSubscriptionPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionAdminView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+    get:
+      tags:
+      - Subscription
+      summary: Returns details about the Tessell Subscriptions
+      description: Returns details about the Tessell Subscriptions
+      operationId: getAdminViewSubscriptions
+      parameters:
+      - name: status
+        in: query
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/subscriptionStatus'
+        required: false
+        description: List of subscription statuses
+      - name: entity-owner
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+        required: false
+        description: Filter based on subscription owners
+      - $ref: '#/components/parameters/timeZone'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of subscriptions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionsAdminApiResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/governance/subscriptions/{name}:
+    get:
+      tags:
+      - Subscription
+      summary: Submits request to get the subscription details
+      description: Submits request to get the subscription details
+      operationId: getSubscriptionName
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Details of a subscription
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionAdminView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - Subscription
+      summary: Submits request to update a Tessell Subscription
+      description: Submits request to update a Tessell Subscription
+      operationId: updateSubscription
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: Update Subscription Body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSubscriptionServicePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionAdminView'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      summary: Submits request to delete a Tessell Subscription
+      description: Submits request to delete a Tessell Subscription
+      tags:
+      - Subscription
+      operationId: deleteSubscription
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - $ref: '#/components/parameters/soft-delete'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/governance/subscriptions/{name}/{action}:
+    patch:
+      tags:
+      - Subscription
+      summary: Submits request to enable or disable a Tessell Subscription
+      description: Submits request to enable or disable a Tessell Subscription
+      operationId: actionOnSubscription
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - name: action
+        in: path
+        description: Action on the subscription. Eg. enable/disable
+        required: true
+        schema:
+          $ref: '#/components/schemas/Action'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionAdminView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/governance/subscriptions/{name}/cloud-type:
+    post:
+      tags:
+      - Subscription
+      description: Adds cloud type to a new Tessell subscription
+      summary: Adds cloud type to a new Tessell subscription
+      operationId: addCloudTypeToSubscription
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: Cloud details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionCloudConfigMap'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionAdminView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/governance/subscriptions/{name}/cloud-type/{cloud-type}/{action}:
+    patch:
+      tags:
+      - Subscription
+      summary: Enables or disables a cloud type in a Tessell Subscription
+      description: Enables or disables a cloud type in a Tessell Subscription
+      operationId: actionOnSubscriptionCloudType
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - name: cloud-type
+        in: path
+        description: Cloud type
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 16
+      - name: action
+        in: path
+        description: Action on the subscription. Eg. enable/disable
+        required: true
+        schema:
+          $ref: '#/components/schemas/Action'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionAdminView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/governance/subscriptions/{name}/cloud-type/{cloud-type}/regions:
+    put:
+      tags:
+      - Subscription
+      summary: Update regions for a cloud type in a Tessell Subscription
+      description: Update regions for a cloud type in a Tessell Subscription
+      operationId: updateRegionsInSubscription
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - name: cloud-type
+        in: path
+        description: Cloud type
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 16
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: Region list
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRegionsPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionAdminView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/governance/subscriptions/{name}/add-regions:
+    put:
+      tags:
+      - Subscription
+      summary: Add regions for a cloud type in a Tessell Subscription
+      description: Add regions for a cloud type in a Tessell Subscription
+      operationId: addRegionsInSubscription
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: Cloud config map
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionCloudConfigMap'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionAdminView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/governance/subscriptions/{name}/acls:
+    patch:
+      tags:
+      - Subscription
+      summary: Adds users to a Tessell subscription
+      description: Adds users to a Tessell subscription
+      operationId: addUsersToSubscription
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: Add Users To Subscription Request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AclPayload'
+      responses:
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - Subscription
+      summary: Removes users from a Tessell subscription
+      description: Removes users from a Tessell subscription
+      operationId: removeUsersFromSubscription
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: Remove Users To Subscription Request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AclRevokePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionAdminView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/governance/subscriptions/{name}/users:
+    get:
+      tags:
+      - Subscription
+      summary: Get subscription's users' details
+      description: Get the details of subscription's users
+      operationId: getSubscriptionUsersDetails
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - $ref: '#/components/parameters/timeZone'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionUsersAdminView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/governance/subscriptions/{name}/acls/eligible-users:
+    get:
+      tags:
+      - Subscription
+      summary: Get users which can be added to the subscription
+      description: Returns a list of users which can be added to the subscription
+      operationId: getEligibleUsersForSubscription
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - name: role
+        in: query
+        description: User role
+        required: false
+        schema:
+          $ref: '#/components/schemas/SubscriptionUserRole'
+      - $ref: '#/components/parameters/timeZone'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AclEligibleUser'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/governance/subscription-metadata/byoa:
+    get:
+      tags:
+      - Subscription
+      description: Get subscription related metadata
+      operationId: getSubscriptionByoaStaticMetadata
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionByoaStaticMetadata'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /subscription-service/governance/subscriptions/{name}/track:
+    get:
+      tags:
+      - Subscription
+      summary: Track the progress of the ongoing subscription creation operation
+      description: Track the progress of the ongoing subscription creation operation
+      operationId: trackSubscriptionCreation
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSubscriptionTrackingDetails'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/governance/subscriptions/{name}/regions/track:
+    get:
+      tags:
+      - Subscription
+      summary: Track the progress of the ongoing region onboarding operation
+      description: Track the progress of the ongoing region onboarding operation
+      operationId: trackRegionOnboarding
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - name: region
+        in: query
+        description: Region name to track region onboarding
+        required: true
+        schema:
+          type: string
+      - name: cloud-type
+        in: query
+        description: Cloud type for region onboarding tracking
+        required: true
+        schema:
+          $ref: '#/components/schemas/cloudType'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionOnboardingTrackingDetails'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/governance/subscriptions/{name}/resubmit:
+    put:
+      tags:
+      - Subscription
+      summary: Resubmits failed Tessell Subscription creation
+      description: Resubmits failed Tessell Subscription creation
+      operationId: resubmitCreateSubscription
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionAdminView'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/governance/subscriptions/{name}/regions/resubmit:
+    put:
+      tags:
+      - Subscription
+      summary: Resubmits failed region onboarding
+      description: Resubmits failed region onboarding
+      operationId: resubmitRegionOnboarding
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - name: region
+        in: query
+        description: Region name to resubmit region onboarding
+        required: true
+        schema:
+          type: string
+      - name: cloud-type
+        in: query
+        description: Cloud type for region onboarding resubmit
+        required: true
+        schema:
+          $ref: '#/components/schemas/cloudType'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionAdminView'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/governance/subscriptions/{name}/steps/{step-id}/skip:
+    put:
+      summary: Skip a particular step in the subscription creation flow
+      tags:
+      - Subscription
+      description: Skip a particular step in the subscription creation flow
+      operationId: skipCreateSubscriptionStep
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - $ref: '#/components/parameters/stepId'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Step'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/governance/subscriptions/{name}/regions/steps/{step-id}/skip:
+    put:
+      summary: Skip a particular step in the region onboarding flow
+      tags:
+      - Subscription
+      description: Skip a particular step in the region onboarding flow
+      operationId: skipRegionOnboardingStep
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - $ref: '#/components/parameters/stepId'
+      - name: region
+        in: query
+        description: Region name to skip a step in region onboarding
+        required: true
+        schema:
+          type: string
+      - name: cloud-type
+        in: query
+        description: Cloud type for region onboarding step skip
+        required: true
+        schema:
+          $ref: '#/components/schemas/cloudType'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Step'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /subscription-service/generate-register-vm-script:
+    get:
+      summary: Generate a script to register any compute resource with tessell
+      tags:
+      - Subscription
+      description: Generate a script to register any compute resource with tessell
+      operationId: registerVmScript
+      parameters:
+      - in: query
+        name: compute-resource-name
+        schema:
+          type: string
+        required: true
+        description: Compute resource id of the instance to be registered
+      - in: query
+        name: tenant-id
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: Id of the tenant where the compute resource is created
+      - in: query
+        name: subscription-name
+        schema:
+          type: string
+        required: true
+        description: Name of the subscription where the compute resource is created
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExadataRegisterVmScript'
+  /subscription-service/register-vm:
+    post:
+      summary: Register a compute resource after executing the script
+      tags:
+      - Subscription
+      description: Register a compute resource after executing the script
+      operationId: registerVm
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExadataRegisterVm'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExadataRegisterVm'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /subscription-service/governance/subscriptions/{name}/resources:
+    get:
+      tags:
+      - Subscription
+      summary: Returns the list of user resources under a Tessell Subscription
+      description: Returns the list of user resources under a Tessell Subscription
+      operationId: getSubscriptionResources
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of resources under a subscription
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionResourceList'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorOps'
+  /subscription-service/governance/subscriptions/{name}/progress:
+    get:
+      tags:
+      - Subscription
+      summary: Track the progress of the ongoing subscription deletion operation
+      description: Track the progress of the ongoing subscription deletion operation
+      operationId: getSubscriptionDeletionProgress
+      parameters:
+      - $ref: '#/components/parameters/subscription-name'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteSubscriptionTrackingDetails'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    GcpPrivateServiceConnect:
+      type: object
+      description: Private Service Connect endpoint information from Terraform output
+      properties:
+        endpointId:
+          type: string
+          description: Unique identifier of the Private Service Connect forwarding rule
+          example: projects/p-dev-gcp-core-cp-03/regions/asia-south1/forwardingRules/saket-test-asia-south1
+        endpointName:
+          type: string
+          description: Name of the Private Service Connect forwarding rule
+          pattern: ^[a-z]([a-z0-9-]*[a-z0-9])?$
+          minLength: 1
+          maxLength: 63
+          example: saket-test-asia-south1
+        endpointIp:
+          type: string
+          description: IP address of the Private Service Connect endpoint
+          pattern: ^([0-9]{1,3}\.){3}[0-9]{1,3}$
+          example: 10.0.0.3
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    SubscriptionByoaStaticMetadata:
+      title: SubscriptionByoaStaticMetadata
+      description: Metadata for BYOA subscription
+      required:
+      - aws
+      properties:
+        aws:
+          $ref: '#/components/schemas/SubscriptionByoaAwsStaticMetadata'
+        azure:
+          $ref: '#/components/schemas/SubscriptionByoaAzureStaticMetadata'
+    Progress:
+      title: Progress
+      type: object
+      description: Progress of the execution
+      properties:
+        percentageCompleted:
+          type: integer
+          description: Completed percentage of the execution
+          default: 0
+          minimum: 0
+          maximum: 100
+        estimatedTimeRemainingInMinutes:
+          type: integer
+          description: Estimated time remaining in minutes
+          minimum: 0
+    EntityAclSharingInfo:
+      title: EntityAclSharingInfo
+      description: Tessell Entity ACL Sharing Info
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityUserAclSharingInfo'
+    SubscriptionUserView:
+      title: SubscriptionUserView
+      description: User view of the subscription
+      type: object
+      properties:
+        name:
+          type: string
+          description: Subscription name
+        description:
+          type: string
+          description: Subscription description
+        isDefault:
+          type: boolean
+          default: false
+          description: Specifies if this is the default subscription
+        deploymentType:
+          $ref: '#/components/schemas/subscriptionDeploymentType'
+        status:
+          $ref: '#/components/schemas/subscriptionStatus'
+        associatedCloudTypes:
+          type: array
+          description: List of cloud specific details associated with the subscription
+          items:
+            $ref: '#/components/schemas/AssociatedCloudTypeServiceConsumer'
+        owner:
+          type: string
+          description: Owner of the subscription
+        isTessellAllowedToCreateKeyAndVnet:
+          type: boolean
+          default: true
+        commonEndpointCutoverDone:
+          type: boolean
+          default: true
+    GcpSubscriptionInfo:
+      type: object
+      description: Subscription metadata from Terraform output
+      required:
+      - subscriptionName
+      - region
+      - projectId
+      - networkProjectId
+      properties:
+        subscriptionName:
+          type: string
+          description: Name of the subscription
+        region:
+          type: string
+          description: GCP region where resources are deployed
+        projectId:
+          type: string
+          description: GCP Project ID where resources are deployed
+          pattern: ^[a-z][a-z0-9-]*[a-z0-9]$
+        networkProjectId:
+          type: string
+          description: GCP Project ID where VPC network is located
+          pattern: ^[a-z][a-z0-9-]*[a-z0-9]$
+        resourceTag:
+          $ref: '#/components/schemas/GcpResourceTag'
+        secureTag:
+          $ref: '#/components/schemas/GcpSecureTag'
+        networkTags:
+          type: array
+          description: List of network tags attached to the VMs
+          items:
+            type: string
+    AwsByoaExecutionOutputSubnet:
+      type: object
+      description: VPC subnet created as part of the cloud formation deployment
+      required:
+      - subnetId
+      properties:
+        subnetId:
+          type: string
+          description: Subnet Id of the VPC
+          minLength: 10
+    GcpServiceAccount:
+      type: object
+      description: Service account information from Terraform output
+      required:
+      - email
+      - id
+      - name
+      properties:
+        email:
+          type: string
+          description: Email address of the service account
+          pattern: ^[a-z0-9-]+@[a-z0-9-]+\.iam\.gserviceaccount\.com$
+        id:
+          type: string
+          description: Unique identifier of the service account
+        name:
+          type: string
+          description: Display name of the service account
+    ApiErrorOps:
+      type: object
+      description: Common error response object for non 2xx responses of internal or ops APIs
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+        userView:
+          $ref: '#/components/schemas/TessellExceptionUserView'
+    KeyOcid:
+      title: KeyOcid
+      type: string
+      pattern: ^ocid1\.key\.[a-z0-9._-]+$
+    SubscriptionAwsOnboardingConfig:
+      title: SubscriptionAwsOnboardingConfig
+      required:
+      - onboardingType
+      - executionOutput
+      type: object
+      description: AWS onboarding configuration
+      properties:
+        onboardingType:
+          type: string
+          enum:
+          - CLOUD_FORMATION
+          - SCRIPT
+        executionOutput:
+          description: Output from the cloud formation stack creation operation
+          $ref: '#/components/schemas/AwsByoaExecutionOutput'
+    AwsByoaExecutionOutputStorage:
+      type: object
+      description: Storage level resources created as part of the cloud formationtion deployment
+      required:
+      - bucketArn
+      properties:
+        bucketArn:
+          type: string
+          description: Arn of the S3 bucket
+    UpdateSubscriptionServicePayload:
+      title: UpdateSubscriptionServicePayload
+      type: object
+      description: Payload for updating subscription
+      required:
+      - name
+      properties:
+        name:
+          description: Subscription name
+          type: string
+          minLength: 3
+          maxLength: 64
+    SubscriptionAzureConfig:
+      allOf:
+      - $ref: '#/components/schemas/SubscriptionCloudConfig'
+      - title: SubscriptionAzureConfig
+        type: object
+        description: Azure configuration for the subscription
+        properties:
+          onboardingInfo:
+            $ref: '#/components/schemas/SubscriptionAzureOnboardingConfig'
+    TerraformOutputServiceAccount:
+      type: object
+      description: Terraform output block for service_account
+      required:
+      - value
+      properties:
+        value:
+          $ref: '#/components/schemas/GcpServiceAccount'
+    AzureByoaExecutionOutputResources:
+      type: object
+      description: Resources created as part of the arm template deployment
+      required:
+      - keyVault
+      properties:
+        logAnalyticsWorkspaceId:
+          type: string
+          description: Log Analytics Workspace ID
+          minLength: 4
+          maxLength: 256
+        managedIdentityId:
+          type: string
+          description: Managed Identity ID
+          minLength: 3
+          maxLength: 256
+        azureMonitorPrivateLinkScope:
+          type: string
+          minLength: 3
+          maxLength: 256
+          description: Private link scope used for Azure Log Monitor
+        virtualNetwork:
+          $ref: '#/components/schemas/AzureByoaExecutionOutputVirtualNetwork'
+          description: Virtual network details
+        security:
+          $ref: '#/components/schemas/AzureByoaExecutionOutputSecurity'
+          description: Security details
+        keyVault:
+          $ref: '#/components/schemas/AzureByoaExecutionOutputKeyVault'
+          description: Key Vault details
+        storage:
+          $ref: '#/components/schemas/AzureByoaExecutionOutputStorage'
+          description: Storage details
+        privateEndpoints:
+          $ref: '#/components/schemas/AzureByoaExecutionOutputPrivateEndpoints'
+          description: Private endpoint details
+    DeleteSubscriptionTrackingDetails:
+      title: DeleteSubscriptionTrackingDetails
+      type: object
+      description: Execution details of subscription deletion
+      properties:
+        subscriptionStatus:
+          $ref: '#/components/schemas/subscriptionStatus'
+          description: Status of the subscription
+        hostedRegionsCount:
+          type: integer
+          description: count of hosted regions for the subscription
+        description:
+          type: string
+          description: Subscription description
+        cloudTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/cloudType'
+        activityStatus:
+          $ref: '#/components/schemas/ActivityStatus'
+        deboardingInfo:
+          $ref: '#/components/schemas/deboardingInfo'
+    TerraformOutputPrivateServiceConnect:
+      type: object
+      description: Terraform output block for private_service_connect
+      required:
+      - value
+      properties:
+        value:
+          $ref: '#/components/schemas/GcpPrivateServiceConnect'
+    SubscriptionByoaAwsStaticMetadata:
+      title: SubscriptionByoaAwsStaticMetadata
+      description: AWS metadata for BYOA
+      required:
+      - cloudFormationUrl
+      - command
+      properties:
+        cloudFormationUrl:
+          type: string
+        command:
+          type: string
+    SubscriptionUserRole:
+      description: Subscription user role
+      type: string
+      enum:
+      - MEMBER
+      - CO_OWNER
+    SubscriptionsUserViewApiResponse:
+      title: SubscriptionsUserViewApiResponse
+      type: object
+      description: Api response for user view of subscription
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionUserView'
+    TerraformOutputSubscriptionInfo:
+      type: object
+      description: Terraform output block for subscription_info
+      required:
+      - value
+      properties:
+        value:
+          $ref: '#/components/schemas/GcpSubscriptionInfo'
+    SubscriptionUserAdminView:
+      title: SubscriptionUserAdminView
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        emailId:
+          type: string
+        role:
+          $ref: '#/components/schemas/SubscriptionUserRoleExtended'
+        status:
+          type: string
+        persona:
+          type: string
+    GcpCryptoKey:
+      type: object
+      description: Cloud KMS crypto key information
+      required:
+      - name
+      - id
+      properties:
+        name:
+          type: string
+          description: Name of the crypto key
+          pattern: ^[a-zA-Z0-9_-]+$
+        id:
+          type: string
+          description: Unique identifier of the crypto key
+    AwsByoaExecutionOutputPrivateEndpoints:
+      type: object
+      description: Private endpoint resources created as part of cloud formation deployment
+      required:
+      - tessellControlPlaneEndpoint
+      properties:
+        s3Endpoint:
+          type: object
+          properties:
+            endpointId:
+              type: string
+          description: Private endpoint of S3
+        sqsEndpoint:
+          $ref: '#/components/schemas/AwsByoaExecutionOutputPrivateVPCEndpoint'
+          description: Private endpoint of SQS
+        secretManagerEndpoint:
+          $ref: '#/components/schemas/AwsByoaExecutionOutputPrivateVPCEndpoint'
+          description: Private endpoint of Secret Manager
+        cloudWatchEndpoint:
+          $ref: '#/components/schemas/AwsByoaExecutionOutputPrivateVPCEndpoint'
+          description: Private endpoint of CloudWatch
+        ec2Endpoint:
+          $ref: '#/components/schemas/AwsByoaExecutionOutputPrivateVPCEndpoint'
+          description: Private endpoint of EC2
+        tessellControlPlaneEndpoint:
+          $ref: '#/components/schemas/AwsByoaExecutionOutputPrivateVPCEndpoint'
+          description: Private endpoint of Tessell Control Plane
+    TerraformOutputSecurity:
+      type: object
+      description: Terraform output block for security
+      required:
+      - value
+      properties:
+        value:
+          $ref: '#/components/schemas/GcpSecurity'
+    AwsByoaExecutionOutputResources:
+      type: object
+      description: Resources created as part of the cloud formation deployment
+      properties:
+        crossAccountAccessRoleARN:
+          type: string
+          description: Role ARN which provides access to the tessell account for accessing the customer's cloud account
+          minLength: 20
+          maxLength: 2048
+        tessellDbVmMgmtRoleARN:
+          type: string
+          description: Role ARN which provides access to the tessell services for performing operations on data plane
+          minLength: 20
+          maxLength: 2048
+        vpc:
+          $ref: '#/components/schemas/AwsByoaExecutionOutputVpc'
+          description: Vpc details
+        security:
+          $ref: '#/components/schemas/AwsByoaExecutionOutputSecurity'
+          description: Security details
+        privateEndpoints:
+          $ref: '#/components/schemas/AwsByoaExecutionOutputPrivateEndpoints'
+          description: Private endpoint details
+        storage:
+          $ref: '#/components/schemas/AwsByoaExecutionOutputStorage'
+          description: Storage details
+    TerraformOutputVpc:
+      type: object
+      description: Terraform output block for vpc
+      required:
+      - value
+      properties:
+        value:
+          $ref: '#/components/schemas/GcpVpc'
+    TenantRegion:
+      title: Region
+      type: object
+      description: Region specific details
+      properties:
+        name:
+          type: string
+        region:
+          type: string
+    UpdateRegionsPayload:
+      title: UpdateRegionsPayload
+      type: object
+      description: Payload for updating regions in the subscription
+      required:
+      - regions
+      properties:
+        regions:
+          description: Final set of regions which will be enabled
+          type: array
+          minItems: 1
+          maxItems: 100
+          items:
+            type: string
+            minLength: 1
+            maxLength: 36
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    AssociationStatus:
+      description: Cloud account Association Status with the subscription
+      type: string
+      enum:
+      - ACTIVE
+      - INACTIVE
+      - FAILED
+      - ASSOCIATING
+    TerraformOutputStorage:
+      type: object
+      description: Terraform output block for storage
+      required:
+      - value
+      properties:
+        value:
+          $ref: '#/components/schemas/GcpStorage'
+    EntityUserAclSharingInfo:
+      title: EntityUserAclSharingInfo
+      description: Tessell Entity ACL Sharing Info for a user
+      properties:
+        emailId:
+          type: string
+        role:
+          type: string
+        sharedBy:
+          type: string
+          description: Email of the user who shared the entity
+        sharedOn:
+          type: string
+          format: date-time
+          description: Date when the entity was shared
+    CompartmentOcid:
+      title: CompartmentOcid
+      type: string
+      pattern: ^ocid1\.compartment\.[a-z0-9._-]+$
+    ExadataRegisterVmScript:
+      type: object
+      properties:
+        command:
+          type: string
+          description: Command to invoke the register vm script
+    deboardingInfo:
+      type: object
+      properties:
+        activityId:
+          type: string
+          description: Uber level activity id for tracking subscription deletion.
+        workflowId:
+          type: string
+          description: Deboarding workflow id.
+    CreateSubscriptionPayload:
+      title: CreateSubscriptionPayload
+      type: object
+      description: Payload for subscription creation
+      required:
+      - name
+      - deploymentType
+      - cloudConfigs
+      properties:
+        name:
+          type: string
+          description: Subscription name
+          minLength: 3
+          maxLength: 64
+        description:
+          type: string
+          description: Subscription description
+          minLength: 0
+          maxLength: 256
+        deploymentType:
+          $ref: '#/components/schemas/subscriptionDeploymentType'
+        cloudConfigs:
+          $ref: '#/components/schemas/SubscriptionCloudConfigMap'
+        owner:
+          type: string
+          description: Owner of the subscription
+          minLength: 0
+          maxLength: 256
+    SubscriptionOciConfig:
+      allOf:
+      - $ref: '#/components/schemas/SubscriptionCloudConfig'
+      - title: SubscriptionOciConfig
+        type: object
+        description: OCI configuration for the subscription
+        properties:
+          onboardingInfo:
+            $ref: '#/components/schemas/SubscriptionOciOnboardingConfig'
+    SubscriptionUserRoleExtended:
+      description: Subscription user role extended to include owner as well
+      type: string
+      enum:
+      - MEMBER
+      - CO_OWNER
+      - OWNER
+    SubscriptionCloudConfig:
+      title: SubscriptionCloudConfig
+      type: object
+      description: List of cloud regions
+      required:
+      - regions
+      properties:
+        regions:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 36
+          minItems: 1
+          maxItems: 100
+        cloudAccountId:
+          type: string
+          format: uuid
+    GcpSecureTag:
+      type: object
+      description: GCP secure tag information (reserved for future use)
+      properties:
+        keyId:
+          type: string
+          description: Unique identifier of the secure tag key (TODO - not yet implemented)
+          example: TODO
+        keyName:
+          type: string
+          description: Numeric ID of the secure tag key (TODO - not yet implemented)
+          example: TODO
+        valueId:
+          type: string
+          description: Unique identifier of the secure tag value (TODO - not yet implemented)
+          example: TODO
+        valueName:
+          type: string
+          description: Numeric ID of the secure tag value (TODO - not yet implemented)
+          example: TODO
+        namespacedName:
+          type: string
+          description: Namespaced name of the secure tag (TODO - not yet implemented)
+          example: TODO
+    OciByoaExecutionOutputResources:
+      type: object
+      description: Resources registered as part of the terraform deployment
+      required:
+      - compute
+      - virtualNetwork
+      - storageBucket
+      - vault
+      properties:
+        compute:
+          type: object
+          properties:
+            compartmentId:
+              $ref: '#/components/schemas/CompartmentOcid'
+            compartmentName:
+              type: string
+              minLength: 1
+              description: compartment name where the compute resources for exadata are available
+          required:
+          - compartmentId
+          - compartmentName
+        virtualNetwork:
+          $ref: '#/components/schemas/OciCompartmentInfo'
+        storage:
+          type: object
+          properties:
+            compartmentId:
+              $ref: '#/components/schemas/CompartmentOcid'
+            bucketName:
+              type: string
+              pattern: ^[a-zA-Z0-9._-]+$
+              description: storage bucket name used for oci subscription
+            namespace:
+              type: string
+              minLength: 1
+              description: object storage namespace used for oci susbcription
+          required:
+          - compartmentId
+          - bucketName
+          - namespace
+        security:
+          type: object
+          properties:
+            vault:
+              type: object
+              properties:
+                compartmentId:
+                  $ref: '#/components/schemas/CompartmentOcid'
+                id:
+                  $ref: '#/components/schemas/VaultOcid'
+                encryptionKeyCompartmentId:
+                  $ref: '#/components/schemas/CompartmentOcid'
+                encryptionKeyId:
+                  $ref: '#/components/schemas/KeyOcid'
+              required:
+              - compartmentId
+              - id
+              - encryptionKeyCompartmentId
+              - encryptionKeyId
+    subscriptionDeploymentType:
+      description: Tessell Subscription Deployment Type
+      type: string
+      enum:
+      - shared
+      - dedicated
+      - byoa
+    AclRevokePayload:
+      title: AclRevokePayload
+      description: Payload to revoke Tessell ACLs
+      required:
+      - users
+      properties:
+        users:
+          description: List of users to be deleted
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          minItems: 1
+          maxItems: 100
+    StepError:
+      title: StepError
+      type: object
+      description: Step error details
+      properties:
+        code:
+          type: string
+          description: Error code of the failure
+        message:
+          type: string
+          description: Reason message for the failure
+        resolution:
+          type: string
+          description: Resolution for the failure
+        possibleActions:
+          type: array
+          description: Possible action, which can be performed by the user. To be consumed by UI to show any CTA.
+          items:
+            type: string
+    CreateSubscriptionTrackingDetails:
+      title: CreateSubscriptionTrackingDetails
+      type: object
+      description: Execution details of subscription creation
+      properties:
+        status:
+          $ref: '#/components/schemas/subscriptionStatus'
+          description: Status of the subscription creation
+        description:
+          type: string
+          description: Subscription description
+        cloudTypes:
+          type: array
+          description: Cloud types of the subscription
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/cloudType'
+        progress:
+          $ref: '#/components/schemas/Progress'
+          description: Progress detail of subscription creation
+        steps:
+          type: array
+          description: Steps performed as part of the subscription creation operation
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/Step'
+    subscriptionStatus:
+      description: Tessell Subscription Status
+      type: string
+      enum:
+      - creating
+      - incomplete
+      - active
+      - inactive
+      - failed
+      - expired
+      - deleting
+      - deletion_failed
+      - deleted
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    Action:
+      description: Action on any entity for enabling/disabling
+      type: string
+      enum:
+      - enable
+      - disable
+      x-enum-varnames:
+      - enable
+      - disable
+    AclPayload:
+      title: AclPayload
+      description: Payload to create an entity ACL
+      required:
+      - users
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/AclUserPayload'
+          minItems: 1
+          maxItems: 100
+    AzureByoaExecutionOutput:
+      type: object
+      description: Output from the execution done at customer's account either via arm deployment or via script
+      required:
+      - location
+      - resources
+      properties:
+        subscriptionId:
+          type: string
+          description: Subscription Id of the customer's account
+          minLength: 36
+          maxLength: 36
+        tenantId:
+          type: string
+          description: Tenant Id of the customer's account
+          minLength: 36
+          maxLength: 36
+        objectIdOfTessellApp:
+          type: string
+          description: Object id of the tessell app in customer's env
+          minLength: 36
+          maxLength: 36
+        allowTessellCreation:
+          type: boolean
+          description: Whether Tessell is given create permissions or not
+          default: false
+        location:
+          type: string
+          description: Azure Region
+          minLength: 1
+          maxLength: 36
+        resourceGroup:
+          type: string
+          description: Resource Group Name
+          minLength: 1
+          maxLength: 64
+        resources:
+          $ref: '#/components/schemas/AzureByoaExecutionOutputResources'
+          description: Resources created as part of the arm template deployment
+    OciCompartmentInfo:
+      title: OciCompartmentInfo
+      type: object
+      properties:
+        compartmentId:
+          $ref: '#/components/schemas/CompartmentOcid'
+    AzureByoaExecutionOutputKeyVault:
+      type: object
+      description: Key Vault level resources created as part of the arm template deployment
+      required:
+      - keyVaultId
+      properties:
+        keyVaultId:
+          type: string
+          description: Id of the key vault
+          minLength: 3
+          maxLength: 256
+          nullable: false
+          pattern: ^/subscriptions/[a-fA-F0-9-]{36}/resourceGroups/[^/]+/providers/Microsoft\.KeyVault/vaults/[a-zA-Z0-9-]{3,24}$
+    OciByoaExecutionOutput:
+      type: object
+      description: Output from the execution done at customer's account either via terraform or via script
+      required:
+      - region
+      - resources
+      properties:
+        allowTessellCreation:
+          type: boolean
+          description: Whether Tessell is given create permissions or not
+          default: false
+        region:
+          type: string
+          description: Region in which the stack was deployed
+          minLength: 1
+        resources:
+          $ref: '#/components/schemas/OciByoaExecutionOutputResources'
+    AclUserPayload:
+      title: AclUserPayload
+      description: Payload to create an user's entity ACL
+      required:
+      - emailId
+      - role
+      properties:
+        emailId:
+          description: Email id of the user
+          type: string
+          minLength: 1
+          maxLength: 256
+        role:
+          description: Role Info
+          type: string
+          minLength: 1
+          maxLength: 64
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    VaultOcid:
+      title: VaultOcid
+      type: string
+      pattern: ^ocid1\.vault\.[a-z0-9._-]+$
+    ActivityStatus:
+      x-gorm-column-attrs: not null
+      x-gorm-index: true
+      description: The status of Activity
+      type: string
+      enum:
+      - QUEUED
+      - RUNNING
+      - SKIPPED
+      - SUSPENDED
+      - SUCCESS
+      - FAILED
+      - UNKNOWN
+    GcpResourceTag:
+      type: object
+      description: GCP resource tag information for Tessell-managed resources
+      required:
+      - keyId
+      - keyName
+      - valueId
+      - valueName
+      - networkKeyId
+      - networkKeyName
+      - networkValueId
+      - networkValueName
+      properties:
+        keyId:
+          type: string
+          description: Unique identifier of the tag key (format - tagKeys/<numeric_id>)
+          pattern: ^tagKeys/[0-9]+$
+          example: tagKeys/281477704382640
+        keyName:
+          type: string
+          description: Numeric ID of the tag key
+          pattern: ^[0-9]+$
+          example: '281477704382640'
+        valueId:
+          type: string
+          description: Unique identifier of the tag value (format - tagValues/<numeric_id>)
+          pattern: ^tagValues/[0-9]+$
+          example: tagValues/281481050480882
+        valueName:
+          type: string
+          description: Numeric ID of the tag value
+          pattern: ^[0-9]+$
+          example: '281481050480882'
+        networkKeyId:
+          type: string
+          description: Unique identifier of the tag key (format - tagKeys/<numeric_id>)
+          pattern: ^tagKeys/[0-9]+$
+          example: tagKeys/281477704382640
+        networkKeyName:
+          type: string
+          description: Numeric ID of the tag key
+          pattern: ^[0-9]+$
+          example: '281477704382640'
+        networkValueName:
+          type: string
+          description: Unique identifier of the tag value (format - tagValues/<numeric_id>)
+          pattern: ^[0-9]+$
+          example: '281481050480882'
+        networkValueId:
+          type: string
+          description: Numeric ID of the tag value
+          pattern: ^tagValues/[0-9]+$
+          example: tagValues/281481050480882
+    RegionOnboardingTrackingDetails:
+      title: RegionOnboardingTrackingDetails
+      type: object
+      description: Execution details of region onboarding
+      properties:
+        regionStatus:
+          $ref: '#/components/schemas/AssociationStatus'
+          description: Status of region onboarding
+        region:
+          type: string
+          description: Region name being onboarded
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+          description: Cloud type for the region
+        progress:
+          $ref: '#/components/schemas/Progress'
+          description: Progress detail of region onboarding
+        steps:
+          type: array
+          description: Steps performed as part of the region onboarding operation
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/Step'
+    TessellExceptionUserView:
+      title: TessellExceptionUserView
+      type: object
+      properties:
+        message:
+          type: string
+          description: End-user representation of the message
+        resolution:
+          type: string
+          description: End-user representation of resolution
+        errorCode:
+          $ref: '#/components/schemas/TessellHTTPErrorCode'
+          description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
+    GcpByoaExecutionOutput:
+      type: object
+      description: Output from 'terraform output -json' command executed at customer's GCP account. Each field is a Terraform output block with value, type, and sensitive properties.
+      required:
+      - subscription_info
+      - vpc
+      - security
+      - storage
+      properties:
+        subscription_info:
+          $ref: '#/components/schemas/TerraformOutputSubscriptionInfo'
+          description: Terraform output block containing subscription metadata
+        service_account:
+          $ref: '#/components/schemas/TerraformOutputServiceAccount'
+          description: Terraform output block containing service account information
+        vpc:
+          $ref: '#/components/schemas/TerraformOutputVpc'
+          description: Terraform output block containing VPC network information
+        security:
+          $ref: '#/components/schemas/TerraformOutputSecurity'
+          description: Terraform output block containing KMS security information
+        storage:
+          $ref: '#/components/schemas/TerraformOutputStorage'
+          description: Terraform output block containing GCS storage information
+        private_service_connect:
+          $ref: '#/components/schemas/TerraformOutputPrivateServiceConnect'
+          description: Terraform output block containing private service connect information
+    AssociatedCloudTypeServiceConsumer:
+      title: AssociatedCloudTypeServiceConsumer
+      type: object
+      description: Cloud specific details
+      properties:
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        associationStatus:
+          $ref: '#/components/schemas/AssociationStatus'
+        regions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TenantRegion'
+        associatingRegions:
+          type: array
+          description: List of associated regions with the subscription
+          items:
+            $ref: '#/components/schemas/TenantRegion'
+        failedRegions:
+          type: array
+          description: List of regions which have failed during association or validation
+          items:
+            $ref: '#/components/schemas/TenantRegion'
+        resourceGroupName:
+          type: string
+          description: This is specific to azure. It is the resource group name used when onboarding the subscription
+        metadata:
+          $ref: '#/components/schemas/SubscriptionCloudMetadata'
+    TessellHTTPErrorCode:
+      type: object
+      properties:
+        httpCode:
+          type: integer
+          description: HTTP code
+        code:
+          type: string
+          description: Tessell's specific code with more context on error
+    AclEligibleUser:
+      title: AclEligibleUser
+      description: Eligible user for sharing the entity
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        emailId:
+          type: string
+        eligibleRoles:
+          type: array
+          items:
+            type: string
+        accessibleSubscriptions:
+          type: array
+          items:
+            type: string
+          description: List of subscriptions user has access to
+    AzureByoaExecutionOutputPrivateEndpoints:
+      type: object
+      description: Private endpoint resources created as part of arm template deployment
+      required:
+      - tessellControlPlanePrivateEndpoint
+      properties:
+        tessellControlPlanePrivateEndpoint:
+          $ref: '#/components/schemas/AzureByoaExecutionOutputPrivateEndpoint'
+          description: Private endpoint of Tessell Control Plane
+        azureMonitorPrivateEndpoint:
+          $ref: '#/components/schemas/AzureByoaExecutionOutputPrivateEndpoint'
+          description: Private endpoint of Azure Log Monitor
+    GcpStorage:
+      type: object
+      description: Storage (GCS) information from Terraform output
+      required:
+      - bucketName
+      - bucketUrl
+      - location
+      properties:
+        bucketName:
+          type: string
+          description: Name of the GCS bucket
+          pattern: ^[a-z0-9][a-z0-9-_]*[a-z0-9]$
+        bucketUrl:
+          type: string
+          description: URL of the GCS bucket
+        location:
+          type: string
+          description: Location of the bucket (region or multi-region)
+    GcpSubnetOutput:
+      type: object
+      description: Subnet information from Terraform output
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: id of the subnet
+    GcpKeyRing:
+      type: object
+      description: Cloud KMS key ring information
+      required:
+      - name
+      - id
+      - location
+      properties:
+        name:
+          type: string
+          description: Name of the key ring
+          pattern: ^[a-zA-Z0-9_-]+$
+        id:
+          type: string
+          description: Unique identifier of the key ring
+        location:
+          type: string
+          description: Location of the key ring (region or multi-region)
+    AwsByoaExecutionOutputSubnets:
+      type: object
+      properties:
+        privateSubnets:
+          type: array
+          description: Private subnets created as part of the cloud formation deployment
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/AwsByoaExecutionOutputSubnet'
+        publicSubnets:
+          type: array
+          description: Public subnets created as part of the cloud formation deployment
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/AwsByoaExecutionOutputSubnet'
+    SubscriptionAwsConfig:
+      allOf:
+      - $ref: '#/components/schemas/SubscriptionCloudConfig'
+      - title: SubscriptionAwsConfig
+        type: object
+        description: AWS configuration for the subscription
+        properties:
+          onboardingInfo:
+            $ref: '#/components/schemas/SubscriptionAwsOnboardingConfig'
+    AwsByoaExecutionOutputPrivateVPCEndpoint:
+      type: object
+      description: Private VPC endpoint created as part of CF template
+      properties:
+        endpointId:
+          type: string
+          description: Endpoint Id present in the cloud
+        dnsName:
+          type: string
+          description: DNS name for the given endpoint
+    SubscriptionByoaAzureStaticMetadata:
+      title: SubscriptionByoaAzureStaticMetadata
+      description: Azure metadata for BYOA
+      required:
+      - authorizeTessellUrl
+      - authorizeTessellNetworkUrl
+      - deployResourceUrl
+      - tessellAppId
+      - tessellNetworkAppId
+      - command
+      properties:
+        authorizeTessellUrl:
+          type: string
+        authorizeTessellNetworkUrl:
+          type: string
+        deployResourceUrl:
+          type: string
+        tessellAppId:
+          type: string
+        tessellNetworkAppId:
+          type: string
+        command:
+          type: string
+    SubscriptionGcpOnboardingConfig:
+      title: SubscriptionGcpOnboardingConfig
+      type: object
+      required:
+      - onboardingType
+      - executionOutput
+      description: GCP onboarding configuration for the subscription
+      properties:
+        onboardingType:
+          type: string
+          enum:
+          - TERRAFORM
+          description: Medium used for onboarding GCP subscription. Allowed value is TERRAFORM
+        executionOutput:
+          $ref: '#/components/schemas/GcpByoaExecutionOutput'
+    AzureByoaExecutionOutputVirtualNetwork:
+      type: object
+      description: Virtual network resources created as part of the arm template deployment
+      required:
+      - name
+      - virtualNetworkId
+      - privateSubnetId
+      properties:
+        name:
+          type: string
+          description: Name of the VPC
+          minLength: 3
+          maxLength: 64
+        virtualNetworkId:
+          type: string
+          description: Virtual network Id of the VPC
+          minLength: 114
+        privateSubnetId:
+          type: string
+          description: Private Subnet Id of the VPC
+          minLength: 124
+        publicSubnetId:
+          type: string
+          description: Public Subnet Id of the VPC
+          minLength: 124
+    ExadataRegisterVm:
+      type: object
+      properties:
+        computeResourceId:
+          type: string
+          format: uuid
+        taId:
+          type: string
+          format: uuid
+    AzureByoaExecutionOutputStorage:
+      type: object
+      description: Security level resources created as part of the arm template deployment
+      required:
+      - storageAccountId
+      properties:
+        storageAccountId:
+          type: string
+          description: Id of the storage account
+          minLength: 1
+    GcpVpc:
+      type: object
+      description: VPC network information from Terraform output
+      required:
+      - name
+      - id
+      - subnets
+      properties:
+        name:
+          type: string
+          description: Name of the VPC network
+          pattern: ^[a-z][-a-z0-9]*[a-z0-9]$
+        id:
+          type: string
+          description: Unique identifier of the VPC
+        selfLink:
+          type: string
+          description: Self-link URL of the VPC network
+        subnets:
+          type: array
+          description: List of subnets in the VPC
+          items:
+            $ref: '#/components/schemas/GcpSubnetOutput'
+    SubscriptionResourceList:
+      type: object
+      properties:
+        subscriptionName:
+          type: string
+          description: Name of the subscription
+        subscriptionStatus:
+          $ref: '#/components/schemas/subscriptionStatus'
+          description: Status of the subscription
+        hostedRegionsCount:
+          type: integer
+          description: count of hosted regions for the subscription
+        resources:
+          type: array
+          description: List of resources under subscription preventing deletion
+          items:
+            type: object
+            properties:
+              resourceType:
+                type: string
+                description: Type of the resource (e.g., Database, Server)
+                enum:
+                - Database
+                - Server
+                - Availability Machines
+                - Other
+              count:
+                type: integer
+                description: Number of resources currently active
+              description:
+                type: string
+                description: Detailed message about the issue
+      example:
+        subscriptionName: Wealth Management-Prod
+        issues:
+        - resourceType: Database
+          count: 10
+          status: 10 Database services are currently running.
+          description: Stop or terminate all active DBs before attempting to delete the subscription. As apart from this, resources like NIC1, security groups, snapshots, backups will be deleted along with database service.
+          note: In case if availability machine is retained for a service, snapshots & backups will be retained.
+          actionLabel: Open My Services App
+          actionLink: ''
+        - resourceType: Server
+          count: 2
+          status: 2 Servers are currently running.
+          description: Database services are online on this server. Terminate them before attempting to delete the subscription.
+          actionLabel: Open Servers App
+          actionLink: ''
+    GcpSecurity:
+      type: object
+      description: Security (KMS) information from Terraform output
+      required:
+      - keyRing
+      - cryptoKey
+      properties:
+        keyRing:
+          $ref: '#/components/schemas/GcpKeyRing'
+        cryptoKey:
+          $ref: '#/components/schemas/GcpCryptoKey'
+    SubscriptionUsersAdminView:
+      title: SubscriptionUsersAdminView
+      type: object
+      description: Details of the subscription users
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          description: List of user details
+          items:
+            $ref: '#/components/schemas/SubscriptionUserAdminView'
+    AzureByoaExecutionOutputPrivateEndpoint:
+      title: AzureByoaExecutionOutputPrivateEndpoint
+      type: object
+      properties:
+        privateEndpointConnectionName:
+          type: string
+        privateEndpointName:
+          type: string
+        privateEndpointId:
+          type: string
+        privateEndpointIp:
+          type: string
+        privateLinkServiceId:
+          type: string
+    SubscriptionAdminView:
+      title: SubscriptionConsumerView
+      description: Admin view of the subscription
+      type: object
+      properties:
+        name:
+          type: string
+          description: Subscription name
+        description:
+          type: string
+          description: Subscription description
+        isDefault:
+          type: boolean
+          default: false
+          description: Specifies if this is the default subscription
+        deploymentType:
+          $ref: '#/components/schemas/subscriptionDeploymentType'
+        status:
+          $ref: '#/components/schemas/subscriptionStatus'
+        associatedCloudTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociatedCloudTypeServiceConsumer'
+        dateCreated:
+          type: string
+          format: date-time
+          example: '2020-02-02 10:10:10'
+          description: Timestamp when the subscription was created
+        owner:
+          type: string
+          description: Owner of the subscription
+        sharedWith:
+          $ref: '#/components/schemas/EntityAclSharingInfo'
+        isTessellAllowedToCreateKeyAndVnet:
+          type: boolean
+          default: true
+          description: Specifies if Tessell is allowed to create resources in the selected resource group
+        commonEndpointCutoverDone:
+          type: boolean
+          default: true
+          description: Specifies if subscription has migrated to common endpoint completely
+    SubscriptionGcpConfig:
+      allOf:
+      - $ref: '#/components/schemas/SubscriptionCloudConfig'
+      - title: SubscriptionGcpConfig
+        type: object
+        description: GCP configuration for the subscription
+        properties:
+          onboardingInfo:
+            $ref: '#/components/schemas/SubscriptionGcpOnboardingConfig'
+    AwsByoaExecutionOutput:
+      type: object
+      description: Output from the execution done at customer's account either via cloud formation or via script
+      required:
+      - region
+      - resources
+      properties:
+        allowTessellCreation:
+          type: boolean
+          description: Whether Tessell is given create permissions or not
+          default: false
+        resources:
+          $ref: '#/components/schemas/AwsByoaExecutionOutputResources'
+          description: Resources created as part of the cloud formation deployment
+        region:
+          type: string
+          description: Region in which the stack was deployed
+          minLength: 1
+          maxLength: 36
+        tenantAccountId:
+          type: string
+          description: Aws Account id of the tenant
+          minLength: 12
+          maxLength: 12
+    AzureByoaExecutionOutputSecurity:
+      type: object
+      description: Security level resources created as part of the arm template deployment
+      required:
+      - keyName
+      - diskEncryptionSetId
+      properties:
+        keyName:
+          type: string
+          description: Name of the key
+          minLength: 1
+          maxLength: 127
+        diskEncryptionSetId:
+          type: string
+          description: Id of the disk encryption set
+          minLength: 117
+    SubscriptionCloudConfigMap:
+      title: SubscriptionCloudConfigMap
+      type: object
+      description: Cloud configurations for the subscription
+      properties:
+        aws:
+          $ref: '#/components/schemas/SubscriptionAwsConfig'
+        azure:
+          $ref: '#/components/schemas/SubscriptionAzureConfig'
+        oci:
+          $ref: '#/components/schemas/SubscriptionOciConfig'
+        gcp:
+          $ref: '#/components/schemas/SubscriptionGcpConfig'
+    Step:
+      title: Step
+      type: object
+      description: Step details
+      properties:
+        id:
+          type: string
+          description: Id of the step
+        name:
+          type: string
+          description: Name of the step
+        type:
+          type: string
+          description: Type of the step
+        status:
+          $ref: '#/components/schemas/ActivityStatus'
+          description: Status of the step
+        retryable:
+          type: boolean
+          default: true
+          description: Whether the step can be retried or not
+        skippable:
+          type: boolean
+          default: true
+          description: Whether the step can be skipped or not
+        error:
+          $ref: '#/components/schemas/StepError'
+          description: Error details in case of failures
+        subSteps:
+          type: array
+          description: Child steps
+          items:
+            $ref: '#/components/schemas/Step'
+    SubscriptionAzureOnboardingConfig:
+      title: SubscriptionAzureOnboardingConfig
+      type: object
+      required:
+      - onboardingType
+      - executionOutput
+      description: Azure onboarding configuration for the subscription
+      properties:
+        onboardingType:
+          type: string
+          enum:
+          - ARM_DEPLOYMENT
+          - SCRIPT
+        executionOutput:
+          $ref: '#/components/schemas/AzureByoaExecutionOutput'
+    SubscriptionOciOnboardingConfig:
+      title: SubscriptionOciOnboardingConfig
+      type: object
+      required:
+      - onboardingType
+      - executionOutput
+      description: OCI onboarding configuration for the subscription
+      properties:
+        onboardingType:
+          type: string
+          enum:
+          - TERRAFORM
+          description: Medium used for onboarding oci subscription. Allowed value is TERRAFORM
+        executionOutput:
+          $ref: '#/components/schemas/OciByoaExecutionOutput'
+    SubscriptionsAdminApiResponse:
+      title: SubscriptionsAdminApiResponse
+      type: object
+      description: Api response for admin view of subscription
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionAdminView'
+    AwsByoaExecutionOutputSecurity:
+      type: object
+      description: Security level resources created as part of the cloud formation deployment
+      required:
+      - keyId
+      - keyName
+      properties:
+        keyId:
+          type: string
+          description: Id of the key
+          minLength: 3
+          maxLength: 127
+        keyName:
+          type: string
+          description: Name of the key
+          minLength: 1
+          maxLength: 127
+    AwsByoaExecutionOutputVpc:
+      type: object
+      description: VPC resources created as part of the cloud formation deployment
+      required:
+      - name
+      - vpcId
+      - subnets
+      properties:
+        name:
+          type: string
+          description: Name of the VPC
+          minLength: 3
+          maxLength: 64
+        vpcId:
+          type: string
+          description: Virtual network Id of the VPC
+          minLength: 10
+        enablePublicAccess:
+          type: boolean
+          description: Whether Public Access is enabled or not
+          default: true
+        subnets:
+          $ref: '#/components/schemas/AwsByoaExecutionOutputSubnets'
+    SubscriptionCloudMetadata:
+      title: SubscriptionCloudMetadata
+      type: object
+      description: Subscription related metadata
+      properties:
+        gcp:
+          type: object
+          description: GCP related metadata
+          properties:
+            projectId:
+              type: string
+              description: GCP Project ID where resources are deployed
+            networkProjectId:
+              type: string
+              description: GCP Project ID where VPC network is located
+        ociComputeCompartmentsInfo:
+          type: array
+          description: Info of the compute compartments
+          items:
+            type: object
+            properties:
+              compartmentId:
+                $ref: '#/components/schemas/CompartmentOcid'
+              compartmentName:
+                type: string
+                minLength: 1
+  parameters:
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    subscription-name:
+      name: name
+      in: path
+      description: Subscription Name
+      required: true
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 64
+    stepId:
+      name: step-id
+      in: path
+      required: true
+      description: ID of the step
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+    soft-delete:
+      name: soft-delete
+      in: query
+      description: Specifies whether to retain the subscription metadata
+      required: false
+      schema:
+        type: boolean
+        default: true
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

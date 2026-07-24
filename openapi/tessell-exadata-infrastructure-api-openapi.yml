@@ -1,0 +1,1860 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center exadata-infrastructure API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: exadata-infrastructure
+paths:
+  /infrastructures/exadata/infrastructures/discovery:
+    get:
+      tags:
+      - exadata-infrastructure
+      description: Get a list of all discovered infrastructures in given subscription.
+      operationId: discoverExadataInfrastructures
+      parameters:
+      - $ref: '#/components/parameters/subscriptionNameMandatory'
+      - $ref: '#/components/parameters/region-in-query-required'
+      - name: compartment-id
+        required: false
+        in: query
+        style: form
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExadataInfrastructureDiscoveryResponse'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /infrastructures/exadata/infrastructures/{id}/vm-clusters/discovery:
+    get:
+      tags:
+      - exadata-infrastructure
+      description: Get a list of all discovered Vm clusters.
+      operationId: discoverExadataVMClusters
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/subscriptionNameMandatory'
+      - $ref: '#/components/parameters/region-in-query-required'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExadataVMClusterDiscoveryResponse'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /infrastructures/exadata/infrastructures:
+    get:
+      tags:
+      - exadata-infrastructure
+      description: Get all infrastructures
+      operationId: getExadataInfrastructures
+      parameters:
+      - $ref: '#/components/parameters/load-vm-clusters-in-query'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExadataInfraStructureResponse'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /infrastructures/exadata/infrastructures/{id}:
+    get:
+      tags:
+      - exadata-infrastructure
+      description: Get infrastructure by Id
+      operationId: getExadataInfrastructureById
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/load-vm-clusters-in-query'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExadataInfrastructure'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - exadata-infrastructure
+      description: Deregister Exadata Infrastructure
+      operationId: deregisterExadataInfrastructure
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '201':
+          description: Deleted
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /infrastructures/exadata/infrastructures/{id}/vm-clusters:
+    get:
+      tags:
+      - exadata-infrastructure
+      description: Get all vm-clusters for infrastructure
+      operationId: getExadataVmClusters
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExadataVmClusterResponse'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /infrastructures/exadata/infrastructures/{id}/vm-clusters/{cluster-id}:
+    get:
+      tags:
+      - exadata-infrastructure
+      description: Get vm-cluster by Id for infrastructure
+      operationId: getExadataVmClusterById
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/cluster-id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExadataVMCluster'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - exadata-infrastructure
+      description: Deregister Exadata VmCluster
+      operationId: deregisterExadataVmCluster
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/cluster-id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '201':
+          description: Deleted
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /infrastructures/exadata/infrastructures/register:
+    post:
+      tags:
+      - exadata-infrastructure
+      description: Register Exadata Infrastructure
+      operationId: registerExadataInfrastructure
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterExadataInfrastructureRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /infrastructures/exadata/infrastructures/{id}/sync:
+    post:
+      tags:
+      - exadata-infrastructure
+      description: Sync exadata infrastructure & clusters with cloud
+      operationId: syncExadataInfrastructureWithClusters
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /infrastructures/exadata/infrastructures/{id}/vm-clusters/register:
+    post:
+      tags:
+      - exadata-infrastructure
+      description: Register Exadata VM Cluster for already registered Exadata Infrastructure
+      operationId: registerExadataVMCluster
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterExadataVMClusterRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /infrastructures/exadata/vm-clusters/{id}/metrics:
+    get:
+      tags:
+      - exadata-infrastructure
+      description: Returns the metrics data for VM cluster
+      operationId: getVmClusterMetricsById
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/start-time-in-query-required'
+      - $ref: '#/components/parameters/end-time-in-query-required'
+      - $ref: '#/components/parameters/step-in-query-required'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The list of metrics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MonitoringChart'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    TessellServiceInstanceRole:
+      type: string
+      description: DB Service instance role
+      enum:
+      - primary
+      - read_only_replica
+      - failover_replica
+      - dr
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    AzureNetAppCapacityPoolServiceLevel:
+      type: string
+      enum:
+      - Standard
+      - Premium
+      - Ultra
+      x-enum-varnames:
+      - STANDARD
+      - PREMIUM
+      - ULTRA
+    EntityAclSharingInfo:
+      title: EntityAclSharingInfo
+      description: Tessell Entity ACL Sharing Info
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityUserAclSharingInfo'
+    TessellServiceStatus:
+      type: string
+      description: The current status of the DB Service
+      enum:
+      - CREATING
+      - FAILED
+      - READY
+      - STOPPING
+      - STOPPED
+      - DEGRADED
+      - HEALING
+      - DOWN
+      - STARTING
+      - DELETING
+      - SWITCHOVER
+      - REBUILDING
+      - PATCHING
+      - PATCH_FAILED
+      - UPDATING
+      - UNDER_MAINTENANCE
+      - REFRESHING
+      - RESTORING
+      - RESTORE_FAILED
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    ExadataInfrastructure:
+      description: Exadata Infrastructure Service View
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell Generated Exadata Infrastructure Identifier
+        subscriptionName:
+          type: string
+          description: Tessell Subscription under which Exadata Infrastructure is registered
+        compartmentName:
+          type: string
+          description: Compartment name in which Exadata is present
+        region:
+          type: string
+          description: The region where the Exadata Infrastructure is located
+        availabilityZone:
+          type: string
+          description: The availability zone where the Exadata Infrastructure is located
+        name:
+          type: string
+          description: The user-friendly name for the Exadata Cloud@Customer infrastructure. The name does not need to be unique.
+        shape:
+          type: string
+          description: Exadata Infrastructure Shape
+        status:
+          $ref: '#/components/schemas/ExadataInfrastructureStatus'
+        computeCount:
+          type: integer
+          description: Number of Compute Nodes in Exadata Infrastructure
+        storageCount:
+          type: integer
+          description: Number of Storage Servers in Exadata Infrastructure
+        totalStorageSizeInGBs:
+          type: integer
+          description: The total storage allocated to the cloud Exadata infrastructure resource, in gigabytes (GB).
+        maxCpuCount:
+          type: integer
+          description: The total number of CPU cores available.
+        cpuCount:
+          type: integer
+          description: The total number of CPU cores allocated.
+        maxMemoryInGBs:
+          type: integer
+          description: The total memory available in GBs.
+        memorySizeInGBs:
+          type: integer
+          description: The memory allocated in GBs.
+        maxDbNodeStorageInGBs:
+          type: integer
+          description: The total local node storage available in GBs.
+        dbNodeStorageSizeInGBs:
+          type: integer
+          description: The local node storage allocated in GBs.
+        maxDataStorageInTBs:
+          type: number
+          format: double
+          description: The total available DATA disk group size.
+        dataStorageSizeInTBs:
+          type: number
+          format: double
+          description: Size, in terabytes, of the DATA disk group.
+        quarterlySchedule:
+          type: string
+        methodPreference:
+          type: string
+        dbServerVersion:
+          type: string
+          description: DB Server Version in Exadata Infrastructure
+        storageServerVersion:
+          type: string
+          description: Storage Server Version in Exadata Infrastructure
+        createdByUser:
+          type: string
+          description: Name of user who registered exadata infra with tessell
+        dateCreated:
+          type: string
+          format: date-time
+          description: Date and time when Exadata Infrastructure was created
+        dateModified:
+          type: string
+          format: date-time
+          description: Date and time when Exadata Infrastructure was modified.
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        vmClusters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExadataVMCluster'
+    CrMaintenanceWindowPreference:
+      enum:
+      - MONTHLY
+      - WEEKLY
+      - QUARTERLY
+      - NO_PREFERENCE
+    tessellServiceTopology:
+      type: string
+      description: DB Service topology. This would specify whether the DB Service is single-node, or multi-node.
+      enum:
+      - single_instance
+      - high_availability
+    RegisterExadataVMClusterRequest:
+      description: Request to register Exadata Infrastructure
+      type: object
+      properties:
+        vmClusterPayload:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExadataVmClusterRequestPayload'
+    VmClusterDbNode:
+      description: Database node of vm clusters
+      type: object
+      properties:
+        ociId:
+          type: string
+        name:
+          type: string
+    TessellResourceUpdateInfo:
+      title: TessellResourceUpdateInfo
+      description: In progress update information for a Tessell Resource
+      properties:
+        updateType:
+          x-computed: true
+          type: string
+          description: Type of the update
+        referenceId:
+          x-computed: true
+          type: string
+          format: uuid
+          description: The reference-id of the update request
+        submittedAt:
+          x-computed: true
+          type: string
+          format: date-time
+          description: Timestamp when the resource update was requested
+        updateInfo:
+          x-computed: true
+          type: object
+          description: The specific details for a Tessell resource that are being updated
+          additionalProperties: {}
+    ExadataVmClusterRequestPayload:
+      type: object
+      properties:
+        vmClusterCloudResourceId:
+          type: string
+        dbNodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/DbNodesRequestPayload'
+    MachineType:
+      type: string
+      description: Infrastructure behind the Compute Resource
+      enum:
+      - BARE_METAL
+      - VM
+      - CONTAINER
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    AzureNetAppNetworkFeature:
+      description: Azure NetApp network feature configuration for creating volume
+      type: string
+      enum:
+      - Standard
+      - Basic
+      x-enum-varnames:
+      - STANDARD
+      - BASIC
+    AzureNetAppEncryptionKeySource:
+      enum:
+      - Microsoft.NetApp
+      - Microsoft.KeyVault
+      x-enum-varnames:
+      - MICROSOFT_NET_APP
+      - MICROSOFT_KEY_VAULT
+    ExadataVMClusterCloudStatusOps:
+      type: string
+      enum:
+      - PROVISIONING
+      - AVAILABLE
+      - UPDATING
+      - TERMINATING
+      - TERMINATED
+      - FAILED
+      - MAINTENANCE_IN_PROGRESS
+    MaintenanceCadence:
+      type: string
+      enum:
+      - DAILY
+      - WEEKLY
+      - MONTHLY
+      description: Frequency of maintenance window
+    DiscoveredVmClusterOps:
+      description: Details of the discovered cloud Exadata VM cluster
+      type: object
+      properties:
+        cloudResourceId:
+          type: string
+          description: Cloud Generated Exadata VM Cluster Identifier
+        name:
+          type: string
+          description: The user-friendly name for the cloud VM cluster. The name does not need to be unique.
+        clusterName:
+          type: string
+          description: The cluster name for cloud VM cluster. The cluster name must begin with an alphabetic character, and may contain hyphens (-). Underscores (_) are not permitted. The cluster name can be no longer than 11 characters and is not case sensitive.
+        nodeCount:
+          type: integer
+          description: The number of nodes in the cloud VM cluster.
+        storageSizeInGBs:
+          type: integer
+          description: The storage allocation for the disk group, in gigabytes (GB).
+        cpuCoreCount:
+          type: integer
+          description: The number of CPU cores enabled on the cloud VM cluster.
+        ocpuCount:
+          type: number
+          format: float
+          description: The number of OCPU cores to enable on the cloud VM cluster. Only 1 decimal place is allowed for the fractional part.
+        memorySizeInGBs:
+          type: integer
+          description: Memory in-use in GBs in Exadata Infrastructure
+        dbNodeStorageSizeInGBs:
+          type: integer
+          description: The local node storage to be allocated in GBs.
+        dataStorageSizeInTBs:
+          type: number
+          format: double
+          description: The data disk group size to be allocated in TBs.
+        dataStoragePercentage:
+          type: integer
+        recoStoragePercentage:
+          type: integer
+          description: The reco disk group is primarily used for storing the Fast Recovery Area (FRA).
+        sparseStoragePercentage:
+          type: integer
+        dbNodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/VmClusterDbNode'
+    InstanceAzureNetAppConfig:
+      description: Service instance level Azure NetApp config
+      type: object
+      properties:
+        azureNetAppName:
+          type: string
+        capacityPoolName:
+          type: string
+        volumeName:
+          type: string
+        azureNetAppId:
+          description: Azure NetApp Id registered with Tessell
+          type: string
+          format: uuid
+        capacityPoolId:
+          description: Capacity Pool Id of the Azure NetApp registered with Tessell
+          type: string
+          format: uuid
+        delegatedSubnetId:
+          description: Delegated Subnet name registered with Tessell for the Azure NetApp volume
+          type: string
+          format: uuid
+        delegatedSubnetName:
+          description: Delegated Subnet Id registered with Tessell for the Azure NetApp volume
+          type: string
+        encryptionKeyInfo:
+          $ref: '#/components/schemas/AzureNetAppEncryptionKeyInfo'
+        networkFeatures:
+          $ref: '#/components/schemas/AzureNetAppNetworkFeature'
+        serviceLevel:
+          $ref: '#/components/schemas/AzureNetAppCapacityPoolServiceLevel'
+    PatchType:
+      type: string
+      enum:
+      - CRITICAL
+      - NON_CRITICAL
+      description: Type of patch
+    ComputeResourceSubStatus:
+      type: string
+      description: DB Server could have a sub status associated along with status
+      enum:
+      - REBUILDING
+      - REBUILD_FAILED
+      - START_FAILED
+      - STOP_FAILED
+      - UPDATING_SECURITY_CONFIG
+      - SECURITY_CONFIG_UPDATE_FAILED
+    TaskStatus:
+      type: string
+      description: The status of Task
+      enum:
+      - AVAILABLE
+      - QUEUED
+      - CANCELLED
+      - OVERRIDDEN
+      - IN_PROGRESS
+      - SUCCESS
+      - FAILED
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    DBServiceOnComputeResource:
+      description: DB Service details hosted on a compute resource
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of the DB Service
+        name:
+          type: string
+          description: Name of the DB Service
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        topology:
+          $ref: '#/components/schemas/tessellServiceTopology'
+        dbServiceStatus:
+          $ref: '#/components/schemas/TessellServiceStatus'
+        instanceId:
+          type: string
+          format: uuid
+        instanceName:
+          type: string
+          minLength: 1
+          maxLength: 128
+        role:
+          $ref: '#/components/schemas/TessellServiceInstanceRole'
+        instanceStatus:
+          $ref: '#/components/schemas/TessellServiceInstanceStatus'
+        parameterProfileId:
+          type: string
+          format: uuid
+        parameterProfileName:
+          type: string
+        parameterProfileStatus:
+          $ref: '#/components/schemas/ParameterProfileStatus'
+        maxMemory:
+          type: integer
+          format: int64
+          description: The allocated max memory (in bytes) for this instance
+          default: 0
+          minimum: 0
+        storage:
+          type: integer
+          format: int64
+          description: The storage (in bytes) that has been provisioned for the DB Service instance
+          default: 0
+          minimum: 0
+        servicePort:
+          type: integer
+          format: int32
+          minimum: 0
+        allowedIpAddresses:
+          type: array
+          description: The list of allowed ipv4 addresses that can connect to the DB Service. If not specified, this field will be ignored and the existing setting will be assumed.
+          items:
+            type: string
+            format: ip4
+        databases:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        sid:
+          type: string
+        owner:
+          type: string
+          description: This field specifies who is the owner for the DB Service
+        computeConfig:
+          $ref: '#/components/schemas/ComputeConfig'
+        storageConfig:
+          $ref: '#/components/schemas/DbServerStorageConfig'
+        archiveStorageConfig:
+          $ref: '#/components/schemas/InstanceStorageConfig'
+        dateCreated:
+          type: string
+          format: date-time
+        softwareImageVersion:
+          type: string
+    PatchActivity:
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        versionNo:
+          type: string
+        typeOfPatch:
+          $ref: '#/components/schemas/PatchType'
+        impact:
+          type: string
+        scheduledBy:
+          type: string
+        status:
+          $ref: '#/components/schemas/TaskStatus'
+    EntityUserAclSharingInfo:
+      title: EntityUserAclSharingInfo
+      description: Tessell Entity ACL Sharing Info for a user
+      properties:
+        emailId:
+          type: string
+        role:
+          type: string
+        sharedBy:
+          type: string
+          description: Email of the user who shared the entity
+        sharedOn:
+          type: string
+          format: date-time
+          description: Date when the entity was shared
+    ExadataVMClusterDiscoveryResponse:
+      description: Response returned by Exadata VM Cluster Discovery API
+      type: object
+      properties:
+        exadataVMClusters:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiscoveredVmClusterOps'
+          description: List of Exadata VM Clusters
+    ExadataComputeConfig:
+      type: object
+      required:
+      - infrastructureId
+      - infrastructureName
+      - vmClusterId
+      - vmClusterName
+      properties:
+        infrastructureId:
+          type: string
+          format: uuid
+        infrastructureName:
+          type: string
+        vmClusterId:
+          type: string
+          format: uuid
+        vmClusterName:
+          type: string
+        ocpu:
+          type: integer
+        memoryInGbs:
+          type: integer
+        floatingIpAddress:
+          type: string
+        dbServer:
+          type: string
+        privateIpAddress:
+          type: string
+        localStorageInGbs:
+          type: integer
+        dnsName:
+          type: string
+    TessellServiceInstanceStatus:
+      type: string
+      description: DB Service instance status
+      enum:
+      - CREATING
+      - DELETING
+      - UP
+      - DOWN
+      - STOPPED
+      - REBUILDING
+      - REBUILD_FAILED
+      - PATCHING
+      - PATCH_FAILED
+      - UPDATING_PARAMETER_PROFILE
+      - UPDATING_OPTION_PROFILE
+      - UPDATING_SECURITY_CONFIG
+      - OPTION_PROFILE_UPDATE_FAILED
+      - PARAMETER_PROFILE_UPDATE_FAILED
+      - SECURITY_CONFIG_UPDATE_FAILED
+      - REFRESHING
+    SecurityProfileSyncStatus:
+      type: string
+      description: Sync status of the security profile applied on an instance/server
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+    ServerIntegrationsInfo:
+      description: Tessell provides support to integrate third party softwares with DB Server. This fields details the information about what third-party integrations are configured with the DB Server.
+      type: object
+      properties:
+        integrations:
+          type: array
+          items:
+            type: string
+            format: uuid
+    AzureNetAppEncryptionKeyInfo:
+      description: Details of encryption key
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the encryption key
+          format: uuid
+        name:
+          type: string
+          description: name of the encryption key
+        keyVaultCloudResourceId:
+          type: string
+          description: name of the encryption key vault in cloud
+        keySource:
+          $ref: '#/components/schemas/AzureNetAppEncryptionKeySource'
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    ExadataVmClusterResponse:
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/ExadataVMCluster'
+    ComputeResourceStatus:
+      type: string
+      description: The current status of the Compute Resource
+      enum:
+      - CREATING
+      - RUNNING
+      - STOPPING
+      - STOPPED
+      - STARTING
+      - REBUILDING
+      - REBUILD_FAILED
+    ParameterProfileStatus:
+      type: string
+      description: Association status of the instance to the parameter profile
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+      - PENDING_REBOOT
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    ExadataVMClusterLicenseModel:
+      type: string
+      enum:
+      - LICENSE_INCLUDED
+      - BRING_YOUR_OWN_LICENSE
+      description: The Oracle license model that applies to the cloud VM cluster. The default is LICENSE_INCLUDED
+    ComputeConfig:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/ComputeProviderType'
+        exadataConfig:
+          $ref: '#/components/schemas/ExadataComputeConfig'
+    ExadataVMClusterStatus:
+      type: string
+      enum:
+      - AVAILABLE
+      - UPDATING
+      - DOWN
+      - MAINTENANCE_IN_PROGRESS
+    ComputeResourceContextInfo:
+      type: object
+      description: Provide more context of DB Server state
+      properties:
+        subStatus:
+          $ref: '#/components/schemas/ComputeResourceSubStatus'
+        description:
+          type: string
+    ComputeProviderType:
+      type: string
+      enum:
+      - AWS_EC2
+      - AZURE_VM
+      - GCP_GCE
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    UpcomingMaintenanceWindowInfo:
+      type: object
+      description: Information about the upcoming maintenance window
+      properties:
+        maintenanceWindowId:
+          type: string
+          format: uuid
+          description: Unique identifier of the maintenance window
+        cadence:
+          $ref: '#/components/schemas/MaintenanceCadence'
+        date:
+          type: string
+          format: date
+          description: Date in YYYY-MM-DD format (ISO 8601)
+          example: '2026-03-15'
+        time:
+          type: string
+          description: Time in HH:mm format
+          example: 02:00
+        duration:
+          type: integer
+          description: Duration in minutes
+          example: 30
+        downtime:
+          type: string
+          description: Expected downtime description
+          example: 05 min downtime
+        associatedActivities:
+          $ref: '#/components/schemas/AssociatedActivities'
+    DbServerUpdates:
+      type: object
+      description: Update availability information for a DB Server
+      properties:
+        availableUpdates:
+          $ref: '#/components/schemas/AvailableUpdatesSimple'
+        upcomingMaintenanceWindow:
+          $ref: '#/components/schemas/UpcomingMaintenanceWindowInfo'
+    ExadataInfraStructureResponse:
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/ExadataInfrastructure'
+    ExadataInfrastructureStatus:
+      type: string
+      enum:
+      - AVAILABLE
+      - UPDATING
+      - TERMINATING
+      - TERMINATED
+      - MAINTENANCE_IN_PROGRESS
+      - REGISTRATION_FAILED
+    DbNodesRequestPayload:
+      type: object
+      properties:
+        dbNodeId:
+          type: string
+        deploymentId:
+          type: string
+        computeResourceId:
+          type: string
+          format: uuid
+    DiscoveredInfrastructure:
+      description: Discovered Exadata Infrastructure from Cloud
+      type: object
+      properties:
+        region:
+          type: string
+          description: The region where the Exadata Infrastructure is located
+        availabilityZone:
+          type: string
+          description: The availability zone where the Exadata Infrastructure is located
+        cloudResourceId:
+          type: string
+          description: Cloud Generated Exadata Infrastructure Identifier
+        name:
+          type: string
+          description: The user-friendly name for the Exadata Cloud@Customer infrastructure. The name does not need to be unique.
+        shape:
+          type: string
+          description: Exadata Infrastructure Shape
+        computeCount:
+          type: integer
+          description: Number of Compute Nodes (DbServers) in Exadata Infrastructure
+        storageCount:
+          type: integer
+          description: Number of Storage Servers in Exadata Infrastructure
+        vmClusters:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiscoveredVmClusterOps'
+    InstanceFsxNetAppConfig:
+      type: object
+      properties:
+        fileSystemName:
+          type: string
+        svmName:
+          type: string
+        volumeName:
+          type: string
+        fileSystemId:
+          description: File System Id of the FSx NetApp registered with Tessell
+          type: string
+          format: uuid
+        svmId:
+          description: Storage Virtual Machine Id of the FSx NetApp registered with Tessell
+          type: string
+          format: uuid
+    MonitoringChart:
+      description: Monitoring Metrics Chart object
+      type: object
+      properties:
+        entityId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          description: The title of the chart
+        entityType:
+          $ref: '#/components/schemas/MonitoringEntityType'
+        xlabel:
+          type: string
+          description: The label of x-axis
+        ylabel:
+          type: string
+          description: The label of y-axis
+        unit:
+          type: string
+          description: The unit of the metric
+        metrics:
+          type: array
+          description: Array of Metrics in the chart
+          items:
+            $ref: '#/components/schemas/TessellMonitoringMetricsDTO'
+    TessellDbserverComputeResourceDTO:
+      required:
+      - name
+      type: object
+      description: This is the definition for Compute Resource
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The ID of the Compute Resource
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The name of the Compute Resource
+        description:
+          type: string
+          description: The description of the Compute Resource
+        subscription:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The subscription under which this resource is created
+        servicePort:
+          type: integer
+          format: int32
+          minimum: 0
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        status:
+          $ref: '#/components/schemas/ComputeResourceStatus'
+        machineType:
+          $ref: '#/components/schemas/MachineType'
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+        region:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The region where the Compute Resource is hosted
+        availabilityZone:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The availability zone where the Compute Resource is hosted
+        availabilitySet:
+          type: string
+          description: The availability set to which the Compute Resource belongs
+          minLength: 1
+          maxLength: 80
+        computeType:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The compute type to be used for provisioning the DB Service
+        computeSharingEnabled:
+          type: boolean
+          default: false
+          description: Whether the Compute Resource is shared across multiple DB Services
+        vpc:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The VPC which is used for provisioning the Compute Resource
+        privateSubnet:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The private subnet which is used for provisioning the Compute Resource
+        publicSubnet:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The public subnet which is used for provisioning the Compute Resource, we only return public subnet when public access is enabled.
+        encryptionKey:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: The encryption key which is used to encrypt the data at rest
+        reservedMemory:
+          type: integer
+          format: int64
+          default: 0
+          minimum: 0
+          description: The memory (in bytes) that has been collectively reserved for all hosted DB Services
+        enablePublicAccess:
+          type: boolean
+          description: Whether public access is enabled on the Compute Resource
+        enableSSL:
+          type: boolean
+          description: Whether SSL is enabled on the Compute Resource
+        securityConfiguration:
+          $ref: '#/components/schemas/SecurityConfigOps'
+        owner:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: The email address of the owner of the Compute Resource
+        dateCreated:
+          type: string
+          format: date-time
+          description: Timestamp when the entity was created
+        dateModified:
+          type: string
+          format: date-time
+          description: Timestamp when the entity was last modified
+        timezone:
+          $ref: '#/components/schemas/TimeZone'
+        contextInfo:
+          $ref: '#/components/schemas/ComputeResourceContextInfo'
+        dbServicesCount:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+        dbServices:
+          type: array
+          items:
+            $ref: '#/components/schemas/DBServiceOnComputeResource'
+        optimizedVcpus:
+          type: integer
+          description: vcpus usable by the db service(s)
+        softwareImageInfo:
+          type: object
+          properties:
+            softwareImage:
+              type: string
+              description: The software image available to create the DB Service on the Compute Resource
+            softwareImageVersionFamily:
+              type: string
+              description: The software image family DB Service belongs to
+            softwareImageVersions:
+              type: array
+              items:
+                type: object
+                properties:
+                  softwareImageVersion:
+                    type: string
+                    description: The software image version available to create the DB Service on the Compute Resource
+                  supported:
+                    type: boolean
+                    description: Whether the image version is supported on the Compute Resource
+        computeConfig:
+          $ref: '#/components/schemas/ComputeConfig'
+        storageConfig:
+          $ref: '#/components/schemas/DbServerStorageConfig'
+        tsm:
+          type: boolean
+          default: false
+        enableDeletionProtection:
+          type: boolean
+          default: false
+          description: Specifies whether to enable deletion protection for the DB Server
+        enableStopProtection:
+          type: boolean
+          default: false
+          description: Specifies whether to enable stop protection for the DB Server
+        restrictProvision:
+          type: boolean
+          default: false
+          description: Specifies whether to allow provision the service on the DB server
+        tags:
+          description: The tags associated with the DB servers
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellTag'
+        maintenanceWindow:
+          $ref: '#/components/schemas/ComputeResourceMaintenanceWindow'
+        sharedWith:
+          $ref: '#/components/schemas/EntityAclSharingInfo'
+        loggedInUserRole:
+          type: string
+          description: Access role for the currently logged in user
+        allowedIpAddresses:
+          type: array
+          description: The list of allowed ipv4 addresses that can connect to the DB Service. If not specified, this field will be ignored and the existing setting will be assumed.
+          items:
+            type: string
+            format: ip4
+        integrationsConfig:
+          $ref: '#/components/schemas/ServerIntegrationsInfo'
+        updatesInProgress:
+          description: The updates that are in progress for DB server
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellResourceUpdateInfo'
+        updatesInfo:
+          $ref: '#/components/schemas/DbServerUpdates'
+          description: Information about available updates for this DB Server. Only populated when load-updates-info=true in the request.
+        isHostingHAService:
+          type: boolean
+          description: Whether the Compute Resource is hosting HA service
+    ComputeResourceMaintenanceWindow:
+      title: ComputeResourceMaintenanceWindow
+      type: object
+      description: 'Base class for compute resource maintenance window configurations.
+
+        Supports multiple preferences: Weekly, Monthly, Quarterly, and No Preference.
+
+        Use concrete subclasses: CrWeeklyMaintenanceWindow, CrMonthlyMaintenanceWindow, CrQuarterlyMaintenanceWindow, CrNoPreferenceMaintenanceWindow.'
+      required:
+      - preference
+      - time
+      - duration
+      properties:
+        preference:
+          $ref: '#/components/schemas/CrMaintenanceWindowPreference'
+        time:
+          type: string
+          description: Time value in (hh:mm) format. ex. "02:00"
+          pattern: ^([0-1][0-9]|2[0-3]):[0-5][0-9]$
+          example: 02:00
+        duration:
+          type: integer
+          format: int32
+          minimum: 30
+          description: The duration during which the maintenance window will be allowed to trigger (in minutes)
+        autoMinorVersionUpgrade:
+          type: boolean
+          description: Enable automatic minor version upgrades during maintenance window
+        preScriptInfo:
+          $ref: '#/components/schemas/ScriptInfo'
+          description: Pre-script to run before patching
+        postScriptInfo:
+          $ref: '#/components/schemas/ScriptInfo'
+          description: Post-script to run after patching
+        ignorePreScriptFailure:
+          type: boolean
+          default: false
+          description: Ignore pre-script failure and continue with patching
+        ignorePostScriptFailure:
+          type: boolean
+          default: false
+          description: Ignore post-script failure and mark patching as successful
+      discriminator:
+        propertyName: preference
+        mapping:
+          WEEKLY: '#/components/schemas/CrWeeklyMaintenanceWindow'
+          MONTHLY: '#/components/schemas/CrMonthlyMaintenanceWindow'
+          QUARTERLY: '#/components/schemas/CrQuarterlyMaintenanceWindow'
+          NO_PREFERENCE: '#/components/schemas/CrNoPreferenceMaintenanceWindow'
+    StorageProviderType:
+      description: Storage Type in the cloud
+      enum:
+      - AWS_EBS
+      - AWS_FSX_NETAPP
+      - AWS_HPC
+      - AWS_S3
+      - AZURE_HPC
+      - AZURE_MANAGED_DISK
+      - GCP_HYPERDISK
+      - GCP_GCS
+      - AZURE_BLOB
+      - MINIO
+      - AZURE_NETAPP
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    TessellTag:
+      title: TessellTag
+      type: object
+      nullable: true
+      properties:
+        name:
+          description: Case sensitive, tag name
+          type: string
+          maxLength: 128
+          minLength: 1
+        value:
+          description: Case sensitive, tag value
+          type: string
+          maxLength: 256
+          minLength: 0
+    DbServerStorageConfig:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/StorageProviderType'
+    InstanceStorageConfig:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/StorageProviderType'
+        volumeType:
+          type: string
+          description: Data disk volume type
+        fsxNetAppConfig:
+          $ref: '#/components/schemas/InstanceFsxNetAppConfig'
+        azureNetAppConfig:
+          $ref: '#/components/schemas/InstanceAzureNetAppConfig'
+    TessellMonitoringMetricsDTO:
+      title: Metrics
+      description: This is a definition for Tessell Monitoring Metrics
+      type: object
+      properties:
+        metric:
+          type: string
+          description: Metric name
+        displayName:
+          type: string
+          description: Metric name to be displayed on the chart
+        aggregationType:
+          type: string
+          description: Metric aggregation type on the chart
+        granularity:
+          type: string
+          description: Granularity applied on the metric
+        isStartDateAdjusted:
+          type: boolean
+          description: Indicates if the start date was adjusted to limit the query range based on granularity.
+        metricValues:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: double
+          description: Metric data points
+    ExadataInfrastructureDiscoveryResponse:
+      description: Response returned by Exadata Infrastructure Discovery API
+      type: object
+      properties:
+        exadataInfrastructures:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiscoveredInfrastructure'
+          description: List of Exadata Infrastructure
+    RegisterExadataInfrastructureRequest:
+      description: Request to register Exadata Infrastructure
+      type: object
+      properties:
+        subscription:
+          type: string
+          description: Name of subscription
+        region:
+          type: string
+          description: Region for the InfraRequest
+        infrastructureCloudResourceId:
+          type: string
+          description: Cloud Identifier for the Exadata Infrastructure to be registered
+        vmClusterPayload:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExadataVmClusterRequestPayload'
+    SecurityConfigOps:
+      type: object
+      properties:
+        securityProfile:
+          $ref: '#/components/schemas/SecurityProfileInfoOps'
+    ScriptInfo:
+      title: ScriptInfo
+      type: object
+      nullable: true
+      properties:
+        scriptId:
+          type: string
+          format: uuid
+          description: The Tessell Script ID
+        scriptName:
+          type: string
+          description: The Tessell Script Name
+        scriptVersion:
+          type: string
+          description: The Tessell Script version
+        useActiveVersion:
+          type: boolean
+          default: false
+          description: 'When set to true, the scriptVersion field should be null and the system
+
+            will automatically use the active version of the script.
+
+            When set to false (default), the scriptVersion field specifies the
+
+            exact version to use.
+
+            '
+    SecurityProfileInfoOps:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Id of the Security Profile
+        versionId:
+          type: string
+          format: uuid
+          description: Version Id of the Security Profile
+        status:
+          $ref: '#/components/schemas/SecurityProfileSyncStatus'
+    MonitoringEntityType:
+      description: Entity types for monitoring chart
+      type: string
+      enum:
+      - NODE
+      - DB
+    AssociatedActivities:
+      type: object
+      properties:
+        dbPatch:
+          $ref: '#/components/schemas/PatchActivity'
+        osPatch:
+          $ref: '#/components/schemas/PatchActivity'
+        parameterProfileUpdate:
+          $ref: '#/components/schemas/PatchActivity'
+    ExadataVMCluster:
+      description: Details of the cloud Exadata VM cluster
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell Generated Exadata VM Cluster Identifier
+        infrastructureId:
+          type: string
+          format: uuid
+          description: Tessell Generated Exadata Infrastructure Identifier for the Infrastructure to which this VM Cluster belongs
+        cloudLocation:
+          type: string
+        vpc:
+          type: string
+        compartmentName:
+          type: string
+        name:
+          type: string
+          description: The user-friendly name for the cloud VM cluster. The name does not need to be unique.
+        clusterName:
+          type: string
+          description: The cluster name for cloud VM cluster. The cluster name must begin with an alphabetic character, and may contain hyphens (-). Underscores (_) are not permitted. The cluster name can be no longer than 11 characters and is not case sensitive.
+        shape:
+          type: string
+          description: The shape of the Exadata infrastructure. The shape determines the amount of CPU, storage, and memory resources allocated to the instance
+        status:
+          $ref: '#/components/schemas/ExadataVMClusterStatus'
+        cloudStatus:
+          $ref: '#/components/schemas/ExadataVMClusterCloudStatusOps'
+        nodeCount:
+          type: integer
+          description: The number of nodes in the cloud VM cluster.
+        dbServers:
+          type: array
+          items:
+            type: string
+          description: The list of DB servers.
+        giVersion:
+          type: string
+          description: Oracle Grid Infrastructure (GI) software version
+        giSoftwareImageId:
+          type: string
+          description: The OCID of a grid infrastructure software image. This is a database software image of the type GRID_IMAGE.
+        systemVersion:
+          type: string
+          description: Operating system version of the image.
+        licenseModel:
+          $ref: '#/components/schemas/ExadataVMClusterLicenseModel'
+        listenerPort:
+          type: integer
+          format: int64
+          description: The port number configured for the listener on the cloud VM cluster.
+        scanDnsName:
+          type: string
+          description: The FQDN of the DNS record for the SCAN IP addresses that are associated with the cloud VM cluster.
+        scanListenerPortTcp:
+          type: integer
+          description: The TCP Single Client Access Name (SCAN) port. The default port is 1521.
+        scanListenerPortTcpSsl:
+          type: integer
+          description: The TCPS Single Client Access Name (SCAN) port. The default port is 2484.
+        timeZone:
+          type: string
+          description: The time zone of the cloud VM cluster. For details, see [Exadata Infrastructure Time Zones](https:// docs. cloud. oracle. com/ Content/ Database/ References/ timezones. htm)
+        storageSizeInGBs:
+          type: integer
+          description: The storage allocation for the disk group, in gigabytes (GB).
+        cpuCoreCount:
+          type: integer
+          description: The number of CPU cores enabled on the cloud VM cluster.
+        ocpuCount:
+          type: number
+          format: float
+          description: The number of OCPU cores to enable on the cloud VM cluster. Only 1 decimal place is allowed for the fractional part.
+        memorySizeInGBs:
+          type: integer
+          description: Memory in-use in GBs in Exadata Infrastructure
+        dbNodeStorageSizeInGBs:
+          type: integer
+          description: The local node storage to be allocated in GBs.
+        dataStorageSizeInTBs:
+          type: number
+          format: double
+          description: The data disk group size to be allocated in TBs.
+        subnetName:
+          type: string
+          description: Tessell generated subnet name
+        backupSubnetName:
+          type: string
+        createdByUser:
+          type: string
+          description: Name of user who registered exadata infra with tessell
+        dateCreated:
+          type: string
+          format: date-time
+          description: Date and time when Exadata Infrastructure was created
+        domain:
+          type: string
+        viewName:
+          type: string
+        zoneName:
+          type: string
+        dataStoragePercentage:
+          type: integer
+          description: The data disk group is intended for the storage of Oracle Database data files
+        recoStoragePercentage:
+          type: integer
+          description: The reco disk group is primarily used for storing the Fast Recovery Area (FRA).
+        sparseStoragePercentage:
+          type: integer
+          description: A sparse disk group is required to support Exadata snapshots.
+        dbNodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellDbserverComputeResourceDTO'
+    AvailableUpdatesSimple:
+      type: object
+      description: Simple boolean flags indicating available updates
+      properties:
+        osPatch:
+          type: boolean
+          description: Whether an OS patch update is available
+          example: true
+        dbPatch:
+          type: boolean
+          description: Whether a DB patch update is available
+          example: true
+    TimeZone:
+      type: string
+      description: The timezone detail
+      maxLength: 256
+  parameters:
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    cluster-id:
+      name: cluster-id
+      description: Id of vm-cluster
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
+    region-in-query-required:
+      name: region
+      in: query
+      required: true
+      style: form
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+    start-time-in-query-required:
+      in: query
+      description: Start timestamp for metric
+      name: start-time
+      required: true
+      schema:
+        type: string
+        format: date-time
+    step-in-query-required:
+      name: step
+      description: Specifies the frequency at which data points are sampled or aggregated within the specified time range in seconds
+      in: query
+      required: true
+      schema:
+        type: integer
+        format: int32
+        default: 0
+        minimum: 0
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    subscriptionNameMandatory:
+      name: subscription-name
+      in: query
+      description: Subscription name
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 64
+        example: Sub-Experiments-2
+    load-vm-clusters-in-query:
+      name: load-vm-clusters
+      in: query
+      description: Load the vm-clusters that are part of the Exadata Infra
+      required: false
+      style: form
+      schema:
+        type: boolean
+        default: false
+    end-time-in-query-required:
+      name: end-time
+      description: End timestamp for metrics
+      in: query
+      required: true
+      schema:
+        type: string
+        format: date-time
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

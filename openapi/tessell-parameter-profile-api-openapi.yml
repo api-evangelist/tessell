@@ -1,0 +1,1230 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Parameter Profile API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Parameter Profile
+paths:
+  /governance/parameter-profiles/validations:
+    get:
+      tags:
+      - Parameter Profile
+      summary: Get a list of supported Database Parameters for all Database Engines with default configuration
+      operationId: getFactoryParameterProfiles
+      parameters:
+      - name: name
+        in: query
+        description: Parameter Profile name
+        required: false
+        style: form
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: Postgres Custom Parameter Profile
+      - name: status
+        in: query
+        description: Status of Parameter Profile
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/DatabaseParameterTypeStatus'
+      - name: engineType
+        in: query
+        description: Database Engine type
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/databaseEngineType'
+      - name: version
+        in: query
+        description: Database Engine version
+        required: false
+        style: form
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: '15.5'
+      - name: infraType
+        in: query
+        style: form
+        schema:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/InfraType'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseFactoryParameterListResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /governance/parameter-profiles:
+    post:
+      tags:
+      - Parameter Profile
+      summary: Create a new Parameter Profile
+      operationId: createDatabaseParameterProfile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatabaseParameterProfileRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseParameterProfileResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+    get:
+      tags:
+      - Parameter Profile
+      summary: Get a list of Parameter Profiles
+      operationId: getDatabaseParameterProfiles
+      parameters:
+      - name: status
+        in: query
+        description: Status of a Parameter Profile
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/DatabaseParameterProfileStatus'
+      - name: engineType
+        in: query
+        description: Database Engine type
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/databaseEngineType'
+      - name: version
+        in: query
+        description: Database Engine version
+        required: false
+        style: form
+        schema:
+          type: string
+          maxLength: 32
+          example: '15.5'
+      - name: name
+        in: query
+        description: Parameter Profile name
+        required: false
+        style: form
+        schema:
+          type: string
+          maxLength: 64
+          example: Postgres Custom Parameter Profile
+      - name: infraType
+        in: query
+        style: form
+        schema:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/InfraType'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseParameterProfileListResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /governance/parameter-profiles/{id}:
+    get:
+      tags:
+      - Parameter Profile
+      summary: Get a parameter profile by Id
+      operationId: getDatabaseParameterProfileById
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseParameterProfileResponse'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - Parameter Profile
+      summary: Delete a Parameter Profile
+      operationId: deleteDatabaseParameterProfile
+      parameters:
+      - name: id
+        in: path
+        description: Parameter Profile Id
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: softDelete
+        in: query
+        description: When set to false, it permanently deletes a Parameter Profile. When set to true, Parameter Profile can be recovered by contacting Tessell Support.
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: true
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - Parameter Profile
+      summary: Update a Parameter Profile
+      operationId: updateDatabaseParameterProfile
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatabaseParameterProfilePatchRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseParameterProfileResponse'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /governance/parameter-profiles/{id}/compare:
+    get:
+      tags:
+      - Parameter Profile
+      summary: Compare two Parameter Profile configuration
+      operationId: compareDatabaseParameterConfigs
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Parameter Profile
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: compareTo
+        in: query
+        description: Id of the Parameter Profile to be compared with
+        required: true
+        style: form
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParameterProfileCompareResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /governance/parameter-profiles/{id}/copy-configuration:
+    patch:
+      tags:
+      - Parameter Profile
+      summary: Copy Parameters of one Parameter Profile to other Parameter Profiles
+      operationId: copyDatabaseParameterConfigs
+      parameters:
+      - name: id
+        in: path
+        description: Id of Parameter Profile (Parameters will be copied from this Parameter Profile)
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CopyToProfiles'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /governance/parameter-profiles/{id}/reset:
+    post:
+      tags:
+      - Parameter Profile
+      summary: Reset Parameters of Parameter Profile to its default values
+      operationId: resetParameterProfileToDefault
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /databases/parameter-profiles:
+    get:
+      tags:
+      - Parameter Profile
+      summary: Get a list of available Parameter Profiles
+      operationId: getDatabaseParameterProfilesForConsumers
+      x-terraform-resource: DBParameterProfile
+      x-terraform-operation: ReadList
+      parameters:
+      - name: status
+        in: query
+        description: Parameter Profile status
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/DatabaseParameterProfileStatus'
+      - name: engineType
+        in: query
+        description: Database Engine type
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/databaseEngineType'
+      - name: version
+        in: query
+        description: Database Engine version
+        required: false
+        style: form
+        schema:
+          type: string
+          maxLength: 32
+          example: '15.5'
+      - name: name
+        in: query
+        description: Parameter Profile name
+        required: false
+        style: form
+        schema:
+          type: string
+          maxLength: 64
+          example: Postgres Custom Parameter Profile
+      - name: infraType
+        in: query
+        style: form
+        schema:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/InfraType'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseParameterProfileListResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /governance/parameter-profiles/{id}/deletable:
+    get:
+      tags:
+      - Parameter Profile
+      summary: Check if Parameter Profile is deletable or not
+      operationId: isParameterProfileDeletable
+      parameters:
+      - name: id
+        in: path
+        description: Parameter Profile Id
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteValidationResponse'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /databases/parameter-profiles/{id}:
+    get:
+      tags:
+      - Parameter Profile
+      summary: View available Database Parameter Profiles by Id
+      operationId: getDatabaseParameterProfileByIdForConsumers
+      parameters:
+      - name: id
+        in: path
+        description: Parameter profile Id
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: versionId
+        in: query
+        description: Parameter profile version Id
+        required: false
+        style: form
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseParameterProfileResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /governance/parameter-profiles/{id}/usages:
+    get:
+      tags:
+      - Parameter Profile
+      summary: Provide Services/Instances that are using the Parameter Profile
+      operationId: getParameterProfileUsages
+      parameters:
+      - name: id
+        in: path
+        description: Parameter Profile Id
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: loadMaintenanceWindowDetails
+        in: query
+        description: Load maintenance window details for instances which are out of sync
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: false
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParameterProfileUsageResponse'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    TessellServiceInstanceRole:
+      type: string
+      description: DB Service instance role
+      enum:
+      - primary
+      - read_only_replica
+      - failover_replica
+      - dr
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    ParameterProfileStatus:
+      type: string
+      description: Association status of the instance to the parameter profile
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+      - PENDING_REBOOT
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    InfraType:
+      type: string
+      enum:
+      - CLOUD
+      - OCI_EXADATA
+      description: Details on if / when the changes should be applied
+    ProfileCompareValueChange:
+      type: object
+      properties:
+        dataType:
+          type: string
+        defaultValue:
+          type: string
+        applyType:
+          type: string
+        name:
+          type: string
+        lvalue:
+          type: string
+        rvalue:
+          type: string
+        allowedValues:
+          type: string
+        isFormulaType:
+          type: boolean
+          default: false
+    DatabaseFactoryParameterListResponse:
+      title: DatabaseFactoryParameterListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseFactoryParameterResponse'
+    DatabaseParameterProfileDriverInfo:
+      title: DatabaseParameterProfileDriverInfo
+      type: object
+      properties:
+        data:
+          type: object
+    DatabaseParameterProfileListResponse:
+      title: DatabaseParameterProfileListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseParameterProfileResponse'
+    DatabaseParameterProfileStatus:
+      description: Database ParameterProfile Status
+      type: string
+      enum:
+      - DELETED
+      - DELETING
+      - DRAFT
+      - PUBLISH
+      - UNPUBLISH
+      - DEPRECATED
+    GovernanceInstanceInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+          format: uuid
+        role:
+          $ref: '#/components/schemas/TessellServiceInstanceRole'
+        status:
+          $ref: '#/components/schemas/ParameterProfileStatus'
+        maintenanceWindow:
+          $ref: '#/components/schemas/InstanceLevelMaintenanceWindowInfo'
+    DatabaseParameterProfileMaturityStatus:
+      description: Database ParameterProfile Status
+      type: string
+      enum:
+      - DRAFT
+      - PUBLISHED
+      - UNPUBLISHED
+    ServiceInstances:
+      properties:
+        service:
+          $ref: '#/components/schemas/GovernanceServiceInfo'
+        instances:
+          type: array
+          items:
+            $ref: '#/components/schemas/GovernanceInstanceInfo'
+    DatabaseParameterEngineInfo:
+      type: object
+      properties:
+        edition:
+          type: string
+          maxLength: 128
+        oracle:
+          type: object
+          description: Oracle specific engine info parameters
+          properties:
+            multiTenancy:
+              $ref: '#/components/schemas/OracleMultiTenancy'
+    GovernancePatchInstanceRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+          format: uuid
+    ParameterUsageType:
+      description: "Specifies when the parameter can be modified:\n- null (default): Standard parameter, follows applyType rules\n- \"INIT\": Can only be set during database initialization and cannot\n  be modified afterward for databases using this profile\n"
+      type: string
+      enum:
+      - INIT
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    GovernanceServiceInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+          format: uuid
+    ServiceInstancesPatchRequest:
+      properties:
+        service:
+          $ref: '#/components/schemas/GovernanceServiceInfo'
+        instances:
+          type: array
+          items:
+            $ref: '#/components/schemas/GovernancePatchInstanceRequest'
+    DeleteValidationResponse:
+      type: object
+      properties:
+        deletable:
+          type: boolean
+        message:
+          type: string
+    DatabaseProfileParameterType:
+      title: DatabaseProfileParameterType
+      type: object
+      required:
+      - name
+      - value
+      - defaultValue
+      - dataType
+      properties:
+        dataType:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: bool
+        defaultValue:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          example: 'on'
+        applyType:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: static
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          example: autovacuum
+        description:
+          type: string
+        value:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          example: 'off'
+        allowedValues:
+          type: string
+          minLength: 0
+          maxLength: 1000
+          example: on/off
+        isModified:
+          type: boolean
+        isFormulaType:
+          type: boolean
+          default: false
+        source:
+          $ref: '#/components/schemas/ParameterSourceType'
+        topParameter:
+          description: Boolean variable indicating a parameter is a most modified / key parameter
+          type: boolean
+          default: false
+        isModifiable:
+          type: boolean
+        usageType:
+          $ref: '#/components/schemas/ParameterUsageType'
+    InstanceLevelMaintenanceWindowInfo:
+      type: object
+      properties:
+        maintenanceWindowId:
+          type: string
+          format: uuid
+        triggerTime:
+          type: string
+          format: date-time
+    UpdatePropagationPolicy:
+      title: UpdatePropagationPolicy
+      required:
+      - strategy
+      type: object
+      properties:
+        strategy:
+          $ref: '#/components/schemas/UpdatePropagationStrategy'
+        time:
+          type: string
+          format: date-time
+          description: Needed when strategy is CUSTOM_DATE_TIME
+    DatabaseParameterProfileResponse:
+      required:
+      - name
+      type: object
+      description: This is a definition for Tessell Database Parameter Profile Object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the entity
+          example: 123e4567-e89b-12d3-a456-426614174000
+        versionId:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the entity
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name:
+          type: string
+          description: Name of the entity
+          example: sample_entity
+        description:
+          type: string
+          description: Database Parameter Profile description
+        oob:
+          type: boolean
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        engineInfo:
+          $ref: '#/components/schemas/DatabaseParameterEngineInfo'
+        factoryParameterId:
+          type: string
+          format: uuid
+          description: Tessell parameter type UUID for the entity
+          example: 123e4567-e89b-12d3-a456-426614174001
+        status:
+          $ref: '#/components/schemas/DatabaseParameterProfileStatus'
+        maturityStatus:
+          $ref: '#/components/schemas/DatabaseParameterProfileMaturityStatus'
+        owner:
+          type: string
+        parameters:
+          type: array
+          description: Parameter Profile's associated parameters
+          items:
+            $ref: '#/components/schemas/DatabaseProfileParameterType'
+        metadata:
+          $ref: '#/components/schemas/DatabaseParameterProfileMetadata'
+        driverInfo:
+          $ref: '#/components/schemas/DatabaseParameterProfileDriverInfo'
+        userId:
+          type: string
+          format: uuid
+          description: Database Parameter Profile's user id
+        dbVersion:
+          type: string
+          description: Database Parameter Profile's version
+        dateCreated:
+          type: string
+          description: Timestamp when the entity was created
+          format: date-time
+        dateModified:
+          type: string
+          description: Timestamp when the entity was last modified
+          format: date-time
+        infraType:
+          $ref: '#/components/schemas/InfraType'
+        isLegacy:
+          type: boolean
+          description: Whether this Parameter Profile is Legacy or not
+    DatabaseParameterProfilePatchInfo:
+      required:
+      - parameters
+      properties:
+        description:
+          type: string
+          description: Parameter Profile description
+          minLength: 0
+          maxLength: 128
+          example: Custom Parameter Profile with autovacuum off
+        parameters:
+          type: array
+          description: Parameters associated with Parameter Profile
+          items:
+            $ref: '#/components/schemas/DatabaseProfileParameterRequest'
+          minItems: 1
+          maxItems: 1000
+    DatabaseFactoryParameterResponse:
+      title: DatabaseFactoryParameterResponse
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        version:
+          type: string
+        engineInfo:
+          $ref: '#/components/schemas/DatabaseParameterEngineInfo'
+        status:
+          $ref: '#/components/schemas/DatabaseParameterTypeStatus'
+        infraType:
+          $ref: '#/components/schemas/InfraType'
+        parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseParameterType'
+        isLegacy:
+          type: boolean
+    DatabaseParameterType:
+      title: DatabaseParameterType
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        defaultValue:
+          type: string
+        dataType:
+          type: string
+        source:
+          $ref: '#/components/schemas/ParameterSourceType'
+        isFormulaType:
+          type: boolean
+          default: false
+        isModifiable:
+          type: boolean
+        allowedValues:
+          type: string
+        applyType:
+          type: string
+        topParameter:
+          description: Boolean variable indicating a parameter is a most modified / key parameter
+          type: boolean
+          default: false
+        usageType:
+          $ref: '#/components/schemas/ParameterUsageType'
+    DatabaseParameterProfilePatchRequest:
+      required:
+      - parameterProfileInfo
+      - propagationPolicy
+      type: object
+      properties:
+        parameterProfileInfo:
+          $ref: '#/components/schemas/DatabaseParameterProfilePatchInfo'
+        propagationPolicy:
+          $ref: '#/components/schemas/UpdatePropagationPolicy'
+        serviceInstances:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceInstancesPatchRequest'
+      description: Parameter Profile Object to be updates and details on how it should be propagated to the service instances using that
+    DatabaseProfileParameterRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          example: autovacuum
+        value:
+          type: string
+          minLength: 0
+          maxLength: 1000
+          example: 'off'
+    UpdatePropagationStrategy:
+      type: string
+      enum:
+      - IMMEDIATELY
+      - MAINTENANCE_WINDOW
+      - CUSTOM_DATE_TIME
+      - DO_NOT_APPLY
+    DatabaseParameterProfileMetadata:
+      title: DatabaseParameterProfileMetadata
+      type: object
+      properties:
+        data:
+          type: object
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    OracleMultiTenancy:
+      description: Oracle multi-tenant architecture
+      type: string
+      enum:
+      - CDB
+      - NON_CDB
+    ParameterProfileCompareResponse:
+      type: object
+      properties:
+        leftAdditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseProfileParameterType'
+        rightAdditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseProfileParameterType'
+        diffs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileCompareValueChange'
+        common:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseProfileParameterType'
+    ParameterProfileUsageResponse:
+      title: ParameterProfileUsageResponse
+      type: object
+      properties:
+        serviceInstances:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceInstances'
+    ParameterSourceType:
+      description: Defines source type of a parameter
+      type: string
+      enum:
+      - ENGINE_DEFAULT
+      - TESSELL_DEFAULT
+      - USER_DEFINED
+    CopyToProfiles:
+      type: object
+      properties:
+        copyTo:
+          type: array
+          items:
+            type: string
+            format: uuid
+          minItems: 1
+          maxItems: 30
+    DatabaseParameterProfileRequest:
+      description: This is a definition for Tessell Parameter Profile Object
+      required:
+      - name
+      - engineType
+      - parameters
+      - dbVersion
+      type: object
+      properties:
+        name:
+          type: string
+          description: Parameter Profile name
+          minLength: 1
+          maxLength: 64
+          example: Postgres Custom Parameter Profile
+        description:
+          type: string
+          description: Parameter Profile description
+          minLength: 0
+          maxLength: 128
+          example: Custom Parameter Profile with autovacuum off
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        engineInfo:
+          $ref: '#/components/schemas/DatabaseParameterEngineInfo'
+        status:
+          $ref: '#/components/schemas/DatabaseParameterProfileStatus'
+        maturityStatus:
+          $ref: '#/components/schemas/DatabaseParameterProfileMaturityStatus'
+        owner:
+          type: string
+          minLength: 1
+          maxLength: 128
+        infraType:
+          $ref: '#/components/schemas/InfraType'
+        parameters:
+          type: array
+          description: Parameters associated with Parameter Profile
+          items:
+            $ref: '#/components/schemas/DatabaseProfileParameterRequest'
+          maxItems: 1000
+        metadata:
+          $ref: '#/components/schemas/DatabaseParameterProfileMetadata'
+        dbVersion:
+          type: string
+          description: Database Engine version
+          minLength: 1
+          maxLength: 32
+          example: '15.5'
+        sourceParameterProfileId:
+          description: ID of the parameter profile to fetch parameters from. Required only when duplicating an existing profile
+          type: string
+          format: uuid
+    DatabaseParameterTypeStatus:
+      type: string
+      enum:
+      - DISABLED
+      - ENABLED
+  parameters:
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

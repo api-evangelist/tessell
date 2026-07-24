@@ -1,0 +1,181 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center tessell-service-option-profile API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: tessell-service-option-profile
+paths:
+  /services/{service-id}/options-profiles/update:
+    patch:
+      tags:
+      - tessell-service-option-profile
+      summary: Update the option profiles for a service
+      operationId: updateDBServiceOptionProfiles
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DBServiceOptionProfileUpdateRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{serviceId}/option-profile/status:
+    get:
+      tags:
+      - tessell-service-option-profile
+      summary: get the status of option profile for a given service
+      operationId: getOptionProfileStatus
+      parameters:
+      - name: serviceId
+        in: path
+        description: service ID for which you need to check option profile status
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OptionProfileStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    taskSummary:
+      title: taskSummary
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        taskType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        associatedResourceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        details:
+          type: object
+          additionalProperties:
+            type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    DBServiceInstanceOptionProfileUpdateRequest:
+      type: object
+      required:
+      - instanceId
+      - optionProfileId
+      properties:
+        instanceId:
+          type: string
+          format: uuid
+          description: The instance ID for which option profile update needs to be triggered
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The option profile ID to which instance needs to be updated
+        optionProfileVersion:
+          type: string
+          format: uuid
+          nullable: true
+          description: The option profile version to which instance needs to be updated. By default, instance is updated to the latest version of the option profile.
+    DBServiceOptionProfileUpdateRequest:
+      type: object
+      properties:
+        instanceOptionProfileConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/DBServiceInstanceOptionProfileUpdateRequest'
+    OptionProfileStatus:
+      type: string
+      description: Association status of the instance to the option profile
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+      - PENDING_REBOOT
+  parameters:
+    service-id:
+      name: service-id
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

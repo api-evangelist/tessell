@@ -1,0 +1,723 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Logs API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Logs
+paths:
+  /logs/download:
+    get:
+      description: Downloads the Logs on the Database Machine
+      operationId: getLogsOnDB
+      parameters:
+      - in: query
+        name: entity-id
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: The Id of the service
+      - in: query
+        name: service-instance-id
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: The Id of the service instance
+      - in: query
+        name: file-name
+        schema:
+          type: string
+        required: true
+        description: The path of the file
+      - in: query
+        name: start-time
+        schema:
+          type: string
+          format: date-time
+          example: '2021-12-03T07:15:00.000Z'
+        required: true
+        description: The start time of the logs.
+      - in: query
+        name: end-time
+        schema:
+          type: string
+          format: date-time
+          example: '2021-12-03T08:15:00.000Z'
+        required: true
+        description: The end time of the logs.
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The zip file for the logs
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      tags:
+      - Logs
+  /logs/stream:
+    get:
+      description: Stream database logs
+      operationId: streamDBLogs
+      parameters:
+      - in: query
+        name: entity-id
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: The Id of the service
+      - in: query
+        name: service-instance-id
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: The Id of the service instance
+      - in: query
+        name: file-name
+        schema:
+          type: string
+        required: true
+        description: The path of the file
+      - in: query
+        name: start-time
+        schema:
+          type: string
+          format: date-time
+          example: '2021-12-03T07:15:00.000Z'
+        required: false
+        description: The start time of the logs.
+      - in: query
+        name: end-time
+        schema:
+          type: string
+          format: date-time
+          example: '2021-12-03T08:15:00.000Z'
+        required: false
+        description: The end time of the logs.
+      - in: query
+        name: limit
+        schema:
+          type: integer
+        required: false
+        description: The maximum number of logs that will be returned.
+      - in: query
+        name: forward
+        schema:
+          type: boolean
+        description: Whether to return live logs or older logs.
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Database logs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TessellLogEventsDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      tags:
+      - Logs
+  /logs/task/{taskId}:
+    get:
+      description: Returns the Logs corresponding to a task
+      operationId: getLogsForTask
+      parameters:
+      - in: path
+        name: taskId
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: The Id of the task
+      - in: query
+        name: entity-id
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: The Id of the service
+      - in: query
+        name: service-instance-id
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: The Id of the service instance
+      - in: query
+        name: workflow-id
+        schema:
+          type: string
+        required: true
+        description: The workflow id
+      - in: query
+        name: start-time
+        schema:
+          type: string
+          format: date-time
+          example: '2021-12-03T07:15:00.000Z'
+        required: true
+        description: The start time of the logs.
+      - in: query
+        name: end-time
+        schema:
+          type: string
+          format: date-time
+          example: '2021-12-03T08:15:00.000Z'
+        required: true
+        description: The end time of the logs.
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Task logs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TessellLogEventsDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      tags:
+      - Logs
+  /logs/workflow/{workflowId}:
+    get:
+      description: Downloads the Logs corresponding to a workflow
+      operationId: getLogsForWorkflow
+      parameters:
+      - in: path
+        name: workflowId
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: The Id of the workflow
+      - in: query
+        name: entity-id
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: The Id of the service
+      - in: query
+        name: service-instance-id
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: The Id of the service instance
+      - in: query
+        name: start-time
+        schema:
+          type: string
+          format: date-time
+          example: '2021-12-03T07:15:00.000Z'
+        required: true
+        description: The start time of the logs.
+      - in: query
+        name: end-time
+        schema:
+          type: string
+          format: date-time
+          example: '2021-12-03T08:15:00.000Z'
+        required: true
+        description: The end time of the logs.
+      - in: query
+        name: db-logs
+        schema:
+          type: boolean
+        required: false
+        description: Whether to include the database logs in the downloaded bundle
+      - in: query
+        name: service-logs
+        schema:
+          type: boolean
+        required: false
+        description: Whether to include the service logs in the downloaded bundle
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The zip file for the logs
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      tags:
+      - Logs
+  /logs/resources/logfiles:
+    get:
+      description: Get the log files available for a database
+      operationId: getDBLogFiles
+      parameters:
+      - in: query
+        name: entity-name
+        schema:
+          type: string
+        required: false
+        description: The name of the database
+      - in: query
+        name: entity-id
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: The Id of the service
+      - in: query
+        name: service-instance-id
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: The Id of the service instance
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The list of log files available
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DBLogFilesInfoDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      tags:
+      - Logs
+  /logs/resources/i/logfiles:
+    get:
+      description: Get all the log files available for a database including host logs
+      operationId: getDBLogFilesOps
+      parameters:
+      - in: query
+        name: entity-name
+        schema:
+          type: string
+        required: false
+        description: The name of the database
+      - in: query
+        name: entity-id
+        schema:
+          type: string
+        required: false
+        description: The entity id
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The list of log files available
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DBLogFilesInfoDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      tags:
+      - Logs
+  /logs/resources/i/loggroup:
+    post:
+      description: Create a log group
+      operationId: createLogGroup
+      requestBody:
+        description: Log group details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TessellAWSLogGroupDTO'
+      responses:
+        '200':
+          description: Log group details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellAWSLogGroupDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      tags:
+      - Logs
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /logs/service/{service-id}/script/download:
+    get:
+      description: Downloads the Script logs for Service
+      operationId: downloadScriptLogs
+      parameters:
+      - name: service-id
+        in: path
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: Service Id
+      - name: compute-resource-id"
+        in: query
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: Compute resource Id where script was executed
+      - name: type
+        in: query
+        schema:
+          type: string
+        required: true
+        description: Type of script we want to download logs
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The zip file for the logs
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      tags:
+      - Logs
+  /logs/resources/logfiles/cloud-info:
+    get:
+      description: Get the logs storage cloud info
+      operationId: logFilesCloudInfo
+      parameters:
+      - in: query
+        name: entity-id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Info of logs stored in cloud.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TessellLogFilesCloudInfo'
+      tags:
+      - Logs
+  /logs/resources/i/loggroups/{logGroupName}/service-instance-info:
+    get:
+      description: Fetch Service Instance info using CloudWatch's Log Group name
+      operationId: getServiceInstanceInfo
+      parameters:
+      - in: path
+        name: logGroupName
+        schema:
+          type: string
+        required: true
+        description: Log group name
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Service instance info corresponding to the Log Group
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellDbServiceInstanceInfo'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      tags:
+      - Logs
+  /logs/resources/aws/loggroup/i/update-retention:
+    patch:
+      description: Update AWS Cloudwatch log group rentention policy
+      operationId: updateLogGroupRetention
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TessellAWSLogGroupDTO'
+      responses:
+        '200':
+          description: Updated AWS Cloudwatch log group with new retention policy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellAWSLogGroupDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      tags:
+      - Logs
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+components:
+  schemas:
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    TessellDbServiceInstanceInfo:
+      description: Tessell's DB Service and DB Service Instance info
+      type: object
+      properties:
+        serviceId:
+          type: string
+          description: Service ID
+          format: uuid
+        serviceName:
+          type: string
+          description: Service Name
+        serviceInstanceId:
+          type: string
+          description: Service Instance Id
+          format: uuid
+        serviceInstanceName:
+          type: string
+          description: Service Instance Name
+    TessellLogsAWSStorageCloudInfo:
+      title: TessellLogsAWSStorageCloudInfo
+      description: Info of log groups and stream of the logs
+      allOf:
+      - $ref: '#/components/schemas/TessellLogsBaseStorageCloudInfo'
+      - type: object
+        properties:
+          logGroupName:
+            type: string
+          logStreamName:
+            type: string
+          region:
+            type: string
+    TessellLogFilesCloudInfo:
+      title: TessellLogFilesCloudInfo
+      description: Info of where the logs are stored in cloud
+      type: object
+      properties:
+        serviceInstanceId:
+          type: string
+          format: uuid
+        serviceInstanceName:
+          type: string
+        logfiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellLogsCloudInfo'
+    TessellLogsCloudInfo:
+      oneOf:
+      - $ref: '#/components/schemas/TessellLogsAWSStorageCloudInfo'
+    TessellAWSLogGroupDTO:
+      title: Log Group
+      description: This is a definition for Log Group Object
+      type: object
+      properties:
+        logGroupName:
+          type: string
+          description: The name of the log group
+        region:
+          type: string
+          description: The region of the log group
+        cloudAccountId:
+          type: string
+          format: uuid
+          description: The cloud account id of the account corresponding to the log group
+        retentionDays:
+          type: number
+          format: integer
+          description: The number of days the logs will be retained in the log group
+    TessellLogsBaseStorageCloudInfo:
+      type: object
+      properties:
+        fileId:
+          type: string
+    DBLogFilesInfoDTO:
+      title: DB Files Info
+      description: This is a definition for DB log file object
+      type: object
+      properties:
+        fileName:
+          type: string
+          description: The name of the log file
+        firstEventTimestamp:
+          type: number
+          format: long
+          description: The time of the first event in the log file in Epoch timestamp(in milliseconds). This will be 0 in case of Azure.
+        lastEventTimestamp:
+          type: number
+          format: long
+          description: The time of the last event in the log file in Epoch timestamp(in milliseconds). This will be 0 in case of Azure.
+    TessellLogEventsMetadata:
+      title: Log Events Metadata
+      description: This is a definition for the metadata of log events
+      type: object
+      properties:
+        fileName:
+          type: string
+          description: The name of the log file
+        count:
+          type: number
+          description: The number of log events in the returned list
+        firstEventTimestamp:
+          type: string
+          format: date-time
+          description: The timestamp of the first log event in the list
+        lastEventTimestamp:
+          type: string
+          format: date-time
+          description: The timestamp of the last log event in the list
+    TessellLogEventsDTO:
+      title: Log Events
+      description: This is a definition for the list of log events
+      type: object
+      properties:
+        logs:
+          type: array
+          items:
+            type: string
+          description: The list of log events
+        metadata:
+          $ref: '#/components/schemas/TessellLogEventsMetadata'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

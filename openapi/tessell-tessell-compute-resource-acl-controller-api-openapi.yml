@@ -1,0 +1,438 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center tessell-compute-resource-acl-controller API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: tessell-compute-resource-acl-controller
+paths:
+  /compute-resources/dbservers/{id}/acls:
+    patch:
+      tags:
+      - tessell-compute-resource-acl-controller
+      summary: Create or update the DB Server ACLs
+      operationId: updateDbServerAcls
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AclPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - tessell-compute-resource-acl-controller
+      summary: Revoke DB Server Acls
+      operationId: revokeDbServerAcls
+      parameters:
+      - name: id
+        in: path
+        description: ID of the DB Server
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AclRevokePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /compute-resources/dbservers/{id}/acls/eligible-users:
+    get:
+      tags:
+      - tessell-compute-resource-acl-controller
+      summary: Get eligible users for a DB Server
+      operationId: getPrivilegedUsersForDbServer
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: roles
+        in: query
+        description: Filter based on the privilege roles
+        required: false
+        style: form
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - CO_OWNER
+        - CONSUMER
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AclEligibleUser'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /compute-resources/dbservers/acls/eligible-users:
+    post:
+      tags:
+      - tessell-compute-resource-acl-controller
+      summary: Get eligible users for DB Servers
+      operationId: listEligibleUsersForDbServers
+      parameters:
+      - name: role
+        in: query
+        description: Filter based on the privilege role
+        required: true
+        style: form
+        schema:
+          type: string
+        example: CO_OWNER
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkAclEligibleUsersPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AclEligibleUser'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /compute-resources/dbservers/acls:
+    patch:
+      tags:
+      - tessell-compute-resource-acl-controller
+      summary: Bulk share multiple DB Servers with multiple users, does not override the existing ACL if present
+      operationId: updateDbServersAcls
+      description: Share multiple DB Servers with multiple users in a single operation. This is more efficient than individual ACL operations when sharing multiple resources.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkAclPayload'
+            examples:
+              basic:
+                $ref: '#/components/examples/BulkShareBasic'
+              singleServer:
+                $ref: '#/components/examples/BulkShareSingleServer'
+      responses:
+        '200':
+          description: Bulk sharing operation completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkAclResponse'
+              examples:
+                success:
+                  $ref: '#/components/examples/BulkShareSuccess'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+components:
+  schemas:
+    BulkAclPayload:
+      description: Payload for bulk sharing / creating multiple ACL entities
+      required:
+      - ids
+      - users
+      properties:
+        ids:
+          type: array
+          description: List of IDs to share
+          items:
+            type: string
+            format: uuid
+          minItems: 1
+          maxItems: 1000
+        users:
+          type: array
+          description: List of users to share with
+          items:
+            $ref: '#/components/schemas/AclUserPayload'
+          minItems: 1
+          maxItems: 100
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    AclRevokePayload:
+      title: AclRevokePayload
+      description: Payload to revoke Tessell ACLs
+      required:
+      - users
+      properties:
+        users:
+          description: List of users to be deleted
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          minItems: 1
+          maxItems: 100
+    BulkAclResponse:
+      description: Generic response for bulk ACL operations on any entity type
+      type: object
+      required:
+      - status
+      - message
+      - summary
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        status:
+          type: string
+          description: Overall operation status
+        message:
+          type: string
+          description: Summary of the operation
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    BulkAclEligibleUsersPayload:
+      description: Payload for fetching eligible users for bulk ACL entities
+      required:
+      - ids
+      properties:
+        ids:
+          type: array
+          description: List of IDs to fetch eligible users for
+          items:
+            type: string
+            format: uuid
+          minItems: 1
+          maxItems: 100
+    AclPayload:
+      title: AclPayload
+      description: Payload to create an entity ACL
+      required:
+      - users
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/AclUserPayload'
+          minItems: 1
+          maxItems: 100
+    AclEligibleUser:
+      title: AclEligibleUser
+      description: Eligible user for sharing the entity
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        emailId:
+          type: string
+        eligibleRoles:
+          type: array
+          items:
+            type: string
+        accessibleSubscriptions:
+          type: array
+          items:
+            type: string
+          description: List of subscriptions user has access to
+    AclUserPayload:
+      title: AclUserPayload
+      description: Payload to create an user's entity ACL
+      required:
+      - emailId
+      - role
+      properties:
+        emailId:
+          description: Email id of the user
+          type: string
+          minLength: 1
+          maxLength: 256
+        role:
+          description: Role Info
+          type: string
+          minLength: 1
+          maxLength: 64
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+  examples:
+    BulkShareSingleServer:
+      summary: Single server with multiple users
+      description: Share 1 DB Server with 2 users
+      value:
+        ids:
+        - 123e4567-e89b-12d3-a456-426614174000
+        users:
+        - emailId: team@example.com
+          role: Co-owner
+        - emailId: admin@example.com
+          role: Read Only
+    BulkShareSuccess:
+      summary: Successful bulk sharing
+      description: All operations completed successfully
+      value:
+        status: SUCCESS
+        message: Successfully shared 2 DB Servers with 2 users
+        apiMetadata:
+          timeZone: UTC
+          records: 4
+          pagination:
+            pageSize: 100
+            pageOffset: 0
+            totalRecords: 4
+    BulkShareBasic:
+      summary: Basic bulk sharing
+      description: Share 2 DB Servers with 2 users
+      value:
+        ids:
+        - 123e4567-e89b-12d3-a456-426614174000
+        - 987fcdeb-51a2-43d1-b789-123456789abc
+        users:
+        - emailId: john.doe@example.com
+          role: READ_ONLY
+        - emailId: jane.smith@example.com
+          role: CO_OWNER
+  parameters:
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

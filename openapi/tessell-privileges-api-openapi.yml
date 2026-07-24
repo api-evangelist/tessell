@@ -1,0 +1,228 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Privileges API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Privileges
+paths:
+  /iam/i/privileges:
+    post:
+      tags:
+      - Privileges
+      summary: Create a privilege
+      operationId: createPrivilege
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrivilegeCreatePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivilegeDTO'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /iam/i/privileges/{name}:
+    delete:
+      tags:
+      - Privileges
+      summary: Delete a privilege
+      operationId: deletePrivilege
+      parameters:
+      - name: name
+        in: path
+        description: name
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: softDelete
+        in: query
+        description: softDelete
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: true
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - Privileges
+      summary: Update a privilege
+      operationId: updatePrivilege
+      parameters:
+      - name: name
+        in: path
+        description: name
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrivilegeUpdatePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivilegeDTO'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    PrivilegeStatus:
+      title: PrivilegeStatus
+      type: string
+      description: This is a definition for Tessell privilege status object
+      enum:
+      - DELETED
+      - ENABLED
+    PrivilegeDTO:
+      title: PrivilegeDTO
+      type: object
+      properties:
+        dateCreated:
+          type: string
+          description: Date when the app is created  metadata
+          format: date-time
+        dateModified:
+          type: string
+          description: Date when app is last modified  metadata
+          format: date-time
+        description:
+          type: string
+          description: Description of the app
+        id:
+          type: string
+          description: Tessell generated UUID for the app object
+          format: uuid
+        name:
+          type: string
+          description: Name of the privilege
+        status:
+          $ref: '#/components/schemas/PrivilegeStatus'
+      description: This is a definition for Tessell
+    PrivilegeCreatePayload:
+      title: PrivilegeCreatePayload
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the privilege
+        name:
+          type: string
+          description: Name of the privilege
+      description: This is a definition for Tessell internal create privilege payload object
+    PrivilegeUpdatePayload:
+      title: PrivilegeUpdatePayload
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the privilege
+        name:
+          type: string
+          description: Name of the privilege
+      description: This is a definition for Tessell privilege update object
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

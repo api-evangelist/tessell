@@ -1,0 +1,227 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center tessell-database-security-config API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: tessell-database-security-config
+paths:
+  /compute-resources/dbservers/{id}/security-config:
+    put:
+      tags:
+      - tessell-database-security-config
+      summary: Add/update Security Configuration for the DB Server
+      operationId: updateDbServerSecurityConfiguration
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DBServerSecurityConfigUpdateRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{id}/security-config:
+    patch:
+      tags:
+      - tessell-database-security-config
+      summary: Update Security Configuration for instances in service
+      operationId: updateDBServiceSecurityConfiguration
+      parameters:
+      - name: id
+        in: path
+        description: DB Service ID
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DBServiceSecurityConfigUpdateRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    taskSummary:
+      title: taskSummary
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        taskType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        associatedResourceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        details:
+          type: object
+          additionalProperties:
+            type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    ApplyConfig:
+      title: ApplyConfig
+      type: object
+      description: Application Details for any operation
+      properties:
+        overriddenTaskIds:
+          type: array
+          description: Task ids that this request will override
+          items:
+            type: string
+            format: uuid
+            uniqueItems: true
+        strategy:
+          $ref: '#/components/schemas/ApplyStrategy'
+        maintenanceWindowId:
+          type: string
+          format: uuid
+          description: Needed when strategy is MAINTENANCE_WINDOW
+        time:
+          type: string
+          format: date-time
+          description: Needed when strategy is CUSTOM_DATE_TIME
+    DBServerSecurityConfigUpdateRequest:
+      type: object
+      required:
+      - securityProfile
+      properties:
+        securityProfile:
+          $ref: '#/components/schemas/SecurityProfileUpdateConfig'
+        applyConfig:
+          $ref: '#/components/schemas/ApplyConfig'
+    SecurityProfileUpdateConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Security Profile Id to which instance needs to be updated
+        versionId:
+          type: string
+          format: uuid
+          description: Security Profile Version Id to which instance needs to be update
+    DBServiceInstanceSecurityConfigUpdateRequest:
+      type: object
+      required:
+      - instanceId
+      - securityProfile
+      properties:
+        instanceId:
+          type: string
+          format: uuid
+          description: The instance Id for which security configuration update needs to be triggered
+        securityProfile:
+          $ref: '#/components/schemas/SecurityProfileUpdateConfig'
+    ApplyStrategy:
+      type: string
+      enum:
+      - IMMEDIATELY
+      - MAINTENANCE_WINDOW
+      - CUSTOM_DATE_TIME
+      - DO_NOT_APPLY
+    DBServiceSecurityConfigUpdateRequest:
+      type: object
+      description: Object to capture the security configuration update request for a DB Service
+      required:
+      - instanceSecurityUpdateConfig
+      properties:
+        instanceSecurityUpdateConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/DBServiceInstanceSecurityConfigUpdateRequest'
+        applyConfig:
+          $ref: '#/components/schemas/ApplyConfig'
+  parameters:
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

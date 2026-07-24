@@ -1,0 +1,330 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Userpool API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Userpool
+paths:
+  /iam/i/userpools:
+    get:
+      tags:
+      - Userpool
+      summary: Get list of all the userpools
+      operationId: getUserpools
+      parameters:
+      - name: id
+        in: query
+        description: id
+        required: false
+        style: form
+        schema:
+          type: string
+      - name: page-size
+        in: query
+        description: page-size
+        required: false
+        style: form
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page-offset
+        in: query
+        description: page-offset
+        required: false
+        style: form
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: time-zone
+        in: query
+        description: time-zone
+        required: false
+        style: form
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IamApiResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+      - Userpool
+      summary: Create for a new userpool
+      operationId: createUserpool
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserpoolPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserpoolDTO'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /iam/i/userpools/{userpoolId}:
+    delete:
+      tags:
+      - Userpool
+      summary: Delete a userpool
+      operationId: deleteUserpool
+      parameters:
+      - name: userpoolId
+        in: path
+        description: userpoolId
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: softDelete
+        in: query
+        description: softDelete
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: true
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - Userpool
+      summary: Update a userpool
+      operationId: updateUserpool
+      parameters:
+      - name: userpoolId
+        in: path
+        description: userpoolId
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserpoolPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserpoolDTO'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    UserpoolPayload:
+      title: UserpoolPayload
+      type: object
+      properties:
+        clientId:
+          type: string
+          description: AWS userpool client id
+        name:
+          type: string
+          description: AWS userpool name
+        region:
+          type: string
+          description: AWS userpool region
+        type:
+          $ref: '#/components/schemas/UserpoolType'
+        userpoolId:
+          type: string
+          description: AWS userpool id
+      description: This is a definition for Tessell internal create userpool payload object
+    UserpoolStatus:
+      title: UserpoolStatus
+      type: string
+      description: This is a definition for Tessell userpool status object
+      enum:
+      - DELETED
+      - DISABLED
+      - ENABLED
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    IamApiResponse:
+      title: IamApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            type: object
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    UserpoolType:
+      title: UserpoolType
+      type: string
+      description: This is a definition for Tessell userpool type object
+      enum:
+      - GLOBAL
+      - LOCAL
+    UserpoolDTO:
+      title: UserpoolDTO
+      type: object
+      properties:
+        clientId:
+          type: string
+          description: AWS userpool client id
+        dateCreated:
+          type: string
+          description: Date when the userpool is created  metadata
+          format: date-time
+        dateModified:
+          type: string
+          description: Date when userpool is last modified  metadata
+          format: date-time
+        id:
+          type: string
+          description: Tessell generated UUID for the userpool object
+          format: uuid
+        name:
+          type: string
+          description: AWS userpool name
+        region:
+          type: string
+          description: AWS userpool region
+        status:
+          $ref: '#/components/schemas/UserpoolStatus'
+        type:
+          $ref: '#/components/schemas/UserpoolType'
+        userpoolId:
+          type: string
+          description: AWS userpool id
+      description: This is a definition for Tessell managed userpool payload object
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

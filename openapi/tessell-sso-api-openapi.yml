@@ -1,0 +1,154 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center SSO API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: SSO
+paths:
+  /iam/sso:
+    get:
+      tags:
+      - SSO
+      operationId: getSsoConfiguration
+      security:
+      - BearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SsoConfigurationDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    IdentityProviderDTO:
+      title: IdentityProviderDTO
+      type: object
+      description: Component to represent Identity Provider properties
+      properties:
+        id:
+          type: string
+          description: Unique ID of Identity Provider configuration
+          format: uuid
+        type:
+          $ref: '#/components/schemas/IdentityProviderType'
+        entityId:
+          type: string
+          description: Entity ID of Identity Provider
+        loginUrl:
+          type: string
+          description: Login URL of Identity Provider
+        certificate:
+          type: string
+          description: Certificate of Identity Provider
+        status:
+          $ref: '#/components/schemas/IdentityProviderStatus'
+        dateCreated:
+          type: string
+          description: Date when the IDP configuration was created
+          format: date-time
+        dateModified:
+          type: string
+          description: Date when the IDP configuration was last modified
+          format: date-time
+    IdentityProviderStatus:
+      title: IdentityProviderStatus
+      type: string
+      description: Status of Identity Provider for SSO
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+    IdentityProviderType:
+      title: IdentityProviderType
+      type: string
+      description: Currently supported Identity Providers for SSO
+      enum:
+      - AZURE_AD
+      - OKTA
+    SsoConfigurationDTO:
+      title: SsoConfigurationDTO
+      description: Component to represent SSO Configuration
+      type: object
+      properties:
+        tessellEntityId:
+          type: string
+          description: Tessell's Entity ID for SSO
+        assertionConsumerServiceUrl:
+          type: string
+          description: Assertion Consumer Service URL
+        tessellLoginUrl:
+          type: string
+          description: Tessell Login URL
+        scimBaseUrl:
+          type: string
+          description: Base URL for SCIM protocol
+        idps:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityProviderDTO'
+  parameters:
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

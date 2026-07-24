@@ -1,0 +1,603 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center rpo-policy API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: rpo-policy
+paths:
+  /availability-machines/rpo-policies:
+    get:
+      tags:
+      - rpo-policy
+      summary: Get a list of RPO policies
+      operationId: getRpoPoliciesConsumptionView
+      parameters:
+      - name: pitr-enabled
+        description: "If true, it will return all of the RPO policies where PITR is non-zero. \nIf false, it will return all RPO policies where PITR is zero. \nIf not specified, it will return all of the RPO policies irrespective of PITR retention.\n"
+        in: query
+        style: form
+        required: false
+        schema:
+          type: boolean
+          nullable: true
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRpoPoliciesConsumptionView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /availability-machines/rpo-policies/{name}:
+    get:
+      tags:
+      - rpo-policy
+      summary: Get details about a RPO policy
+      operationId: getRpoPolicyConsumptionView
+      parameters:
+      - name: name
+        description: Name of the RPO policy
+        in: path
+        style: simple
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RpoPolicyConsumptionView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /availability-machines/governance/rpo-policies:
+    get:
+      tags:
+      - rpo-policy
+      summary: Get a list of custom RPO policies
+      operationId: getRpoPolicies
+      parameters:
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRpoPoliciesServiceView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+      - rpo-policy
+      summary: Create a new custom RPO policy
+      operationId: createRpoPolicy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RpoPolicyCreateUpdatePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RpoPolicyServiceView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /availability-machines/governance/rpo-policies/{name}:
+    get:
+      tags:
+      - rpo-policy
+      summary: Get details of a custom RPO policy
+      operationId: getRpoPolicy
+      parameters:
+      - name: name
+        description: RPO Policy name
+        in: path
+        style: simple
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RpoPolicyServiceView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - rpo-policy
+      summary: Update a custom RPO policy
+      operationId: updateRpoPolicy
+      parameters:
+      - name: name
+        description: RPO Policy name
+        in: path
+        style: simple
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RpoPolicyCreateUpdatePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RpoPolicyServiceView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - rpo-policy
+      summary: Delete a RPO policy
+      operationId: deleteRpoPolicy
+      parameters:
+      - name: name
+        description: Name of the RPO policy
+        in: path
+        style: simple
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /availability-machines/governance/rpo-policies/{name}/{action}:
+    patch:
+      tags:
+      - rpo-policy
+      summary: Update RPO Policy maturity status
+      operationId: updateRpoPolicyMaturityStatus
+      parameters:
+      - name: name
+        description: Name of the RPO Policy
+        in: path
+        style: simple
+        required: true
+        schema:
+          type: string
+      - name: action
+        description: Update maturity status as per the action, allowed actions are - DRAFT, PUBLISH, or UNPUBLISH
+        in: path
+        style: simple
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /availability-machines/governance/rpo-policies/{name}/usage:
+    get:
+      tags:
+      - rpo-policy
+      summary: Get details of Availability Machines which are using the RPO policy
+      operationId: getRpoPolicyUsage
+      parameters:
+      - name: name
+        in: path
+        description: name
+        required: true
+        style: simple
+        schema:
+          type: string
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRpoPolicyUsage'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    RpoPolicyUsage:
+      type: object
+      properties:
+        amName:
+          type: string
+          description: Name of the availability machine
+        amId:
+          type: string
+          format: uuid
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        owner:
+          type: string
+          description: Email id of the AM owner
+        status:
+          $ref: '#/components/schemas/DmmStatus'
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    RpoPolicyCreateUpdatePayload:
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+          minLength: 2
+          maxLength: 50
+        retentionInfo:
+          $ref: '#/components/schemas/SlaRetentionInfo'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    GetRpoPolicyUsage:
+      allOf:
+      - $ref: '#/components/schemas/TessellApiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/RpoPolicyUsage'
+    RpoPolicyConsumptionView:
+      type: object
+      properties:
+        name:
+          type: string
+          description: RPO policy name
+        description:
+          type: string
+        maturityStatus:
+          $ref: '#/components/schemas/SlaMaturityStatus'
+        retentionInfo:
+          $ref: '#/components/schemas/SlaRetentionInfo'
+    DmmStatus:
+      description: DMM Status
+      type: string
+      enum:
+      - CREATING
+      - DELETED
+      - DELETING
+      - TO_BE_DELETED
+      - DELETION_FAILED
+      - DISABLED
+      - PAUSED
+      - RUNNING
+      - FROZEN
+    GetRpoPoliciesConsumptionView:
+      allOf:
+      - $ref: '#/components/schemas/TessellApiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/RpoPolicyConsumptionView'
+    RpoPolicyServiceView:
+      type: object
+      description: Information about the Availability Machine's RPO Policy
+      properties:
+        name:
+          type: string
+          description: Name of the RPO policy
+        description:
+          type: string
+          description: Description of the RPO policy
+        retentionInfo:
+          $ref: '#/components/schemas/SlaRetentionInfo'
+        scope:
+          type: string
+          description: Scope of this RPO policy
+        oob:
+          type: boolean
+          description: Specify if the RPO policy is out-of-the-box
+          example: false
+        maturityStatus:
+          $ref: '#/components/schemas/SlaMaturityStatus'
+        owner:
+          type: string
+          description: Email id of RPO policy owner
+        tenantId:
+          type: string
+          description: ID of this tenant under which this RPO policy is effective
+        dateModified:
+          type: string
+          description: Timestamp when the entity was last modified
+          format: date-time
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    GetRpoPoliciesServiceView:
+      allOf:
+      - $ref: '#/components/schemas/TessellApiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/RpoPolicyServiceView'
+    TessellApiResponse:
+      title: TessellApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+    SlaMaturityStatus:
+      description: Maturity status for the RPO Policy
+      type: string
+      enum:
+      - DRAFT
+      - PUBLISHED
+      - UNPUBLISHED
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    SlaRetentionInfo:
+      description: Retention details of the data that is being governed by the RPO policy
+      type: object
+      properties:
+        pitr:
+          type: integer
+          format: int32
+          description: Retention time (in days) for Point-In-Time recoverability
+          default: 0
+          minimum: 0
+          maximum: 180
+        daily:
+          type: integer
+          format: int32
+          description: Retention time (in days) to retain daily snapshots
+          default: 0
+          minimum: 0
+          maximum: 730
+        weekly:
+          type: integer
+          format: int32
+          description: Retention time (number of weeks) to retain weekly snapshots
+          default: 0
+          minimum: 0
+          maximum: 104
+        monthly:
+          type: integer
+          format: int32
+          description: Retention time (number of months) to retain monthly snapshots
+          default: 0
+          minimum: 0
+          maximum: 60
+        yearly:
+          type: integer
+          format: int32
+          description: Retention time (number of years) to retain yearly snapshots
+          default: 0
+          minimum: 0
+          maximum: 30
+  parameters:
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

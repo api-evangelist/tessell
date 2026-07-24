@@ -1,0 +1,682 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center ticketControllerDeprecated API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: ticketControllerDeprecated
+paths:
+  /tickets:
+    get:
+      summary: Get tickets
+      description: Get tickets for the current user.
+      tags:
+      - ticketControllerDeprecated
+      operationId: getTickets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketsResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+    post:
+      summary: Create ticket
+      description: Creates jira and freshdesk tickets for the user
+      tags:
+      - ticketControllerDeprecated
+      operationId: createTicket
+      requestBody:
+        description: Request body to create ticket
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketRequestBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /tickets/{id}:
+    get:
+      summary: Get ticket by id
+      description: returns ticket corresponding to an id
+      tags:
+      - ticketControllerDeprecated
+      operationId: getTicketById
+      parameters:
+      - name: id
+        in: path
+        description: Id of the ticket
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    put:
+      summary: Update ticket
+      description: Updates ticket with the given id
+      tags:
+      - ticketControllerDeprecated
+      operationId: updateTicket
+      parameters:
+      - name: id
+        in: path
+        description: Id of the ticket
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: Request body to update ticket
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketUpdateRequestBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /tickets/{id}/status:
+    put:
+      summary: Open/Close a ticket
+      description: updates ticket status
+      tags:
+      - ticketControllerDeprecated
+      operationId: updateTicketStatus
+      parameters:
+      - name: id
+        in: path
+        description: Id of the ticket
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: Request body to change status
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketUpdateRequestBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /tickets/{id}/watchers:
+    patch:
+      summary: Update watchers list for a ticket
+      description: Update watchers list for a ticket
+      tags:
+      - ticketControllerDeprecated
+      operationId: updateWatchers
+      parameters:
+      - name: id
+        in: path
+        description: Id of the ticket
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: New list of watchers for the ticket
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /tickets/global-watchers:
+    get:
+      summary: Get global watchers list
+      description: Get global watchers list for a tenant
+      tags:
+      - ticketControllerDeprecated
+      operationId: getGlobalWatchers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalWatchlist'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+    post:
+      summary: Create global watchers list
+      description: Create global watchers list for a tenant
+      tags:
+      - ticketControllerDeprecated
+      operationId: createGlobalWatchers
+      requestBody:
+        description: List of global watchers for the tenant
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GlobalWatchlist'
+      responses:
+        '200':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+    put:
+      summary: Update global watchers list
+      description: Update global watchers list for a tenant
+      tags:
+      - ticketControllerDeprecated
+      operationId: updateGlobalWatchers
+      requestBody:
+        description: New list of global watchers for the tenant
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GlobalWatchlist'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalWatchlist'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+components:
+  schemas:
+    TicketRequestBody:
+      title: Create ticket request body
+      type: object
+      description: Create ticket payload
+      properties:
+        name:
+          type: string
+          description: Name of the requester
+        requester_id:
+          type: integer
+          format: int64
+          description: User ID of the requester. For existing contacts, the requester_id can be passed instead of the requester's email
+        email:
+          type: string
+          description: Email address of the requester. If no contact exists with this email address in Freshdesk, it will be added as a new contact
+        cc_emails:
+          type: array
+          items:
+            type: string
+          description: Email address added in the 'cc' field of the incoming ticket email
+        entityId:
+          type: string
+          description: Associated entityId of the ticket
+        entityType:
+          type: string
+          description: Associated entity type of the ticket
+        facebook_id:
+          type: string
+          description: Facebook ID of the requester. A contact should exist with this facebook_id in Freshdesk
+        phone:
+          type: string
+          description: Phone number of the requester. If no contact exists with this phone number in Freshdesk, it will be added as a new contact. If the phone number is set and the email address is not, then the name attribute is mandatory
+        twitter_id:
+          type: string
+          description: Twitter handle of the requester. If no contact exists with this handle in Freshdesk, it will be added as a new contact
+        unique_external_id:
+          type: string
+          description: External ID of the requester. If no contact exists with this external ID in Freshdesk, they will be added as a new contact
+        subject:
+          type: string
+          description: Subject of the ticket. The default Value is null
+        type:
+          type: string
+          description: Helps categorize the ticket according to the different kinds of issues your support team deals with. The default Value is null
+        status:
+          type: integer
+          format: int64
+          description: Status of the ticket. The default Value is 2.
+        priority:
+          type: integer
+          format: int64
+          description: Priority of the ticket. The default value is 1
+        description:
+          type: string
+          description: HTML content of the ticket
+        responder_id:
+          type: integer
+          format: int64
+          description: ID of the agent to whom the ticket has been assigned
+        custom_fields:
+          type: object
+          description: Key value pairs containing the names and values of custom fields
+          additionalProperties:
+            type: object
+            properties:
+              code:
+                type: integer
+              text:
+                type: string
+        due_by:
+          type: string
+          format: date-time
+          description: Timestamp that denotes when the ticket is due to be resolved
+        email_config_id:
+          type: integer
+          format: int64
+          description: ID of email config which is used for this ticket. (i.e., support@yourcompany.com/sales@yourcompany.com)
+        fr_due_by:
+          type: string
+          format: date-time
+          description: Timestamp that denotes when the first response is due
+        group_id:
+          type: integer
+          format: int64
+          description: ID of the group to which the ticket has been assigned. The default value is the ID of the group that is associated with the given email_config_id
+        product_id:
+          type: integer
+          format: int64
+          description: ID of the product to which the ticket is associated. It will be ignored if the email_config_id attribute is set in the request.
+        source:
+          type: integer
+          format: int64
+          description: The channel through which the ticket was created. The default value is 2
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags that have been associated with the ticket
+        company_id:
+          type: integer
+          format: int64
+          description: Company ID of the requester. This attribute can only be set if the Multiple Companies feature is enabled
+        internal_agent_id:
+          type: integer
+          description: ID of the internal agent which the ticket should be assigned with
+        internal_group_id:
+          type: integer
+          description: ID of the internal group to which the ticket should be assigned with
+        jiraMetadata:
+          type: object
+          additionalProperties: {}
+          description: Jira metadata of ticket
+        ticketMetadata:
+          $ref: '#/components/schemas/TicketMetadata'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    Attachment:
+      title: Ticket conversation attachment
+      type: object
+      description: Conversation attachment
+      properties:
+        attachment_url:
+          type: string
+          description: attachment url
+        content_type:
+          type: string
+          description: attachment content type
+        created_at:
+          type: string
+          format: date-time
+          description: attachment creation date
+        id:
+          type: integer
+          format: int64
+          description: attachment identifier
+        name:
+          type: string
+          description: attachment name
+        size:
+          type: integer
+          format: int64
+          description: attachment size
+        updated_at:
+          type: string
+          format: date-time
+          description: attachment last updated
+    TicketMetadata:
+      title: Ticket metadata
+      type: object
+      description: Ticket metadata
+      properties:
+        component:
+          type: string
+          description: Application name
+    TicketDTO:
+      title: Ticket
+      type: object
+      description: Ticket DTO
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ticket identifier
+        description:
+          type: string
+          description: ticket description
+        description_text:
+          type: string
+          description: ticket description text
+        created_at:
+          type: string
+          format: date-time
+          description: ticket creation date
+        updated_at:
+          type: string
+          format: date-time
+          description: ticket last updated
+        cc_emails:
+          type: array
+          items:
+            type: string
+          description: Email address added in the 'cc' field of the incoming ticket email
+        fwd_emails:
+          type: array
+          items:
+            type: string
+          description: Email address added in the 'fwd' field of the incoming ticket email
+        reply_cc_emails:
+          type: array
+          items:
+            type: string
+          description: Email address added in the 'reply_cc' field of the incoming ticket email
+        to_emails:
+          type: array
+          items:
+            type: string
+          description: Email address added in the 'to' field of the incoming ticket email
+        email_config_id:
+          type: integer
+          format: int64
+          description: ID of email config which is used for this ticket. (i.e., support@yourcompany.com/sales@yourcompany.com)
+        fr_escalated:
+          type: boolean
+          description: If the ticket is escalated by the agent/ user
+        responder_id:
+          type: integer
+          format: int64
+          description: ID of the agent to whom the ticket has been assigned
+        source:
+          type: integer
+          format: int64
+          description: The channel through which the ticket was created. The default value is 2
+        spam:
+          type: boolean
+          description: If the generated ticket is spam
+        company_id:
+          type: integer
+          format: int64
+          description: Company ID of the requester. This attribute can only be set if the Multiple Companies feature is enabled
+        product_id:
+          type: integer
+          format: int64
+          description: ID of the product to which the ticket is associated. It will be ignored if the email_config_id attribute is set in the request.
+        fr_due_by:
+          type: string
+          format: date-time
+          description: Timestamp that denotes when the first response is due
+        due_by:
+          type: string
+          format: date-time
+          description: ticket dur date
+        group_id:
+          type: integer
+          format: int64
+          description: Ticket group
+        is_escalated:
+          type: boolean
+          description: Ticket escalation
+        association_type:
+          type: string
+          description: Ticket association type
+        priority:
+          type: integer
+          format: int64
+          description: Ticket priority
+        requester_id:
+          type: integer
+          format: int64
+          description: User identifier
+        status:
+          type: integer
+          format: int64
+          description: Ticket status
+        subject:
+          type: string
+          description: Ticket subject
+        tags:
+          type: array
+          description: Ticket tags
+          items:
+            type: string
+        type:
+          type: string
+          description: Ticket type
+        custom_fields:
+          type: object
+          description: Key value pairs containing the names and values of custom fields
+          additionalProperties:
+            type: object
+            properties:
+              code:
+                type: integer
+              text:
+                type: string
+        attachments:
+          title: Get ticket attachments
+          description: an array of attachments
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+    TicketsResponse:
+      title: Get Tickets Response
+      description: array of tickets
+      type: array
+      items:
+        $ref: '#/components/schemas/TicketDTO'
+    GlobalWatchlist:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the watchlist
+        emails:
+          type: array
+          items:
+            type: string
+          description: emails in the watchlist
+    TicketUpdateRequestBody:
+      title: Update ticket request body
+      type: object
+      description: Update ticket request body
+      properties:
+        status:
+          type: integer
+          format: int64
+          description: Status of the ticket. The default Value is 2.
+          nullable: true
+        priority:
+          type: integer
+          format: int64
+          description: Priority of the ticket. The default value is 1
+          nullable: true
+        subject:
+          type: string
+          description: Subject of the ticket. The default Value is null
+          nullable: true
+        entityType:
+          type: string
+          description: Associated entityId
+          nullable: true
+        entityId:
+          type: string
+          description: Associated entityId
+          nullable: true
+        jiraMetadata:
+          type: object
+          additionalProperties: {}
+          description: Jira metadata of ticket
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

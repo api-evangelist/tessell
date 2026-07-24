@@ -1,0 +1,390 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Ticket API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Ticket
+paths:
+  /tickets/v2:
+    get:
+      summary: Get tickets
+      description: Get tickets for the current user.
+      tags:
+      - Ticket
+      operationId: getTicketsV2
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketsResponseV2'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+    post:
+      summary: Create ticket
+      description: Creates jira and freshdesk tickets for the user
+      tags:
+      - Ticket
+      operationId: createTicketV2
+      requestBody:
+        description: Request body to create ticket
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketRequestBodyV2'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketDTOV2'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /tickets/v2/{id}:
+    get:
+      summary: Get ticket by id
+      description: returns ticket corresponding to an id
+      tags:
+      - Ticket
+      operationId: getTicketByIdV2
+      parameters:
+      - name: id
+        in: path
+        description: Id of the ticket
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketDTOV2'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    put:
+      summary: Update ticket
+      description: Updates ticket with the given id
+      tags:
+      - Ticket
+      operationId: updateTicketV2
+      parameters:
+      - name: id
+        in: path
+        description: Id of the ticket
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: Request body to update ticket
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketUpdateRequestBodyV2'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketDTOV2'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /tickets/v2/{id}/status:
+    put:
+      summary: Open/Close a ticket
+      description: updates ticket status
+      tags:
+      - Ticket
+      operationId: updateTicketStatusV2
+      parameters:
+      - name: id
+        in: path
+        description: Id of the ticket
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: Request body to change status
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketUpdateRequestBodyV2'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketDTOV2'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /tickets/v2/{id}/watchers:
+    patch:
+      summary: Update watchers list for a ticket
+      description: Update watchers list for a ticket
+      tags:
+      - Ticket
+      operationId: updateWatchersV2
+      parameters:
+      - name: id
+        in: path
+        description: Id of the ticket
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: New list of watchers for the ticket
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    TicketUpdateRequestBodyV2:
+      title: Update ticket request body
+      type: object
+      description: Update ticket request body
+      properties:
+        status:
+          type: string
+          enum:
+          - open
+          - closed
+          description: Status of the ticket
+        priority:
+          type: string
+          description: Priority of the ticket.
+        subject:
+          type: string
+          description: Subject of the ticket.
+    TicketRequestBodyV2:
+      title: Create ticket request body
+      type: object
+      description: Create ticket payload
+      properties:
+        entityType:
+          type: string
+          description: Associated entityType
+        entityId:
+          type: string
+          description: Associated entityId
+        ccEmails:
+          type: array
+          items:
+            type: string
+        jiraFields:
+          $ref: '#/components/schemas/RequestFieldValues'
+    TicketDTOV2:
+      title: Ticket
+      type: object
+      description: Ticket DTO
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ticket identifier
+        key:
+          type: string
+          description: key for jira ticket
+        description:
+          type: string
+          description: ticket description
+        created_at:
+          type: string
+          format: date-time
+          description: ticket creation date
+        updated_at:
+          type: string
+          format: date-time
+          description: ticket last updated
+        watchlist:
+          type: array
+          items:
+            type: string
+          description: Email address in watchlist
+        priority:
+          type: string
+          description: Ticket priority
+        status:
+          type: string
+          description: Ticket status
+        subject:
+          type: string
+          description: Ticket subject
+        owner:
+          type: string
+          description: Email of owner
+        name:
+          type: string
+          description: Name of owner
+    RequestFieldValues:
+      type: object
+      description: Request fields values for jira ticket
+      properties:
+        summary:
+          type: string
+          description: summary or subject for ticket
+        components:
+          type: array
+          description: array of components, where component is the area where the issue occurred
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: name of component
+        description:
+          type: string
+          description: description for ticket
+        environment:
+          type: string
+          description: environment details from where the ticket is raised
+        priority:
+          type: object
+          description: priority or severity of ticket
+          properties:
+            name:
+              type: string
+              description: name of priority
+        labels:
+          type: array
+          description: array of labels
+          items:
+            type: string
+            description: label
+        assignee:
+          type: object
+          properties:
+            id:
+              type: string
+              description: user id of assignee
+    TicketsResponseV2:
+      title: Get Tickets Response
+      description: array of tickets
+      type: array
+      items:
+        $ref: '#/components/schemas/TicketDTOV2'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

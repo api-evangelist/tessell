@@ -1,0 +1,978 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center security-profiles API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: security-profiles
+paths:
+  /security-config/security-profiles:
+    post:
+      tags:
+      - security-profiles
+      summary: Create a Security Profile
+      operationId: createSecurityProfile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSecurityProfilePayload'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityProfile'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+    get:
+      tags:
+      - security-profiles
+      summary: Get a list of Security Profiles
+      operationId: getSecurityProfiles
+      parameters:
+      - name: view
+        in: query
+        description: If SUMMARY, returns all profiles in a limited view. Defaults to accessible profiles with full details.
+        schema:
+          $ref: '#/components/schemas/SecurityProfileView'
+      - name: owner
+        in: query
+        description: Email Id of the Owner of the security profile
+        schema:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 128
+      - name: status
+        in: query
+        description: Status of the security profile
+        schema:
+          $ref: '#/components/schemas/SecurityProfileStatus'
+      - name: load-rules
+        in: query
+        description: Whether to load rules for the security profiles
+        schema:
+          type: boolean
+          default: false
+      - $ref: '#/components/parameters/cloudRegion'
+      - $ref: '#/components/parameters/cloudType'
+      - $ref: '#/components/parameters/subscriptionNameQuery'
+      - $ref: '#/components/parameters/include-shared-with'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityProfileResponse'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /security-config/security-profiles/{id}:
+    patch:
+      tags:
+      - security-profiles
+      summary: Update Security Profile metadata
+      description: Updates the basic information of an existing Security Profile (for example name, description, subscription, and regions).
+      operationId: updateSecurityProfileInfo
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSecurityProfileInfoPayload'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityProfile'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - security-profiles
+      summary: Delete a Security Profile
+      operationId: deleteSecurityProfile
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    get:
+      tags:
+      - security-profiles
+      summary: Get a Security Profile by Id
+      operationId: getSecurityProfileById
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/include-shared-with'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityProfile'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /security-config/security-profiles/{id}/status:
+    patch:
+      tags:
+      - security-profiles
+      summary: Update Security Profile status
+      description: Updates the status of a Security Profile
+      operationId: updateSecurityProfileStatus
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSecurityProfileStatusPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /security-config/security-profiles/{id}/usages:
+    get:
+      tags:
+      - security-profiles
+      summary: Provide Servers and Databases that are using the Security Profile
+      operationId: getSecurityProfileUsages
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityProfileUsageResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /security-config/security-profiles/{id}/deletable:
+    get:
+      tags:
+      - security-profiles
+      summary: Check if Security Profile is deletable or not
+      operationId: isSecurityProfileDeletable
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteValidationResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /security-config/security-profiles/{id}/rules:
+    post:
+      tags:
+      - security-profiles
+      summary: Add rule to a Security Profile
+      operationId: addSecurityProfileRule
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddSecurityProfileRulePayload'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityProfile'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /security-config/security-profiles/{id}/rules/{ruleId}:
+    put:
+      tags:
+      - security-profiles
+      summary: Update a Security Profile rule
+      operationId: updateSecurityProfileRule
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: ruleId
+        in: path
+        description: Id of the rule
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSecurityProfileRulePayload'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityProfile'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - security-profiles
+      summary: Delete a Security Profile rule
+      operationId: deleteSecurityProfileRule
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: ruleId
+        in: path
+        description: Id of the rule
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /security-config/security-profiles/{id}/versions/{versionId}:
+    get:
+      tags:
+      - security-profiles
+      summary: Get a Security Profile version
+      operationId: getSecurityProfileByVersionId
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: versionId
+        in: path
+        description: Id of the version of Security Profile
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/include-shared-with'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityProfile'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /security-config/security-profiles/security-tags:
+    get:
+      tags:
+      - security-profiles
+      summary: Get a list of Security Tags
+      operationId: getSecurityTags
+      parameters:
+      - $ref: '#/components/parameters/cloudTypeMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityTagsResponse'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    SecurityProfileResponse:
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/SecurityProfile'
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    SecurityProfileRuleDirectionOps:
+      type: string
+      description: Direction of network traffic for the security rule
+      enum:
+      - INBOUND
+      - OUTBOUND
+    UpdateSecurityProfileInfoPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the Security Profile
+          minLength: 1
+          maxLength: 128
+        description:
+          type: string
+          description: Description of the Security Profile
+          default: ''
+          maxLength: 2048
+        regions:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 128
+          description: List of regions for which this profile is created
+    SecurityProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the Security Profile
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: Name of the security profile
+        description:
+          type: string
+          minLength: 1
+          maxLength: 2048
+          description: Description of the security profile
+        subscriptionName:
+          type: string
+          description: Subscription name for which this Security Profile is created
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        regions:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 128
+          description: List of regions for which this profile is created
+        status:
+          $ref: '#/components/schemas/SecurityProfileStatus'
+        versionId:
+          type: string
+          format: uuid
+          description: Version Id for the security profile
+        rules:
+          type: array
+          description: List of rules for this version
+          items:
+            $ref: '#/components/schemas/SecurityProfileRuleOps'
+        owner:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 128
+          description: Email of the user who created the Security Profile
+        tenantId:
+          type: string
+          format: uuid
+          description: Tenant for which this profile is created
+        dateCreated:
+          $ref: '#/components/schemas/dateCreated'
+        dateModified:
+          $ref: '#/components/schemas/dateModified'
+        sharedWith:
+          $ref: '#/components/schemas/EntityAclSharingInfo'
+    SecurityProfileRuleOps:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the entity
+        name:
+          type: string
+          description: Name of the rule
+        direction:
+          $ref: '#/components/schemas/SecurityProfileRuleDirectionOps'
+        protocol:
+          $ref: '#/components/schemas/SecurityProfileRuleProtocolOps'
+        ports:
+          type: array
+          items:
+            type: string
+          description: List of ports for which this rule is created
+        source:
+          $ref: '#/components/schemas/SecurityProfileRuleSourceOps'
+    SecurityProfileRuleSourceOps:
+      type: object
+      properties:
+        aws:
+          $ref: '#/components/schemas/AwsRuleSourceOps'
+        azure:
+          $ref: '#/components/schemas/AzureRuleSourceOps'
+    SecurityProfileView:
+      type: string
+      enum:
+      - SUMMARY
+    EntityAclSharingInfo:
+      title: EntityAclSharingInfo
+      description: Tessell Entity ACL Sharing Info
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityUserAclSharingInfo'
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    UpdateSecurityProfileStatusPayload:
+      type: object
+      required:
+      - status
+      properties:
+        status:
+          $ref: '#/components/schemas/SecurityProfileStatus'
+          description: New status for the Security Profile
+    CreateSecurityProfilePayload:
+      type: object
+      required:
+      - name
+      - subscriptionName
+      - regions
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: Name of the security profile
+        description:
+          type: string
+          default: ''
+          maxLength: 2048
+          description: Description of the security profile
+        regions:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            minLength: 1
+            maxLength: 128
+          description: List of regions for which this profile is created
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateSecurityProfileRulePayload'
+          description: List of rules for this version
+        subscriptionName:
+          type: string
+          description: Subscription for which this profile is created
+    DatabasesUsageResponse:
+      type: object
+      description: Captures the list of Databases using the Security Profile
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        serverId:
+          type: string
+          format: uuid
+        serverName:
+          type: string
+        status:
+          $ref: '#/components/schemas/SecurityProfileSyncStatus'
+        region:
+          type: string
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        owner:
+          type: string
+          format: email
+    CreateSecurityProfileRulePayload:
+      type: object
+      required:
+      - name
+      - direction
+      - protocol
+      - source
+      properties:
+        name:
+          type: string
+          description: Name of the rule
+        direction:
+          $ref: '#/components/schemas/SecurityProfileRuleDirectionOps'
+        protocol:
+          $ref: '#/components/schemas/SecurityProfileRuleProtocolOps'
+        ports:
+          type: array
+          items:
+            type: string
+        source:
+          $ref: '#/components/schemas/SecurityProfileRuleSourceOps'
+    EntityUserAclSharingInfo:
+      title: EntityUserAclSharingInfo
+      description: Tessell Entity ACL Sharing Info for a user
+      properties:
+        emailId:
+          type: string
+        role:
+          type: string
+        sharedBy:
+          type: string
+          description: Email of the user who shared the entity
+        sharedOn:
+          type: string
+          format: date-time
+          description: Date when the entity was shared
+    SecurityProfileUsageResponse:
+      type: object
+      properties:
+        servers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServersUsageResponse'
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabasesUsageResponse'
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    SecurityProfileRuleProtocolOps:
+      type: string
+      description: Protocol for the security rule
+      enum:
+      - TCP
+      - UDP
+      - ICMP
+      - ALL
+    DeleteValidationResponse:
+      type: object
+      properties:
+        deletable:
+          type: boolean
+        message:
+          type: string
+    IpRangeSourceOps:
+      type: object
+      properties:
+        cidr:
+          type: string
+          example: 10.0.0.0/24
+        description:
+          type: string
+          description: Description of the source
+          example: My Source
+    SecurityTagsResponse:
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            type: string
+    dateCreated:
+      type: string
+      description: Timestamp when the entity was created
+      format: date-time
+    SecurityProfileSyncStatus:
+      type: string
+      description: Sync status of the security profile applied on an instance/server
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+    ServersUsageResponse:
+      type: object
+      description: Captures the list of Servers using the Security Profile
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        status:
+          $ref: '#/components/schemas/SecurityProfileSyncStatus'
+        region:
+          type: string
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        owner:
+          type: string
+          format: email
+    dateModified:
+      type: string
+      description: Timestamp when the entity was last modified
+      format: date-time
+    AzureRuleSourceOps:
+      type: object
+      properties:
+        ipRanges:
+          type: array
+          items:
+            $ref: '#/components/schemas/IpRangeSourceOps'
+        serviceTag:
+          $ref: '#/components/schemas/ServiceTagSourceOps'
+    AddSecurityProfileRulePayload:
+      allOf:
+      - $ref: '#/components/schemas/CreateSecurityProfileRulePayload'
+    AwsRuleSourceOps:
+      type: object
+      properties:
+        ipRanges:
+          type: array
+          items:
+            $ref: '#/components/schemas/IpRangeSourceOps'
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    ServiceTagSourceOps:
+      type: object
+      properties:
+        tag:
+          type: string
+          description: Azure service tag name
+          example: AzureMonitor
+    SecurityProfileStatus:
+      type: string
+      description: Status of the security profile
+      enum:
+      - PUBLISHED
+      - UNPUBLISHED
+    UpdateSecurityProfileRulePayload:
+      allOf:
+      - $ref: '#/components/schemas/CreateSecurityProfileRulePayload'
+  parameters:
+    cloudRegion:
+      name: region
+      description: Cloud Region
+      in: query
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+      examples:
+        aws:
+          value: us-east-1
+          summary: aws region example
+        azure:
+          value: eastUS
+          summary: azure region example
+    cloudType:
+      name: cloud-type
+      in: query
+      description: Cloud Type
+      schema:
+        $ref: '#/components/schemas/cloudType'
+    subscriptionNameQuery:
+      name: subscription-name
+      description: Subscription name
+      in: query
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 64
+        example: Sub-Experiments-2
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    include-shared-with:
+      name: include-shared-with
+      in: query
+      description: Whether to include users with whom the entity is shared
+      required: false
+      schema:
+        type: boolean
+        default: false
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    cloudTypeMandatory:
+      name: cloud-type
+      in: query
+      description: Cloud Type
+      required: true
+      schema:
+        $ref: '#/components/schemas/cloudType'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

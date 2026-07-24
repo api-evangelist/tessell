@@ -1,0 +1,482 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center DB Profile ACLs API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: DB Profile ACLs
+paths:
+  /databases/profiles/governance/parameter-profiles/{name}/acls:
+    patch:
+      tags:
+      - DB Profile ACLs
+      summary: Create/Update ACLs of a Parameter Profile
+      operationId: createDBParameterProfileAcls
+      parameters:
+      - name: name
+        in: path
+        description: Options Profile name
+        required: true
+        style: simple
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: Postgres Custom Option Profile
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AclPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AclPayload'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - DB Profile ACLs
+      summary: Revoke access of given users from a Parameter Profile
+      operationId: revokeDBParameterProfileAcls
+      parameters:
+      - name: name
+        in: path
+        description: Options Profile name
+        required: true
+        style: simple
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: Postgres Custom Option Profile
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AclRevokePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /databases/profiles/governance/options-profiles/{name}/acls:
+    patch:
+      tags:
+      - DB Profile ACLs
+      summary: Create/Update ACLs of an Options Profile
+      operationId: createDBOptionsProfileAcls
+      parameters:
+      - name: name
+        in: path
+        description: Options Profile name
+        required: true
+        style: simple
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: Postgres Custom Option Profile
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AclPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AclPayload'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - DB Profile ACLs
+      summary: Revoke access of given users from an Options Profile
+      operationId: revokeDBOptionsProfileAcls
+      parameters:
+      - name: name
+        in: path
+        description: Options Profile name
+        required: true
+        style: simple
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: Postgres Custom Option Profile
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AclRevokePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /databases/profiles/governance/parameter-profiles/{name}/acls/eligible-users:
+    get:
+      tags:
+      - DB Profile ACLs
+      summary: Get a list of all users along with role they are eligible on a Parameter Profile
+      operationId: getPrivilegedUserForDBParameterProfile
+      parameters:
+      - name: name
+        in: path
+        description: Parameter Profile name
+        required: true
+        style: simple
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: Postgres Custom Parameter Profile
+      - name: role
+        in: query
+        description: role
+        required: false
+        style: form
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: Member
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AclEligibleUser'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /databases/profiles/governance/options-profiles/{name}/acls/eligible-users:
+    get:
+      tags:
+      - DB Profile ACLs
+      summary: Get a list of all users along with role they are eligible on an Options Profile
+      operationId: getPrivilegedUserForDBOptionsProfile
+      parameters:
+      - name: name
+        in: path
+        description: Options Profile name
+        required: true
+        style: simple
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: Postgres Custom Option Profile
+      - name: role
+        in: query
+        description: Name of role
+        required: false
+        style: form
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: Member
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AclEligibleUser'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /databases/profiles/governance/options-profiles/{name}/{action}:
+    patch:
+      tags:
+      - DB Profile ACLs
+      summary: Update Options Profile's Maturity Status
+      operationId: updateOptionProfileStatus
+      parameters:
+      - name: name
+        in: path
+        description: Options Profile name
+        required: true
+        style: simple
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: Postgres Custom Option Profile
+      - name: action
+        in: path
+        description: Actions like DRAFT/PUBLISH/UNPUBLISH
+        required: true
+        style: simple
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: PUBLISH
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /databases/profiles/governance/parameter-profiles/{name}/{action}:
+    patch:
+      tags:
+      - DB Profile ACLs
+      summary: Update Parameter Profile's Maturity Status
+      operationId: updateParameterProfileStatus
+      parameters:
+      - name: name
+        in: path
+        description: Parameter Profile name
+        required: true
+        style: simple
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: Postgres Custom Parameter Profile
+      - name: action
+        in: path
+        description: Actions like DRAFT/PUBLISH/UNPUBLISH
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    AclRevokePayload:
+      title: AclRevokePayload
+      description: Payload to revoke Tessell ACLs
+      required:
+      - users
+      properties:
+        users:
+          description: List of users to be deleted
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          minItems: 1
+          maxItems: 100
+    AclPayload:
+      title: AclPayload
+      description: Payload to create an entity ACL
+      required:
+      - users
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/AclUserPayload'
+          minItems: 1
+          maxItems: 100
+    AclEligibleUser:
+      title: AclEligibleUser
+      description: Eligible user for sharing the entity
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        emailId:
+          type: string
+        eligibleRoles:
+          type: array
+          items:
+            type: string
+        accessibleSubscriptions:
+          type: array
+          items:
+            type: string
+          description: List of subscriptions user has access to
+    AclUserPayload:
+      title: AclUserPayload
+      description: Payload to create an user's entity ACL
+      required:
+      - emailId
+      - role
+      properties:
+        emailId:
+          description: Email id of the user
+          type: string
+          minLength: 1
+          maxLength: 256
+        role:
+          description: Role Info
+          type: string
+          minLength: 1
+          maxLength: 64
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

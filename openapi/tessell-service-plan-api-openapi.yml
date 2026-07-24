@@ -1,0 +1,247 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Service Plan API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Service Plan
+paths:
+  /service-plans:
+    get:
+      operationId: getServicePlans
+      parameters:
+      - description: load-apps
+        explode: true
+        in: query
+        name: load-apps
+        required: false
+        schema:
+          type: string
+      - description: load-features
+        explode: true
+        in: query
+        name: load-features
+        required: false
+        schema:
+          type: string
+        style: form
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServicePlanApiResponse'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      summary: Get a list of Tessell Service Plans
+      tags:
+      - Service Plan
+components:
+  schemas:
+    ServicePlanApp:
+      description: This is a definition for Tessell app DTO object
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - title: ServicePlanApp
+        type: object
+      properties:
+        appFamily:
+          description: Family to which this app belongs to
+          type: string
+          minLength: 1
+          maxLength: 256
+        name:
+          description: Name of the service plan
+          type: string
+          minLength: 1
+          maxLength: 32
+        features:
+          type: array
+          description: List of feature names
+          items:
+            $ref: '#/components/schemas/ServicePlanAppFeature'
+        limits:
+          type: object
+          additionalProperties:
+            uniqueItems: true
+            type: object
+      title: ServicePlanCreateAppPayload
+      type: object
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    ServicePlanStatus:
+      x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n"
+      description: Service Plan Status
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+      type: string
+    ServicePlanAppFeature:
+      description: This is a definition for Tessell app DTO object
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - title: ServicePlanAppFeature
+        type: object
+      properties:
+        name:
+          description: Name of the service plan
+          type: string
+          minLength: 1
+          maxLength: 32
+        displayName:
+          type: string
+          description: UI display name of feature
+        description:
+          type: string
+          description: Description of feature
+      title: ServicePlanCreateAppPayload
+      type: object
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    BaseEntity:
+      type: object
+      properties:
+        dateCreated:
+          x-dao-annotations: "@Column(name = \"DATE_CREATED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @CreationTimestamp\n"
+          description: Timestamp when the entity was created
+          format: date-time
+          type: string
+        dateModified:
+          x-dao-annotations: "@Column(name = \"DATE_MODIFIED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @UpdateTimestamp\n"
+          description: Timestamp when the entity was last modified
+          format: date-time
+          type: string
+        id:
+          x-dao-query: true
+          x-dao-annotations: "@Id\n  @GeneratedValue(generator = \"UUID\")\n  @GenericGenerator(name = \"UUID\", strategy = \"org.hibernate.id.UUIDGenerator\")\n  @Column(name = \"id\", updatable = false, nullable = false)\n"
+          description: generated UUID for the entity
+          example: 123e4567-e89b-12d3-a456-426614174000
+          format: uuid
+          type: string
+    ServicePlan:
+      description: This is a definition for Tessell app DTO object
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - title: ServicePlan
+        type: object
+        properties:
+          description:
+            type: string
+          name:
+            description: Name of the app
+            type: string
+          apps:
+            description: List of features associated with the app
+            items:
+              $ref: '#/components/schemas/ServicePlanApp'
+            type: array
+          status:
+            $ref: '#/components/schemas/ServicePlanStatus'
+    ServicePlanApiResponse:
+      title: ServicePlanApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServicePlan'
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+  parameters:
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

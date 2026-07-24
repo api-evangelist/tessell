@@ -1,0 +1,259 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center tessell-cloud-controller API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: tessell-cloud-controller
+paths:
+  /clouds:
+    get:
+      operationId: getClouds
+      parameters:
+      - description: id
+        explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
+          format: uuid
+        style: form
+      - description: type
+        explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: pageSize
+        explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          format: int32
+          type: integer
+          default: 10
+        style: form
+      - description: pageOffset
+        explode: true
+        in: query
+        name: pageOffset
+        required: false
+        schema:
+          format: int32
+          type: integer
+          default: 0
+        style: form
+      - description: timeZone
+        explode: true
+        in: query
+        name: timeZone
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: consumer-type
+        explode: true
+        in: query
+        name: consumer-type
+        required: false
+        schema:
+          $ref: '#/components/schemas/consumerType'
+        style: form
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiResponse'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      summary: Get a list of enabled clouds in Tessell
+      tags:
+      - tessell-cloud-controller
+    post:
+      operationId: addCloud
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cloud'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cloud'
+          description: OK
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      summary: Add a cloud in Tessell
+      tags:
+      - tessell-cloud-controller
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+components:
+  schemas:
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    Cloud:
+      x-dao-entity: true
+      x-dao-table-name: TESSELL_CLOUDS
+      x-dao-entity-annotations: '@Table(name = "TESSELL_CLOUDS", uniqueConstraints = @UniqueConstraint(columnNames = {"type"}))
+
+        '
+      description: This is a definition for Clouds in Tessell
+      example:
+        dateCreated: '2000-01-23T04:56:07'
+        name: sample-entity
+        dateModified: '2000-01-23T04:56:07'
+        id: 123e4567-e89b-12d3-a456-426614174000
+        type: AWS
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          name:
+            x-dao-query: true
+            description: Name of the entity
+            example: sample-entity
+            type: string
+          type:
+            x-dao-query: true
+            x-dao-annotations: '@NotNull
+
+              '
+            description: Type of the cloud
+            example: AWS
+            type: string
+        required:
+        - name
+        - type
+        title: Cloud
+        type: object
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    BaseEntity:
+      type: object
+      properties:
+        dateCreated:
+          x-dao-annotations: "@Column(name = \"DATE_CREATED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @CreationTimestamp\n"
+          description: Timestamp when the entity was created
+          format: date-time
+          type: string
+        dateModified:
+          x-dao-annotations: "@Column(name = \"DATE_MODIFIED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @UpdateTimestamp\n"
+          description: Timestamp when the entity was last modified
+          format: date-time
+          type: string
+        id:
+          x-dao-query: true
+          x-dao-annotations: "@Id\n  @GeneratedValue(generator = \"UUID\")\n  @GenericGenerator(name = \"UUID\", strategy = \"org.hibernate.id.UUIDGenerator\")\n  @Column(name = \"id\", updatable = false, nullable = false)\n"
+          description: generated UUID for the entity
+          example: 123e4567-e89b-12d3-a456-426614174000
+          format: uuid
+          type: string
+    consumerType:
+      description: Tessell Consumer Type
+      type: string
+      enum:
+      - SERVICE
+      - OPS
+      - INTERNAL
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

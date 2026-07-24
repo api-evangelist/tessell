@@ -1,0 +1,193 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center db-schema-controller API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: db-schema-controller
+paths:
+  /services/{id}/db-schemas:
+    parameters:
+    - $ref: '#/components/parameters/id'
+    - name: load-data-pipeline-eligibility
+      in: query
+      description: If true, the response will include the data pipeline eligibility status
+      required: false
+      style: form
+      schema:
+        type: boolean
+        default: false
+    get:
+      summary: Get DB schema for a service
+      description: Retrieves the latest captured database schema for the specified DB service ID.
+      tags:
+      - db-schema-controller
+      operationId: getDBSchemaByTessellServiceId
+      responses:
+        '200':
+          description: Successfully retrieved the captured schema for the service.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseSchema'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+components:
+  schemas:
+    DatabaseSchemaDbSchema:
+      type: object
+      description: Represents a schema within a database instance.
+      properties:
+        schemaName:
+          type: string
+          example: USER10
+        schemaId:
+          type: string
+          format: uuid
+          description: Unique identifier for the schema.
+        tables:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseSchemaDbSchemaTable'
+    DatabaseSchemaDbSchemaTableColumn:
+      type: object
+      description: Represents a column within a table.
+      properties:
+        columnName:
+          type: string
+          example: ID
+        dataType:
+          type: string
+          example: NUMBER
+        isEligibleForDataPipeline:
+          type: boolean
+          description: Indicates if this column's dataType is supported across all target databases for data pipeline operations.
+          example: true
+        constraints:
+          type: array
+          items:
+            type: string
+          example:
+          - Primary Key
+          - Not Null
+    DatabaseSchemaDb:
+      type: object
+      description: Represents a database instance within the schema structure.
+      properties:
+        databaseName:
+          type: string
+          example: PDB52E
+        databaseId:
+          type: string
+          format: uuid
+          description: Unique identifier for the database instance.
+        schemas:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseSchemaDbSchema'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    DatabaseSchemaDbSchemaTable:
+      type: object
+      description: Represents a table within a schema.
+      properties:
+        tableName:
+          type: string
+          example: SAMPLE_TABLE
+        isEligibleForDataPipeline:
+          type: boolean
+          description: Indicates if this table is eligible for data pipeline operations based on its columns' data types.
+          example: true
+        primaryKeys:
+          type: array
+          description: List of primary keys, where each primary key can be a composite key (array of column names).
+          items:
+            type: array
+            items:
+              type: string
+          example:
+          - - - COL1
+            - - COL2
+              - COL3
+        uniqueKeys:
+          type: array
+          description: List of unique keys, where each unique key can be a composite key (array of column names).
+          items:
+            type: array
+            items:
+              type: string
+          example:
+          - - - COL1
+            - - COL2
+              - COL3
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseSchemaDbSchemaTableColumn'
+    DatabaseSchema:
+      type: object
+      description: Represents the complete schema structure of a database, including databases, schemas within databases, tables, and columns.
+      properties:
+        databases:
+          type: array
+          description: List of databases in the schema.
+          items:
+            $ref: '#/components/schemas/DatabaseSchemaDb'
+  parameters:
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

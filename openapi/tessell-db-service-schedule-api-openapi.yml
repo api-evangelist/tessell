@@ -1,0 +1,984 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center DB Service Schedule API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: DB Service Schedule
+paths:
+  /services/{serviceId}/schedules/delete:
+    post:
+      tags:
+      - DB Service Schedule
+      summary: Creates the deletion schedule for the DB Service
+      operationId: createServiceDeletionSchedule
+      x-terraform-operation: Create
+      x-terraform-resource: DBServiceDeleteSchedule
+      x-terraform:
+        resourceIdFromResponse: '*response.Id'
+      parameters:
+      - name: serviceId
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeletionSchedulePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletionScheduleDTO'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - DB Service Schedule
+      summary: Updates the deletion schedule for the DB Service
+      operationId: updateServiceDeletionSchedule
+      parameters:
+      - name: serviceId
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeletionSchedulePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletionScheduleDTO'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    get:
+      tags:
+      - DB Service Schedule
+      summary: Returns the deletion schedule details for the DB Service
+      operationId: getServiceDeletionSchedule
+      parameters:
+      - name: serviceId
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletionScheduleResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - DB Service Schedule
+      summary: Deletes the deletion schedule for the DB Service
+      operationId: deleteServiceDeletionSchedule
+      parameters:
+      - name: serviceId
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{serviceId}/schedules:
+    get:
+      tags:
+      - DB Service Schedule
+      summary: Returns the details about all the automated schedules on the DB Service
+      operationId: getServiceSchedules
+      parameters:
+      - name: serviceId
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceSchedulesResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{serviceId}/schedules/start-stop:
+    post:
+      tags:
+      - DB Service Schedule
+      summary: Creates a start/stop schedule for the DB Service
+      operationId: createServiceStartStopSchedule
+      x-terraform-operation: Create
+      x-terraform-resource: DBServiceStartStopSchedule
+      x-terraform:
+        resourceIdFromResponse: '*response.Id'
+      parameters:
+      - name: serviceId
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStartStopSchedulePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartStopScheduleDTO'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    get:
+      tags:
+      - DB Service Schedule
+      summary: Get the details of start/stop schedules for the DB Service
+      operationId: getServiceStartStopSchedules
+      parameters:
+      - name: serviceId
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: status
+        in: query
+        description: DB Service schedule status
+        required: false
+        style: form
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/StartStopScheduleStatus'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartStopScheduleResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{serviceId}/schedules/start-stop/{scheduleId}/{action}:
+    patch:
+      tags:
+      - DB Service Schedule
+      summary: Update the status of the given start/stop schedule for the DB Service.
+      operationId: updateStartStopScheduleStatus
+      parameters:
+      - name: serviceId
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: scheduleId
+        in: path
+        description: The ID of the schedule
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: action
+        in: path
+        description: Action (like resume/pause) to be taken on the start/stop schedule
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{service-id}/schedules/delete/{id}:
+    patch:
+      tags:
+      - DB Service Schedule
+      summary: Updates the deletion schedule for the DB Service
+      operationId: updateServiceDeletionScheduleTFP
+      x-terraform-operation: Update
+      x-terraform-resource: DBServiceDeleteSchedule
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeletionSchedulePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletionScheduleDTO'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    get:
+      tags:
+      - DB Service Schedule
+      summary: Returns the deletion schedule details for the DB Service
+      operationId: getServiceDeletionScheduleTFP
+      x-terraform-operation: Read
+      x-terraform-resource: DBServiceDeleteSchedule
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletionScheduleDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - DB Service Schedule
+      summary: Deletes the deletion schedule for the DB Service
+      operationId: deleteServiceDeletionScheduleTFP
+      x-terraform-operation: Delete
+      x-terraform-resource: DBServiceDeleteSchedule
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{serviceId}/schedules/start-stop/{id}:
+    patch:
+      tags:
+      - DB Service Schedule
+      summary: Updates the given start/stop schedule on the DB Service
+      operationId: updateServiceStartStopSchedule
+      x-terraform-operation: Update
+      x-terraform-resource: DBServiceStartStopSchedule
+      parameters:
+      - name: serviceId
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        description: The ID of the start/stop schedule
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStartStopSchedulePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartStopScheduleDTO'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    get:
+      tags:
+      - DB Service Schedule
+      summary: Return the details about the start/stop schedule for given schedule ID for the DB Service
+      operationId: getServiceStartStopSchedule
+      x-terraform-operation: Read
+      x-terraform-resource: DBServiceStartStopSchedule
+      x-terraform:
+        resourceIdFromResponse: '*response.Id'
+      parameters:
+      - name: serviceId
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        description: The ID of the start/stop schedule
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartStopScheduleDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - DB Service Schedule
+      summary: Deletes the given start/stop schedule for the DB Service.
+      operationId: deleteServiceStartStopSchedule
+      x-terraform-operation: Delete
+      x-terraform-resource: DBServiceStartStopSchedule
+      parameters:
+      - name: serviceId
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        description: The ID of the start/stop schedule
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    WeekDay:
+      description: Week Days
+      type: string
+      enum:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+      x-enum-varnames:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    StartStopRecurringSchedule:
+      title: StartStopRecurringSchedule
+      description: Recurring start/stop schedule details for the DB Service tessell service
+      x-patchable: true
+      properties:
+        scheduleStartDate:
+          type: string
+          format: date
+          description: Date from which the given recurring schedule would be applicable from
+          x-patchable: true
+        dbServiceStartAt:
+          type: string
+          pattern: ^([0-1][0-9]|[2][0-3]):([0-5][0-9])$
+          description: Time at which the DB Service should be started at
+          x-patchable: true
+        dbServiceStopAt:
+          type: string
+          pattern: ^([0-1][0-9]|[2][0-3]):([0-5][0-9])$
+          description: Time at which the DB Service should be stopped at
+          x-patchable: true
+        scheduleExpiry:
+          $ref: '#/components/schemas/StartStopRecurringScheduleExpiry'
+        dailySchedule:
+          type: boolean
+          description: Whether the given schedule is a daily schedule i.e. a schedule which is executed daily
+          x-patchable: true
+        weeklySchedule:
+          $ref: '#/components/schemas/StartStopWeeklySchedule'
+    ServiceSchedulesResponse:
+      title: ServiceSchedulesResponse
+      description: Details about all the automated schedules on the DB Service
+      properties:
+        deletionSchedule:
+          $ref: '#/components/schemas/DeletionScheduleDTO'
+        startStopSchedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/StartStopScheduleDTO'
+    StartStopScheduleDTO:
+      title: StartStopScheduleDTO
+      description: Details of the start/stop schedule on a DB Service
+      x-terraform-resource: DBServiceStartStopSchedule
+      x-terraform:
+        plural-name: DBServiceStartStopSchedules
+        render:
+        - resource
+        - data_source
+      required:
+      - serviceId
+      - scheduleInfo
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The ID of the schedule
+          x-computed: true
+        name:
+          type: string
+          description: Name of the schedule
+          x-computed: true
+        description:
+          type: string
+          x-computed: true
+        serviceId:
+          type: string
+          format: uuid
+          description: The ID of the DB Service
+        status:
+          $ref: '#/components/schemas/StartStopScheduleStatus'
+          x-computed: true
+          x-enum: true
+        scheduleInfo:
+          $ref: '#/components/schemas/StartStopScheduleInfo'
+          x-patchable: true
+        metadata:
+          $ref: '#/components/schemas/StartStopScheduleMetadata'
+          x-computed: true
+        dateCreated:
+          type: string
+          format: date-time
+          description: Timestamp when the schedule was created
+          x-computed: true
+        dateModified:
+          type: string
+          format: date-time
+          description: Timestamp when the schedule was last modified
+          x-computed: true
+        lastRun:
+          type: string
+          format: date-time
+          description: The date-time at which this schedule was last executed
+          x-computed: true
+    DeletionSchedulePayload:
+      title: DeletionSchedulePayload
+      description: Details of the deletion schedule on a DB Service
+      required:
+      - deleteAt
+      properties:
+        deleteAt:
+          type: string
+          format: date-time
+          description: Time at which the DB Service should be deleted at
+        deletionConfig:
+          $ref: '#/components/schemas/TessellServiceDeletionConfig'
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    CreateStartStopSchedulePayload:
+      title: CreateStartStopSchedulePayload
+      description: Payload to create a start/stop schedule on the DB Service
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 255
+        scheduleInfo:
+          $ref: '#/components/schemas/StartStopScheduleInfo'
+    StartStopScheduleInfo:
+      title: StartStopScheduleInfo
+      description: Describes the start/stop schedule of tessell service
+      x-patchable: true
+      properties:
+        oneTime:
+          $ref: '#/components/schemas/StartStopOneTimeSchedule'
+          x-patchable: true
+        recurring:
+          $ref: '#/components/schemas/StartStopRecurringSchedule'
+          x-patchable: true
+    TessellServiceDeletionConfig:
+      title: TessellServiceDeletionConfig
+      description: If the DB Service is to be deleted, this config would be honoured if no preference is provided during deleting the service
+      x-patchable: true
+      properties:
+        retainAvailabilityMachine:
+          type: boolean
+          default: false
+          x-patchable: true
+          description: If specified as true, the associated Availability Machine (snapshots, sanitized-snapshots, logs) would be retained
+    StartStopScheduleMetadata:
+      title: StartStopScheduleMetadata
+      type: object
+      x-computed: true
+      properties:
+        scheduleCounter:
+          type: integer
+          format: int32
+          x-computed: true
+    StartStopScheduleStatus:
+      description: StartStopScheduleStatus
+      enum:
+      - ACTIVE
+      - PAUSED
+      - EXPIRED
+      - DELETED
+    StartStopRecurringScheduleExpiry:
+      title: StartStopRecurringScheduleExpiry
+      description: Schedule expiry details for recurring start/stop schedule for the DB Service
+      x-patchable: true
+      properties:
+        'on':
+          type: string
+          format: date
+          description: Date after which the schedule would not be applicable
+          x-patchable: true
+        afterOccurrences:
+          type: integer
+          format: int32
+          minimum: 0
+          description: Number of occurrences which the schedule would not be applicable
+          x-patchable: true
+        never:
+          type: boolean
+          description: If set to True, the schedule will be applicable forever
+          x-patchable: true
+    StartStopOneTimeSchedule:
+      title: StartStopOneTime
+      description: One time start/stop schedule details for the DB Service
+      x-patchable: true
+      properties:
+        dbServiceStartAt:
+          type: string
+          format: date-time
+          description: Time at which the DB Service should be started at
+          x-patchable: true
+        dbServiceStopAt:
+          type: string
+          format: date-time
+          description: Time at which the DB Service should be stopped at
+          x-patchable: true
+    DeletionScheduleDTO:
+      title: DeletionScheduleDTO
+      description: Details of the deletion schedule on a DB Service
+      x-terraform-resource: DBServiceDeleteSchedule
+      x-terraform:
+        add-properties-from:
+        - TerraformResourceDBServiceDeleteScheduleExtra
+        render:
+        - resource
+        - data_source
+      x-patchable: true
+      required:
+      - deleteAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-computed: true
+        deleteAt:
+          type: string
+          format: date-time
+          description: Time at which the DB Service should be deleted at
+          x-patchable: true
+        deletionConfig:
+          $ref: '#/components/schemas/TessellServiceDeletionConfig'
+    StartStopWeeklySchedule:
+      title: StartStopWeeklySchedule
+      type: object
+      description: Weekly recurring start/stop schedule details for the DB Service
+      x-patchable: true
+      properties:
+        days:
+          description: Days of the week on which the recurring start/stop schedule would be applicable for the DB Service
+          uniqueItems: true
+          x-patchable: true
+          type: array
+          items:
+            $ref: '#/components/schemas/WeekDay'
+            x-enum: true
+    DeletionScheduleResponse:
+      title: DeletionScheduleResponse
+      properties:
+        response:
+          $ref: '#/components/schemas/DeletionScheduleDTO'
+    StartStopScheduleResponse:
+      title: StartStopScheduleResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/StartStopScheduleDTO'
+    UpdateStartStopSchedulePayload:
+      title: UpdateStartStopSchedulePayload
+      description: Payload to update start/stop schedule on the DB Service
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 255
+        scheduleInfo:
+          $ref: '#/components/schemas/StartStopScheduleInfo'
+  parameters:
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    service-id:
+      name: service-id
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

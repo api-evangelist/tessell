@@ -1,0 +1,1020 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Integration Governance API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Integration Governance
+paths:
+  /integration-types:
+    get:
+      tags:
+      - Integration Governance
+      summary: Get a list of supported Integration Types
+      operationId: getIntegrationTypes
+      parameters:
+      - $ref: '#/components/parameters/integrationType'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellIntegrationTypeListResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /integration-types/{id}:
+    get:
+      tags:
+      - Integration Governance
+      summary: Get Integration Type by Id
+      operationId: getIntegrationTypeById
+      parameters:
+      - name: id
+        in: path
+        description: ID
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellIntegrationTypeDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /integrations:
+    get:
+      tags:
+      - Integration Governance
+      summary: Get a list of active Integrations (consumer view)
+      operationId: getIntegrationsConsumerView
+      parameters:
+      - $ref: '#/components/parameters/integrationType'
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellIntegrationListResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /integrations/{id}:
+    get:
+      tags:
+      - Integration Governance
+      summary: Get active Integration by Id (consumer view)
+      operationId: getIntegrationByIdConsumerView
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellIntegrationDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /integrations/governance:
+    post:
+      tags:
+      - Integration Governance
+      summary: Create a new Integration
+      operationId: createIntegration
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TessellIntegrationDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellIntegrationDTO'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    get:
+      tags:
+      - Integration Governance
+      summary: Get a list of active Integrations
+      operationId: getIntegrations
+      parameters:
+      - name: id
+        in: query
+        description: ID of an Integration
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: include-shared-with-users
+        in: query
+        description: Flag indicating if ACL information should be included for all entities
+        required: false
+        schema:
+          type: boolean
+      - $ref: '#/components/parameters/integrationType'
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - $ref: '#/components/parameters/owners'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellIntegrationListResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /integrations/governance/{id}:
+    get:
+      tags:
+      - Integration Governance
+      summary: Get active Integration Details by Id
+      operationId: getIntegrationById
+      parameters:
+      - name: id
+        in: path
+        description: ID of an Integration
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellIntegrationDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - Integration Governance
+      summary: Delete an Integration
+      operationId: deleteIntegration
+      parameters:
+      - name: id
+        in: path
+        description: ID of an Integration
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /integrations/governance/{id}/{action}:
+    patch:
+      tags:
+      - Integration Governance
+      summary: Update an Integration
+      operationId: updateIntegration
+      parameters:
+      - name: id
+        in: path
+        description: ID of an Integration
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: action
+        in: path
+        description: Update the integration maturity status as "publish" and "unpublish"
+        required: true
+        style: simple
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 16
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /integrations/governance/{id}/acls:
+    patch:
+      tags:
+      - Integration Governance
+      summary: Create/Update ACLs of an Integration
+      operationId: createIntegrationAcls
+      parameters:
+      - name: id
+        in: path
+        description: ID of an Integration
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AclPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AclPayload'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - Integration Governance
+      summary: Revoke access of given users on an Integration
+      operationId: revokeIntegrationAcls
+      parameters:
+      - name: id
+        in: path
+        description: ID of an Integration
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AclRevokePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /integrations/governance/{id}/acls/eligible-users:
+    get:
+      tags:
+      - Integration Governance
+      summary: Get a list of all users along with role they are eligible on an Integration
+      operationId: getEligibleUsersForIntegration
+      parameters:
+      - name: id
+        in: path
+        description: ID of an Integration
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: role
+        in: query
+        description: Name of roles
+        required: false
+        style: form
+        schema:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 64
+          maxItems: 10
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AclEligibleUser'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    AclRevokePayload:
+      title: AclRevokePayload
+      description: Payload to revoke Tessell ACLs
+      required:
+      - users
+      properties:
+        users:
+          description: List of users to be deleted
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          minItems: 1
+          maxItems: 100
+    TessellIntegrationListResponse:
+      title: TessellIntegrationListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellIntegrationDTO'
+    TessellIntegrationTypeMaturityStatus:
+      description: Tessell Integration type maturity statuses
+      type: string
+      enum:
+      - PUBLISHED
+      - UNPUBLISHED
+    TessellIntegrationType:
+      description: Tessell supported Integration types
+      type: string
+      enum:
+      - DATADOG
+      - SUMOLOGIC
+      - NEWRELIC
+      - QUALYS
+      - OEM
+      - SPLUNK
+    TessellIntegrationTypeListResponse:
+      title: TessellIntegrationTypeListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellIntegrationTypeDTO'
+    TessellIntegrationSplunk:
+      title: TessellIntegrationSplunk
+      type: object
+      required:
+      - hostname
+      - port
+      - serverType
+      properties:
+        hostname:
+          type: string
+          minLength: 1
+          maxLength: 128
+        port:
+          description: server port for splunk
+          type: integer
+          format: int32
+        apiToken:
+          type: string
+          minLength: 1
+          maxLength: 128
+        index:
+          type: string
+          minLength: 1
+          maxLength: 128
+        serverType:
+          $ref: '#/components/schemas/TessellIntegrationSplunkServerType'
+    IntegrationTypeMetadata:
+      title: IntegrationTypeMetadata
+      description: Metadata for integration type
+      type: object
+      properties:
+        supportedEngineTypes:
+          type: array
+          items:
+            type: object
+            properties:
+              engineType:
+                $ref: '#/components/schemas/databaseEngineType'
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    EntityAclSharingInfo:
+      title: EntityAclSharingInfo
+      description: Tessell Entity ACL Sharing Info
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityUserAclSharingInfo'
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    AclPayload:
+      title: AclPayload
+      description: Payload to create an entity ACL
+      required:
+      - users
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/AclUserPayload'
+          minItems: 1
+          maxItems: 100
+    TessellIntegrationCloudwatchMetrics:
+      title: TessellIntegrationCloudwatchMetrics
+      type: object
+      required:
+      - cloudwatchNamespace
+      - awsToken
+      - awsSecret
+      properties:
+        cloudwatchNamespace:
+          type: string
+          minLength: 1
+          maxLength: 256
+        awsToken:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        awsSecret:
+          type: string
+          minLength: 1
+          maxLength: 1000
+    TessellIntegrationDTO:
+      title: TessellIntegrationDTO
+      type: object
+      required:
+      - name
+      - integrationType
+      - metadata
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Name of an Integration
+          minLength: 1
+          maxLength: 32
+          example: Datadog Integration
+        description:
+          type: string
+          description: Description of an Integration
+          minLength: 1
+          maxLength: 64
+          example: Integration for Monitoring
+        tenantId:
+          type: string
+          description: Tenant Id
+          minLength: 1
+          maxLength: 128
+        dateCreated:
+          type: string
+          description: Timestamp when the entity was created
+          format: date-time
+        dateModified:
+          type: string
+          description: Timestamp when the entity was last modified
+          format: date-time
+        owner:
+          type: string
+          minLength: 1
+          maxLength: 128
+        loggedInUserRole:
+          type: string
+          minLength: 1
+          maxLength: 128
+        sharedWith:
+          $ref: '#/components/schemas/EntityAclSharingInfo'
+        integrationType:
+          $ref: '#/components/schemas/TessellIntegrationType'
+        status:
+          $ref: '#/components/schemas/TessellIntegrationStatus'
+        maturityStatus:
+          $ref: '#/components/schemas/TessellIntegrationMaturityStatus'
+        metadata:
+          $ref: '#/components/schemas/TessellIntegrationMetadata'
+        integrationTypeMetadata:
+          $ref: '#/components/schemas/IntegrationTypeMetadata'
+    TessellIntegrationMetadata:
+      title: IntegrationMetadata
+      type: object
+      properties:
+        cloudwatchMetrics:
+          $ref: '#/components/schemas/TessellIntegrationCloudwatchMetrics'
+        datadog:
+          $ref: '#/components/schemas/TessellIntegrationDatadog'
+        sumologic:
+          $ref: '#/components/schemas/TessellIntegrationSumologic'
+        newrelic:
+          $ref: '#/components/schemas/TessellIntegrationNewRelic'
+        qualys:
+          $ref: '#/components/schemas/TessellIntegrationQualys'
+        oem:
+          $ref: '#/components/schemas/TessellIntegrationOEM'
+        splunk:
+          $ref: '#/components/schemas/TessellIntegrationSplunk'
+    TessellIntegrationQualys:
+      title: TessellIntegrationQualys
+      type: object
+      required:
+      - customerId
+      - activationId
+      - serverUri
+      properties:
+        customerId:
+          type: string
+          minLength: 1
+          maxLength: 128
+        activationId:
+          type: string
+          minLength: 1
+          maxLength: 128
+        serverUri:
+          type: string
+          format: uri
+    TessellIntegrationDatadog:
+      title: TessellIntegrationDatadog
+      type: object
+      required:
+      - apiKey
+      - site
+      properties:
+        apiKey:
+          type: string
+          minLength: 1
+          maxLength: 128
+        site:
+          type: string
+          minLength: 1
+          maxLength: 128
+    EntityUserAclSharingInfo:
+      title: EntityUserAclSharingInfo
+      description: Tessell Entity ACL Sharing Info for a user
+      properties:
+        emailId:
+          type: string
+        role:
+          type: string
+        sharedBy:
+          type: string
+          description: Email of the user who shared the entity
+        sharedOn:
+          type: string
+          format: date-time
+          description: Date when the entity was shared
+    AclUserPayload:
+      title: AclUserPayload
+      description: Payload to create an user's entity ACL
+      required:
+      - emailId
+      - role
+      properties:
+        emailId:
+          description: Email id of the user
+          type: string
+          minLength: 1
+          maxLength: 256
+        role:
+          description: Role Info
+          type: string
+          minLength: 1
+          maxLength: 64
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    TessellIntegrationTypeDTO:
+      title: TessellIntegrationTypeDTO
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        dateCreated:
+          type: string
+          description: Timestamp when the entity was created
+          format: date-time
+        dateModified:
+          type: string
+          description: Timestamp when the entity was last modified
+          format: date-time
+        owner:
+          type: string
+        integrationType:
+          $ref: '#/components/schemas/TessellIntegrationType'
+        multiple:
+          type: boolean
+        maturityStatus:
+          $ref: '#/components/schemas/TessellIntegrationTypeMaturityStatus'
+        metadata:
+          $ref: '#/components/schemas/IntegrationTypeMetadata'
+    TessellIntegrationNewRelic:
+      title: TessellIntegrationNewRelic
+      type: object
+      required:
+      - apiKey
+      properties:
+        apiKey:
+          type: string
+          minLength: 1
+          maxLength: 128
+    TessellIntegrationStatus:
+      description: Tessell Integration statuses
+      type: string
+      enum:
+      - ACTIVE
+      - DELETING
+      - DELETED
+    TessellIntegrationOEM:
+      title: TessellIntegrationOEM
+      type: object
+      required:
+      - serverName
+      - ip
+      - agentPassword
+      - sysmanPassword
+      - oemUploadPort
+      - agentPort
+      - oemConsolePort
+      properties:
+        serverName:
+          type: string
+          minLength: 1
+          maxLength: 128
+        ip:
+          type: string
+          format: ip4
+        agentPassword:
+          description: Agent registration password.
+          type: string
+          minLength: 1
+          maxLength: 256
+        sysmanPassword:
+          description: OEM sysman password.
+          type: string
+          minLength: 1
+          maxLength: 256
+        oemUploadPort:
+          description: Port for agent to upload the data.
+          type: integer
+          format: int32
+        agentPort:
+          description: Port for installation and other communication.
+          type: integer
+          format: int32
+        oemConsolePort:
+          description: OEM console port
+          type: integer
+          format: int32
+        inboundIPs:
+          description: OEM server inbound IPs
+          type: array
+          items:
+            type: string
+            format: ip4
+          maxItems: 100
+    TessellIntegrationSumologic:
+      title: TessellIntegrationSumologic
+      type: object
+      required:
+      - apiKey
+      - site
+      properties:
+        apiKey:
+          type: string
+          minLength: 1
+          maxLength: 128
+        site:
+          type: string
+          minLength: 1
+          maxLength: 128
+    TessellIntegrationSplunkServerType:
+      description: Server types for splunk
+      type: string
+      enum:
+      - SPLUNK_RECEIVER
+      - DEPLOYMENT_SERVER
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    AclEligibleUser:
+      title: AclEligibleUser
+      description: Eligible user for sharing the entity
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        emailId:
+          type: string
+        eligibleRoles:
+          type: array
+          items:
+            type: string
+        accessibleSubscriptions:
+          type: array
+          items:
+            type: string
+          description: List of subscriptions user has access to
+    TessellIntegrationMaturityStatus:
+      description: Tessell Integration maturity statuses
+      type: string
+      enum:
+      - PUBLISHED
+      - UNPUBLISHED
+      - DRAFT
+  parameters:
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    owners:
+      name: owners
+      in: query
+      description: List of Email Addresses for entity or resource owners
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+    integrationType:
+      name: integration-type
+      in: query
+      description: Type of an Integration
+      required: false
+      style: form
+      schema:
+        $ref: '#/components/schemas/TessellIntegrationType'
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

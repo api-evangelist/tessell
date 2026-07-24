@@ -1,0 +1,908 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center DB Profile API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: DB Profile
+paths:
+  /databases/profiles/options-profile-types:
+    get:
+      tags:
+      - DB Profile
+      summary: Get a list of available Tessell Database Options Profile Types
+      operationId: getDatabaseOptionProfileTypes
+      parameters:
+      - name: status
+        in: query
+        description: Status of an Options Profile Type
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/DatabaseOptionTypeStatus'
+      - name: engine-type
+        in: query
+        description: Database Engine type
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/databaseEngineType'
+      - name: version
+        in: query
+        description: Database Engine version
+        required: false
+        style: form
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: 15.5
+      - name: multiple
+        in: query
+        description: multiple (Deprecated)
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: true
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellDatabaseOptionTypeListResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /databases/profiles/options-profile-types/{name}:
+    get:
+      tags:
+      - DB Profile
+      summary: Get Options Profile Types by name
+      operationId: getDatabaseOptionProfileTypesByName
+      parameters:
+      - name: name
+        in: path
+        description: Options Profile name
+        required: true
+        style: simple
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: Postgres Default Options Profile
+      - name: load-acls
+        in: query
+        description: Flag to include / exclude ACL information
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: false
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellDatabaseOptionTypeDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /databases/profiles/governance/options-profiles:
+    post:
+      tags:
+      - DB Profile
+      summary: Create a new Options Profile
+      operationId: createDatabaseOptionProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TessellDatabaseOptionProfileDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellDatabaseOptionProfileDTO'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+    get:
+      tags:
+      - DB Profile
+      summary: Get a list of available Database Options Profiles
+      operationId: getDatabaseOptionProfiles
+      parameters:
+      - name: status
+        in: query
+        description: Status of an Options Profile
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/DatabaseOptionProfileStatus'
+      - name: engine-type
+        in: query
+        description: Database Engine type
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/databaseEngineType'
+      - name: version
+        in: query
+        description: Database Engine version
+        required: false
+        style: form
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: 15.5
+      - name: load-acls
+        in: query
+        description: Flag to include / exclude ACL information
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: false
+      - name: multiple
+        in: query
+        description: multiple (Deprecated)
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: true
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellDatabaseOptionProfileListResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /databases/profiles/governance/options-profiles/{name}:
+    get:
+      tags:
+      - DB Profile
+      summary: Get an Options Profile by name
+      operationId: getDatabaseOptionProfilesByName
+      parameters:
+      - name: name
+        in: path
+        description: Options Profile name
+        required: true
+        style: simple
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: Postgres Custom Option Profile
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellDatabaseOptionProfileDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /databases/profiles/options-profiles:
+    get:
+      tags:
+      - DB Profile
+      summary: Get a list of available Tessell Database Options Profiles
+      operationId: getDatabaseOptionProfilesForConsumption
+      parameters:
+      - name: status
+        in: query
+        description: Status of an Options Profile
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/DatabaseOptionProfileStatus'
+      - name: engine-type
+        in: query
+        description: Database Engine type
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/databaseEngineType'
+      - name: version
+        in: query
+        description: Database Engine type
+        required: false
+        style: form
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: 15.5
+      - name: load-acls
+        in: query
+        description: Flag to include / exclude ACL information
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: false
+      - name: multiple
+        in: query
+        description: multiple (Deprecated)
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: true
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellDatabaseOptionProfileConsumptionListResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /databases/profiles/options-profiles/{name}:
+    get:
+      tags:
+      - DB Profile
+      summary: Get an Options Profile by name
+      operationId: getDatabaseOptionProfilesConsumptionByName
+      parameters:
+      - name: name
+        in: path
+        description: Options Profile name
+        required: true
+        style: simple
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: Postgres Custom Option Profile
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellDatabaseOptionProfileConsumptionDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /databases/profiles/options-profiles/{id}:
+    delete:
+      tags:
+      - DB Profile
+      summary: Delete an Options Profile
+      operationId: deleteDatabaseOptionProfile
+      parameters:
+      - name: id
+        in: path
+        description: Options Profile identifier
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: soft-delete
+        in: query
+        description: When set to false, it permanently deletes a Parameter Profile. When set to true, Option Profile can be recovered by contacting Tessell Support.
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: true
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - DB Profile
+      summary: Update an Options Profile
+      operationId: updateDatabaseOptionProfile
+      parameters:
+      - name: id
+        in: path
+        description: Option Profile identifier
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TessellDatabaseOptionProfileDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellDatabaseOptionProfileDTO'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    TessellDatabaseOptionTypeListResponse:
+      title: TessellDatabaseOptionTypeListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellDatabaseOptionTypeDTO'
+    DatabaseOptionProfileDriverInfo:
+      title: DatabaseOptionProfileDriverInfo
+      type: object
+      properties:
+        data:
+          type: object
+    DatabaseOptionProfileStatus:
+      description: Database OptionsProfile Status
+      type: string
+      enum:
+      - DELETED
+      - DELETING
+      - DRAFT
+      - PUBLISH
+      - UNPUBLISH
+    EntityAclSharingInfo:
+      title: EntityAclSharingInfo
+      description: Tessell Entity ACL Sharing Info
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityUserAclSharingInfo'
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    DatabaseOptionType:
+      title: DatabaseOptionType
+      type: object
+      properties:
+        applyNow:
+          type: boolean
+        description:
+          type: string
+        name:
+          type: string
+        optionSettings:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseOptionSettingType'
+        permanent:
+          type: boolean
+        persistent:
+          type: boolean
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    TessellDatabaseOptionProfileDTO:
+      title: TessellDatabaseOptionProfileDTO
+      type: object
+      required:
+      - name
+      - engineType
+      - version
+      - options
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the entity
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name:
+          type: string
+          description: Name of an Options Profile
+          minLength: 1
+          maxLength: 64
+          example: Postgres Custom Option Profile
+        description:
+          type: string
+          description: Description of an Options Profile
+          minLength: 0
+          maxLength: 128
+          example: Custom Options Profile
+        oob:
+          type: boolean
+          description: Database Option Profile description
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        status:
+          $ref: '#/components/schemas/DatabaseOptionProfileStatus'
+        maturityStatus:
+          $ref: '#/components/schemas/DatabaseOptionProfileMaturityStatus'
+        optionTypeId:
+          type: string
+          format: uuid
+          description: Tessell option type UUID for the entity
+          example: 123e4567-e89b-12d3-a456-426614174001
+        owner:
+          type: string
+          minLength: 1
+          maxLength: 128
+        tenantId:
+          type: string
+          minLength: 1
+          maxLength: 128
+          example: 12345678-abcd-1234-abcd-1234abcd5678
+        loggedInUserRole:
+          type: string
+          description: The role of the logged in user for accessing the db profile
+          minLength: 1
+          maxLength: 128
+        options:
+          type: array
+          description: Database Option Profile's associated options
+          items:
+            $ref: '#/components/schemas/DatabaseProfileOptionType'
+          minItems: 1
+          maxItems: 1000
+        metadata:
+          description: Database Option Profile's metadata information
+          $ref: '#/components/schemas/DatabaseOptionProfileMetadata'
+        driverInfo:
+          description: Database Option Profile's metadata information for driver use
+          $ref: '#/components/schemas/DatabaseOptionProfileDriverInfo'
+        userId:
+          type: string
+          description: Database Option Profile's user id
+          format: uuid
+        sharedWith:
+          description: Users having shared access to the profile
+          $ref: '#/components/schemas/EntityAclSharingInfo'
+        version:
+          type: string
+          description: Database Engine version
+          minLength: 1
+          maxLength: 32
+          example: '15.5'
+        dateCreated:
+          type: string
+          description: Timestamp when the entity was created
+          format: date-time
+        dateModified:
+          type: string
+          description: Timestamp when the entity was last modified
+          format: date-time
+        versionId:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the entity
+      description: This is a definition for Tessell Database Option Profile Object
+    TessellDatabaseOptionTypeDTO:
+      title: TessellDatabaseOptionTypeDTO
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        version:
+          type: string
+        status:
+          $ref: '#/components/schemas/DatabaseOptionTypeStatus'
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseOptionType'
+        dateCreated:
+          type: string
+          description: Timestamp when the entity was created
+          format: date-time
+        dateModified:
+          type: string
+          description: Timestamp when the entity was last modified
+          format: date-time
+    TessellDatabaseOptionProfileConsumptionDTO:
+      title: TessellDatabaseOptionProfileConsumptionDTO
+      required:
+      - name
+      type: object
+      properties:
+        description:
+          type: string
+        driverInfo:
+          description: Database Option Profile's metadata information for driver use
+          $ref: '#/components/schemas/DatabaseOptionProfileDriverInfo'
+        engineType:
+          description: Database Option Profile's database engine type
+          $ref: '#/components/schemas/databaseEngineType'
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the entity
+          example: 123e4567-e89b-12d3-a456-426614174000
+        optionTypeId:
+          type: string
+          format: uuid
+          description: Tessell option type UUID for the entity
+          example: 123e4567-e89b-12d3-a456-426614174001
+        metadata:
+          description: Database Option Profile's metadata information
+          $ref: '#/components/schemas/DatabaseOptionProfileMetadata'
+        name:
+          type: string
+          description: Name of the entity
+          example: sample_entity
+        maturityStatus:
+          $ref: '#/components/schemas/DatabaseOptionProfileMaturityStatus'
+        options:
+          type: array
+          description: Database Option Profile's associated options
+          items:
+            $ref: '#/components/schemas/DatabaseProfileOptionType'
+        owner:
+          type: string
+        tenantId:
+          type: string
+        version:
+          type: string
+          description: Database Option Profile's version
+    DatabaseProfileOptionType:
+      title: DatabaseProfileOptionType
+      type: object
+      required:
+      - applyNow
+      - name
+      - optionSettings
+      properties:
+        applyNow:
+          type: boolean
+        name:
+          type: string
+          description: Option name
+          minLength: 1
+          maxLength: 128
+          example: NATIVE_NETWORK_ENCRYPTION
+        optionSettings:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseProfileOptionSettingType'
+          minItems: 0
+          maxItems: 50
+    DatabaseOptionApplyType:
+      description: Database Option Apply Type. DB requires reboot if a param of Dynamic type is changed.
+      type: string
+      default: DYNAMIC
+      enum:
+      - STATIC
+      - DYNAMIC
+    DatabaseOptionProfileMaturityStatus:
+      description: Database OptionsProfile Status
+      type: string
+      enum:
+      - DRAFT
+      - PUBLISHED
+      - UNPUBLISHED
+    EntityUserAclSharingInfo:
+      title: EntityUserAclSharingInfo
+      description: Tessell Entity ACL Sharing Info for a user
+      properties:
+        emailId:
+          type: string
+        role:
+          type: string
+        sharedBy:
+          type: string
+          description: Email of the user who shared the entity
+        sharedOn:
+          type: string
+          format: date-time
+          description: Date when the entity was shared
+    DatabaseProfileOptionSettingType:
+      title: DatabaseProfileOptionSettingType
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          example: SQLNET.ENCRYPTION_TYPES_SERVER
+        value:
+          type: string
+          maxLength: 1000
+          example: AES256
+        isGlobal:
+          type: boolean
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    TessellDatabaseOptionProfileListResponse:
+      title: TessellDatabaseOptionProfileListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellDatabaseOptionProfileDTO'
+    DatabaseOptionProfileMetadata:
+      title: DatabaseOptionProfileMetadata
+      type: object
+      properties:
+        data:
+          type: object
+    DatabaseOptionSettingType:
+      title: DatabaseOptionSettingType
+      type: object
+      properties:
+        defaultValue:
+          type: string
+        applyType:
+          $ref: '#/components/schemas/DatabaseOptionApplyType'
+        allowedValues:
+          type: string
+        dataType:
+          type: string
+        description:
+          type: string
+        name:
+          type: string
+        isGlobal:
+          type: boolean
+        overridden:
+          type: boolean
+    TessellDatabaseOptionProfileConsumptionListResponse:
+      title: TessellDatabaseOptionProfileConsumptionListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellDatabaseOptionProfileConsumptionDTO'
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    DatabaseOptionTypeStatus:
+      type: string
+      enum:
+      - DISABLED
+      - ENABLED
+  parameters:
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

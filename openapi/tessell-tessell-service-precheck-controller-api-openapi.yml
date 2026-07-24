@@ -1,0 +1,2044 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center tessell-service-precheck-controller API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: tessell-service-precheck-controller
+paths:
+  /services/prechecks:
+    post:
+      tags:
+      - tessell-service-precheck-controller
+      summary: Run prechecks for provisioning a DB service
+      description: Initiates cloud validation checks before provisioning a DB service. Returns a precheck ID that can be used to poll for status and retrieve the report.
+      operationId: runPrechecksForProvision
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisionServicePayload'
+      responses:
+        '202':
+          description: Accepted - Prechecks initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrecheckStatusResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /services/prechecks/{id}/status:
+    get:
+      tags:
+      - tessell-service-precheck-controller
+      summary: Get precheck status
+      description: Returns the current status of a precheck request
+      operationId: getPrecheckStatus
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrecheckStatusResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/prechecks/{id}/report:
+    get:
+      tags:
+      - tessell-service-precheck-controller
+      summary: Get precheck report
+      description: Returns the detailed precheck report with individual check results
+      operationId: getPrecheckReport
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrecheckReportResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{service-id}/service-instances/prechecks:
+    post:
+      tags:
+      - tessell-service-precheck-controller
+      summary: Run prechecks for adding service instances to a DB service
+      description: Initiates cloud validation checks before adding service instances to a DB service. Returns a precheck ID that can be used to poll for status and retrieve the report.
+      operationId: runPrechecksForServiceInstances
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddDbServiceInstancesPayload'
+      responses:
+        '202':
+          description: Accepted - Prechecks initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrecheckStatusResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{service-id}/resize/prechecks:
+    post:
+      tags:
+      - tessell-service-precheck-controller
+      summary: Run prechecks for resizing a DB service
+      description: Initiates cloud validation checks before resizing a DB service. Returns a precheck ID that can be used to poll for status and retrieve the report.
+      operationId: runPrechecksForResize
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResizeDBServiceRequest'
+      responses:
+        '202':
+          description: Accepted - Prechecks initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrecheckStatusResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /availability-machines/{availability-machine-id}/clones/prechecks:
+    post:
+      tags:
+      - tessell-service-precheck-controller
+      summary: Run prechecks for cloning a DB service
+      description: Initiates cloud validation checks before cloning a DB service. Returns a precheck ID that can be used to poll for status and retrieve the report.
+      operationId: runPrechecksForClone
+      parameters:
+      - name: availability-machine-id
+        in: path
+        description: The Id of the Availability Machine
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CloneTessellServicePayload'
+      responses:
+        '202':
+          description: Accepted - Prechecks initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrecheckStatusResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    OracleEngineConfigPayload:
+      title: OracleEngineConfigPayload
+      type: object
+      required:
+      - parameterProfileId
+      - characterSet
+      - nationalCharacterSet
+      properties:
+        multiTenant:
+          type: boolean
+          default: false
+          description: Specify whether the DB Service is multi-tenant.
+        sid:
+          type: string
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile id for the database
+        optionsProfile:
+          type: string
+          description: The options profile for the database
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The options profile for the database
+        characterSet:
+          type: string
+          description: The character-set for the database
+        nationalCharacterSet:
+          type: string
+          description: The national-character-set for the database
+        enableArchiveMode:
+          type: boolean
+          default: true
+          description: To explicitly enable archive mode, when PITR is disabled
+    TessellServiceInstanceRole:
+      type: string
+      description: DB Service instance role
+      enum:
+      - primary
+      - read_only_replica
+      - failover_replica
+      - dr
+    AddDbServiceInstancesPayload:
+      title: AddDbServiceInstancesPayload
+      type: object
+      required:
+      - cloud
+      - region
+      - instances
+      properties:
+        instanceNamePrefix:
+          type: string
+          maxLength: 10
+        cloud:
+          type: string
+          description: The cloud-type in which the instance is to be provisioned (ex. aws, azure)
+        region:
+          type: string
+          description: The region in which the instance is to be provisioned
+        vpc:
+          type: string
+          description: The VPC to be used for provisioning the instance. If not specified, it will be inherited from the current instances that are in the same region. If no instances are present in the target region, this is a required input.
+        computeType:
+          type: string
+          description: The compute-type to be used for provisioning the instance. If not specified, it will be inherited from the current primary instance.
+        enablePerfInsights:
+          type: boolean
+          default: true
+          description: Specify whether to enable perf insights for the DB instances
+        awsInfraConfig:
+          $ref: '#/components/schemas/AwsInfraConfig'
+        gcpInfraConfig:
+          $ref: '#/components/schemas/GcpInfraConfig'
+        instances:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddDbServiceInstancePayload'
+        tessellServicePrecheckId:
+          type: string
+          format: uuid
+          nullable: true
+          description: The precheck ID from a previously run precheck validation. If provided, the system will verify the precheck results before adding service instances.
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    PrecheckReportResponse:
+      type: object
+      description: User-facing precheck report response
+      properties:
+        tessellServicePrecheckId:
+          type: string
+          format: uuid
+          description: Unique identifier for the precheck request
+        status:
+          $ref: '#/components/schemas/PrecheckOverallStatus'
+        checks:
+          type: array
+          description: List of individual precheck results
+          items:
+            $ref: '#/components/schemas/PrecheckItem'
+    commonYearlySchedule:
+      allOf:
+      - $ref: '#/components/schemas/DatesForEachMonth'
+      - type: object
+        properties:
+          months:
+            type: array
+            uniqueItems: true
+            items:
+              $ref: '#/components/schemas/Month'
+              x-enum: true
+    WeekDay:
+      description: Week Days
+      type: string
+      enum:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+      x-enum-varnames:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+    AwsInfraConfig:
+      type: object
+      title: AwsInfraConfig
+      properties:
+        awsCpuOptions:
+          type: object
+          title: AwsCpuOptions
+          properties:
+            vcpus:
+              type: integer
+              format: int32
+              minimum: 0
+              description: Number of vcpus for aws cpu options
+    tessellServiceTopology:
+      type: string
+      description: DB Service topology. This would specify whether the DB Service is single-node, or multi-node.
+      enum:
+      - single_instance
+      - high_availability
+    ScheduleInfo:
+      type: object
+      properties:
+        backupStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+        dailySchedule:
+          $ref: '#/components/schemas/DailySchedule'
+        weeklySchedule:
+          $ref: '#/components/schemas/WeeklySchedule'
+        monthlySchedule:
+          $ref: '#/components/schemas/MonthlySchedule'
+        yearlySchedule:
+          $ref: '#/components/schemas/YearlySchedule'
+    PrecheckStatus:
+      type: string
+      description: Status of an individual precheck
+      enum:
+      - PENDING
+      - PASS
+      - FAIL
+      - SKIPPED
+    WeeklySchedule:
+      type: object
+      properties:
+        days:
+          description: Days in a week to retain weekly backups for
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/WeekDay'
+            x-enum: true
+    RefreshScheduleRecurrenceInfo:
+      type: object
+      required:
+      - triggerTime
+      properties:
+        triggerTime:
+          $ref: '#/components/schemas/TimeFormat'
+        dailySchedule:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+        weeklySchedule:
+          type: object
+          properties:
+            weekDays:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/WeekDay'
+    CredentialsPayload:
+      type: object
+      description: Payload for Credential details
+      required:
+      - user
+      - password
+      properties:
+        user:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: Username
+        password:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: Password
+    MongodbDatabaseConfig:
+      title: MongodbDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+    PrePostScriptInfo:
+      type: object
+      properties:
+        preScriptInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScriptInfo'
+        postScriptInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScriptInfo'
+    TessellServiceDeletionConfig:
+      title: TessellServiceDeletionConfig
+      description: If the DB Service is to be deleted, this config would be honoured if no preference is provided during deleting the service
+      x-patchable: true
+      properties:
+        retainAvailabilityMachine:
+          type: boolean
+          default: false
+          x-patchable: true
+          description: If specified as true, the associated Availability Machine (snapshots, sanitized-snapshots, logs) would be retained
+    AzureNetAppNetworkFeature:
+      description: Azure NetApp network feature configuration for creating volume
+      type: string
+      enum:
+      - Standard
+      - Basic
+      x-enum-varnames:
+      - STANDARD
+      - BASIC
+    AzureNetAppConfigPayload:
+      properties:
+        azureNetAppId:
+          description: Azure NetApp Id registered with Tessell
+          type: string
+          format: uuid
+        capacityPoolId:
+          description: Capacity pool Id of the Azure NetApp registered with Tessell
+          type: string
+          format: uuid
+        configurations:
+          description: Azure NetApp configurations
+          type: object
+          properties:
+            networkFeatures:
+              $ref: '#/components/schemas/AzureNetAppNetworkFeature'
+    PrecheckOverallStatus:
+      type: string
+      description: Overall status of the precheck process
+      enum:
+      - NOT_STARTED
+      - IN_PROGRESS
+      - COMPLETED
+      - FAILED
+    Month:
+      description: Name of a month
+      type: string
+      enum:
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+      x-enum-varnames:
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+    CreateUpdateRefreshSchedulePayload:
+      properties:
+        refreshMode:
+          $ref: '#/components/schemas/RefreshScheduleRefreshMode'
+        contentType:
+          $ref: '#/components/schemas/BackupType'
+        scriptInfo:
+          $ref: '#/components/schemas/PrePostScriptInfo'
+        scheduleInfo:
+          $ref: '#/components/schemas/RefreshScheduleInfo'
+    AddDbServiceInstancePayload:
+      title: AddDbServiceInstancePayload
+      type: object
+      required:
+      - role
+      properties:
+        name:
+          type: string
+          maxLength: 30
+          description: Name of the instance
+        role:
+          $ref: '#/components/schemas/TessellServiceInstanceRole'
+        availabilityZone:
+          type: string
+          description: The availability-zone in which the instance is to be provisioned
+        privateSubnet:
+          type: string
+          description: The private subnet in which the instance is to be provisioned
+        computeId:
+          type: string
+          format: uuid
+          description: ID of the Compute Resource
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: ID of the Parameter Profile to be used for instance
+        computeName:
+          type: string
+          description: The compute-name of instance provided by the User
+        iops:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 10000000
+          description: IOPS required for the DB Service Instance
+        throughput:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 100000
+          description: Throughput in MB/s required for the DB Service Instance
+        syncMode:
+          $ref: '#/components/schemas/InstanceSyncMode'
+        engineConfiguration:
+          $ref: '#/components/schemas/ServiceInstanceEngineInfo'
+        computeConfig:
+          $ref: '#/components/schemas/ComputeConfigPayload'
+        storageConfig:
+          $ref: '#/components/schemas/StorageConfigPayload'
+        archiveStorageConfig:
+          $ref: '#/components/schemas/StorageConfigPayload'
+        securityConfig:
+          $ref: '#/components/schemas/SecurityConfigPayload'
+    InstanceAccessMode:
+      type: string
+      description: Service instance access mode
+      enum:
+      - OPEN_MODE
+      - MOUNT_MODE
+    PostgresqlDatabaseConfig:
+      title: PostgresqlDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The options profile for the database
+    TessellServiceIntegrationsPayload:
+      title: TessellServiceIntegrationsPayload
+      description: Integrations to be enabled for the DB Service
+      type: object
+      nullable: true
+      x-patchable: true
+      properties:
+        integrations:
+          type: array
+          nullable: true
+          items:
+            type: string
+            format: uuid
+    MilvusCreateCollectionConfig:
+      title: MilvusCreateCollectionConfig
+      type: object
+      nullable: true
+      properties:
+        name:
+          type: string
+          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
+          minLength: 1
+          maxLength: 255
+        shardNums:
+          type: integer
+          nullable: true
+          minimum: 1
+          maximum: 16
+        numPartitions:
+          type: integer
+          nullable: true
+          minimum: 1
+          maximum: 4096
+        schema:
+          type: object
+          properties:
+            description:
+              type: string
+              nullable: true
+            enableDynamicField:
+              type: boolean
+            fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/MilvusCreateCollectionField'
+    MonthlySchedule:
+      description: Definition for taking month specific schedule.
+      type: object
+      properties:
+        commonSchedule:
+          $ref: '#/components/schemas/DatesForEachMonth'
+    CommonResizeConfig:
+      title: CommonResizeConfig
+      type: object
+      properties:
+        computeType:
+          type: string
+          description: The new compute type for the service/instance
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: Mandatory when providing compute type
+        iops:
+          type: integer
+          format: int32
+          description: The new IOPS for the service/instance
+        throughput:
+          type: integer
+          format: int32
+          description: The new Throughput for the service/instance
+    ProvisionServicePayload:
+      title: ProvisionServicePayload
+      type: object
+      required:
+      - name
+      - subscription
+      - engineType
+      - topology
+      - softwareImage
+      - softwareImageVersion
+      - serviceConnectivity
+      - creds
+      - engineConfiguration
+      properties:
+        name:
+          type: string
+          description: DB Service name
+        description:
+          type: string
+          description: DB Service's description
+        subscription:
+          type: string
+          description: Tessell Subscription in which the DB Service is to be created
+        edition:
+          type: string
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        topology:
+          $ref: '#/components/schemas/tessellServiceTopology'
+        numOfInstances:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          maximum: 5
+          description: Number of instance (nodes) to be created for the DB Service. This is a required input for Apache Kafka. For all other engines, this input would be ignored even if specified.
+        softwareImage:
+          type: string
+          description: Software Image to be used to create the DB Service
+        softwareImageVersion:
+          type: string
+          description: Software Image Version to be used to create the DB Service
+        autoMinorVersionUpdate:
+          type: boolean
+          default: true
+          description: Specify whether to automatically update minor version for DB Service
+        enableDeletionProtection:
+          type: boolean
+          default: true
+          description: Specify whether to enable deletion protection for the DB Service
+        enableStopProtection:
+          type: boolean
+          default: false
+          description: Specify whether to enable stop protection for the DB Service
+        enablePerfInsights:
+          type: boolean
+          default: true
+          description: Specify whether to enable perf insights for the DB Service
+        infrastructure:
+          $ref: '#/components/schemas/ProvisionInfraPayload'
+        instances:
+          description: The instances (nodes) for this DB Service
+          type: array
+          items:
+            $ref: '#/components/schemas/AddDbServiceInstancePayloadV2'
+        serviceConnectivity:
+          $ref: '#/components/schemas/TessellServiceConnectivityInfoPayload'
+        creds:
+          $ref: '#/components/schemas/TessellServiceCredsPayload'
+        maintenanceWindow:
+          $ref: '#/components/schemas/TessellServiceMaintenanceWindow'
+        autoPatchConfig:
+          $ref: '#/components/schemas/AutoPatchConfig'
+          description: Configuration for automatic OS and DB patching during maintenance windows
+        serverPatchingConfig:
+          $ref: '#/components/schemas/ServerPatchingConfig'
+          description: Configuration for server patching with pre and post scripts
+        deletionConfig:
+          $ref: '#/components/schemas/TessellServiceDeletionConfig'
+        snapshotConfiguration:
+          $ref: '#/components/schemas/SnapshotConfigurationPayload'
+        rpoPolicyConfig:
+          $ref: '#/components/schemas/RpoPolicyConfig'
+        engineConfiguration:
+          $ref: '#/components/schemas/TessellServiceEngineConfigurationPayload'
+        databases:
+          description: Specify the databases to be created in the DB Service
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateDatabasePayload'
+        integrationsConfig:
+          $ref: '#/components/schemas/TessellServiceIntegrationsPayload'
+        tags:
+          type: array
+          description: The tags to be associated with the DB Service
+          items:
+            $ref: '#/components/schemas/TessellTag'
+        tessellServicePrecheckId:
+          type: string
+          format: uuid
+          nullable: true
+          description: The precheck ID from a previously run precheck validation. If provided, the system will verify the precheck results before provisioning.
+    PrecheckStatusResponse:
+      type: object
+      description: Response for precheck status polling
+      properties:
+        tessellServicePrecheckId:
+          type: string
+          format: uuid
+          description: Unique identifier for the precheck request
+        status:
+          $ref: '#/components/schemas/PrecheckOverallStatus'
+    ExadataComputeConfigPayload:
+      type: object
+      required:
+      - infrastructureId
+      - vmClusterId
+      properties:
+        infrastructureId:
+          type: string
+          format: uuid
+        vmClusterId:
+          type: string
+          format: uuid
+        computeId:
+          type: string
+          format: uuid
+    InstanceResizeConfig:
+      title: InstanceResizeConfig
+      allOf:
+      - $ref: '#/components/schemas/CommonResizeConfig'
+      - type: object
+        required:
+        - instanceId
+        properties:
+          instanceId:
+            type: string
+            format: uuid
+            description: UUID for the instance that needs to be resized.
+    ServiceResizeConfig:
+      title: ServiceResizeConfig
+      allOf:
+      - $ref: '#/components/schemas/CommonResizeConfig'
+      - type: object
+        properties:
+          storage:
+            type: integer
+            format: int64
+            description: The new storage (in bytes) for the service
+    PostgresqlEngineConfigPayload:
+      title: PostgresEngineConfigPayload
+      type: object
+      required:
+      - parameterProfileId
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile id for the database
+        adDomainId:
+          type: string
+          format: uuid
+          description: Active Directory Domain id
+        proxyPort:
+          type: integer
+          format: int32
+          minimum: 0
+        optionsProfile:
+          type: string
+          description: The options profile for the database
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The options profile for the database
+    CustomRpoPolicy:
+      description: This is the definition of Custom RPO Policy for Snapshot for Tessell DB Service
+      type: object
+      required:
+      - name
+      - schedule
+      properties:
+        name:
+          type: string
+          description: Custom RPO policy name
+        schedule:
+          $ref: '#/components/schemas/ScheduleInfo'
+    ServerPatchingConfig:
+      title: ServerPatchingConfig
+      type: object
+      description: Configuration for server patching with pre and post scripts
+      properties:
+        enableAutoOSPatching:
+          type: boolean
+          default: false
+          description: Enable automatic OS patching for the server
+        preScriptInfo:
+          $ref: '#/components/schemas/ScriptInfo'
+          description: Pre-script to run before patching
+        postScriptInfo:
+          $ref: '#/components/schemas/ScriptInfo'
+          description: Post-script to run after patching
+        ignorePreScriptFailure:
+          type: boolean
+          default: false
+          description: Ignore pre-script failure and continue with patching
+        ignorePostScriptFailure:
+          type: boolean
+          default: false
+          description: Ignore post-script failure and mark patching as successful
+      example:
+        enableAutoOSPatching: true
+        preScriptInfo:
+          scriptId: 123e4567-e89b-12d3-a456-426614174000
+          scriptVersion: v1.0
+        postScriptInfo:
+          scriptId: 123e4567-e89b-12d3-a456-426614174001
+          scriptVersion: v1.0
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    SecurityConfigPayload:
+      type: object
+      properties:
+        securityProfileId:
+          type: string
+          format: uuid
+          description: Security Profile Id to be associated with the compute
+    ApacheKafkaEngineConfigPayload:
+      title: ApacheKafkaEngineConfigPayload
+      type: object
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile id for the database
+    AutoPatchConfig:
+      title: AutoPatchConfig
+      type: object
+      description: Configuration for automatic patching during maintenance windows
+      properties:
+        osAutoPatchEnabled:
+          type: boolean
+          default: false
+          description: 'Enable automatic OS patching to latest certified minor version.
+
+            Only minor version patches are applied automatically.
+
+            Major version upgrades require manual intervention.'
+        dbAutoPatchEnabled:
+          type: boolean
+          default: false
+          description: 'Enable automatic DB patching.
+
+            Note: Currently not supported as DB patches require customer approval
+
+            due to application compatibility concerns.'
+        patchStrategy:
+          type: string
+          enum:
+          - LATEST_CERTIFIED
+          - SPECIFIC_VERSION
+          default: LATEST_CERTIFIED
+          description: 'Strategy for selecting patch versions:
+
+            - LATEST_CERTIFIED: Apply the latest certified patch version (recommended)
+
+            - SPECIFIC_VERSION: Apply a specific version (requires specificOsVersion/specificDbVersion)'
+        specificOsVersion:
+          type: string
+          description: 'Specific OS version to patch to (only when patchStrategy is SPECIFIC_VERSION).
+
+            Example: "RHEL-8.7", "Ubuntu-22.04.3"'
+        specificDbVersion:
+          type: string
+          description: 'Specific DB version to patch to (only when patchStrategy is SPECIFIC_VERSION).
+
+            Example: "PostgreSQL-14.9", "Oracle-19.21"'
+      example:
+        osAutoPatchEnabled: true
+        dbAutoPatchEnabled: false
+        patchStrategy: LATEST_CERTIFIED
+    ProvisionComputePayload:
+      type: object
+      title: ProvisionComputePayload
+      properties:
+        name:
+          type: string
+        instanceGroupName:
+          type: string
+        region:
+          type: string
+          description: The region in which the compute is to be provisioned
+        availabilityZone:
+          type: string
+          description: The availability-zone in which the compute is to be provisioned
+        role:
+          $ref: '#/components/schemas/TessellServiceInstanceRole'
+        vpc:
+          type: string
+          description: The VPC to be used for provisioning the compute resource
+        privateSubnet:
+          type: string
+          description: The private subnet to be used for provisioning the compute resource
+        computeType:
+          type: string
+          description: The compute-type to be used for provisioning the compute resource
+        computeName:
+          type: string
+          description: The compute-name of instance provided by the User
+        computeId:
+          type: string
+          format: uuid
+          description: Specify the compute resource if it has to be shared
+        timezone:
+          description: 'Different timezone for each compute is currently not supported,
+
+            please use infrastructure.timezone field for DB Service timezone.
+
+            '
+          $ref: '#/components/schemas/TimeZone'
+        computeConfig:
+          $ref: '#/components/schemas/ComputeConfigPayload'
+        storageConfig:
+          $ref: '#/components/schemas/StorageConfigPayload'
+        archiveStorageConfig:
+          $ref: '#/components/schemas/StorageConfigPayload'
+        securityConfig:
+          $ref: '#/components/schemas/SecurityConfigPayload'
+    MilvusCreateCollectionField:
+      type: object
+      properties:
+        name:
+          type: string
+          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+          nullable: true
+        dtype:
+          $ref: '#/components/schemas/MilvusDatatype'
+        isPrimary:
+          type: boolean
+          default: false
+        autoId:
+          type: boolean
+          default: false
+        defaultValue:
+          type: string
+          nullable: true
+        isPartitionKey:
+          type: boolean
+          default: false
+        maxLength:
+          type: integer
+        dim:
+          type: integer
+        indexCreatePayload:
+          $ref: '#/components/schemas/DbCollectionIndexPayload'
+    RefreshScheduleRefreshMode:
+      enum:
+      - SNAPSHOT
+      - PITR
+    StorageConfigPayload:
+      description: The storage details to be provisioned.
+      type: object
+      required:
+      - provider
+      properties:
+        provider:
+          $ref: '#/components/schemas/StorageProviderType'
+        fsxNetAppConfig:
+          $ref: '#/components/schemas/FsxNetAppConfigPayload'
+        azureNetAppConfig:
+          $ref: '#/components/schemas/AzureNetAppConfigPayload'
+    DBEngineCollationConfig:
+      type: object
+      properties:
+        collationName:
+          type: string
+          description: Collation name for the database
+    PrecheckItem:
+      type: object
+      description: Individual precheck item for user-facing report
+      properties:
+        name:
+          type: string
+          description: Name of the precheck
+        status:
+          $ref: '#/components/schemas/PrecheckStatus'
+        message:
+          type: string
+          description: Message describing the check result
+        resolution:
+          type: string
+          description: Suggested resolution if the check failed
+        expiredAt:
+          type: string
+          format: date-time
+          description: Timestamp when the check result expires
+        instanceId:
+          type: string
+          description: Instance ID of the node where the precheck is run
+    BackupStandardRpoPolicy:
+      description: This is the definition of Standard RPO Policy for Backup for Tessell DB Service
+      type: object
+      required:
+      - retentionDays
+      properties:
+        retentionDays:
+          description: Number of days for which the backup of DB Service would be retained
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 35
+        backupStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+    IndexSpecification:
+      type: object
+      properties:
+        indexType:
+          $ref: '#/components/schemas/MilvusIndexType'
+        metricType:
+          $ref: '#/components/schemas/MilvusIndexMetricType'
+        parameters:
+          $ref: '#/components/schemas/MilvusIndexParameters'
+    SqlServerDatabaseConfig:
+      title: SqlServerDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+    MilvusIndexConfig:
+      type: object
+      properties:
+        indexSpecifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndexSpecification'
+    GcpInfraConfig:
+      type: object
+      title: GcpInfraConfig
+      properties:
+        gcpCpuOptions:
+          type: object
+          title: GcpCpuOptions
+          properties:
+            vcpus:
+              type: integer
+              format: int32
+              minimum: 1
+              description: Number of vCPUs for GCP custom machine type
+            memory:
+              type: integer
+              format: int32
+              minimum: 1
+              description: Memory in MB for GCP custom machine type (optional)
+    MilvusIndexParameters:
+      type: object
+      properties:
+        m:
+          type: integer
+          nullable: true
+        nlist:
+          type: integer
+          nullable: true
+        efconstructions:
+          type: integer
+          nullable: true
+        ntrees:
+          type: integer
+          nullable: true
+    ResizeDBServiceRequest:
+      title: ResizeDBServiceRequest
+      type: object
+      properties:
+        serviceResizeConfig:
+          description: If specified, this will take priority over instance resize config
+          $ref: '#/components/schemas/ServiceResizeConfig'
+        instanceResizeConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstanceResizeConfig'
+        tessellServicePrecheckId:
+          type: string
+          format: uuid
+          nullable: true
+          description: The precheck ID from a previously run precheck validation. If provided, the system will verify the precheck results before resizing.
+    CloneSourceType:
+      description: Source type for clone/refresh operation
+      type: string
+      enum:
+      - SNAPSHOT
+      - NATIVE_BACKUP
+    ComputeProviderType:
+      type: string
+      enum:
+      - AWS_EC2
+      - AZURE_VM
+      - GCP_GCE
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    OraclePdbConfig:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the PDB
+        username:
+          type: string
+          description: Username for the PDB
+        password:
+          type: string
+          description: Password for the PDB
+        postScriptInfo:
+          $ref: '#/components/schemas/ScriptInfo'
+          description: 'Optional: Post-provisioning script to run after PDB is created.
+
+            '
+        rpoPolicyConfig:
+          $ref: '#/components/schemas/RpoPolicyConfig'
+          description: 'Optional: RPO policy configuration for PDB-level native backups (not snapshots).
+
+            This policy governs automated native backup schedules for this specific PDB.
+
+            If PITR (includeTransactionLogs) is enabled in this policy, the parent CDB must also have PITR enabled.
+
+            Note: This does not affect snapshot-based backups, which are managed at the service level.
+
+            '
+    MilvusIndexType:
+      type: string
+      enum:
+      - BIN_FLAT
+      - BIN_IVF_FLAT
+      - FLAT
+      - IVF_FLAT
+      - IVF_SQ8
+      - IVF_PQ
+      - HNSW
+      - IVF_HNSW
+      - RHNSW_FLAT
+      - RHNSW_SQ
+      - RHNSW_PQ
+      - ANNOY
+    MySqlEngineConfigPayload:
+      title: MySqlEngineConfigPayload
+      type: object
+      required:
+      - parameterProfileId
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile id for the database
+        adDomainId:
+          type: string
+          format: uuid
+          description: Active Directory Domain id
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The options profile for the database
+    TessellServiceEngineConfigurationPayload:
+      title: TessellServiceEngineConfigurationPayload
+      type: object
+      properties:
+        preScriptInfo:
+          $ref: '#/components/schemas/ScriptInfo'
+        postScriptInfo:
+          $ref: '#/components/schemas/ScriptInfo'
+        oracleConfig:
+          $ref: '#/components/schemas/OracleEngineConfigPayload'
+        postgresqlConfig:
+          $ref: '#/components/schemas/PostgresqlEngineConfigPayload'
+        mysqlConfig:
+          $ref: '#/components/schemas/MySqlEngineConfigPayload'
+        sqlServerConfig:
+          $ref: '#/components/schemas/SqlServerEngineConfigPayload'
+        apacheKafkaConfig:
+          $ref: '#/components/schemas/ApacheKafkaEngineConfigPayload'
+        mongodbConfig:
+          $ref: '#/components/schemas/MongodbEngineConfigPayload'
+        milvusConfig:
+          $ref: '#/components/schemas/MilvusEngineConfigPayload'
+        collationConfig:
+          $ref: '#/components/schemas/DBEngineCollationConfig'
+        backupUrl:
+          type: string
+          description: The URL where the backup is stored
+        ignorePostScriptFailure:
+          type: boolean
+        ignorePreScriptFailure:
+          type: boolean
+    DbCollectionIndexPayload:
+      type: object
+      properties:
+        fieldName:
+          type: string
+        indexName:
+          type: string
+        milvusIndexConfig:
+          $ref: '#/components/schemas/MilvusIndexConfig'
+    RpoPolicyConfig:
+      description: This is the definition for RPO Policy details for Tessell DB Service
+      type: object
+      required:
+      - enableAutoSnapshot
+      properties:
+        includeTransactionLogs:
+          description: Determines whether transaction logs should be retained to enable Point-In-Time Recovery (PITR) functionality
+          type: boolean
+          default: false
+        enableAutoSnapshot:
+          description: Specify whether system will take automatic snapshots
+          type: boolean
+          default: true
+        standardPolicy:
+          $ref: '#/components/schemas/StandardRpoPolicy'
+        customPolicy:
+          $ref: '#/components/schemas/CustomRpoPolicy'
+        fullBackupSchedule:
+          $ref: '#/components/schemas/FullBackupSchedule'
+        enableAutoBackup:
+          description: Specify whether system will take automatic backups
+          type: boolean
+          default: false
+        backupRpoConfig:
+          type: object
+          description: Config for the Native Backup RPO policies
+          properties:
+            fullBackupSchedule:
+              $ref: '#/components/schemas/FullBackupSchedule'
+            standardPolicy:
+              $ref: '#/components/schemas/BackupStandardRpoPolicy'
+            customPolicy:
+              $ref: '#/components/schemas/BackupCustomRpoPolicy'
+    TimeFormat:
+      title: TimeFormat
+      description: Clock time format value in hour and minute.
+      type: object
+      required:
+      - hour
+      - minute
+      properties:
+        hour:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 23
+          default: 1
+        minute:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 59
+          default: 0
+    TessellServiceCredsPayload:
+      title: TessellServiceCredsPayload
+      type: object
+      description: DB Service's credential details
+      required:
+      - masterUser
+      - masterPassword
+      properties:
+        masterUser:
+          type: string
+          minLength: 1
+          maxLength: 256
+          x-patchable: true
+          description: DB Service's master username
+        masterPassword:
+          type: string
+          minLength: 1
+          maxLength: 256
+          x-patchable: true
+          description: DB Service's master password
+    TessellServiceConnectivityInfoPayload:
+      title: TessellServiceConnectivityInfoPayload
+      type: object
+      description: DB Service connectivity details
+      required:
+      - servicePort
+      properties:
+        enableSSL:
+          type: boolean
+          default: false
+        dnsPrefix:
+          type: string
+          description: If not specified, Tessell will use a randomly generated prefix
+        servicePort:
+          description: The connection port for the DB Service
+          type: integer
+          format: int32
+          minimum: 0
+        enablePublicAccess:
+          description: Specify whether to enable public access to the DB Service, default false
+          type: boolean
+          default: false
+        allowedIpAddresses:
+          description: The list of allowed ipv4 addresses that can connect to the DB Service
+          type: array
+          items:
+            type: string
+            format: ip4
+    AddDbServiceInstancePayloadV2:
+      type: object
+      required:
+      - name
+      - instanceGroupName
+      - region
+      - role
+      properties:
+        instanceGroupName:
+          type: string
+          maxLength: 10
+        name:
+          type: string
+          maxLength: 30
+          description: Name of the instance to be created, should be unique for a dbservice
+        region:
+          type: string
+          description: The region in which the instance is to be provisioned
+        vpc:
+          type: string
+          description: The VPC to be used for provisioning the instance. If not specified, it will be inherited from the current instances that are in the same region. If no instances are present in the target region, this is a required input.
+        privateSubnet:
+          type: string
+          description: The private subnet to be used for provisioning the instance.
+        computeType:
+          type: string
+          description: The compute-type to be used for provisioning the instance. If not specified, it will be inherited from the current primary instance.
+        computeName:
+          type: string
+          description: The compute-name of instance provided by the User
+        computeId:
+          type: string
+          format: uuid
+        enablePerfInsights:
+          type: boolean
+          default: true
+          description: Specify whether to enable perf insights for the DB instances
+        awsInfraConfig:
+          $ref: '#/components/schemas/AwsInfraConfig'
+        gcpInfraConfig:
+          $ref: '#/components/schemas/GcpInfraConfig'
+        role:
+          $ref: '#/components/schemas/TessellServiceInstanceRole'
+        availabilityZone:
+          type: string
+          description: The availability-zone in which the instance is to be provisioned
+        computeConfig:
+          $ref: '#/components/schemas/ComputeConfigPayload'
+        storageConfig:
+          $ref: '#/components/schemas/StorageConfigPayload'
+        archiveStorageConfig:
+          $ref: '#/components/schemas/StorageConfigPayload'
+        securityConfig:
+          $ref: '#/components/schemas/SecurityConfigPayload'
+    FsxNetAppConfigPayload:
+      description: The FSx NetApp details to be provisioned
+      type: object
+      required:
+      - fileSystemId
+      - svmId
+      properties:
+        fileSystemId:
+          description: File System Id of the FSx NetApp registered with Tessell
+          type: string
+          format: uuid
+        svmId:
+          description: Storage Virtual Machine Id of the FSx NetApp registered with Tessell
+          type: string
+          format: uuid
+    MySqlDatabaseConfig:
+      title: MySqlDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The options profile for the database
+    BackupCustomRpoPolicy:
+      description: This is the definition of Custom RPO Policy for Backup for Tessell DB Service
+      allOf:
+      - $ref: '#/components/schemas/CustomRpoPolicy'
+    StorageProviderType:
+      description: Storage Type in the cloud
+      enum:
+      - AWS_EBS
+      - AWS_FSX_NETAPP
+      - AWS_HPC
+      - AWS_S3
+      - AZURE_HPC
+      - AZURE_MANAGED_DISK
+      - GCP_HYPERDISK
+      - GCP_GCS
+      - AZURE_BLOB
+      - MINIO
+      - AZURE_NETAPP
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    ServiceInstanceOracleEngineConfig:
+      title: TessellServiceInstanceOracleEngineConfig
+      type: object
+      nullable: true
+      properties:
+        accessMode:
+          $ref: '#/components/schemas/InstanceAccessMode'
+    SqlServerInstanceName:
+      type: string
+      maxLength: 16
+      description: The named instance for SQL Server database (max 16 characters as per SQL Server limitation)
+    MilvusIndexMetricType:
+      type: string
+      enum:
+      - L2
+      - IP
+      - JACCARD
+      - TANIMOTO
+      - HAMMING
+      - SUPERSTRUCTURE
+      - SUBSTRUCTURE
+    TessellTag:
+      title: TessellTag
+      type: object
+      nullable: true
+      properties:
+        name:
+          description: Case sensitive, tag name
+          type: string
+          maxLength: 128
+          minLength: 1
+        value:
+          description: Case sensitive, tag value
+          type: string
+          maxLength: 256
+          minLength: 0
+    StandardRpoPolicy:
+      description: This is the definition of Standard RPO Policy for Snapshot for Tessell DB Service
+      type: object
+      required:
+      - retentionDays
+      - snapshotStartTime
+      properties:
+        retentionDays:
+          description: Number of days for which the snapshot of DB Service would be retained
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 35
+        includeTransactionLogs:
+          description: Determines whether transaction logs should be retained to enable Point-In-Time Recovery (PITR) functionality
+          type: boolean
+          default: false
+        snapshotStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+    DailySchedule:
+      type: object
+      properties:
+        backupsPerDay:
+          type: integer
+          format: int32
+          description: The number of backups to be captured per day.
+          minimum: 0
+    SnapshotConfigurationPayload:
+      allOf:
+      - type: object
+        description: 'Deprecated: This property is deprecated and will be removed in future versions. Please use rpoPolicyConfig instead.
+
+          Defines the snapshot retention configurations for the DB Service.
+
+          If not specified, the default recommended retention configurations will be applied.
+
+          '
+        x-patchable: true
+        properties:
+          snapshotWindow:
+            type: object
+            x-patchable: true
+            properties:
+              time:
+                type: string
+                description: Time value in (hh:mm) format. ex. "02:00". Deprecated, please use backupStartTime in schedule.
+                x-patchable: true
+          sla:
+            type: string
+            description: The snapshot SLA for the DB Service. If not specified, a default SLA would be associated with the DB Service
+            x-patchable: true
+          schedule:
+            $ref: '#/components/schemas/ScheduleInfo'
+          fullBackupSchedule:
+            $ref: '#/components/schemas/FullBackupSchedule'
+          retentionDays:
+            description: Number of days for which the snapshot of DB Service would be retained
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 35
+          includeTransactionLogs:
+            description: Flag to decide whether the transaction logs would be retained to support PITR (Point in time recoverability)
+            type: boolean
+            default: false
+          snapshotStartTime:
+            $ref: '#/components/schemas/TimeFormat'
+    MonthWiseDates:
+      type: object
+      required:
+      - month
+      - dates
+      properties:
+        month:
+          $ref: '#/components/schemas/Month'
+          x-enum: true
+        dates:
+          uniqueItems: true
+          type: array
+          items:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 31
+    ProvisionInfraPayload:
+      title: ProvisionInfraPayload
+      type: object
+      description: The infra details where the DB Service is to be provisioned
+      required:
+      - cloud
+      properties:
+        cloud:
+          type: string
+          description: The cloud-type in which the DB Service is to be provisioned (ex. aws, azure)
+        region:
+          type: string
+          description: The region in which the DB Service is to be provisioned
+        availabilityZone:
+          type: string
+          description: The availability-zone in which the DB Service is to be provisioned
+        vpc:
+          type: string
+          description: The VPC for compute to be used for provisioning the DB Service
+        privateSubnet:
+          type: string
+          description: The private subnet for compute to be used for provisioning the DB Service
+        enableEncryption:
+          type: boolean
+          default: false
+          description: Specify whether to enable the encryption at rest for the DB Service.
+        encryptionKey:
+          type: string
+          description: The encryption key name which is to be used to encrypt the data at rest. This is honoured only if 'enableEncryption' is true. If this is not specified, Tessell will use a default out-of-the-box encryption key.
+          nullable: true
+        computeType:
+          type: string
+          description: The compute-type to be used for provisioning the DB Service
+        awsInfraConfig:
+          $ref: '#/components/schemas/AwsInfraConfig'
+        gcpInfraConfig:
+          $ref: '#/components/schemas/GcpInfraConfig'
+        additionalStorage:
+          type: integer
+          format: int64
+          default: 0
+          minimum: 0
+          description: 'The additional storage (in bytes) to be provisioned for the DB Service for cloud native storages.
+
+            This is in addition to what is specified in the compute type.
+
+            '
+        enableComputeSharing:
+          type: boolean
+          default: false
+          description: Specify if the computes should be shared across DB Services
+        computeNamePrefix:
+          type: string
+          nullable: true
+          maxLength: 30
+          description: If not specified, it will be autogenerated
+        timezone:
+          $ref: '#/components/schemas/TimeZone'
+          x-patchable: true
+        computes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProvisionComputePayload'
+        iops:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 10000000
+          description: IOPS required for the DB Service
+        throughput:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 100000
+          description: Throughput in MB/s required for the DB Service
+    DatesForEachMonth:
+      type: object
+      properties:
+        dates:
+          description: Dates in a month to retain monthly backups
+          uniqueItems: true
+          type: array
+          items:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 31
+        lastDayOfMonth:
+          type: boolean
+          default: false
+    MilvusDatabaseConfig:
+      title: MilvusDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+    SqlServerEngineConfigPayload:
+      title: SqlServerEngineConfigPayload
+      type: object
+      required:
+      - parameterProfileId
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile id for the database
+        adDomainId:
+          type: string
+          format: uuid
+          description: Active Directory Domain id
+        serviceAccountCreds:
+          $ref: '#/components/schemas/CredentialsPayload'
+        agentServiceAccountCreds:
+          $ref: '#/components/schemas/CredentialsPayload'
+        instanceName:
+          $ref: '#/components/schemas/SqlServerInstanceName'
+    BackupType:
+      description: Backup Content Type
+      type: string
+      enum:
+      - AS_IS
+      - SANITIZED
+    ComputeConfigPayload:
+      type: object
+      required:
+      - provider
+      properties:
+        provider:
+          $ref: '#/components/schemas/ComputeProviderType'
+        exadataConfig:
+          $ref: '#/components/schemas/ExadataComputeConfigPayload'
+    MilvusEngineConfigPayload:
+      title: MilvusEngineConfigPayload
+      type: object
+      required:
+      - parameterProfileId
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile id for the database
+    InstanceSyncMode:
+      type: string
+      description: Service instance sync mode
+      enum:
+      - SYNC
+      - ASYNC
+    DbCollectionCreatePayload:
+      type: object
+      properties:
+        name:
+          type: string
+          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
+          minLength: 1
+          maxLength: 255
+        milvusCollectionConfig:
+          $ref: '#/components/schemas/MilvusCreateCollectionConfig'
+    RefreshScheduleInfo:
+      type: object
+      properties:
+        recurring:
+          $ref: '#/components/schemas/RefreshScheduleRecurrenceInfo'
+    ScriptInfo:
+      title: ScriptInfo
+      type: object
+      nullable: true
+      properties:
+        scriptId:
+          type: string
+          format: uuid
+          description: The Tessell Script ID
+        scriptName:
+          type: string
+          description: The Tessell Script Name
+        scriptVersion:
+          type: string
+          description: The Tessell Script version
+        useActiveVersion:
+          type: boolean
+          default: false
+          description: 'When set to true, the scriptVersion field should be null and the system
+
+            will automatically use the active version of the script.
+
+            When set to false (default), the scriptVersion field specifies the
+
+            exact version to use.
+
+            '
+    ServiceInstanceEngineInfo:
+      title: TessellServiceInstanceInfo
+      description: This field details the DB Service Instance engine configuration details like - access mode
+      type: object
+      nullable: true
+      properties:
+        oracleConfig:
+          $ref: '#/components/schemas/ServiceInstanceOracleEngineConfig'
+    TessellServiceMaintenanceWindow:
+      title: TessellServiceMaintenanceWindow
+      type: object
+      description: 'Base class for maintenance window configurations.
+
+        Supports multiple cadences: Weekly, Monthly, and Quarterly.
+
+        Use concrete subclasses: WeeklyMaintenanceWindow, MonthlyMaintenanceWindow, QuarterlyMaintenanceWindow.'
+      required:
+      - cadence
+      - time
+      - duration
+      properties:
+        cadence:
+          type: string
+          description: The cadence type for maintenance window
+          default: WEEKLY
+          enum:
+          - WEEKLY
+          - MONTHLY
+          - QUARTERLY
+        time:
+          type: string
+          description: Time value in (hh:mm) format. ex. "02:00"
+          pattern: ^([0-1][0-9]|2[0-3]):[0-5][0-9]$
+          example: 02:00
+        duration:
+          type: integer
+          format: int32
+          minimum: 30
+          description: The duration during which the maintenance window will be allowed to trigger (in minutes)
+      discriminator:
+        propertyName: cadence
+        mapping:
+          WEEKLY: '#/components/schemas/WeeklyMaintenanceWindow'
+          MONTHLY: '#/components/schemas/MonthlyMaintenanceWindow'
+          QUARTERLY: '#/components/schemas/QuarterlyMaintenanceWindow'
+    CloneTessellServicePayload:
+      title: CloneTessellServicePayload
+      allOf:
+      - type: object
+        properties:
+          snapshotId:
+            type: string
+            format: uuid
+            description: Tessell service snapshot Id, using which the clone is to be created
+          pitr:
+            type: string
+            description: PITR Timestamp, using which the clone is to be created
+          refreshSchedule:
+            $ref: '#/components/schemas/CreateUpdateRefreshSchedulePayload'
+          sourceType:
+            $ref: '#/components/schemas/CloneSourceType'
+            description: Source type for clone operation. Defaults to SNAPSHOT if not provided.
+          backupId:
+            type: string
+            format: uuid
+            description: Native backup ID. Required when sourceType is NATIVE_BACKUP and pitr is not provided. If pitr is provided with sourceType NATIVE_BACKUP, system resolves backup chain automatically.
+      - $ref: '#/components/schemas/ProvisionServicePayload'
+    CreateOracleDatabaseConfig:
+      title: CreateOracleDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+        optionsProfile:
+          type: string
+          description: The options profile for the database
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The options profile for the database
+        username:
+          type: string
+          description: Username for the oracle database
+        password:
+          type: string
+          description: Password for the oracle database
+        pdbConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/OraclePdbConfig'
+    CreateDatabasePayload:
+      title: CreateDatabasePayload
+      type: object
+      properties:
+        databaseName:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The name of the database to be created
+        description:
+          type: string
+          maxLength: 512
+          description: Description of database created
+        sourceDatabaseId:
+          type: string
+          format: uuid
+          description: Required while creating a clone. It specifies the Id of the source database from which the clone is being created.
+        databaseConfiguration:
+          type: object
+          properties:
+            oracleConfig:
+              $ref: '#/components/schemas/CreateOracleDatabaseConfig'
+            postgresqlConfig:
+              $ref: '#/components/schemas/PostgresqlDatabaseConfig'
+            mysqlConfig:
+              $ref: '#/components/schemas/MySqlDatabaseConfig'
+            sqlServerConfig:
+              $ref: '#/components/schemas/SqlServerDatabaseConfig'
+            mongodbConfig:
+              $ref: '#/components/schemas/MongodbDatabaseConfig'
+            milvusConfig:
+              $ref: '#/components/schemas/MilvusDatabaseConfig'
+        collectionConfig:
+          $ref: '#/components/schemas/DbCollectionCreatePayload'
+    MongodbEngineConfigPayload:
+      title: MongodbEngineConfigPayload
+      type: object
+      required:
+      - clusterName
+      - parameterProfile
+      properties:
+        clusterName:
+          type: string
+          description: The MongoDB Cluster name. The name should start with a alphabet and must be alphanumeric.
+          minLength: 1
+          maxLength: 64
+          pattern: ^[a-zA-Z][a-zA-Z0-9-]*$
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile id for the database
+    YearlySchedule:
+      type: object
+      properties:
+        commonSchedule:
+          $ref: '#/components/schemas/commonYearlySchedule'
+        monthSpecificSchedule:
+          type: array
+          uniqueItems: true
+          required:
+          - months
+          items:
+            $ref: '#/components/schemas/MonthWiseDates'
+    FullBackupSchedule:
+      description: The schedule at which full backups would be triggered
+      type: object
+      properties:
+        startTime:
+          description: Optional Time when full backup(s) has to be captured | If not specified, the default time (same as incremental backup) would be used
+          $ref: '#/components/schemas/TimeFormat'
+        weeklySchedule:
+          $ref: '#/components/schemas/WeeklySchedule'
+    TimeZone:
+      type: string
+      description: The timezone detail
+      maxLength: 256
+    MilvusDatatype:
+      type: string
+      enum:
+      - VARCHAR
+      - INT64
+      - BOOL
+      - INT8
+      - INT16
+      - INT32
+      - FLOAT
+      - DOUBLE
+      - JSON
+      - BINARY_VECTOR
+      - FLOAT_VECTOR
+  parameters:
+    service-id:
+      name: service-id
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

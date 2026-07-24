@@ -1,0 +1,163 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Ad Domain API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Ad Domain
+paths:
+  /ad-domains:
+    parameters:
+    - $ref: '#/components/parameters/tenantIdMandatory'
+    - $ref: '#/components/parameters/pageSize'
+    - $ref: '#/components/parameters/pageOffset'
+    get:
+      tags:
+      - Ad Domain
+      summary: Returns all Ad Domain available.
+      description: Returns all Ad Domain available.
+      operationId: getAdDomainsServiceView
+      responses:
+        '200':
+          description: List of ad Domains
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdDomainServiceView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /ad-domains/id/{id}:
+    get:
+      tags:
+      - Ad Domain
+      summary: Returns an ad domain.
+      description: Returns an ad domain.
+      operationId: getAdDomainById
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - in: path
+        name: id
+        description: Tessell Ad Domain Identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdDomainServiceView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    AdDomainServiceView:
+      description: AD Domain Service View
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tessellName:
+          type: string
+          description: Tessell Name for Ad Domain
+        domainName:
+          type: string
+          description: Domain Name
+        netBIOSorOU:
+          type: string
+          description: NetBIOS name or OU
+  parameters:
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

@@ -1,0 +1,285 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center agentController API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: agentController
+paths:
+  /tickets/agents:
+    get:
+      summary: Get agent list
+      description: returns a list of all agents
+      tags:
+      - agentController
+      operationId: getAgents
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentsResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /tickets/agents/{id}:
+    get:
+      summary: Get agent by id
+      description: returns an agent with the given id
+      tags:
+      - agentController
+      operationId: getAgentById
+      parameters:
+      - name: id
+        in: path
+        description: Id of the agent
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    AgentsResponse:
+      title: Get Agents Response
+      description: array of agents
+      type: array
+      items:
+        $ref: '#/components/schemas/AgentDTO'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    ContactDTO:
+      title: Contact
+      type: object
+      description: Contact object
+      properties:
+        active:
+          type: boolean
+          description: Set to true if the contact has been verified
+        address:
+          type: string
+          description: Address of the contact
+        avatar:
+          type: object
+          description: Avatar DTO
+          properties:
+            avatar_url:
+              type: string
+              description: avatar url
+            content_type:
+              type: string
+              description: avatar content type
+            created_at:
+              type: string
+              format: date-time
+              description: avatar creation date
+            id:
+              type: integer
+              format: int64
+              description: avatar identifier
+            name:
+              type: string
+              description: avatar name
+            size:
+              type: integer
+              format: int64
+              description: avatar size
+            updated_at:
+              type: string
+              format: date-time
+              description: avatar last updated
+        company_id:
+          type: integer
+          format: int64
+          description: ID of the primary company to which this contact belongs
+        view_all_tickets:
+          type: boolean
+          description: Set to true if the contact can see all tickets that are associated with the company to which he belong
+        custom_fields:
+          type: object
+          description: Key value pairs containing the names and values of custom fields
+          additionalProperties:
+            type: object
+            properties:
+              code:
+                type: integer
+              text:
+                type: string
+        deleted:
+          type: boolean
+          description: Set to true if the contact has been deleted. Note that this attribute will only be present for deleted contacts
+        description:
+          type: string
+          description: A short description of the contact
+        email:
+          type: string
+          description: Primary email address of the contact. If you want to associate additional email(s) with this contact, use the other_emails attribute
+        id:
+          type: integer
+          format: int64
+          description: ID of the contact
+        job_title:
+          type: string
+          description: Job title of the contact
+        language:
+          type: string
+          description: Language of the contact
+        mobile:
+          type: string
+          description: Mobile number of the contact
+        name:
+          type: string
+          description: Name of the contact
+        other_emails:
+          type: array
+          description: Additional emails associated with the contact
+          items:
+            type: string
+        phone:
+          type: string
+          description: Telephone number of the contact
+        tags:
+          type: array
+          description: Tags associated with this contact
+          items:
+            type: string
+        time_zone:
+          type: string
+          description: Time zone in which the contact resides
+        twitter_id:
+          type: string
+          description: Twitter handle of the contact
+        unique_external_id:
+          type: string
+          description: External ID of the contact
+        created_at:
+          type: string
+          format: date-time
+          description: ticket creation date
+        updated_at:
+          type: string
+          format: date-time
+          description: ticket last updated
+    AgentDTO:
+      title: Agent
+      type: object
+      description: Agent object
+      properties:
+        available:
+          type: boolean
+          description: If the agent is in a group that has enabled "Automatic Ticket Assignment", this attribute will be set to true if the agent is accepting new tickets
+        available_since:
+          type: string
+          format: date-time
+          description: Timestamp that denotes when the agent became available/unavailable
+        id:
+          type: integer
+          format: int64
+          description: User ID of the agent
+        occasional:
+          type: boolean
+          description: Set to true if this is an occasional agent (true => occasional, false => full-time)
+        signature:
+          type: string
+          description: Signature of the agent in HTML format
+        ticket_scope:
+          type: integer
+          format: int64
+          description: Ticket permission of the agent
+        type:
+          type: string
+          description: Type of Agent
+        skill_ids:
+          type: array
+          description: Skill ids associated with the agent
+          items:
+            type: integer
+            format: int64
+        group_ids:
+          type: array
+          description: Group IDs associated with the agent
+          items:
+            type: integer
+            format: int64
+        role_ids:
+          type: array
+          description: Role IDs associated with the agent
+          items:
+            type: integer
+            format: int64
+        created_at:
+          type: string
+          format: date-time
+          description: Agent creation timestamp
+        updated_at:
+          type: string
+          format: date-time
+          description: Agent updated timestamp
+        contact:
+          $ref: '#/components/schemas/ContactDTO'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

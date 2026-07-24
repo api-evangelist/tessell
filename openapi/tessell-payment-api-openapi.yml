@@ -1,0 +1,421 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Payment API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Payment
+paths:
+  /billing/invoices:
+    get:
+      tags:
+      - Payment
+      summary: View a list of Tessell Invoices
+      description: Returns an array of invoices corresponding to a tenant-id
+      operationId: getInvoices
+      parameters:
+      - name: tenant-id
+        in: header
+        description: tenant-id
+        required: true
+        style: simple
+        schema:
+          type: string
+      - in: query
+        name: includeDraft
+        schema:
+          type: boolean
+        required: false
+        description: whether to include draft invoices or not
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TessellInvoiceDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /billing/invoices/{id}:
+    get:
+      tags:
+      - Payment
+      summary: Get Invoice By Id
+      description: Returns invoice corresponding to an id
+      operationId: getInvoice
+      parameters:
+      - name: id
+        in: path
+        description: id of invoice
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: tenant-id
+        in: header
+        description: tenant-id
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellInvoiceDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /billing/payments:
+    post:
+      tags:
+      - Payment
+      summary: Create a payment option update request
+      description: Creates a request for updating the payment option
+      operationId: createPaymentOptionRequest
+      parameters:
+      - name: tenant-id
+        in: header
+        description: tenant-id
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellPaymentDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - Payment
+      summary: Update payment option
+      description: Update the payment option in Tessell
+      operationId: updatePaymentOption
+      parameters:
+      - name: tenant-id
+        in: header
+        description: tenant-id
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: Request Body for updating the payment option
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TessellCardDTO'
+      responses:
+        '200':
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /billing/payments/{intentId}:
+    delete:
+      tags:
+      - Payment
+      summary: Cancel payment option request
+      description: Cancel an already requested payment option change request
+      operationId: cancelPaymentOptionRequest
+      parameters:
+      - name: intentId
+        in: path
+        description: Id of the intent to change payment option
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: tenant-id
+        in: header
+        description: tenant-id
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /billing/payments/default:
+    get:
+      tags:
+      - Payment
+      summary: Get default payment option
+      description: View credit card listed with Tessell as default payment option
+      operationId: getDefaultPaymentOption
+      parameters:
+      - name: tenant-id
+        in: header
+        description: tenant-id
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellCardDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    TessellPaymentDTO:
+      title: TessellPaymentDTO
+      type: object
+      description: Details required for changing payment option of tenant
+      properties:
+        setupIntentId:
+          type: string
+          description: Id of the intent to change payment option
+        clientSecret:
+          type: string
+          description: Client secret for updating payment method in Tessell
+    TessellCustomerAddress:
+      title: TessellCustomerAddress
+      type: object
+      description: Address of customer
+      properties:
+        line1:
+          type: string
+          description: Address line 1
+        line2:
+          type: string
+          description: Address line 2
+        city:
+          type: string
+          description: City
+        state:
+          type: string
+          description: State
+        postalCode:
+          type: string
+          description: Postal code (zip code)
+        country:
+          type: string
+          description: Country
+    TessellInvoiceDTO:
+      title: TessellInvoiceDTO
+      type: object
+      description: Definition of Invoice DTO in tessell
+      properties:
+        id:
+          type: string
+          description: Invoice id
+        number:
+          type: string
+          description: Invoice number
+        dateCreated:
+          type: string
+          description: Timestamp when the invoice was created
+        dueDate:
+          type: string
+          description: Timestamp when the invoice is due
+        status:
+          type: string
+          description: Invoice status
+        subTotal:
+          type: number
+          format: double
+          description: Subtotal of the invoice (total - tax)
+        tax:
+          type: number
+          format: double
+          description: Tax on the invoice
+        total:
+          type: number
+          format: double
+          description: Total amount due on the invoice
+        amountDue:
+          type: number
+          format: double
+          description: Total amount due for the invoice
+        amountPaid:
+          type: number
+          format: double
+          description: Amount paid so far for the invoice
+        discountAmount:
+          type: number
+          format: double
+          description: Discount amount on the invoice
+        discountPercentage:
+          type: number
+          format: double
+          description: Discount percentage on the invoice
+        creditAmount:
+          type: number
+          format: double
+          description: Credit amount on the invoice
+        currency:
+          type: string
+          description: Currency of the invoice
+        invoiceUrl:
+          type: string
+          description: URL where customer can view and pay the invoice and get receipts
+        invoicePdf:
+          type: string
+          description: Invoice PDF
+        payment:
+          $ref: '#/components/schemas/TessellInvoicePaymentDTO'
+        metadata:
+          type: object
+          description: Metadata for the invoice
+    TessellCardDTO:
+      title: TessellCardDTO
+      type: object
+      description: Definition of a card in tessell
+      properties:
+        id:
+          type: string
+          description: Id of credit card
+        brand:
+          type: string
+          description: Credit card branch (Visa, Mastercard, etc)
+        expMonth:
+          type: number
+          format: long
+          description: Card expiry month
+        expYear:
+          type: number
+          format: long
+          description: Card expiry year
+        cardType:
+          type: string
+          description: Credit Card Type (Credit, Debit, etc)
+        last4:
+          type: string
+          description: Last four digits of the card
+        address:
+          $ref: '#/components/schemas/TessellCustomerAddress'
+    TessellInvoicePaymentDTO:
+      title: TessellPaymentDTO
+      type: object
+      description: Details about the payment of an invoice
+      properties:
+        paymentOutcome:
+          type: string
+          description: Outcome of the payment attempt for the invoice
+        receiptUrl:
+          type: string
+          description: Receipt URL if payment was successful
+        paymentErrorCode:
+          type: string
+          description: Payment error code if payment failed for invoice
+        paymentErrorMessage:
+          type: string
+          description: Payment error code if payment failed for invoice
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

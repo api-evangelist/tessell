@@ -1,0 +1,3619 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center data-pipeline API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: data-pipeline
+paths:
+  /data-pipelines:
+    get:
+      description: Get details of all the data pipelines
+      tags:
+      - data-pipeline
+      operationId: getDataPipelines
+      parameters:
+      - name: statuses
+        description: Filter pipeline based on its status
+        in: query
+        style: form
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataPipelineStatus'
+      - $ref: '#/components/parameters/cloudQuery'
+      - $ref: '#/components/parameters/subscriptionNameQuery'
+      - $ref: '#/components/parameters/dbEngineTypesQuery'
+      - $ref: '#/components/parameters/cloudRegion'
+      - $ref: '#/components/parameters/vpcQuery'
+      - name: load-instances-cr
+        description: Boolean to indicate if instances' compute resource id need to be fetched
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataPipelinesResponse'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+      - data-pipeline
+      operationId: createDataPipeline
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataPipelinePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /data-pipelines/{id}:
+    get:
+      tags:
+      - data-pipeline
+      operationId: getDataPipeline
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataPipeline'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - data-pipeline
+      operationId: deleteDataPipeline
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /data-pipelines/{id}/resume:
+    patch:
+      tags:
+      - data-pipeline
+      operationId: startDataPipeline
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /data-pipelines/{id}/pause:
+    patch:
+      tags:
+      - data-pipeline
+      operationId: pauseDataPipeline
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /data-pipelines/{id}/db-services/{dp-db-service-id}/db-schema:
+    get:
+      tags:
+      - data-pipeline
+      operationId: getDataPipelineServiceDatabaseSchema
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/dpDbServiceIdRequired'
+        description: Unique identity representing the DB Service Data Pipeline mapping
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataPipelineDbServiceSchema'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /data-pipelines/{id}/db-services/{dp-db-service-id}:
+    description: Detach Tessell DB Service from the Data Pipeline.
+    delete:
+      tags:
+      - data-pipeline
+      operationId: detachDbServiceFromDataPipeline
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/dpDbServiceIdRequired'
+        description: Unique identity representing the DB Service Data Pipeline mapping
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /data-pipelines/{id}/db-services/{dp-db-service-id}/resume:
+    description: Start Data Pipeline's DB Service Change Data Capture Operations.
+    patch:
+      tags:
+      - data-pipeline
+      operationId: startDataPipelineDbServiceOperations
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/dpDbServiceIdRequired'
+        description: Unique idenity representing the DB Service, not the service id.
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /data-pipelines/{id}/db-services/{dp-db-service-id}/pause:
+    description: Pause Data Pipeline's DB Service Change Data Capture Operations.
+    patch:
+      tags:
+      - data-pipeline
+      operationId: pauseDataPipelineDbServiceOperations
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/dpDbServiceIdRequired'
+        description: Unique idenity representing the DB Service, not the service id.
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /data-pipelines/db-services/{service-id}/publish-data:
+    post:
+      tags:
+      - data-pipeline
+      operationId: publishServiceToDataPipeline
+      parameters:
+      - $ref: '#/components/parameters/service-id'
+        description: Tessell DB Service Id
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceDataPipelinePublishPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /data-pipelines/{id}/events/create/track:
+    get:
+      tags:
+      - data-pipeline
+      summary: Track the progress of the ongoing data pipeline creation operation
+      description: Track the progress of the ongoing data pipeline creation operation
+      operationId: trackDataPipelineCreation
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateDataPipelineTrackingDetails'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /data-pipelines/db-services/{dp-db-service-id}/events/track:
+    get:
+      tags:
+      - data-pipeline
+      summary: Track the progress of the ongoing data pipeline DB service operation
+      operationId: trackDpDbServiceOperation
+      parameters:
+      - $ref: '#/components/parameters/dpDbServiceIdRequired'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DpDbSvcTrackingDetails'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /data-pipelines/{id}/metrics/event-hub:
+    get:
+      tags:
+      - data-pipeline
+      summary: Returns the metrics data for Azure Event Hub Namespace
+      operationId: getPipelineAzureEventHubMetrics
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/start-time-in-query-required'
+      - $ref: '#/components/parameters/end-time-in-query-required'
+      - $ref: '#/components/parameters/step-in-query-required'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The list of EventHub metrics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AzureEventHubMonitoringChart'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /data-pipelines/{id}/eligible-db-services:
+    get:
+      tags:
+      - data-pipeline
+      summary: Returns the list of eligible DB services for the Data Pipeline
+      operationId: getEligibleDbServicesForPipeline
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: load-db-instances
+        description: Load the instances that are part of the DB Service
+        in: query
+        style: form
+        required: false
+        schema:
+          type: boolean
+          default: true
+      - name: load-db-databases
+        description: Load the databases that are part of the DB Service
+        in: query
+        style: form
+        required: false
+        schema:
+          type: boolean
+          default: false
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellServicesResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /data-pipelines/db-services/{id}/eligible-pipelines:
+    get:
+      tags:
+      - data-pipeline
+      summary: Returns the list of eligible Data Pipelines for the DB Service
+      operationId: getEligiblePipelinesForDbService
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataPipelinesResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    TessellServiceInstanceRole:
+      type: string
+      description: DB Service instance role
+      enum:
+      - primary
+      - read_only_replica
+      - failover_replica
+      - dr
+    AzureEventHubMonitoringChart:
+      type: object
+      properties:
+        entityId:
+          type: string
+          format: uuid
+          description: Event Hub Namespace ID
+        title:
+          type: string
+          description: The title of the chart
+        entityType:
+          type: string
+          enum:
+          - AZURE_EVENT_HUB
+        xlabel:
+          type: string
+          description: The label of x-axis
+        ylabel:
+          type: string
+          description: The label of y-axis
+        unit:
+          type: string
+          description: The unit of the metric
+        metrics:
+          type: array
+          description: Array of Metrics in the chart
+          items:
+            $ref: '#/components/schemas/TessellMonitoringMetricsDTO'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    DataPipelineInfraResource:
+      type: object
+      properties:
+        name:
+          type: string
+        resourceType:
+          type: string
+    commonYearlySchedule:
+      allOf:
+      - $ref: '#/components/schemas/DatesForEachMonth'
+      - type: object
+        properties:
+          months:
+            type: array
+            uniqueItems: true
+            items:
+              $ref: '#/components/schemas/Month'
+              x-enum: true
+    TessellServiceClonedFromInfo:
+      title: TessellServiceClonedFromInfo
+      type: object
+      x-computed: true
+      description: If the DB Service is created as a clone from some other DB Service, this section describes the parent DB Service and cloning details
+      properties:
+        cloneType:
+          $ref: '#/components/schemas/DBServiceCloneType'
+        contentType:
+          $ref: '#/components/schemas/BackupType'
+        tessellServiceId:
+          type: string
+          format: uuid
+          description: The DB Service ID using which this DB Service clone is created
+        availabilityMachineId:
+          type: string
+          format: uuid
+          description: The Availability Machine ID using which this DB Service clone is created
+        tessellService:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The DB Service name using which this DB Service clone is created
+        availabilityMachine:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The Availability Machine name using which this DB Service clone is created
+        snapshotName:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The snapshot using which this DB Service clone is created
+        snapshotId:
+          type: string
+          format: uuid
+          description: The snapshot ID using which this DB Service clone is created
+        snapshotTime:
+          type: string
+          format: date-time
+          description: DB Service snapshot capture time
+        pitrTime:
+          type: string
+          description: If the database was created using a Point-In-Time mechanism, it specifies the timestamp in UTC
+        maximumRecoverability:
+          type: boolean
+          default: false
+          description: If the service was created using a maximum recoverability from the parent service
+        storageProvider:
+          $ref: '#/components/schemas/StorageProviderType'
+        isHpc:
+          type: boolean
+          description: Specifies whether the parent DB Service was using High Performance Compute (HPC)
+        sourceType:
+          description: The source type of the clone - SNAPSHOT for disk snapshot based clone, NATIVE_BACKUP for native backup based clone
+          allOf:
+          - $ref: '#/components/schemas/CloneSourceType'
+    AzureNetAppCapacityPoolServiceLevel:
+      type: string
+      enum:
+      - Standard
+      - Premium
+      - Ultra
+      x-enum-varnames:
+      - STANDARD
+      - PREMIUM
+      - ULTRA
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    TessellServiceStatus:
+      type: string
+      description: The current status of the DB Service
+      enum:
+      - CREATING
+      - FAILED
+      - READY
+      - STOPPING
+      - STOPPED
+      - DEGRADED
+      - HEALING
+      - DOWN
+      - STARTING
+      - DELETING
+      - SWITCHOVER
+      - REBUILDING
+      - PATCHING
+      - PATCH_FAILED
+      - UPDATING
+      - UNDER_MAINTENANCE
+      - REFRESHING
+      - RESTORING
+      - RESTORE_FAILED
+    WeekDay:
+      description: Week Days
+      type: string
+      enum:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+      x-enum-varnames:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+    EntityAclSharingInfo:
+      title: EntityAclSharingInfo
+      description: Tessell Entity ACL Sharing Info
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityUserAclSharingInfo'
+    TessellServiceSqlServerEngineConfig:
+      title: TessellServiceSqlServerEngineConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+        adDomainId:
+          type: string
+          format: uuid
+          description: Active Directory Domain ID
+        serviceAccountUser:
+          type: string
+        agentServiceAccountUser:
+          type: string
+        instanceName:
+          $ref: '#/components/schemas/SqlServerInstanceName'
+    TessellServiceDatabaseConnectString:
+      title: TessellServiceDatabaseConnectString
+      type: object
+      x-computed: true
+      properties:
+        connectDescriptor:
+          type: string
+          x-computed: true
+        masterUser:
+          type: string
+          x-computed: true
+        endpoint:
+          type: string
+          x-computed: true
+        servicePort:
+          type: string
+          x-computed: true
+    AwsInfraConfig:
+      type: object
+      title: AwsInfraConfig
+      properties:
+        awsCpuOptions:
+          type: object
+          title: AwsCpuOptions
+          properties:
+            vcpus:
+              type: integer
+              format: int32
+              minimum: 0
+              description: Number of vcpus for aws cpu options
+    PerfInsightsStatus:
+      title: PerfInsightsStatus
+      type: string
+      description: Perf insights status of a Service Instance
+      enum:
+      - ENABLED
+      - ENABLING
+      - DISABLED
+      - DISABLING
+      - FAILED_ENABLE
+      - FAILED_DISABLE
+    tessellServiceTopology:
+      type: string
+      description: DB Service topology. This would specify whether the DB Service is single-node, or multi-node.
+      enum:
+      - single_instance
+      - high_availability
+    SourceConfigPayload:
+      type: object
+      required:
+      - dbEngine
+      - region
+      - vpc
+      - privateSubnet
+      - computeType
+      properties:
+        dbEngine:
+          $ref: '#/components/schemas/databaseEngineType'
+        region:
+          description: The region in which the Data Pipeline is to be provisioned
+          type: string
+        vpc:
+          description: The VPC for compute to be used for provisioning the Data Pipeline
+          type: string
+        privateSubnet:
+          description: The private subnet for compute to be used for provisioning the Data Pipeline
+          type: string
+        computeType:
+          description: Tessell compute shape to be used for provisioning the compute resources
+          type: string
+        numOfInstances:
+          description: Number of compute resources to provision
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 4
+    ScheduleInfo:
+      type: object
+      properties:
+        backupStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+        dailySchedule:
+          $ref: '#/components/schemas/DailySchedule'
+        weeklySchedule:
+          $ref: '#/components/schemas/WeeklySchedule'
+        monthlySchedule:
+          $ref: '#/components/schemas/MonthlySchedule'
+        yearlySchedule:
+          $ref: '#/components/schemas/YearlySchedule'
+    DatabaseConfiguration:
+      title: DatabaseConfiguration
+      type: object
+      nullable: true
+      properties:
+        oracleConfig:
+          $ref: '#/components/schemas/OracleDatabaseConfig'
+        postgresqlConfig:
+          $ref: '#/components/schemas/PostgresqlDatabaseConfig'
+        mySqlConfig:
+          $ref: '#/components/schemas/MySqlDatabaseConfig'
+        sqlServerConfig:
+          $ref: '#/components/schemas/SqlServerDatabaseConfig'
+        mongodbConfig:
+          $ref: '#/components/schemas/MongodbDatabaseConfig'
+        milvusConfig:
+          $ref: '#/components/schemas/MilvusDatabaseConfig'
+    WeeklySchedule:
+      type: object
+      properties:
+        days:
+          description: Days in a week to retain weekly backups for
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/WeekDay'
+            x-enum: true
+    TessellServiceConnectString:
+      title: TessellServiceConnectString
+      type: object
+      description: DB Service connect string info
+      properties:
+        type:
+          $ref: '#/components/schemas/ConnectStringType'
+        usageType:
+          $ref: '#/components/schemas/ConnectStringUsageType'
+        connectDescriptor:
+          type: string
+          description: The connection description for the DB Service
+        endpoint:
+          type: string
+          description: The connection end point for the DB Service
+        masterUser:
+          type: string
+          description: The master user name for the DB Service
+        servicePort:
+          type: integer
+          format: int32
+          minimum: 0
+          description: The connection port for the DB Service
+    RefreshServiceInfo:
+      type: object
+      description: Service refresh details
+      properties:
+        contentType:
+          $ref: '#/components/schemas/BackupType'
+        snapshotName:
+          type: string
+        snapshotTime:
+          description: Time at which snapshot is created.
+          type: string
+          format: date-time
+        pitr:
+          type: string
+        scriptInfo:
+          $ref: '#/components/schemas/PrePostScriptInfo'
+        scheduleId:
+          description: If refreshed using schedule then schedule id, else null
+          type: string
+          format: uuid
+        lastSuccessfulRefreshTime:
+          description: Time at which refresh would be successfully completed.
+          type: string
+          format: date-time
+    MongodbDatabaseConfig:
+      title: MongodbDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+    InstanceExadataComputeConfig:
+      type: object
+      required:
+      - infrastructureId
+      - infrastructureName
+      - vmClusterId
+      - vmClusterName
+      - vcpus
+      - memory
+      properties:
+        infrastructureId:
+          type: string
+          format: uuid
+        infrastructureName:
+          type: string
+        vmClusterId:
+          type: string
+          format: uuid
+        vmClusterName:
+          type: string
+        vcpus:
+          type: integer
+        memory:
+          type: integer
+          format: int64
+    PrePostScriptInfo:
+      type: object
+      properties:
+        preScriptInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScriptInfo'
+        postScriptInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScriptInfo'
+    DataPipeline:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated data pipeline identifier
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/DataPipelineStatus'
+        cloud:
+          type: string
+        subscription:
+          type: string
+        contextInfo:
+          $ref: '#/components/schemas/ContextInfo'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellTag'
+        msgLayer:
+          $ref: '#/components/schemas/DataPipelineInfraResource'
+        sourceAdapter:
+          $ref: '#/components/schemas/DataPipelineSourceAdapter'
+        sinkAdapter:
+          $ref: '#/components/schemas/DataPipelineSinkAdapter'
+        createdBy:
+          type: string
+        dateCreated:
+          type: string
+          format: date-time
+        dateModified:
+          type: string
+          format: date-time
+    ServiceAzureNetAppConfig:
+      type: object
+      properties:
+        serviceLevel:
+          $ref: '#/components/schemas/AzureNetAppCapacityPoolServiceLevel'
+    TessellServicesResponse:
+      title: TessellServicesResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/TessellServiceDTO'
+    TessellResourceUpdateInfo:
+      title: TessellResourceUpdateInfo
+      description: In progress update information for a Tessell Resource
+      properties:
+        updateType:
+          x-computed: true
+          type: string
+          description: Type of the update
+        referenceId:
+          x-computed: true
+          type: string
+          format: uuid
+          description: The reference-id of the update request
+        submittedAt:
+          x-computed: true
+          type: string
+          format: date-time
+          description: Timestamp when the resource update was requested
+        updateInfo:
+          x-computed: true
+          type: object
+          description: The specific details for a Tessell resource that are being updated
+          additionalProperties: {}
+    TessellServiceDeletionConfig:
+      title: TessellServiceDeletionConfig
+      description: If the DB Service is to be deleted, this config would be honoured if no preference is provided during deleting the service
+      x-patchable: true
+      properties:
+        retainAvailabilityMachine:
+          type: boolean
+          default: false
+          x-patchable: true
+          description: If specified as true, the associated Availability Machine (snapshots, sanitized-snapshots, logs) would be retained
+    DataPipelineSinkAdapter:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/DataPipelineSinkAdapterType'
+        sinks:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataPipelineInfraResource'
+    DataPipelinePayload:
+      type: object
+      required:
+      - name
+      - cloud
+      - subscription
+      - sourceConfig
+      - sinkConfig
+      - executionOutput
+      properties:
+        name:
+          description: Data Pipeline name
+          type: string
+        description:
+          description: Data Pipeline description
+          type: string
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+        subscription:
+          type: string
+          description: Tessell Subscription in which the Data Pipeline is to be created
+        sourceConfig:
+          $ref: '#/components/schemas/SourceConfigPayload'
+        sinkConfig:
+          $ref: '#/components/schemas/SinkConfigPayload'
+        sinkAdapterConfig:
+          $ref: '#/components/schemas/SinkAdapterConfig'
+        skipRollback:
+          description: Internal flag to indicate if VMs to be rolled back in case of provision failure
+          type: boolean
+          default: false
+        tags:
+          description: The tags to be associated with the Data Pipeline
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellTag'
+        executionOutput:
+          $ref: '#/components/schemas/DataPipelineExecutionOutput'
+    AzureNetAppNetworkFeature:
+      description: Azure NetApp network feature configuration for creating volume
+      type: string
+      enum:
+      - Standard
+      - Basic
+      x-enum-varnames:
+      - STANDARD
+      - BASIC
+    AzureNetAppEncryptionKeySource:
+      enum:
+      - Microsoft.NetApp
+      - Microsoft.KeyVault
+      x-enum-varnames:
+      - MICROSOFT_NET_APP
+      - MICROSOFT_KEY_VAULT
+    ParameterProfile:
+      title: ParameterProfile
+      type: object
+      x-computed: true
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the the parameter profile
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The name used to identify the parameter profile
+        version:
+          type: string
+          format: uuid
+          description: The version of the parameter profile associated with the instance
+        status:
+          $ref: '#/components/schemas/ParameterProfileStatus'
+    DataPipelineStatus:
+      type: string
+      enum:
+      - CREATING
+      - CREATION_FAILED
+      - ACTIVE
+      - STARTING
+      - STOPPING
+      - PAUSED
+      - DELETING
+      - ERROR
+    MaintenanceCadence:
+      type: string
+      enum:
+      - DAILY
+      - WEEKLY
+      - MONTHLY
+      description: Frequency of maintenance window
+    DbServicePrivateLinkStatus:
+      title: DbServicePrivateLinkStatus
+      type: string
+      description: DB Service's private link status
+      enum:
+      - successful
+      - failed
+      - configuring
+      - not_configured
+      - update_successful
+      - update_failed
+    Month:
+      description: Name of a month
+      type: string
+      enum:
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+      x-enum-varnames:
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+    InstanceAzureNetAppConfig:
+      description: Service instance level Azure NetApp config
+      type: object
+      properties:
+        azureNetAppName:
+          type: string
+        capacityPoolName:
+          type: string
+        volumeName:
+          type: string
+        azureNetAppId:
+          description: Azure NetApp Id registered with Tessell
+          type: string
+          format: uuid
+        capacityPoolId:
+          description: Capacity Pool Id of the Azure NetApp registered with Tessell
+          type: string
+          format: uuid
+        delegatedSubnetId:
+          description: Delegated Subnet name registered with Tessell for the Azure NetApp volume
+          type: string
+          format: uuid
+        delegatedSubnetName:
+          description: Delegated Subnet Id registered with Tessell for the Azure NetApp volume
+          type: string
+        encryptionKeyInfo:
+          $ref: '#/components/schemas/AzureNetAppEncryptionKeyInfo'
+        networkFeatures:
+          $ref: '#/components/schemas/AzureNetAppNetworkFeature'
+        serviceLevel:
+          $ref: '#/components/schemas/AzureNetAppCapacityPoolServiceLevel'
+    TessellServiceIntegrationsInfo:
+      title: TessellServiceIntegrationsInfo
+      description: Tessell provides support to integrate third party softwares with DB Services. This fields details the information about what third-party integrations are configured with the DB Service.
+      type: object
+      properties:
+        integrations:
+          type: array
+          items:
+            type: string
+            format: uuid
+    DataPipelineSinkType:
+      type: string
+      enum:
+      - MICROSOFT_FABRIC
+    TessellServiceInstanceContextInfo:
+      type: object
+      description: Provide more context of Service Instance state
+      properties:
+        subStatus:
+          $ref: '#/components/schemas/TessellServiceInstanceSubStatus'
+        description:
+          type: string
+    SinkConfigPayload:
+      type: object
+      required:
+      - type
+      - config
+      properties:
+        type:
+          $ref: '#/components/schemas/DataPipelineSinkType'
+        config:
+          type: object
+          properties:
+            microsoftFabric:
+              $ref: '#/components/schemas/DataPipelineMicrosoftFabricConfig'
+    TessellServiceInstanceDTO:
+      title: TessellServiceInstanceDTO
+      type: object
+      description: This is a definition of the DB Service Instance object
+      required:
+      - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the DB Service Instance
+          x-computed: true
+        name:
+          type: string
+          description: Name of the DB Service Instance
+        instanceGroupName:
+          type: string
+          description: Name of the instance group
+        type:
+          $ref: '#/components/schemas/TessellServiceInstanceType'
+          x-computed: true
+          x-enum: true
+        role:
+          description: DB Service Topology
+          $ref: '#/components/schemas/TessellServiceInstanceRole'
+          x-computed: true
+          x-enum: true
+        status:
+          $ref: '#/components/schemas/TessellServiceInstanceStatus'
+          x-computed: true
+          x-enum: true
+        tessellServiceId:
+          description: DB Service Instance's associated DB Service id
+          type: string
+          format: uuid
+          x-computed: true
+        cloud:
+          description: DB Service Instance's cloud type
+          type: string
+          x-computed: true
+        region:
+          description: DB Service Instance's cloud region
+          type: string
+          x-computed: true
+        availabilityZone:
+          x-computed: true
+          description: DB Service Instance's cloud availability zone
+          type: string
+        availabilitySet:
+          type: string
+          description: The availability set to which the Compute Resource belongs
+          minLength: 1
+          maxLength: 80
+          x-computed: true
+        instanceGroupId:
+          description: The instance groupd Id
+          type: string
+          format: uuid
+          x-computed: true
+        computeType:
+          description: The compute used for creation of the Tessell Service Instance
+          type: string
+          x-computed: true
+        awsInfraConfig:
+          $ref: '#/components/schemas/AwsInfraConfig'
+          x-computed: true
+        gcpInfraConfig:
+          $ref: '#/components/schemas/GcpInfraConfig'
+          x-computed: true
+        computeId:
+          description: The associated compute identifier
+          type: string
+          format: uuid
+          x-computed: true
+        computeName:
+          description: The associated compute name
+          type: string
+        storage:
+          description: The storage (in bytes) that has been provisioned for the DB Service instance.
+          type: integer
+          format: int64
+          minimum: 0
+          x-computed: true
+        dataVolumeIops:
+          type: integer
+          format: int32
+          x-computed: true
+        throughput:
+          type: integer
+          format: int32
+          description: Throughput requested for this DB Service instance
+          x-computed: true
+        enablePerfInsights:
+          type: boolean
+          x-computed: true
+        parameterProfile:
+          $ref: '#/components/schemas/ParameterProfile'
+          x-computed: true
+        optionProfile:
+          $ref: '#/components/schemas/OptionProfile'
+          x-computed: true
+        monitoringConfig:
+          $ref: '#/components/schemas/MonitoringConfig'
+          x-computed: true
+        vpc:
+          type: string
+          description: The VPC used for creation of the DB Service Instance
+          x-computed: true
+        publicSubnet:
+          type: string
+          description: The public subnet used for creation of the DB Service Instance
+          x-computed: true
+        privateSubnet:
+          type: string
+          description: The private subnet used for creation of the DB Service Instance
+          x-computed: true
+        encryptionKey:
+          type: string
+          description: The encryption key name which is used to encrypt the data at rest
+          x-computed: true
+        softwareImage:
+          type: string
+          description: Software Image to be used to create the instance
+          x-computed: true
+        softwareImageVersion:
+          type: string
+          description: Software Image Version to be used to create the instance
+          x-computed: true
+        dateCreated:
+          type: string
+          description: Timestamp when the entity was created
+          format: date-time
+          x-computed: true
+        connectString:
+          $ref: '#/components/schemas/TessellServiceInstanceConnectString'
+          x-computed: true
+        updatesInProgress:
+          description: The updates that are in progress for this resource
+          type: array
+          x-computed: true
+          items:
+            $ref: '#/components/schemas/TessellResourceUpdateInfo'
+        lastStartedAt:
+          description: Timestamp when the service instance was last started at
+          type: string
+          format: date-time
+          x-computed: true
+        lastStoppedAt:
+          description: Timestamp when the Service Instance was last stopped at
+          type: string
+          format: date-time
+          x-computed: true
+        syncMode:
+          $ref: '#/components/schemas/InstanceSyncMode'
+          x-computed: true
+        engineConfiguration:
+          $ref: '#/components/schemas/ServiceInstanceEngineInfo'
+          x-computed: true
+        computeConfig:
+          $ref: '#/components/schemas/InstanceComputeConfig'
+        storageConfig:
+          $ref: '#/components/schemas/InstanceStorageConfig'
+        archiveStorageConfig:
+          $ref: '#/components/schemas/InstanceStorageConfig'
+        privateLinkInfo:
+          $ref: '#/components/schemas/PrivateLinkInfo'
+        securityConfig:
+          $ref: '#/components/schemas/SecurityConfigOps'
+        contextInfo:
+          $ref: '#/components/schemas/TessellServiceInstanceContextInfo'
+    PrivateLinkPayload:
+      type: object
+      description: The interface endpoint or Gateway Load Balancer endpoint to connect to your DB service.
+      properties:
+        servicePrincipals:
+          description: The list of AWS account principals that are currently enabled. This is only applicable for DB Services hosted on AWS.
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        clientAzureSubscriptionIds:
+          description: The list of Azure subscription Ids. This is only applicable for DB Services hosted on AZURE.
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            format: uuid
+    DatabaseSchemaDb:
+      type: object
+      description: Represents a database instance within the schema structure.
+      properties:
+        databaseName:
+          type: string
+          example: PDB52E
+        databaseId:
+          type: string
+          format: uuid
+          description: Unique identifier for the database instance.
+        schemas:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseSchemaDbSchema'
+    PatchType:
+      type: string
+      enum:
+      - CRITICAL
+      - NON_CRITICAL
+      description: Type of patch
+    TessellServiceEngineInfo:
+      title: TessellServiceEngineInfo
+      description: This field details the DB Service engine configuration details like - parameter profile, or options profile (if applicable) are used to configure the DB Service.
+      type: object
+      nullable: true
+      properties:
+        oracleConfig:
+          $ref: '#/components/schemas/TessellServiceOracleEngineConfig'
+        postgresqlConfig:
+          $ref: '#/components/schemas/TessellServicePostgresqlEngineConfig'
+        mysqlConfig:
+          $ref: '#/components/schemas/TessellServiceMySqlEngineConfig'
+        sqlServerConfig:
+          $ref: '#/components/schemas/TessellServiceSqlServerEngineConfig'
+        apacheKafkaConfig:
+          $ref: '#/components/schemas/TessellServiceApacheKafkaEngineConfig'
+        mongodbConfig:
+          $ref: '#/components/schemas/TessellServiceMongodbEngineConfig'
+        milvusConfig:
+          $ref: '#/components/schemas/TessellServiceMilvusEngineConfig'
+        preScriptInfo:
+          $ref: '#/components/schemas/ScriptInfo'
+        postScriptInfo:
+          $ref: '#/components/schemas/ScriptInfo'
+        collationConfig:
+          $ref: '#/components/schemas/DBEngineCollationConfig'
+        backupUrl:
+          type: string
+          description: The URL where the backup is stored
+        ignorePostScriptFailure:
+          type: boolean
+        ignorePreScriptFailure:
+          type: boolean
+    InstanceAccessMode:
+      type: string
+      description: Service instance access mode
+      enum:
+      - OPEN_MODE
+      - MOUNT_MODE
+    PrivateLinkStatus:
+      description: Tessell Private Link Status
+      type: string
+      enum:
+      - CREATING
+      - ACTIVE
+      - FAILED
+      - UPDATING
+      - UPDATION_SUCCESS
+      - UPDATION_FAILED
+      - DELETING
+      - DELETED
+      - DELETION_FAILED
+    DatabaseSchemaDbSchemaTable:
+      type: object
+      description: Represents a table within a schema.
+      properties:
+        tableName:
+          type: string
+          example: SAMPLE_TABLE
+        isEligibleForDataPipeline:
+          type: boolean
+          description: Indicates if this table is eligible for data pipeline operations based on its columns' data types.
+          example: true
+        primaryKeys:
+          type: array
+          description: List of primary keys, where each primary key can be a composite key (array of column names).
+          items:
+            type: array
+            items:
+              type: string
+          example:
+          - - - COL1
+            - - COL2
+              - COL3
+        uniqueKeys:
+          type: array
+          description: List of unique keys, where each unique key can be a composite key (array of column names).
+          items:
+            type: array
+            items:
+              type: string
+          example:
+          - - - COL1
+            - - COL2
+              - COL3
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseSchemaDbSchemaTableColumn'
+    TaskStatus:
+      type: string
+      description: The status of Task
+      enum:
+      - AVAILABLE
+      - QUEUED
+      - CANCELLED
+      - OVERRIDDEN
+      - IN_PROGRESS
+      - SUCCESS
+      - FAILED
+    PostgresqlDatabaseConfig:
+      title: PostgresqlDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The options profile for the database
+    DpDbSvcTrackingDetails:
+      type: object
+      description: Execution details of data pipeline DB Service operation
+      properties:
+        status:
+          $ref: '#/components/schemas/DataPipelineDbServiceStatusOps'
+          description: Status of the report
+        progress:
+          $ref: '#/components/schemas/TrackProgress'
+          description: Progress detail of running report
+        steps:
+          type: array
+          description: Steps performed as part of the data pipeline creation operation
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/TrackStep'
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    OraclePdbConfigTaskPayload:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Name of the PDB
+        username:
+          type: string
+          description: Username for the PDB
+        secretId:
+          type: string
+          description: Password for the PDB
+          format: uuid
+        postScriptInfo:
+          $ref: '#/components/schemas/ScriptInfo'
+          description: 'Optional: Post-provisioning script to run after PDB is created.
+
+            '
+        rpoPolicyConfig:
+          $ref: '#/components/schemas/RpoPolicyConfig'
+          description: 'Optional: RPO policy configuration for PDB-level native backups (not snapshots).
+
+            This policy governs automated native backup schedules for this specific PDB.
+
+            If PITR (includeTransactionLogs) is enabled in this policy, the parent CDB must also have PITR enabled.
+
+            Note: This does not affect snapshot-based backups, which are managed at the service level.
+
+            '
+    taskSummary:
+      title: taskSummary
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        taskType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        associatedResourceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        details:
+          type: object
+          additionalProperties:
+            type: string
+    TessellServiceOracleEngineConfig:
+      title: TessellServiceOracleEngineConfig
+      type: object
+      nullable: true
+      properties:
+        multiTenant:
+          type: boolean
+          default: false
+          description: Specify whether the DB Service is multi-tenant.
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile id for the database
+        optionsProfile:
+          type: string
+          description: The options profile for the database
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The options profile for the database
+        sid:
+          type: string
+          description: SID for oracle database
+        characterSet:
+          type: string
+          description: The character-set for the database
+        nationalCharacterSet:
+          type: string
+          description: The national-character-set for the database
+        enableArchiveMode:
+          type: boolean
+          default: true
+          description: To explicitly enable archive mode, when PITR is disabled
+        pdbConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/OraclePdbConfigTaskPayload'
+    TessellServiceInstanceConnectString:
+      title: TessellServiceInstanceConnectString
+      type: object
+      x-computed: true
+      properties:
+        connectDescriptor:
+          type: string
+          x-computed: true
+        masterUser:
+          type: string
+          x-computed: true
+        endpoint:
+          type: string
+          x-computed: true
+        servicePort:
+          type: string
+          x-computed: true
+    PatchActivity:
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        versionNo:
+          type: string
+        typeOfPatch:
+          $ref: '#/components/schemas/PatchType'
+        impact:
+          type: string
+        scheduledBy:
+          type: string
+        status:
+          $ref: '#/components/schemas/TaskStatus'
+    TessellServiceDTO:
+      title: TessellServiceDTO
+      type: object
+      description: This is a definition of the DB Service object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the DB Service. This is the unique identifier for the DB Service.
+        availabilityMachineId:
+          type: string
+          format: uuid
+          description: Unique ID of the associated Availability Machine
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: Name of the DB Service
+          example: customerdb
+        description:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: User specified description for the DB Service
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        topology:
+          $ref: '#/components/schemas/tessellServiceTopology'
+        numOfInstances:
+          type: integer
+          format: int32
+          minimum: 0
+          description: This specifies the number of instances (nodes) that are created for the DB Service
+        status:
+          $ref: '#/components/schemas/TessellServiceStatus'
+        contextInfo:
+          $ref: '#/components/schemas/TessellServiceContextInfo'
+        licenseType:
+          $ref: '#/components/schemas/tessellServiceLicenseType'
+        autoMinorVersionUpdate:
+          type: boolean
+          default: true
+          description: This field specifies whether to automatically update minor version for the DB Service
+        enableDeletionProtection:
+          type: boolean
+          default: true
+          description: This field specifies whether to enable deletion protection for the DB Service. If this is enabled, the deletion for the DB Service would be disallowed until this setting is disabled.
+        enableStopProtection:
+          type: boolean
+          default: false
+          description: This field specifies whether to enable stop protection for the DB Service. If this is enabled, the stop for the DB Service would be disallowed until this setting is disabled.
+        edition:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: Edition of the software image that has been used to create the DB Service (e.g. COMMUNITY/ENTERPRISE etc)
+        softwareImage:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The software image that has been used to create the DB Service
+        softwareImageVersion:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The software image version that is used to create the DB Service
+        softwareImageVersionFamily:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The software image version family that is used to create the DB Service
+        tenantId:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The tenant identifier under which the DB Service is created
+        subscription:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The Tessell Subscription under which this DB Service is created
+        owner:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: This field specifies who is the owner for the DB Service
+        loggedInUserRole:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: This field specifies access role on the DB Service for the currently logged in user
+        dateCreated:
+          type: string
+          format: date-time
+          description: This field specifies the timestamp when the DB Service was created at
+        startedAt:
+          type: string
+          format: date-time
+          description: This field specifies the timestamp when the DB Service was last started at
+        stoppedAt:
+          type: string
+          format: date-time
+          description: This field specifies the timestamp when the DB Service was last stopped at
+        isHpc:
+          type: boolean
+          description: Specifies whether the DB Service is using High Performance Compute (HPC)
+        clonedFromInfo:
+          $ref: '#/components/schemas/TessellServiceClonedFromInfo'
+        refreshInfo:
+          $ref: '#/components/schemas/RefreshServiceInfo'
+        serviceConnectivity:
+          $ref: '#/components/schemas/TessellServiceConnectivityInfo'
+        tessellGenieStatus:
+          $ref: '#/components/schemas/TessellServiceGenieStatus'
+        infrastructure:
+          $ref: '#/components/schemas/TessellServiceInfrastructureInfo'
+        maintenanceWindow:
+          $ref: '#/components/schemas/TessellServiceMaintenanceWindow'
+        engineConfiguration:
+          $ref: '#/components/schemas/TessellServiceEngineInfo'
+        integrationsConfig:
+          $ref: '#/components/schemas/TessellServiceIntegrationsInfo'
+        deletionConfig:
+          $ref: '#/components/schemas/TessellServiceDeletionConfig'
+        tags:
+          description: The tags associated with the DB Service
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellTag'
+        updatesInProgress:
+          description: The updates that are in progress for this resource
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellResourceUpdateInfo'
+        instances:
+          description: The instances (nodes) associated with this DB Service
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellServiceInstanceDTO'
+        databases:
+          type: array
+          description: This field details about the databases that are created under this DB Service
+          items:
+            $ref: '#/components/schemas/TessellDatabaseDTO'
+        sharedWith:
+          $ref: '#/components/schemas/EntityAclSharingInfo'
+        deletionSchedule:
+          $ref: '#/components/schemas/DeletionScheduleDTO'
+        upcomingScheduledActions:
+          $ref: '#/components/schemas/ServiceUpcomingScheduledActions'
+        updatesInfo:
+          $ref: '#/components/schemas/ServiceUpdates'
+          description: Information about available updates for this DB Service. Only populated when load-updates-info=true in the request.
+        serverPatchingConfig:
+          $ref: '#/components/schemas/ServerPatchingConfig'
+          description: Configuration for server patching with pre and post scripts
+    MonthlySchedule:
+      description: Definition for taking month specific schedule.
+      type: object
+      properties:
+        commonSchedule:
+          $ref: '#/components/schemas/DatesForEachMonth'
+    TessellServiceConnectivityInfo:
+      title: TessellServiceConnectivityInfo
+      type: object
+      x-patchable: true
+      description: DB Service's connectivity information
+      properties:
+        enableSSL:
+          type: boolean
+          default: false
+          description: Specify whether to enable SSL to the DB Service, default false
+        caCertId:
+          type: string
+          default: uuid
+          x-computed: true
+          description: The CA certificate ID associated with the DB Service
+        dnsPrefix:
+          type: string
+          x-patchable: true
+          description: DNS Prefix associated with the DB Service
+        servicePort:
+          type: integer
+          format: int32
+          minimum: 0
+          description: The connection port for the DB Service
+        enablePublicAccess:
+          type: boolean
+          x-patchable: true
+          description: Specify whether to enable public access to the DB Service, default false
+        allowedIpAddresses:
+          type: array
+          description: The list of allowed ipv4 addresses that can connect to the DB Service
+          items:
+            type: string
+            format: ip4
+          x-patchable: true
+        connectStrings:
+          type: array
+          description: The list of connect strings for the DB Service
+          items:
+            $ref: '#/components/schemas/TessellServiceConnectString'
+          x-computed: true
+        privateLink:
+          type: object
+          title: ServiceConnectivityPrivateLink
+          description: The interface endpoint or Gateway Load Balancer endpoint to connect to your DB service.
+          x-computed: true
+          properties:
+            status:
+              $ref: '#/components/schemas/DbServicePrivateLinkStatus'
+            servicePrincipals:
+              type: array
+              description: The list of AWS account principals that are currently enabled
+              uniqueItems: true
+              items:
+                type: string
+              x-computed: true
+            endpointServiceName:
+              description: The configured endpoint as a result of configuring the service-principals
+              type: string
+              x-computed: true
+            clientAzureSubscriptionIds:
+              type: array
+              description: The list of Azure subscription Ids
+              uniqueItems: true
+              items:
+                type: string
+                format: uuid
+            privateLinkServiceAlias:
+              type: string
+              description: The Azure private link service alias
+        computesConnectivity:
+          type: array
+          title: computesConnectivity
+          x-computed: true
+          description: The Genie endpoint to connect to your DB service.
+          items:
+            $ref: '#/components/schemas/ComputeConnectivityConfig'
+        updateInProgressInfo:
+          $ref: '#/components/schemas/TessellServiceConnectivityUpdateInProgressInfo'
+    CreateDataPipelineTrackingDetails:
+      type: object
+      description: Execution details of data pipeline creation
+      properties:
+        status:
+          $ref: '#/components/schemas/DataPipelineStatus'
+          description: Status of the report
+        description:
+          type: string
+          description: Data Pipeline description
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        progress:
+          $ref: '#/components/schemas/TrackProgress'
+          description: Progress detail of running report
+        steps:
+          type: array
+          description: Steps performed as part of the data pipeline creation operation
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/TrackStep'
+    DataPipelineSinkAdapterType:
+      type: string
+      enum:
+      - AZURE_HD_INSIGHTS_SPARK
+      - MICROSOFT_FABRIC_LAKEHOUSE
+    DataPipelineDbService:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        serviceId:
+          type: string
+          format: uuid
+        serviceName:
+          type: string
+        status:
+          $ref: '#/components/schemas/DataPipelineDbServiceStatusOps'
+        contextInfo:
+          $ref: '#/components/schemas/ContextInfo'
+        metadata:
+          $ref: '#/components/schemas/DataPipelineDbServiceMetadata'
+        createdBy:
+          type: string
+        dateCreated:
+          type: string
+          format: date-time
+        dateModified:
+          type: string
+          format: date-time
+    DataPipelineExecutionOutput:
+      oneOf:
+      - $ref: '#/components/schemas/AzureDataPipelineExecutionOutput'
+    EntityUserAclSharingInfo:
+      title: EntityUserAclSharingInfo
+      description: Tessell Entity ACL Sharing Info for a user
+      properties:
+        emailId:
+          type: string
+        role:
+          type: string
+        sharedBy:
+          type: string
+          description: Email of the user who shared the entity
+        sharedOn:
+          type: string
+          format: date-time
+          description: Date when the entity was shared
+    PortAccessConfig:
+      title: PortAccessConfig
+      type: object
+      properties:
+        port:
+          description: The connection port for the DB Service
+          type: integer
+          format: int32
+          minimum: 0
+        enablePublicAccess:
+          description: Enable public access to database (true/false)
+          type: boolean
+        allowedIpAddresses:
+          description: Set allowed IP address if enablePublicAccess is true.
+          type: array
+          items:
+            type: string
+    TessellServiceConnectivityUpdateInProgressInfo:
+      title: TessellServiceConnectivityUpdateInProgressInfo
+      type: object
+      x-computed: true
+      description: DB Service connectivity update-in-progress details
+      properties:
+        dnsPrefix:
+          type: string
+          description: The DNS prefix associated with the DB Service
+        enablePublicAccess:
+          type: boolean
+          description: Specify whether to enable public access to the DB Service, default false
+        allowedIpAddresses:
+          type: array
+          description: The list of allowed ipv4 addresses that can connect to the DB Service
+          items:
+            type: string
+            format: ip4
+        privateLink:
+          type: object
+          title: ServiceConnectivityUpdateInProgressInfo
+          description: The interface endpoint or Gateway Load Balancer endpoint to connect to your DB service.
+          properties:
+            servicePrincipals:
+              type: array
+              description: The list of AWS account principals that are currently enabled
+              uniqueItems: true
+              items:
+                type: string
+            clientAzureSubscriptionIds:
+              type: array
+              description: The list of Azure subscription Ids
+              uniqueItems: true
+              items:
+                type: string
+                format: uuid
+        computesConnectivity:
+          type: array
+          title: computesConnectivity
+          x-computed: true
+          description: The Genie endpoint to connect to your DB service.
+          items:
+            $ref: '#/components/schemas/ComputeConnectivityConfig'
+    OptionProfile:
+      title: OptionProfile
+      type: object
+      x-computed: true
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the the option profile
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The name used to identify the option profile
+        version:
+          type: string
+          format: uuid
+          description: The version of the option profile associated with the instance
+        status:
+          $ref: '#/components/schemas/OptionProfileStatus'
+    DataPipelineDbServiceSchema:
+      type: object
+      properties:
+        dbSchemaFetched:
+          $ref: '#/components/schemas/DatabaseSchema'
+        dbSchemaSelected:
+          $ref: '#/components/schemas/DatabaseSchema'
+        mirrorDatabaseUrls:
+          type: array
+          items:
+            type: string
+    TessellServiceMilvusEngineConfig:
+      title: TessellServiceMilvusEngineConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+    TessellServiceInstanceStatus:
+      type: string
+      description: DB Service instance status
+      enum:
+      - CREATING
+      - DELETING
+      - UP
+      - DOWN
+      - STOPPED
+      - REBUILDING
+      - REBUILD_FAILED
+      - PATCHING
+      - PATCH_FAILED
+      - UPDATING_PARAMETER_PROFILE
+      - UPDATING_OPTION_PROFILE
+      - UPDATING_SECURITY_CONFIG
+      - OPTION_PROFILE_UPDATE_FAILED
+      - PARAMETER_PROFILE_UPDATE_FAILED
+      - SECURITY_CONFIG_UPDATE_FAILED
+      - REFRESHING
+    TrackStepError:
+      type: object
+      description: Step error details
+      properties:
+        code:
+          type: string
+          description: Error code of the failure
+        message:
+          type: string
+          description: Reason message for the failure
+        resolution:
+          type: string
+          description: Resolution for the failure
+        possibleActions:
+          type: array
+          description: Possible action, which can be performed by the user. To be consumed by UI to show any CTA.
+          items:
+            type: string
+    CloudRegionInfo:
+      title: CloudRegionInfo
+      description: Cloud and region details
+      required:
+      - cloud
+      properties:
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+          description: The cloud type
+        regions:
+          description: The regions details
+          type: array
+          items:
+            $ref: '#/components/schemas/RegionInfo'
+    TessellServiceMySqlEngineConfig:
+      title: TessellServiceMySqlEngineConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+        adDomainId:
+          type: string
+          format: uuid
+          description: Active Directory Domain ID
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The options profile for the database
+    SecurityProfileSyncStatus:
+      type: string
+      description: Sync status of the security profile applied on an instance/server
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+    DatabaseSchema:
+      type: object
+      description: Represents the complete schema structure of a database, including databases, schemas within databases, tables, and columns.
+      properties:
+        databases:
+          type: array
+          description: List of databases in the schema.
+          items:
+            $ref: '#/components/schemas/DatabaseSchemaDb'
+    AzureNetAppEncryptionKeyInfo:
+      description: Details of encryption key
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the encryption key
+          format: uuid
+        name:
+          type: string
+          description: name of the encryption key
+        keyVaultCloudResourceId:
+          type: string
+          description: name of the encryption key vault in cloud
+        keySource:
+          $ref: '#/components/schemas/AzureNetAppEncryptionKeySource'
+    CustomRpoPolicy:
+      description: This is the definition of Custom RPO Policy for Snapshot for Tessell DB Service
+      type: object
+      required:
+      - name
+      - schedule
+      properties:
+        name:
+          type: string
+          description: Custom RPO policy name
+        schedule:
+          $ref: '#/components/schemas/ScheduleInfo'
+    ServerPatchingConfig:
+      title: ServerPatchingConfig
+      type: object
+      description: Configuration for server patching with pre and post scripts
+      properties:
+        enableAutoOSPatching:
+          type: boolean
+          default: false
+          description: Enable automatic OS patching for the server
+        preScriptInfo:
+          $ref: '#/components/schemas/ScriptInfo'
+          description: Pre-script to run before patching
+        postScriptInfo:
+          $ref: '#/components/schemas/ScriptInfo'
+          description: Post-script to run after patching
+        ignorePreScriptFailure:
+          type: boolean
+          default: false
+          description: Ignore pre-script failure and continue with patching
+        ignorePostScriptFailure:
+          type: boolean
+          default: false
+          description: Ignore post-script failure and mark patching as successful
+      example:
+        enableAutoOSPatching: true
+        preScriptInfo:
+          scriptId: 123e4567-e89b-12d3-a456-426614174000
+          scriptVersion: v1.0
+        postScriptInfo:
+          scriptId: 123e4567-e89b-12d3-a456-426614174001
+          scriptVersion: v1.0
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    TessellDatabaseDTO:
+      title: TessellDatabaseDTO
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-computed: true
+          description: Tessell generated UUID for the database
+        databaseName:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: Database name
+        description:
+          type: string
+          minLength: 0
+          maxLength: 512
+          x-patchable: true
+          description: Database description
+        tessellServiceId:
+          type: string
+          format: uuid
+          x-computed: true
+          description: Associated DB Service ID
+        engineType:
+          x-computed: true
+          x-enum: true
+          $ref: '#/components/schemas/databaseEngineType'
+          description: Database engine type
+        status:
+          x-computed: true
+          x-enum: true
+          $ref: '#/components/schemas/DatabaseStatus'
+          description: Database status
+        dateCreated:
+          type: string
+          format: date-time
+          x-computed: true
+          description: Timestamp when the entity was created
+        tessellCreated:
+          type: boolean
+          default: true
+          description: Database created from Tessell platform
+        clonedFromInfo:
+          $ref: '#/components/schemas/TessellDatabaseClonedFromInfo'
+        databaseConfiguration:
+          $ref: '#/components/schemas/DatabaseConfiguration'
+        connectString:
+          $ref: '#/components/schemas/TessellServiceDatabaseConnectString'
+        rpoPolicyConfig:
+          $ref: '#/components/schemas/RpoPolicyConfig'
+          description: 'RPO policy configuration for this database.
+
+            Only populated for Oracle PDBs when fetching a single service with loadDatabases=true.
+
+            '
+    ServiceUpcomingScheduledActions:
+      title: ServiceUpcomingScheduledActions
+      type: object
+      x-computed: true
+      properties:
+        startStop:
+          type: object
+          x-computed: true
+          properties:
+            action:
+              type: string
+              x-computed: true
+              description: Action which can be either start/stop
+            at:
+              type: string
+              format: date-time
+              x-computed: true
+              description: The time at which the specified action is to be performed
+        patch:
+          type: object
+          x-computed: true
+          properties:
+            at:
+              type: string
+              format: date-time
+              x-computed: true
+              description: The updated time at which the specified action is to be performed
+            message:
+              type: string
+              minLength: 1
+              maxLength: 512
+              description: Details for the update
+        delete:
+          type: object
+          x-computed: true
+          properties:
+            at:
+              type: string
+              format: date-time
+              x-computed: true
+              description: The scheduled time for the action to be deleted
+    DBEngineCollationConfig:
+      type: object
+      properties:
+        collationName:
+          type: string
+          description: Collation name for the database
+    DatabaseSchemaDbSchema:
+      type: object
+      description: Represents a schema within a database instance.
+      properties:
+        schemaName:
+          type: string
+          example: USER10
+        schemaId:
+          type: string
+          format: uuid
+          description: Unique identifier for the schema.
+        tables:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseSchemaDbSchemaTable'
+    TessellDatabaseClonedFromInfo:
+      title: TessellDatabaseClonedFromInfo
+      description: If a database is created as a clone from some other DB Service's database, this section describes the original database details
+      type: object
+      x-computed: true
+      properties:
+        databaseId:
+          type: string
+          format: uuid
+          description: The original database Id using which this database clone is created
+          x-computed: true
+    OracleDatabaseConfig:
+      title: OracleDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile id for the database
+        optionsProfile:
+          type: string
+          description: The options profile for the database
+        username:
+          type: string
+          description: Username for the oracle database
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The option profile id for the database
+        scriptInfo:
+          type: object
+          description: Post-provisioning script information for Oracle PDB.
+          properties:
+            postScriptInfo:
+              $ref: '#/components/schemas/ScriptInfo'
+              description: Post-provisioning script to run after PDB is created.
+    ParameterProfileStatus:
+      type: string
+      description: Association status of the instance to the parameter profile
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+      - PENDING_REBOOT
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    BackupStandardRpoPolicy:
+      description: This is the definition of Standard RPO Policy for Backup for Tessell DB Service
+      type: object
+      required:
+      - retentionDays
+      properties:
+        retentionDays:
+          description: Number of days for which the backup of DB Service would be retained
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 35
+        backupStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+    SqlServerDatabaseConfig:
+      title: SqlServerDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+    TessellServiceMongodbEngineConfig:
+      title: TessellServiceMongodbEngineConfig
+      type: object
+      nullable: true
+      properties:
+        clusterName:
+          type: string
+          description: The MongoDB Cluster name
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+    GcpInfraConfig:
+      type: object
+      title: GcpInfraConfig
+      properties:
+        gcpCpuOptions:
+          type: object
+          title: GcpCpuOptions
+          properties:
+            vcpus:
+              type: integer
+              format: int32
+              minimum: 1
+              description: Number of vCPUs for GCP custom machine type
+            memory:
+              type: integer
+              format: int32
+              minimum: 1
+              description: Memory in MB for GCP custom machine type (optional)
+    ConnectStringUsageType:
+      type: string
+      description: Usage type of connection string.
+      enum:
+      - default
+      - connection_pool
+    DataPipelineMicrosoftFabricConfig:
+      type: object
+      properties:
+        workspaceName:
+          type: string
+    TrackProgress:
+      type: object
+      description: Progress of the execution
+      properties:
+        percentageCompleted:
+          type: integer
+          description: Completed percentage of the execution
+          default: 0
+        estimatedTimeRemainingInMinutes:
+          type: integer
+          description: Estimated time remaining in minutes
+    DataPipelineSourceAdapter:
+      type: object
+      properties:
+        dbEngine:
+          $ref: '#/components/schemas/databaseEngineType'
+        region:
+          type: string
+        vpc:
+          type: string
+        computeType:
+          type: string
+        vcpu:
+          type: string
+        memoryInGbs:
+          type: string
+        numInstances:
+          type: string
+          format: integer
+        dbServices:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataPipelineDbService'
+        instances:
+          type: array
+          items:
+            type: object
+            properties:
+              computeResourceId:
+                type: string
+                format: uuid
+              computeResourceName:
+                type: string
+        dateCreated:
+          type: string
+          format: date-time
+        dateModified:
+          type: string
+          format: date-time
+    CloneSourceType:
+      description: Source type for clone/refresh operation
+      type: string
+      enum:
+      - SNAPSHOT
+      - NATIVE_BACKUP
+    ServiceStorageConfig:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/StorageProviderType'
+        azureNetAppConfig:
+          $ref: '#/components/schemas/ServiceAzureNetAppConfig'
+    ComputeProviderType:
+      type: string
+      enum:
+      - AWS_EC2
+      - AZURE_VM
+      - GCP_GCE
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    DataPipelineDbServiceMetadata:
+      type: object
+      properties:
+        mirrorDatabaseUrls:
+          type: array
+          items:
+            type: string
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    TessellServiceSubStatus:
+      type: string
+      description: DB Service could have a sub status associated along with status
+      enum:
+      - START_FAILED
+      - SWITCHOVER_FAILED
+      - BACKING_UP
+      - PATCH_FAILED
+      - REBUILDING
+      - STOP_FAILED
+      - REBUILD_FAILED
+      - RESIZING_STORAGE
+      - RESIZING_STORAGE_FAILED
+      - UPDATING_PARAMETER_PROFILE
+      - UPDATING_OPTION_PROFILE
+      - UPDATING_SECURITY_CONFIG
+      - PARAMETER_PROFILE_UPDATE_FAILED
+      - SECURITY_CONFIG_UPDATE_FAILED
+      - OPTION_PROFILE_UPDATE_FAILED
+      - REFRESH_FAILED
+    UpcomingMaintenanceWindowInfo:
+      type: object
+      description: Information about the upcoming maintenance window
+      properties:
+        maintenanceWindowId:
+          type: string
+          format: uuid
+          description: Unique identifier of the maintenance window
+        cadence:
+          $ref: '#/components/schemas/MaintenanceCadence'
+        date:
+          type: string
+          format: date
+          description: Date in YYYY-MM-DD format (ISO 8601)
+          example: '2026-03-15'
+        time:
+          type: string
+          description: Time in HH:mm format
+          example: 02:00
+        duration:
+          type: integer
+          description: Duration in minutes
+          example: 30
+        downtime:
+          type: string
+          description: Expected downtime description
+          example: 05 min downtime
+        associatedActivities:
+          $ref: '#/components/schemas/AssociatedActivities'
+    DatabaseStatus:
+      type: string
+      enum:
+      - CREATING
+      - FAILED
+      - DELETING
+      - READY
+      - DOWN
+      - STOPPED
+      - STOPPING
+      - STARTING
+      - OPENING
+      - CLOSING
+      - RESTRICTED
+    ActivityStatus:
+      x-gorm-column-attrs: not null
+      x-gorm-index: true
+      description: The status of Activity
+      type: string
+      enum:
+      - QUEUED
+      - RUNNING
+      - SKIPPED
+      - SUSPENDED
+      - SUCCESS
+      - FAILED
+      - UNKNOWN
+    TessellServiceInstanceType:
+      type: string
+      description: DB Service instance type
+      enum:
+      - DC
+      - DR
+    RpoPolicyConfig:
+      description: This is the definition for RPO Policy details for Tessell DB Service
+      type: object
+      required:
+      - enableAutoSnapshot
+      properties:
+        includeTransactionLogs:
+          description: Determines whether transaction logs should be retained to enable Point-In-Time Recovery (PITR) functionality
+          type: boolean
+          default: false
+        enableAutoSnapshot:
+          description: Specify whether system will take automatic snapshots
+          type: boolean
+          default: true
+        standardPolicy:
+          $ref: '#/components/schemas/StandardRpoPolicy'
+        customPolicy:
+          $ref: '#/components/schemas/CustomRpoPolicy'
+        fullBackupSchedule:
+          $ref: '#/components/schemas/FullBackupSchedule'
+        enableAutoBackup:
+          description: Specify whether system will take automatic backups
+          type: boolean
+          default: false
+        backupRpoConfig:
+          type: object
+          description: Config for the Native Backup RPO policies
+          properties:
+            fullBackupSchedule:
+              $ref: '#/components/schemas/FullBackupSchedule'
+            standardPolicy:
+              $ref: '#/components/schemas/BackupStandardRpoPolicy'
+            customPolicy:
+              $ref: '#/components/schemas/BackupCustomRpoPolicy'
+    InstanceFsxNetAppConfig:
+      type: object
+      properties:
+        fileSystemName:
+          type: string
+        svmName:
+          type: string
+        volumeName:
+          type: string
+        fileSystemId:
+          description: File System Id of the FSx NetApp registered with Tessell
+          type: string
+          format: uuid
+        svmId:
+          description: Storage Virtual Machine Id of the FSx NetApp registered with Tessell
+          type: string
+          format: uuid
+    OptionProfileStatus:
+      type: string
+      description: Association status of the instance to the option profile
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+      - PENDING_REBOOT
+    DatabaseSchemaDbSchemaTableColumn:
+      type: object
+      description: Represents a column within a table.
+      properties:
+        columnName:
+          type: string
+          example: ID
+        dataType:
+          type: string
+          example: NUMBER
+        isEligibleForDataPipeline:
+          type: boolean
+          description: Indicates if this column's dataType is supported across all target databases for data pipeline operations.
+          example: true
+        constraints:
+          type: array
+          items:
+            type: string
+          example:
+          - Primary Key
+          - Not Null
+    TimeFormat:
+      title: TimeFormat
+      description: Clock time format value in hour and minute.
+      type: object
+      required:
+      - hour
+      - minute
+      properties:
+        hour:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 23
+          default: 1
+        minute:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 59
+          default: 0
+    ServiceDataPipelinePublishPayload:
+      type: object
+      required:
+      - dataPipelineId
+      - mirrorDatabaseUrl
+      - dbSchema
+      properties:
+        dataPipelineId:
+          type: string
+          format: uuid
+        mirrorDatabaseUrl:
+          type: string
+        dbSchema:
+          $ref: '#/components/schemas/DatabaseSchema'
+    SinkAdapterConfig:
+      type: object
+      properties:
+        azureHdInsightsSpark:
+          type: object
+          properties:
+            keyVaultCloudResourceId:
+              type: string
+            keyUserName:
+              type: string
+            keyPassword:
+              type: string
+    ServiceUpdates:
+      type: object
+      description: Update availability information for a DB Service
+      properties:
+        availableUpdates:
+          $ref: '#/components/schemas/AvailableUpdatesSimple'
+        upcomingMaintenanceWindow:
+          $ref: '#/components/schemas/UpcomingMaintenanceWindowInfo'
+    AzureDataPipelineExecutionOutputResources:
+      required:
+      - eventHubNamespaceId
+      properties:
+        eventHubNamespaceId:
+          type: string
+        hdInsightsClusterId:
+          type: string
+        fabricLakehouseName:
+          type: string
+    MySqlDatabaseConfig:
+      title: MySqlDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The options profile for the database
+    BackupCustomRpoPolicy:
+      description: This is the definition of Custom RPO Policy for Backup for Tessell DB Service
+      allOf:
+      - $ref: '#/components/schemas/CustomRpoPolicy'
+    StorageProviderType:
+      description: Storage Type in the cloud
+      enum:
+      - AWS_EBS
+      - AWS_FSX_NETAPP
+      - AWS_HPC
+      - AWS_S3
+      - AZURE_HPC
+      - AZURE_MANAGED_DISK
+      - GCP_HYPERDISK
+      - GCP_GCS
+      - AZURE_BLOB
+      - MINIO
+      - AZURE_NETAPP
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    ServiceInstanceOracleEngineConfig:
+      title: TessellServiceInstanceOracleEngineConfig
+      type: object
+      nullable: true
+      properties:
+        accessMode:
+          $ref: '#/components/schemas/InstanceAccessMode'
+    SqlServerInstanceName:
+      type: string
+      maxLength: 16
+      description: The named instance for SQL Server database (max 16 characters as per SQL Server limitation)
+    ConnectStringType:
+      type: string
+      description: Connect string type
+      enum:
+      - write_read
+      - read_only
+    PerfInsightsConfig:
+      title: TessellPerfInsightsConfig
+      type: object
+      properties:
+        perfInsightsEnabled:
+          type: boolean
+        monitoringDeploymentId:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/PerfInsightsStatus'
+    TessellTag:
+      title: TessellTag
+      type: object
+      nullable: true
+      properties:
+        name:
+          description: Case sensitive, tag name
+          type: string
+          maxLength: 128
+          minLength: 1
+        value:
+          description: Case sensitive, tag value
+          type: string
+          maxLength: 256
+          minLength: 0
+    InstanceStorageConfig:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/StorageProviderType'
+        volumeType:
+          type: string
+          description: Data disk volume type
+        fsxNetAppConfig:
+          $ref: '#/components/schemas/InstanceFsxNetAppConfig'
+        azureNetAppConfig:
+          $ref: '#/components/schemas/InstanceAzureNetAppConfig'
+    DailySchedule:
+      type: object
+      properties:
+        backupsPerDay:
+          type: integer
+          format: int32
+          description: The number of backups to be captured per day.
+          minimum: 0
+    StandardRpoPolicy:
+      description: This is the definition of Standard RPO Policy for Snapshot for Tessell DB Service
+      type: object
+      required:
+      - retentionDays
+      - snapshotStartTime
+      properties:
+        retentionDays:
+          description: Number of days for which the snapshot of DB Service would be retained
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 35
+        includeTransactionLogs:
+          description: Determines whether transaction logs should be retained to enable Point-In-Time Recovery (PITR) functionality
+          type: boolean
+          default: false
+        snapshotStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+    TessellServicePostgresqlEngineConfig:
+      title: TessellServicePostgresqlEngineConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+        adDomainId:
+          type: string
+          format: uuid
+          description: Active Directory Domain ID
+        proxyPort:
+          type: integer
+          format: int32
+          minimum: 0
+        optionProfileName:
+          type: string
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The options profile for the database
+    MonthWiseDates:
+      type: object
+      required:
+      - month
+      - dates
+      properties:
+        month:
+          $ref: '#/components/schemas/Month'
+          x-enum: true
+        dates:
+          uniqueItems: true
+          type: array
+          items:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 31
+    TessellServiceContextInfo:
+      type: object
+      x-computed: true
+      description: Provide more context of DB Service state
+      properties:
+        subStatus:
+          $ref: '#/components/schemas/TessellServiceSubStatus'
+        description:
+          type: string
+    DatesForEachMonth:
+      type: object
+      properties:
+        dates:
+          description: Dates in a month to retain monthly backups
+          uniqueItems: true
+          type: array
+          items:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 31
+        lastDayOfMonth:
+          type: boolean
+          default: false
+    MilvusDatabaseConfig:
+      title: MilvusDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+    TessellMonitoringMetricsDTO:
+      title: Metrics
+      description: This is a definition for Tessell Monitoring Metrics
+      type: object
+      properties:
+        metric:
+          type: string
+          description: Metric name
+        displayName:
+          type: string
+          description: Metric name to be displayed on the chart
+        aggregationType:
+          type: string
+          description: Metric aggregation type on the chart
+        granularity:
+          type: string
+          description: Granularity applied on the metric
+        isStartDateAdjusted:
+          type: boolean
+          description: Indicates if the start date was adjusted to limit the query range based on granularity.
+        metricValues:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: double
+          description: Metric data points
+    RegionInfo:
+      title: RegionInfo
+      description: Cloud region details
+      required:
+      - region
+      properties:
+        region:
+          description: The cloud region name
+          type: string
+        availabilityZones:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+    tessellServiceLicenseType:
+      type: string
+      description: DB Service License Type
+      enum:
+      - byol
+      - oss
+      - gpl
+    DataPipelinesResponse:
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/DataPipeline'
+    TessellServiceGenieStatus:
+      title: TessellServiceGenieStatus
+      description: DB Service's Genie status
+      type: string
+      enum:
+      - requested
+      - enabled
+      - disabled
+      - enabling
+      - disabling
+      - failed_enable
+      - failed_disable
+    MonitoringConfig:
+      title: MonitoringConfig
+      type: object
+      x-computed: true
+      properties:
+        perfInsights:
+          $ref: '#/components/schemas/PerfInsightsConfig'
+    TessellServiceInfrastructureInfo:
+      type: object
+      description: This field contains DB Service's infrastructure related information, like, where the service is hosted - cloud, region; what compute shape, or network is is configured with.
+      properties:
+        cloud:
+          type: string
+          description: The cloud-type in which the DB Service is provisioned (ex. aws, azure)
+        region:
+          type: string
+          description: The region in which the DB Service provisioned
+        availabilityZone:
+          type: string
+          description: The availability-zone in which the DB Service is provisioned
+        cloudAvailability:
+          type: array
+          items:
+            $ref: '#/components/schemas/CloudRegionInfo'
+          x-computed: true
+        vpc:
+          type: string
+          description: The VPC to be used for provisioning the DB Service
+        enableEncryption:
+          type: boolean
+          default: false
+        encryptionKey:
+          type: string
+          description: The encryption key name which is used to encrypt the data at rest
+        computeType:
+          type: string
+          description: The compute-type to be used for provisioning the DB Service
+        awsInfraConfig:
+          $ref: '#/components/schemas/AwsInfraConfig'
+        gcpInfraConfig:
+          $ref: '#/components/schemas/GcpInfraConfig'
+        enableComputeSharing:
+          type: boolean
+          description: Specify if the computes should be shared across DB Services
+        iops:
+          type: integer
+          format: int32
+          description: IOPS requested for the DB Service
+        throughput:
+          type: integer
+          format: int32
+          description: throughput requested for the DB Service
+        storage:
+          x-computed: true
+          type: integer
+          format: int64
+          default: 0
+          minimum: 0
+          description: The storage (in bytes) that has been provisioned for the DB Service
+        additionalStorage:
+          type: integer
+          format: int64
+          default: 0
+          minimum: 0
+          description: Storage in bytes that is over and above the storage included with compute. This is maintained for backward compatibility and would be deprecated soon.
+        timezone:
+          $ref: '#/components/schemas/TimeZone'
+        multiDisk:
+          type: boolean
+          description: Specify whether the DB service uses multiple data disks
+        storageProvider:
+          $ref: '#/components/schemas/StorageProviderType'
+        storageConfig:
+          $ref: '#/components/schemas/ServiceStorageConfig'
+        archiveStorageConfig:
+          $ref: '#/components/schemas/ServiceStorageConfig'
+        computeProvider:
+          $ref: '#/components/schemas/ComputeProviderType'
+    BackupType:
+      description: Backup Content Type
+      type: string
+      enum:
+      - AS_IS
+      - SANITIZED
+    DBServiceCloneType:
+      type: string
+      enum:
+      - clone
+      - restore
+      - sanitization
+      - native_backup
+    SecurityConfigOps:
+      type: object
+      properties:
+        securityProfile:
+          $ref: '#/components/schemas/SecurityProfileInfoOps'
+    InstanceSyncMode:
+      type: string
+      description: Service instance sync mode
+      enum:
+      - SYNC
+      - ASYNC
+    PrivateLinkInfo:
+      title: PrivateLinkInfo
+      allOf:
+      - $ref: '#/components/schemas/PrivateLinkPayload'
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/PrivateLinkStatus'
+        endpointServiceName:
+          description: The configured endpoint as a result of configuring the service-principals
+          type: string
+          x-computed: true
+        privateLinkServiceAlias:
+          type: string
+          description: The Azure private link service alias
+    InstanceComputeConfig:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/ComputeProviderType'
+        exadataConfig:
+          $ref: '#/components/schemas/InstanceExadataComputeConfig'
+    ScriptInfo:
+      title: ScriptInfo
+      type: object
+      nullable: true
+      properties:
+        scriptId:
+          type: string
+          format: uuid
+          description: The Tessell Script ID
+        scriptName:
+          type: string
+          description: The Tessell Script Name
+        scriptVersion:
+          type: string
+          description: The Tessell Script version
+        useActiveVersion:
+          type: boolean
+          default: false
+          description: 'When set to true, the scriptVersion field should be null and the system
+
+            will automatically use the active version of the script.
+
+            When set to false (default), the scriptVersion field specifies the
+
+            exact version to use.
+
+            '
+    ContextInfo:
+      type: object
+      description: Provide more context of the state
+      properties:
+        subStatus:
+          type: string
+        description:
+          type: string
+    DataPipelineDbServiceStatusOps:
+      type: object
+      enum:
+      - CONNECTING
+      - CONNECTION_FAILED
+      - ACTIVE
+      - STARTING
+      - STOPPING
+      - PAUSED
+      - DELETING
+      - DELETED
+      - DELETION_FAILED
+      - ERROR
+    ServiceInstanceEngineInfo:
+      title: TessellServiceInstanceInfo
+      description: This field details the DB Service Instance engine configuration details like - access mode
+      type: object
+      nullable: true
+      properties:
+        oracleConfig:
+          $ref: '#/components/schemas/ServiceInstanceOracleEngineConfig'
+    SecurityProfileInfoOps:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Id of the Security Profile
+        versionId:
+          type: string
+          format: uuid
+          description: Version Id of the Security Profile
+        status:
+          $ref: '#/components/schemas/SecurityProfileSyncStatus'
+    TessellServiceMaintenanceWindow:
+      title: TessellServiceMaintenanceWindow
+      type: object
+      description: 'Base class for maintenance window configurations.
+
+        Supports multiple cadences: Weekly, Monthly, and Quarterly.
+
+        Use concrete subclasses: WeeklyMaintenanceWindow, MonthlyMaintenanceWindow, QuarterlyMaintenanceWindow.'
+      required:
+      - cadence
+      - time
+      - duration
+      properties:
+        cadence:
+          type: string
+          description: The cadence type for maintenance window
+          default: WEEKLY
+          enum:
+          - WEEKLY
+          - MONTHLY
+          - QUARTERLY
+        time:
+          type: string
+          description: Time value in (hh:mm) format. ex. "02:00"
+          pattern: ^([0-1][0-9]|2[0-3]):[0-5][0-9]$
+          example: 02:00
+        duration:
+          type: integer
+          format: int32
+          minimum: 30
+          description: The duration during which the maintenance window will be allowed to trigger (in minutes)
+      discriminator:
+        propertyName: cadence
+        mapping:
+          WEEKLY: '#/components/schemas/WeeklyMaintenanceWindow'
+          MONTHLY: '#/components/schemas/MonthlyMaintenanceWindow'
+          QUARTERLY: '#/components/schemas/QuarterlyMaintenanceWindow'
+    ComputeConnectivityConfig:
+      title: ComputeConnectivityConfig
+      type: object
+      properties:
+        computeResourceId:
+          type: string
+          format: uuid
+        portAccessConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortAccessConfig'
+    TessellServiceInstanceSubStatus:
+      type: string
+      description: DB Service Instance could have a sub status associated along with status
+      enum:
+      - SECURITY_CONFIG_UPDATE_FAILED
+      - UPDATING_SECURITY_CONFIG
+    TrackStep:
+      type: object
+      description: Step details
+      properties:
+        id:
+          type: string
+          description: Id of the step
+        name:
+          type: string
+          description: Name of the step
+        type:
+          type: string
+          description: Type of the step
+        status:
+          $ref: '#/components/schemas/ActivityStatus'
+          description: Status of the step
+        retryable:
+          type: boolean
+          default: true
+          description: Whether the step can be retried or not
+        skippable:
+          type: boolean
+          default: true
+          description: Whether the step can be skipped or not
+        error:
+          $ref: '#/components/schemas/TrackStepError'
+          description: Error details in case of failures
+        subSteps:
+          type: array
+          description: Child steps
+          items:
+            $ref: '#/components/schemas/TrackStep'
+    AssociatedActivities:
+      type: object
+      properties:
+        dbPatch:
+          $ref: '#/components/schemas/PatchActivity'
+        osPatch:
+          $ref: '#/components/schemas/PatchActivity'
+        parameterProfileUpdate:
+          $ref: '#/components/schemas/PatchActivity'
+    DeletionScheduleDTO:
+      title: DeletionScheduleDTO
+      description: Details of the deletion schedule on a DB Service
+      x-terraform-resource: DBServiceDeleteSchedule
+      x-terraform:
+        add-properties-from:
+        - TerraformResourceDBServiceDeleteScheduleExtra
+        render:
+        - resource
+        - data_source
+      x-patchable: true
+      required:
+      - deleteAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-computed: true
+        deleteAt:
+          type: string
+          format: date-time
+          description: Time at which the DB Service should be deleted at
+          x-patchable: true
+        deletionConfig:
+          $ref: '#/components/schemas/TessellServiceDeletionConfig'
+    YearlySchedule:
+      type: object
+      properties:
+        commonSchedule:
+          $ref: '#/components/schemas/commonYearlySchedule'
+        monthSpecificSchedule:
+          type: array
+          uniqueItems: true
+          required:
+          - months
+          items:
+            $ref: '#/components/schemas/MonthWiseDates'
+    AvailableUpdatesSimple:
+      type: object
+      description: Simple boolean flags indicating available updates
+      properties:
+        osPatch:
+          type: boolean
+          description: Whether an OS patch update is available
+          example: true
+        dbPatch:
+          type: boolean
+          description: Whether a DB patch update is available
+          example: true
+    TessellServiceApacheKafkaEngineConfig:
+      title: TessellServiceApacheKafkaEngineConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile id for the database
+    FullBackupSchedule:
+      description: The schedule at which full backups would be triggered
+      type: object
+      properties:
+        startTime:
+          description: Optional Time when full backup(s) has to be captured | If not specified, the default time (same as incremental backup) would be used
+          $ref: '#/components/schemas/TimeFormat'
+        weeklySchedule:
+          $ref: '#/components/schemas/WeeklySchedule'
+    TimeZone:
+      type: string
+      description: The timezone detail
+      maxLength: 256
+    AzureDataPipelineExecutionOutput:
+      required:
+      - location
+      - resources
+      properties:
+        subscriptionId:
+          description: Subscription Id of the customer's account
+          type: string
+          format: uuid
+        tenantId:
+          description: Tenant Id of the customer's account
+          type: string
+          minLength: 36
+          maxLength: 36
+        resourceGroup:
+          description: Resource Group Name
+          type: string
+          minLength: 1
+          maxLength: 64
+        location:
+          description: Azure Region
+          type: string
+          minLength: 1
+          maxLength: 36
+        resources:
+          $ref: '#/components/schemas/AzureDataPipelineExecutionOutputResources'
+          description: Resources created as part of the arm template deployment
+  parameters:
+    cloudRegion:
+      name: region
+      description: Cloud Region
+      in: query
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+      examples:
+        aws:
+          value: us-east-1
+          summary: aws region example
+        azure:
+          value: eastUS
+          summary: azure region example
+    cloudQuery:
+      name: cloud
+      description: Name of the Cloud
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/cloudType'
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    service-id:
+      name: service-id
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
+    dpDbServiceIdRequired:
+      name: dp-db-service-id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+    dbEngineTypesQuery:
+      name: db-engines
+      description: Filter entities based on database engine types
+      in: query
+      style: form
+      required: false
+      schema:
+        type: array
+        uniqueItems: true
+        items:
+          $ref: '#/components/schemas/databaseEngineType'
+    start-time-in-query-required:
+      in: query
+      description: Start timestamp for metric
+      name: start-time
+      required: true
+      schema:
+        type: string
+        format: date-time
+    step-in-query-required:
+      name: step
+      description: Specifies the frequency at which data points are sampled or aggregated within the specified time range in seconds
+      in: query
+      required: true
+      schema:
+        type: integer
+        format: int32
+        default: 0
+        minimum: 0
+    vpcQuery:
+      description: Filter entity based on VPC name
+      name: vpc
+      in: query
+      style: form
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    subscriptionNameQuery:
+      name: subscription-name
+      description: Subscription name
+      in: query
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 64
+        example: Sub-Experiments-2
+    end-time-in-query-required:
+      name: end-time
+      description: End timestamp for metrics
+      in: query
+      required: true
+      schema:
+        type: string
+        format: date-time
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

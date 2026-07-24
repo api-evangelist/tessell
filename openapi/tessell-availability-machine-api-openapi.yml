@@ -1,0 +1,2377 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Availability Machine API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Availability Machine
+paths:
+  /availability-machines:
+    get:
+      tags:
+      - Availability Machine
+      summary: Get a list of Availability Machines
+      operationId: getAvailabilityMachines
+      x-terraform-resource: AvailabilityMachine
+      x-terraform-operation: ReadList
+      x-terraform:
+        excludeParamsFromApiDefinition:
+        - pageSize
+        - pageOffset
+        - timeZone
+      parameters:
+      - name: name
+        in: query
+        description: Filter the result based on Availability Machine name
+        required: false
+        style: form
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: Filter the result based on Availability Machine status
+        required: false
+        style: form
+        schema:
+          type: string
+      - name: engine-type
+        in: query
+        description: Filter the result based on Availability Machine's database engine-type
+        required: false
+        style: form
+        schema:
+          type: string
+      - name: load-daps
+        in: query
+        description: Boolean to indicate if AM's DAPs to be fetched or not
+        schema:
+          type: boolean
+          default: true
+      - name: load-rpo-policy
+        description: Load RPO policy configuration associated with the Availability Machine
+        in: query
+        style: form
+        schema:
+          type: boolean
+          default: false
+      - name: load-storage-config
+        description: Load storage details of the corresponding DB Service
+        in: query
+        style: form
+        schema:
+          type: boolean
+          default: false
+      - $ref: '#/components/parameters/loadAcls'
+      - $ref: '#/components/parameters/owners'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDmmsServiceView'
+              examples:
+                generic:
+                  $ref: '#/components/examples/GetAvailabilityMachines'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /availability-machines/{id}:
+    get:
+      tags:
+      - Availability Machine
+      summary: Get details about an Availability Machine
+      operationId: getAvailabilityMachine
+      x-terraform-resource: AvailabilityMachine
+      x-terraform-operation: Read
+      x-terraform:
+        excludeParamsFromApiDefinition:
+        - loadAcls
+        - timeZone
+      parameters:
+      - name: id
+        in: path
+        description: ID of the Availability Machine
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: load-daps
+        in: query
+        description: Boolean to indicate if AM's DAPs to be fetched or not
+        schema:
+          type: boolean
+          default: true
+      - name: load-rpo-policy
+        description: Load RPO policy configuration associated with the Availability Machine
+        in: query
+        style: form
+        schema:
+          type: boolean
+          default: true
+      - name: load-storage-config
+        description: Load storage details of the corresponding DB Service
+        in: query
+        style: form
+        schema:
+          type: boolean
+          default: true
+      - name: load-clones
+        description: Load cloned DB Services details created using Availability Machine
+        in: query
+        style: form
+        schema:
+          type: boolean
+          default: true
+      - $ref: '#/components/parameters/loadAcls'
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DmmConsumerView'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - Availability Machine
+      summary: Delete the Availability Machine and the associated data (if any) including snapshots, sanitized-snapshots, and backups.
+      operationId: deleteAvailabilityMachine
+      parameters:
+      - name: id
+        in: path
+        description: ID of the Availability Machine
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /availability-machines/{id}/pause:
+    patch:
+      tags:
+      - Availability Machine
+      summary: Pause the automated backups for a Availability Machine
+      operationId: pauseAvailabilityMachine
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Availability Machine
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PauseTessellDmmPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /availability-machines/{id}/backup-download-config:
+    patch:
+      tags:
+      - Availability Machine
+      summary: Allow backup download for a Availability Machine
+      operationId: updateBackupDownloadConfig
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Availability Machine
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBackupDownloadConfigPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupDownloadConfig'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /availability-machines/{id}/resume:
+    patch:
+      tags:
+      - Availability Machine
+      summary: Resume the automated backups for a Availability Machine
+      operationId: resumeAvailabilityMachine
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Availability Machine
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResumeTessellDmmPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /availability-machines/{id}/acls:
+    get:
+      tags:
+      - Availability Machine
+      summary: Get list of ACLs for an Availability Machine
+      operationId: getAvailabilityMachineAcls
+      parameters:
+      - name: id
+        in: path
+        description: ID of the Availability Machine
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityAclSharingInfo'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - Availability Machine
+      summary: Create or update ACLs for an Availability Machine
+      operationId: createAvailabilityMachineAcls
+      parameters:
+      - name: id
+        in: path
+        description: ID of the Availability Machine
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AclPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AclPayload'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - Availability Machine
+      summary: Revoke ACLs for an Availability Machine
+      operationId: revokeAvailabilityMachineAcls
+      parameters:
+      - name: id
+        in: path
+        description: ID of the Availability Machine
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AclRevokePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /availability-machines/{id}/acls/eligible-users:
+    get:
+      tags:
+      - Availability Machine
+      summary: Get list of users which are eligible to grant access for an Availability Machine
+      operationId: getEligibleUsersForAvailabilityMachine
+      parameters:
+      - name: id
+        in: path
+        description: ID of the Availability Machine
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: roles
+        in: query
+        description: Filter the result based on specified roles
+        required: false
+        style: form
+        schema:
+          type: array
+          items:
+            type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AclEligibleUser'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /dataflix/{id}/catalog/backups/{backup-id}/download-url:
+    get:
+      tags:
+      - Availability Machine
+      summary: Get download url info for the backup
+      operationId: getDownloadUrlInfo
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Availability Machine
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: backup-id
+        in: path
+        description: ID of the backup
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataflixDownloadUrlInfo'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /dataflix/{id}/acls/eligible-users:
+    get:
+      tags:
+      - Availability Machine
+      summary: Get list of all the users by privileges
+      operationId: getEligibleUsersForDataflix
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Availability Machine
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: roles
+        in: query
+        description: roles
+        required: false
+        style: form
+        schema:
+          type: array
+          items:
+            type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AclEligibleUser'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /availability-machines/{id}/size:
+    get:
+      tags:
+      - Availability Machine
+      summary: Get size consumption details for Tessell Data Management Machine
+      operationId: getAvailabilityMachineSize
+      parameters:
+      - name: id
+        in: path
+        description: Id of the Availability Machine
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/timeZone'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TessellDmmSizeDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    TessellServiceInstanceRole:
+      type: string
+      description: DB Service instance role
+      enum:
+      - primary
+      - read_only_replica
+      - failover_replica
+      - dr
+    SubscriptionsCloudLocationsAndKey:
+      type: object
+      description: The cloud location information along with encryption key where the data is being managed by this Access Policy
+      required:
+      - subscriptionName
+      - cloudRegionAndKey
+      properties:
+        subscriptionName:
+          type: string
+        cloudRegionAndKey:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/RegionToEncryptionKey'
+        users:
+          description: List of users email id who have access to the data/content managed by this Access Policy
+          type: array
+          items:
+            type: string
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    commonYearlySchedule:
+      allOf:
+      - $ref: '#/components/schemas/DatesForEachMonth'
+      - type: object
+        properties:
+          months:
+            type: array
+            uniqueItems: true
+            items:
+              $ref: '#/components/schemas/Month'
+              x-enum: true
+    AzureNetAppCapacityPoolServiceLevel:
+      type: string
+      enum:
+      - Standard
+      - Premium
+      - Ultra
+      x-enum-varnames:
+      - STANDARD
+      - PREMIUM
+      - ULTRA
+    EntityAclSharingInfo:
+      title: EntityAclSharingInfo
+      description: Tessell Entity ACL Sharing Info
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityUserAclSharingInfo'
+    WeekDay:
+      description: Week Days
+      type: string
+      enum:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+      x-enum-varnames:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+    AwsInfraConfig:
+      type: object
+      title: AwsInfraConfig
+      properties:
+        awsCpuOptions:
+          type: object
+          title: AwsCpuOptions
+          properties:
+            vcpus:
+              type: integer
+              format: int32
+              minimum: 0
+              description: Number of vcpus for aws cpu options
+    PerfInsightsStatus:
+      title: PerfInsightsStatus
+      type: string
+      description: Perf insights status of a Service Instance
+      enum:
+      - ENABLED
+      - ENABLING
+      - DISABLED
+      - DISABLING
+      - FAILED_ENABLE
+      - FAILED_DISABLE
+    ScheduleInfo:
+      type: object
+      properties:
+        backupStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+        dailySchedule:
+          $ref: '#/components/schemas/DailySchedule'
+        weeklySchedule:
+          $ref: '#/components/schemas/WeeklySchedule'
+        monthlySchedule:
+          $ref: '#/components/schemas/MonthlySchedule'
+        yearlySchedule:
+          $ref: '#/components/schemas/YearlySchedule'
+    DapStatus:
+      description: Database Access Policy Status
+      type: string
+      enum:
+      - CREATING
+      - ACTIVE
+      - CREATION_FAILED
+      - TO_BE_DELETED
+      - DELETED
+    WeeklySchedule:
+      type: object
+      properties:
+        days:
+          description: Days in a week to retain weekly backups for
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/WeekDay'
+            x-enum: true
+    InstanceExadataComputeConfig:
+      type: object
+      required:
+      - infrastructureId
+      - infrastructureName
+      - vmClusterId
+      - vmClusterName
+      - vcpus
+      - memory
+      properties:
+        infrastructureId:
+          type: string
+          format: uuid
+        infrastructureName:
+          type: string
+        vmClusterId:
+          type: string
+          format: uuid
+        vmClusterName:
+          type: string
+        vcpus:
+          type: integer
+        memory:
+          type: integer
+          format: int64
+    TessellResourceUpdateInfo:
+      title: TessellResourceUpdateInfo
+      description: In progress update information for a Tessell Resource
+      properties:
+        updateType:
+          x-computed: true
+          type: string
+          description: Type of the update
+        referenceId:
+          x-computed: true
+          type: string
+          format: uuid
+          description: The reference-id of the update request
+        submittedAt:
+          x-computed: true
+          type: string
+          format: date-time
+          description: Timestamp when the resource update was requested
+        updateInfo:
+          x-computed: true
+          type: object
+          description: The specific details for a Tessell resource that are being updated
+          additionalProperties: {}
+    AzureNetAppNetworkFeature:
+      description: Azure NetApp network feature configuration for creating volume
+      type: string
+      enum:
+      - Standard
+      - Basic
+      x-enum-varnames:
+      - STANDARD
+      - BASIC
+    AzureNetAppEncryptionKeySource:
+      enum:
+      - Microsoft.NetApp
+      - Microsoft.KeyVault
+      x-enum-varnames:
+      - MICROSOFT_NET_APP
+      - MICROSOFT_KEY_VAULT
+    AmDataIngestionStatus:
+      description: Availability Machine's data ingestion status
+      type: string
+      enum:
+      - ACTIVE
+      - PAUSED
+      - STOPPED
+    ParameterProfile:
+      title: ParameterProfile
+      type: object
+      x-computed: true
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the the parameter profile
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The name used to identify the parameter profile
+        version:
+          type: string
+          format: uuid
+          description: The version of the parameter profile associated with the instance
+        status:
+          $ref: '#/components/schemas/ParameterProfileStatus'
+    PauseTessellDmmPayload:
+      title: PauseTessellDmmPayload
+      type: object
+      description: This is a definition for pausing a Tessell Data Management Machine
+      properties:
+        pauseAtTime:
+          type: string
+          format: date-time
+          description: Timestamp (in UTC) when the Availability Machine should be paused. If not specified, the Availability Machine would be paused immediately
+    AzureNetAppConfigPayload:
+      properties:
+        azureNetAppId:
+          description: Azure NetApp Id registered with Tessell
+          type: string
+          format: uuid
+        capacityPoolId:
+          description: Capacity pool Id of the Azure NetApp registered with Tessell
+          type: string
+          format: uuid
+        configurations:
+          description: Azure NetApp configurations
+          type: object
+          properties:
+            networkFeatures:
+              $ref: '#/components/schemas/AzureNetAppNetworkFeature'
+    AsIsDapContent:
+      title: AsIsDapContent
+      type: object
+      properties:
+        automated:
+          type: boolean
+          description: Share the automated as-is snapshots. This is exclusive with manual specification.
+        manual:
+          description: The list of snapshots that are to be shared as part of this access policy
+          type: array
+          items:
+            $ref: '#/components/schemas/DapManualInfo'
+    Month:
+      description: Name of a month
+      type: string
+      enum:
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+      x-enum-varnames:
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+    InstanceAzureNetAppConfig:
+      description: Service instance level Azure NetApp config
+      type: object
+      properties:
+        azureNetAppName:
+          type: string
+        capacityPoolName:
+          type: string
+        volumeName:
+          type: string
+        azureNetAppId:
+          description: Azure NetApp Id registered with Tessell
+          type: string
+          format: uuid
+        capacityPoolId:
+          description: Capacity Pool Id of the Azure NetApp registered with Tessell
+          type: string
+          format: uuid
+        delegatedSubnetId:
+          description: Delegated Subnet name registered with Tessell for the Azure NetApp volume
+          type: string
+          format: uuid
+        delegatedSubnetName:
+          description: Delegated Subnet Id registered with Tessell for the Azure NetApp volume
+          type: string
+        encryptionKeyInfo:
+          $ref: '#/components/schemas/AzureNetAppEncryptionKeyInfo'
+        networkFeatures:
+          $ref: '#/components/schemas/AzureNetAppNetworkFeature'
+        serviceLevel:
+          $ref: '#/components/schemas/AzureNetAppCapacityPoolServiceLevel'
+    TessellServiceInstanceContextInfo:
+      type: object
+      description: Provide more context of Service Instance state
+      properties:
+        subStatus:
+          $ref: '#/components/schemas/TessellServiceInstanceSubStatus'
+        description:
+          type: string
+    TessellServiceInstanceDTO:
+      title: TessellServiceInstanceDTO
+      type: object
+      description: This is a definition of the DB Service Instance object
+      required:
+      - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the DB Service Instance
+          x-computed: true
+        name:
+          type: string
+          description: Name of the DB Service Instance
+        instanceGroupName:
+          type: string
+          description: Name of the instance group
+        type:
+          $ref: '#/components/schemas/TessellServiceInstanceType'
+          x-computed: true
+          x-enum: true
+        role:
+          description: DB Service Topology
+          $ref: '#/components/schemas/TessellServiceInstanceRole'
+          x-computed: true
+          x-enum: true
+        status:
+          $ref: '#/components/schemas/TessellServiceInstanceStatus'
+          x-computed: true
+          x-enum: true
+        tessellServiceId:
+          description: DB Service Instance's associated DB Service id
+          type: string
+          format: uuid
+          x-computed: true
+        cloud:
+          description: DB Service Instance's cloud type
+          type: string
+          x-computed: true
+        region:
+          description: DB Service Instance's cloud region
+          type: string
+          x-computed: true
+        availabilityZone:
+          x-computed: true
+          description: DB Service Instance's cloud availability zone
+          type: string
+        availabilitySet:
+          type: string
+          description: The availability set to which the Compute Resource belongs
+          minLength: 1
+          maxLength: 80
+          x-computed: true
+        instanceGroupId:
+          description: The instance groupd Id
+          type: string
+          format: uuid
+          x-computed: true
+        computeType:
+          description: The compute used for creation of the Tessell Service Instance
+          type: string
+          x-computed: true
+        awsInfraConfig:
+          $ref: '#/components/schemas/AwsInfraConfig'
+          x-computed: true
+        gcpInfraConfig:
+          $ref: '#/components/schemas/GcpInfraConfig'
+          x-computed: true
+        computeId:
+          description: The associated compute identifier
+          type: string
+          format: uuid
+          x-computed: true
+        computeName:
+          description: The associated compute name
+          type: string
+        storage:
+          description: The storage (in bytes) that has been provisioned for the DB Service instance.
+          type: integer
+          format: int64
+          minimum: 0
+          x-computed: true
+        dataVolumeIops:
+          type: integer
+          format: int32
+          x-computed: true
+        throughput:
+          type: integer
+          format: int32
+          description: Throughput requested for this DB Service instance
+          x-computed: true
+        enablePerfInsights:
+          type: boolean
+          x-computed: true
+        parameterProfile:
+          $ref: '#/components/schemas/ParameterProfile'
+          x-computed: true
+        optionProfile:
+          $ref: '#/components/schemas/OptionProfile'
+          x-computed: true
+        monitoringConfig:
+          $ref: '#/components/schemas/MonitoringConfig'
+          x-computed: true
+        vpc:
+          type: string
+          description: The VPC used for creation of the DB Service Instance
+          x-computed: true
+        publicSubnet:
+          type: string
+          description: The public subnet used for creation of the DB Service Instance
+          x-computed: true
+        privateSubnet:
+          type: string
+          description: The private subnet used for creation of the DB Service Instance
+          x-computed: true
+        encryptionKey:
+          type: string
+          description: The encryption key name which is used to encrypt the data at rest
+          x-computed: true
+        softwareImage:
+          type: string
+          description: Software Image to be used to create the instance
+          x-computed: true
+        softwareImageVersion:
+          type: string
+          description: Software Image Version to be used to create the instance
+          x-computed: true
+        dateCreated:
+          type: string
+          description: Timestamp when the entity was created
+          format: date-time
+          x-computed: true
+        connectString:
+          $ref: '#/components/schemas/TessellServiceInstanceConnectString'
+          x-computed: true
+        updatesInProgress:
+          description: The updates that are in progress for this resource
+          type: array
+          x-computed: true
+          items:
+            $ref: '#/components/schemas/TessellResourceUpdateInfo'
+        lastStartedAt:
+          description: Timestamp when the service instance was last started at
+          type: string
+          format: date-time
+          x-computed: true
+        lastStoppedAt:
+          description: Timestamp when the Service Instance was last stopped at
+          type: string
+          format: date-time
+          x-computed: true
+        syncMode:
+          $ref: '#/components/schemas/InstanceSyncMode'
+          x-computed: true
+        engineConfiguration:
+          $ref: '#/components/schemas/ServiceInstanceEngineInfo'
+          x-computed: true
+        computeConfig:
+          $ref: '#/components/schemas/InstanceComputeConfig'
+        storageConfig:
+          $ref: '#/components/schemas/InstanceStorageConfig'
+        archiveStorageConfig:
+          $ref: '#/components/schemas/InstanceStorageConfig'
+        privateLinkInfo:
+          $ref: '#/components/schemas/PrivateLinkInfo'
+        securityConfig:
+          $ref: '#/components/schemas/SecurityConfigOps'
+        contextInfo:
+          $ref: '#/components/schemas/TessellServiceInstanceContextInfo'
+    PrivateLinkPayload:
+      type: object
+      description: The interface endpoint or Gateway Load Balancer endpoint to connect to your DB service.
+      properties:
+        servicePrincipals:
+          description: The list of AWS account principals that are currently enabled. This is only applicable for DB Services hosted on AWS.
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        clientAzureSubscriptionIds:
+          description: The list of Azure subscription Ids. This is only applicable for DB Services hosted on AZURE.
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            format: uuid
+    RegionToEncryptionKey:
+      type: object
+      required:
+      - region
+      properties:
+        region:
+          type: string
+        encryptionKeyName:
+          type: string
+    InstanceAccessMode:
+      type: string
+      description: Service instance access mode
+      enum:
+      - OPEN_MODE
+      - MOUNT_MODE
+    PrivateLinkStatus:
+      description: Tessell Private Link Status
+      type: string
+      enum:
+      - CREATING
+      - ACTIVE
+      - FAILED
+      - UPDATING
+      - UPDATION_SUCCESS
+      - UPDATION_FAILED
+      - DELETING
+      - DELETED
+      - DELETION_FAILED
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    DmmSizeInfoDTO:
+      title: DmmSizeInfoDTO
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          description: Total size
+        backupSize:
+          type: integer
+          format: int64
+          description: Backup size
+        logSize:
+          type: integer
+          format: int64
+          description: Log size
+    TessellServiceInstanceConnectString:
+      title: TessellServiceInstanceConnectString
+      type: object
+      x-computed: true
+      properties:
+        connectDescriptor:
+          type: string
+          x-computed: true
+        masterUser:
+          type: string
+          x-computed: true
+        endpoint:
+          type: string
+          x-computed: true
+        servicePort:
+          type: string
+          x-computed: true
+    DapManualInfo:
+      title: DapManualInfo
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The DB Service snapshot id
+        name:
+          type: string
+          description: The DB Service snapshot name
+          x-computed: true
+        creationTime:
+          type: string
+          description: DB Service snapshot capture time
+          format: date-time
+          x-computed: true
+        sharedAt:
+          type: string
+          description: The timestamp when the snapshot was added to DAP for sharing
+          format: date-time
+          x-computed: true
+    MonthlySchedule:
+      description: Definition for taking month specific schedule.
+      type: object
+      properties:
+        commonSchedule:
+          $ref: '#/components/schemas/DatesForEachMonth'
+    EntityUserAclSharingInfo:
+      title: EntityUserAclSharingInfo
+      description: Tessell Entity ACL Sharing Info for a user
+      properties:
+        emailId:
+          type: string
+        role:
+          type: string
+        sharedBy:
+          type: string
+          description: Email of the user who shared the entity
+        sharedOn:
+          type: string
+          format: date-time
+          description: Date when the entity was shared
+    OptionProfile:
+      title: OptionProfile
+      type: object
+      x-computed: true
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the the option profile
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The name used to identify the option profile
+        version:
+          type: string
+          format: uuid
+          description: The version of the option profile associated with the instance
+        status:
+          $ref: '#/components/schemas/OptionProfileStatus'
+    ExpiryConfig:
+      type: object
+      title: ExpiryConfig
+      description: The backup expiry config
+      properties:
+        expireAt:
+          type: string
+          format: date-time
+          description: time-to-live for the Pre auth url
+    TessellServiceInstanceStatus:
+      type: string
+      description: DB Service instance status
+      enum:
+      - CREATING
+      - DELETING
+      - UP
+      - DOWN
+      - STOPPED
+      - REBUILDING
+      - REBUILD_FAILED
+      - PATCHING
+      - PATCH_FAILED
+      - UPDATING_PARAMETER_PROFILE
+      - UPDATING_OPTION_PROFILE
+      - UPDATING_SECURITY_CONFIG
+      - OPTION_PROFILE_UPDATE_FAILED
+      - PARAMETER_PROFILE_UPDATE_FAILED
+      - SECURITY_CONFIG_UPDATE_FAILED
+      - REFRESHING
+    TessellApiResponse:
+      title: TessellApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+    CloudRegionInfo:
+      title: CloudRegionInfo
+      description: Cloud and region details
+      required:
+      - cloud
+      properties:
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+          description: The cloud type
+        regions:
+          description: The regions details
+          type: array
+          items:
+            $ref: '#/components/schemas/RegionInfo'
+    SecurityProfileSyncStatus:
+      type: string
+      description: Sync status of the security profile applied on an instance/server
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+    DapContentInfo:
+      title: DapContentInfo
+      type: object
+      properties:
+        asIsContent:
+          $ref: '#/components/schemas/AsIsDapContent'
+        sanitizedContent:
+          $ref: '#/components/schemas/SanitizationDapContent'
+        backupContent:
+          $ref: '#/components/schemas/BackupDapContent'
+    AzureNetAppEncryptionKeyInfo:
+      description: Details of encryption key
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the encryption key
+          format: uuid
+        name:
+          type: string
+          description: name of the encryption key
+        keyVaultCloudResourceId:
+          type: string
+          description: name of the encryption key vault in cloud
+        keySource:
+          $ref: '#/components/schemas/AzureNetAppEncryptionKeySource'
+    CustomRpoPolicy:
+      description: This is the definition of Custom RPO Policy for Snapshot for Tessell DB Service
+      type: object
+      required:
+      - name
+      - schedule
+      properties:
+        name:
+          type: string
+          description: Custom RPO policy name
+        schedule:
+          $ref: '#/components/schemas/ScheduleInfo'
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    StorageConfigPayload:
+      description: The storage details to be provisioned.
+      type: object
+      required:
+      - provider
+      properties:
+        provider:
+          $ref: '#/components/schemas/StorageProviderType'
+        fsxNetAppConfig:
+          $ref: '#/components/schemas/FsxNetAppConfigPayload'
+        azureNetAppConfig:
+          $ref: '#/components/schemas/AzureNetAppConfigPayload'
+    AclRevokePayload:
+      title: AclRevokePayload
+      description: Payload to revoke Tessell ACLs
+      required:
+      - users
+      properties:
+        users:
+          description: List of users to be deleted
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          minItems: 1
+          maxItems: 100
+    ParameterProfileStatus:
+      type: string
+      description: Association status of the instance to the parameter profile
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+      - PENDING_REBOOT
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    BackupStandardRpoPolicy:
+      description: This is the definition of Standard RPO Policy for Backup for Tessell DB Service
+      type: object
+      required:
+      - retentionDays
+      properties:
+        retentionDays:
+          description: Number of days for which the backup of DB Service would be retained
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 35
+        backupStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+    AclPayload:
+      title: AclPayload
+      description: Payload to create an entity ACL
+      required:
+      - users
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/AclUserPayload'
+          minItems: 1
+          maxItems: 100
+    DmmConsumerView:
+      type: object
+      description: The Availability Machine is an abstraction provided by Tessell that takes care of all of the data-management and data-protection aspects for a DB Service, like capturing snapshots, backups, providing PITR recoverability, and processing the data for sanitization.
+      x-terraform-resource: AvailabilityMachine
+      x-terraform:
+        plural-name: AvailabilityMachines
+        render:
+        - data_source
+        - data_source_list
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of the Availability Machine
+        tessellServiceId:
+          type: string
+          format: uuid
+          description: ID of the DB Service that is associated with the Availability Machine
+        serviceName:
+          type: string
+          description: Name of the DB Service that is associated with the Availability Machine
+        tenant:
+          type: string
+          description: ID of the tenant under which this Availability Machine is effective
+        subscription:
+          type: string
+          description: Name of the subscription under which the associated DB Service is hosted
+        engineType:
+          x-enum: true
+          $ref: '#/components/schemas/databaseEngineType'
+          description: Engine type for the associated DB Service
+        dataIngestionStatus:
+          x-enum: true
+          $ref: '#/components/schemas/AmDataIngestionStatus'
+          description: Status for the associated DB Service
+        userId:
+          type: string
+          description: User details representing the owner for the Availability Machine
+        owner:
+          type: string
+          description: User details representing the owner for the Availability Machine
+        loggedInUserRole:
+          type: string
+          description: The role of the logged in user for accessing this Availability Machine
+        sharedWith:
+          description: List of users having access to the Availability Machine
+          $ref: '#/components/schemas/EntityAclSharingInfo'
+        cloudAvailability:
+          type: array
+          items:
+            $ref: '#/components/schemas/CloudRegionInfo'
+          description: Availability Machine manages data across multiple regions within a cloud. This sections provides information about the cloud and regions where this Availability Machine is managing the data.
+        topology:
+          description: 'The availability location details: cloudAccount to region'
+          type: array
+          items:
+            $ref: '#/components/schemas/DBServiceTopology'
+        rpoPolicy:
+          $ref: '#/components/schemas/RpoPolicyConfig'
+        daps:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellDapServiceDTO'
+          description: The Access Policies (DAP) that have configured for this Availability Machine
+        clones:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellCloneSummaryInfo'
+          description: The clone DB Services that have been created using contents (snapshots, Sanitized Snapshots, PITR, backups) from this Availability Machine
+        dateCreated:
+          type: string
+          format: date-time
+          description: The timestamp when the Availability Machine was incarnated
+        dateModified:
+          type: string
+          format: date-time
+          description: The timestamp when the Availability Machine was last updated
+        tsm:
+          type: boolean
+          default: false
+          description: Specify whether the associated DB Service is created using TSM compute type
+        backupDownloadConfig:
+          $ref: '#/components/schemas/BackupDownloadConfig'
+          description: Backup download config for the service (deprecated)
+        storageConfig:
+          $ref: '#/components/schemas/StorageConfigPayload'
+    GcpInfraConfig:
+      type: object
+      title: GcpInfraConfig
+      properties:
+        gcpCpuOptions:
+          type: object
+          title: GcpCpuOptions
+          properties:
+            vcpus:
+              type: integer
+              format: int32
+              minimum: 1
+              description: Number of vCPUs for GCP custom machine type
+            memory:
+              type: integer
+              format: int32
+              minimum: 1
+              description: Memory in MB for GCP custom machine type (optional)
+    TessellCloneSummaryInfo:
+      title: TessellCloneSummaryInfo
+      description: This is a definition for Database Clone's summary
+      required:
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Name of the clone database
+        subscription:
+          type: string
+          description: Clone's subscription name
+        computeType:
+          type: string
+          description: Clone's compute type
+        status:
+          type: string
+          description: Status of the clone database
+        cloudAvailability:
+          type: array
+          items:
+            $ref: '#/components/schemas/CloudRegionInfo'
+        cloneInfo:
+          type: object
+          description: Miscellaneous information
+          additionalProperties:
+            type: string
+        owner:
+          type: string
+          description: The user who created database clone
+        instances:
+          type: array
+          description: Instances associated with this DB Service
+          items:
+            $ref: '#/components/schemas/TessellServiceInstanceDTO'
+        dateCreated:
+          type: string
+          description: Timestamp when the entity was created
+          format: date-time
+    UpdateBackupDownloadConfigPayload:
+      title: AllowBackupDownloadTessellDmmPayload
+      type: object
+      description: This is a definition for updating backup download config.
+      properties:
+        allowBackupDownloadsForAllUsers:
+          type: boolean
+          description: Allow all users to download the backup, if false only owner(s) will be allowed
+          default: true
+        allowBackupDownloads:
+          type: boolean
+          description: Allow download of the backup for am service
+          default: true
+    PreAuthUrlStatus:
+      description: PreAuthUrl Status
+      type: string
+      enum:
+      - NOT_REQUESTED
+      - CREATING
+      - AVAILABLE
+      - DELETING
+      - EXPIRED
+    DapRetentionInfo:
+      type: object
+      properties:
+        pitr:
+          description: Retention time (in days) for Point-In-Time recoverability
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          maximum: 35
+        dailyBackups:
+          description: Retention time (in days) to retain daily snapshots
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          maximum: 730
+    DBServiceTopology:
+      title: DBServiceTopology
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/TessellServiceInstanceType'
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        region:
+          type: string
+        availabilityZones:
+          type: array
+          items:
+            type: string
+    SanitizationDapContent:
+      title: SanitizationDapContent
+      type: object
+      properties:
+        automated:
+          type: object
+          required:
+          - sanitizationScheduleId
+          properties:
+            sanitizationScheduleId:
+              type: string
+              format: uuid
+              description: Id of the sanitization schedule to process automated backups, required only if contentType = Sanitized.
+        manual:
+          description: The list of sanitized snapshots that are to be shared as part of this access policy
+          type: array
+          items:
+            $ref: '#/components/schemas/DapManualInfo'
+    ResumeTessellDmmPayload:
+      title: ResumeTessellDmmPayload
+      type: object
+      description: This is a definition for resuming a Tessell Data Management Machine
+      properties:
+        resumeAtTime:
+          type: string
+          format: date-time
+          description: Timestamp (in UTC) when the Availability Machine should be resumed. If not specified, the Availability Machine would be resumed immediately
+    ComputeProviderType:
+      type: string
+      enum:
+      - AWS_EC2
+      - AZURE_VM
+      - GCP_GCE
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    AclUserPayload:
+      title: AclUserPayload
+      description: Payload to create an user's entity ACL
+      required:
+      - emailId
+      - role
+      properties:
+        emailId:
+          description: Email id of the user
+          type: string
+          minLength: 1
+          maxLength: 256
+        role:
+          description: Role Info
+          type: string
+          minLength: 1
+          maxLength: 64
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    BackupDapContent:
+      title: BackupDapContent
+      type: object
+      properties:
+        automated:
+          type: boolean
+          description: Share the automated backups. This is exclusive with manual specification.
+        manual:
+          description: The list of backups that are to be shared as part of this access policy
+          type: array
+          items:
+            $ref: '#/components/schemas/DapManualInfo'
+    TessellServiceInstanceType:
+      type: string
+      description: DB Service instance type
+      enum:
+      - DC
+      - DR
+    TessellDmmSizeDTO:
+      title: TessellDmmSizeDTO
+      type: object
+      properties:
+        dmm:
+          type: string
+          description: Availability Machine Name
+        aggregatedTotalSize:
+          type: integer
+          format: int64
+          description: Aggregated total size
+        aggregatedBackupSize:
+          type: integer
+          format: int64
+          description: Aggregated backup size
+        aggregatedLogSize:
+          type: integer
+          format: int64
+          description: Aggregated log size
+        rpoSlaSize:
+          $ref: '#/components/schemas/DmmSizeInfoDTO'
+        dapSize:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/DmmSizeInfoDTO'
+    RpoPolicyConfig:
+      description: This is the definition for RPO Policy details for Tessell DB Service
+      type: object
+      required:
+      - enableAutoSnapshot
+      properties:
+        includeTransactionLogs:
+          description: Determines whether transaction logs should be retained to enable Point-In-Time Recovery (PITR) functionality
+          type: boolean
+          default: false
+        enableAutoSnapshot:
+          description: Specify whether system will take automatic snapshots
+          type: boolean
+          default: true
+        standardPolicy:
+          $ref: '#/components/schemas/StandardRpoPolicy'
+        customPolicy:
+          $ref: '#/components/schemas/CustomRpoPolicy'
+        fullBackupSchedule:
+          $ref: '#/components/schemas/FullBackupSchedule'
+        enableAutoBackup:
+          description: Specify whether system will take automatic backups
+          type: boolean
+          default: false
+        backupRpoConfig:
+          type: object
+          description: Config for the Native Backup RPO policies
+          properties:
+            fullBackupSchedule:
+              $ref: '#/components/schemas/FullBackupSchedule'
+            standardPolicy:
+              $ref: '#/components/schemas/BackupStandardRpoPolicy'
+            customPolicy:
+              $ref: '#/components/schemas/BackupCustomRpoPolicy'
+    InstanceFsxNetAppConfig:
+      type: object
+      properties:
+        fileSystemName:
+          type: string
+        svmName:
+          type: string
+        volumeName:
+          type: string
+        fileSystemId:
+          description: File System Id of the FSx NetApp registered with Tessell
+          type: string
+          format: uuid
+        svmId:
+          description: Storage Virtual Machine Id of the FSx NetApp registered with Tessell
+          type: string
+          format: uuid
+    OptionProfileStatus:
+      type: string
+      description: Association status of the instance to the option profile
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+      - PENDING_REBOOT
+    TimeFormat:
+      title: TimeFormat
+      description: Clock time format value in hour and minute.
+      type: object
+      required:
+      - hour
+      - minute
+      properties:
+        hour:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 23
+          default: 1
+        minute:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 59
+          default: 0
+    GetDmmsServiceView:
+      title: GetDmmsServiceView
+      allOf:
+      - $ref: '#/components/schemas/TessellApiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/DmmConsumerView'
+    FsxNetAppConfigPayload:
+      description: The FSx NetApp details to be provisioned
+      type: object
+      required:
+      - fileSystemId
+      - svmId
+      properties:
+        fileSystemId:
+          description: File System Id of the FSx NetApp registered with Tessell
+          type: string
+          format: uuid
+        svmId:
+          description: Storage Virtual Machine Id of the FSx NetApp registered with Tessell
+          type: string
+          format: uuid
+    TessellDapServiceDTO:
+      title: TessellDapServiceDTO
+      type: object
+      description: Access Policy (DAP) and the associated configuration
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of the Access Policy
+        name:
+          type: string
+          description: Name of the Access Policy
+        availabilityMachineId:
+          type: string
+          format: uuid
+          description: ID of the Availability Machine
+        tessellServiceId:
+          type: string
+          format: uuid
+          description: ID of the associated DB Service
+        serviceName:
+          type: string
+          description: Name of the associated DB Service
+        engineType:
+          type: string
+          description: Database engine type of the associated DB Service
+        contentType:
+          x-enum: true
+          $ref: '#/components/schemas/DapContentType'
+          description: Type of data content (as-is, sanitized, backup) that this Access Policy is entitled to manage
+        status:
+          x-enum: true
+          $ref: '#/components/schemas/DapStatus'
+          description: Status of the Access Policy
+        contentInfo:
+          $ref: '#/components/schemas/DapContentInfo'
+          description: Information about the data content that is being managed by this Access Policy
+        dataAccessConfig:
+          $ref: '#/components/schemas/DapRetentionInfo'
+          description: Configuration for retention and expiration of data that is being managed by this Access Policy
+        owner:
+          type: string
+          description: Owner of the Access Policy
+        loggedInUserRole:
+          type: string
+          description: The role of the logged in user for accessing the Availability Machine
+        subscriptionsCloudLocationsAndKey:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionsCloudLocationsAndKey'
+          description: The subscription, cloud and region information along with encryption key and user info for DAP
+        dateCreated:
+          type: string
+          format: date-time
+          description: Timestamp when this Access Policy was created at
+        dateModified:
+          type: string
+          format: date-time
+          description: Timestamp when this Access Policy was last updated at
+    AclEligibleUser:
+      title: AclEligibleUser
+      description: Eligible user for sharing the entity
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        emailId:
+          type: string
+        eligibleRoles:
+          type: array
+          items:
+            type: string
+        accessibleSubscriptions:
+          type: array
+          items:
+            type: string
+          description: List of subscriptions user has access to
+    BackupCustomRpoPolicy:
+      description: This is the definition of Custom RPO Policy for Backup for Tessell DB Service
+      allOf:
+      - $ref: '#/components/schemas/CustomRpoPolicy'
+    StorageProviderType:
+      description: Storage Type in the cloud
+      enum:
+      - AWS_EBS
+      - AWS_FSX_NETAPP
+      - AWS_HPC
+      - AWS_S3
+      - AZURE_HPC
+      - AZURE_MANAGED_DISK
+      - GCP_HYPERDISK
+      - GCP_GCS
+      - AZURE_BLOB
+      - MINIO
+      - AZURE_NETAPP
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    ServiceInstanceOracleEngineConfig:
+      title: TessellServiceInstanceOracleEngineConfig
+      type: object
+      nullable: true
+      properties:
+        accessMode:
+          $ref: '#/components/schemas/InstanceAccessMode'
+    DbBackupStatus:
+      description: DB Backup Status
+      type: string
+      enum:
+      - AVAILABLE
+      - CREATING
+      - SOFT_DELETED
+      - DELETED
+      - DELETING
+      - QUEUED
+      - SCHEDULED
+      - REPLICATING
+      - DELETED_FOR_USER
+      - DELETED_FOR_SLA
+      - DELETION_FAILED
+      - FAILED
+      - PREPARING
+      - REPLICATION_FAILED
+    PerfInsightsConfig:
+      title: TessellPerfInsightsConfig
+      type: object
+      properties:
+        perfInsightsEnabled:
+          type: boolean
+        monitoringDeploymentId:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/PerfInsightsStatus'
+    DapContentType:
+      description: Content Type for the Data Access Policy
+      type: string
+      enum:
+      - As-Is
+      - Sanitized
+      - Backup
+    StandardRpoPolicy:
+      description: This is the definition of Standard RPO Policy for Snapshot for Tessell DB Service
+      type: object
+      required:
+      - retentionDays
+      - snapshotStartTime
+      properties:
+        retentionDays:
+          description: Number of days for which the snapshot of DB Service would be retained
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 35
+        includeTransactionLogs:
+          description: Determines whether transaction logs should be retained to enable Point-In-Time Recovery (PITR) functionality
+          type: boolean
+          default: false
+        snapshotStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+    DailySchedule:
+      type: object
+      properties:
+        backupsPerDay:
+          type: integer
+          format: int32
+          description: The number of backups to be captured per day.
+          minimum: 0
+    InstanceStorageConfig:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/StorageProviderType'
+        volumeType:
+          type: string
+          description: Data disk volume type
+        fsxNetAppConfig:
+          $ref: '#/components/schemas/InstanceFsxNetAppConfig'
+        azureNetAppConfig:
+          $ref: '#/components/schemas/InstanceAzureNetAppConfig'
+    MonthWiseDates:
+      type: object
+      required:
+      - month
+      - dates
+      properties:
+        month:
+          $ref: '#/components/schemas/Month'
+          x-enum: true
+        dates:
+          uniqueItems: true
+          type: array
+          items:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 31
+    DatesForEachMonth:
+      type: object
+      properties:
+        dates:
+          description: Dates in a month to retain monthly backups
+          uniqueItems: true
+          type: array
+          items:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 31
+        lastDayOfMonth:
+          type: boolean
+          default: false
+    BackupDownloadConfig:
+      title: BackupDownloadConfig
+      description: This is a definition for backup download config
+      type: object
+      properties:
+        allowBackupDownloadsForAllUsers:
+          type: boolean
+          description: Allow all users to download the backup, if false only owner/co-owner(s) will be allowed
+          default: false
+        allowBackupDownloads:
+          type: boolean
+          description: Allow download of the backup for owner/co-owner of the AM
+          default: false
+    RegionInfo:
+      title: RegionInfo
+      description: Cloud region details
+      required:
+      - region
+      properties:
+        region:
+          description: The cloud region name
+          type: string
+        availabilityZones:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+    MonitoringConfig:
+      title: MonitoringConfig
+      type: object
+      x-computed: true
+      properties:
+        perfInsights:
+          $ref: '#/components/schemas/PerfInsightsConfig'
+    SecurityConfigOps:
+      type: object
+      properties:
+        securityProfile:
+          $ref: '#/components/schemas/SecurityProfileInfoOps'
+    InstanceSyncMode:
+      type: string
+      description: Service instance sync mode
+      enum:
+      - SYNC
+      - ASYNC
+    PrivateLinkInfo:
+      title: PrivateLinkInfo
+      allOf:
+      - $ref: '#/components/schemas/PrivateLinkPayload'
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/PrivateLinkStatus'
+        endpointServiceName:
+          description: The configured endpoint as a result of configuring the service-principals
+          type: string
+          x-computed: true
+        privateLinkServiceAlias:
+          type: string
+          description: The Azure private link service alias
+    InstanceComputeConfig:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/ComputeProviderType'
+        exadataConfig:
+          $ref: '#/components/schemas/InstanceExadataComputeConfig'
+    ServiceInstanceEngineInfo:
+      title: TessellServiceInstanceInfo
+      description: This field details the DB Service Instance engine configuration details like - access mode
+      type: object
+      nullable: true
+      properties:
+        oracleConfig:
+          $ref: '#/components/schemas/ServiceInstanceOracleEngineConfig'
+    SecurityProfileInfoOps:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Id of the Security Profile
+        versionId:
+          type: string
+          format: uuid
+          description: Version Id of the Security Profile
+        status:
+          $ref: '#/components/schemas/SecurityProfileSyncStatus'
+    DataflixDownloadUrlInfo:
+      title: DataflixDownloadUrlInfo
+      description: Tessell Backup's Dataflix view
+      type: object
+      properties:
+        backupId:
+          type: string
+          format: uuid
+          description: ID of the snapshot from which backup is derived
+        backupName:
+          type: string
+          description: Name of the backup
+          minLength: 1
+          maxLength: 128
+        backupStatus:
+          x-enum: true
+          $ref: '#/components/schemas/DbBackupStatus'
+          description: DB Service snapshot status
+          x-computed: true
+        size:
+          type: integer
+          format: int64
+          description: Backup size in bytes
+        status:
+          $ref: '#/components/schemas/PreAuthUrlStatus'
+          description: Status of Pre Auth Url
+        manual:
+          type: boolean
+          description: Specifies whether the backup is captured manually
+        userid:
+          description: User having access to the backup
+          type: string
+        downloadUrlExpiryTime:
+          $ref: '#/components/schemas/ExpiryConfig'
+          description: Expiry Config for the backup Pre auth url
+        downloadUrl:
+          type: string
+          description: Pre auth url from which backup can be downloaded
+        dateCreated:
+          type: string
+          description: Pre auth url creation time
+          format: date-time
+    TessellServiceInstanceSubStatus:
+      type: string
+      description: DB Service Instance could have a sub status associated along with status
+      enum:
+      - SECURITY_CONFIG_UPDATE_FAILED
+      - UPDATING_SECURITY_CONFIG
+    YearlySchedule:
+      type: object
+      properties:
+        commonSchedule:
+          $ref: '#/components/schemas/commonYearlySchedule'
+        monthSpecificSchedule:
+          type: array
+          uniqueItems: true
+          required:
+          - months
+          items:
+            $ref: '#/components/schemas/MonthWiseDates'
+    FullBackupSchedule:
+      description: The schedule at which full backups would be triggered
+      type: object
+      properties:
+        startTime:
+          description: Optional Time when full backup(s) has to be captured | If not specified, the default time (same as incremental backup) would be used
+          $ref: '#/components/schemas/TimeFormat'
+        weeklySchedule:
+          $ref: '#/components/schemas/WeeklySchedule'
+  parameters:
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    owners:
+      name: owners
+      in: query
+      description: List of Email Addresses for entity or resource owners
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    loadAcls:
+      name: load-acls
+      in: query
+      description: Load ACL information
+      required: false
+      schema:
+        type: boolean
+        default: false
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+  examples:
+    GetAvailabilityMachines:
+      summary: Get all Availability Machines
+      value:
+        metadata:
+          timeZone: UTC
+          records: 1
+          pagination:
+            pageSize: 100
+            pageOffset: 0
+        response:
+        - id: bd23bc2f-38e1-42d4-bd9e-f5dae62eeb85
+          tessellServiceId: 4b705c41-5222-46d0-84de-cf805456afbd
+          serviceName: finance-db-mysql-si
+          tenant: admin@my-org.com
+          subscription: default
+          engineType: MYSQL
+          status: RUNNING
+          userId: null
+          owner: myself@my-org.com
+          loggedInUserRole: OWNER
+          sharedWith:
+            users:
+            - emailId: user1@my-org.com
+              role: CO_OWNER
+            - emailId: user2@my-org.com
+              role: READ_ONLY
+          cloudAvailability:
+          - cloud: AWS
+            regions:
+            - region: ap-south-1
+              availabilityZones:
+              - ap-south-1a
+            - region: us-east-2
+              availabilityZones: null
+          snapshotConfiguration:
+            standardPolicy:
+              retentionDays: 2
+              includeTransactionLogs: true
+              snapshotStartTime:
+                hour: 1
+                minute: 0
+          daps:
+          - id: 745115b2-5c0c-459f-8322-a29c8e5e2321
+            name: Data Access Policy 1
+            availabilityMachineId: bd23bc2f-38e1-42d4-bd9e-f5dae62eeb85
+            tessellServiceId: 4b705c41-5222-46d0-84de-cf805456afbd
+            serviceName: finance-db-mysql-si
+            engineType: MYSQL
+            contentType: As-Is
+            status: ACTIVE
+            contentInfo: null
+            cloudAvailability:
+            - cloud: AWS
+              regions:
+              - region: us-east-2
+                availabilityZones: null
+            dataAccessConfig:
+              dailyBackups: 2
+            owner: myself@my-org.com
+            loggedInUserRole: OWNER
+            sharedWith:
+              users:
+              - emailId: data.owner01@tessell.com
+                role: DATAFLIX
+            dateCreated: '2022-08-12T10:46:04.390+00:00'
+            dateModified: '2022-08-12T10:46:04.390+00:00'
+          clones: null
+          dateCreated: '2022-08-12T09:36:46.093+00:00'
+          dateModified: '2022-08-12T09:47:52.353+00:00'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

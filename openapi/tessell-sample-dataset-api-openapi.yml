@@ -1,0 +1,408 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Sample Dataset API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Sample Dataset
+paths:
+  /services/{serviceId}/sample-datasets/suggestions:
+    get:
+      tags:
+      - Sample Dataset
+      summary: Returns details about sample datasets that can be loaded in the given DB Service
+      operationId: getSampleDatasetSuggestions
+      parameters:
+      - name: serviceId
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SampleDatasetSuggestionsResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{serviceId}/sample-datasets/manage-suggestions:
+    patch:
+      tags:
+      - Sample Dataset
+      summary: Controls if the sample data loading suggestions should be shown for the given DB Service
+      operationId: updateSampleDatasetSuggestion
+      parameters:
+      - name: serviceId
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManageLoadSampleDatasetSuggestionPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{serviceId}/sample-datasets:
+    get:
+      tags:
+      - Sample Dataset
+      summary: Get details about existing sample datasets being/already loaded in the given DB Service
+      operationId: getSampleDatasetLoadingInfo
+      parameters:
+      - name: serviceId
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceSampleDatasetInfoResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+      - Sample Dataset
+      summary: Submits a request to load sample-dataset in given DB Service.
+      operationId: loadSampleDatasetRequest
+      parameters:
+      - name: serviceId
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoadSampleDatasetRequestPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    SampleDatasetOpsDTO:
+      title: SampleDatasetOpsDTO
+      type: object
+      description: Details about the sample dataset
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique ID of dataset
+        name:
+          type: string
+          description: Name of the dataset
+        description:
+          type: string
+          description: Short description of dataset
+        link:
+          type: string
+          description: Link to Tessell support page which describes the dataset
+        totalSize:
+          type: integer
+          format: int64
+          description: Total size of dataset in bytes
+        engine:
+          $ref: '#/components/schemas/databaseEngineType'
+        softwareImages:
+          type: array
+          items:
+            description: List of software images for which this dataset is applicable
+            type: string
+        cloudLocation:
+          type: string
+          description: Cloud location (AWS S3) where the sample dataset is stored.
+        dumpPath:
+          type: string
+          description: Path of dataset dump with respect to AWS S3 tar.
+        scriptPath:
+          type: string
+          description: Path of sanitization script with respect to AWS S3 tar.
+        scriptId:
+          type: string
+          format: uuid
+          description: Tessell Masking Script ID which is loaded along with this sample dataset.
+        status:
+          $ref: '#/components/schemas/SampleDatasetOpsStatus'
+        dateCreated:
+          type: string
+          format: date-time
+          description: Timestamp when this sample-dataset was created
+        dateModified:
+          type: string
+          format: date-time
+          description: Timestamp when this sample-dataset was last modified
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ManageLoadSampleDatasetSuggestionPayload:
+      title: ManageLoadSampleDatasetSuggestionPayload
+      type: object
+      required:
+      - showSuggestion
+      properties:
+        showSuggestion:
+          type: boolean
+          description: True/False based on if the data loading suggestion popup should be shown or not.
+    ServiceSampleDatasetInfoResponse:
+      title: ServiceSampleDatasetInfoResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceSampleDatasetLoadingInfo'
+    SampleDatasetOpsStatus:
+      description: Status of the the sample dataset
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    SampleDatasetSuggestionsResponse:
+      title: SampleDatasetSuggestionsResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/SampleDatasetOpsDTO'
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    LoadSampleDatasetRequestPayload:
+      title: LoadSampleDatasetRequestPayload
+      type: object
+      description: Details needed to load a sample dataset in a DB Service
+      required:
+      - datasetId
+      properties:
+        datasetId:
+          type: string
+          format: uuid
+          description: Unique ID of Dataset to be loaded.
+        datasetSize:
+          type: integer
+          format: int64
+          description: Size in bytes to be loaded.
+        databaseId:
+          type: string
+          format: uuid
+          description: DB Service database ID in which we want to load sample data. Null if data is to be loaded in a new Database.
+        databaseName:
+          type: string
+          description: Name of the Database where sample dataset would be loaded.
+        scriptId:
+          type: string
+          format: uuid
+          description: Tessell Masking Script ID corresponding to this dataset
+        scriptName:
+          type: string
+          description: Masking Script name.
+    SampleDatasetLoadingStatus:
+      description: Status of the the sample dataset
+      enum:
+      - NA
+      - LOADING
+      - LOADED
+      - FAILED
+    ServiceSampleDatasetLoadingInfo:
+      title: ServiceSampleDatasetLoadingInfo
+      type: object
+      description: Details about the sample dataset being/already loaded in a DB Service.
+      properties:
+        datasetId:
+          type: string
+          format: uuid
+          description: Sample Dataset ID which is loaded/being loaded in service.
+        datasetName:
+          type: string
+          description: Name of sample dataset loading/loaded.
+        datasetSize:
+          type: integer
+          format: int64
+          description: Size of dataset that is loaded.
+        dataLoadingStartAt:
+          type: string
+          format: date-time
+          description: Time at which sample dataset loading started.
+        dataLoadingCompletedAt:
+          type: string
+          format: date-time
+          description: Time at which sample dataset loading completed.
+        status:
+          $ref: '#/components/schemas/SampleDatasetLoadingStatus'
+        databaseId:
+          type: string
+          format: uuid
+          description: DB Service database Id where the sample dataset is loading/loaded.
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

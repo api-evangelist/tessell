@@ -1,0 +1,306 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Tessell App API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Tessell App
+paths:
+  /apps:
+    get:
+      operationId: getApps
+      parameters:
+      - name: tenant-id
+        in: header
+        description: tenant-id
+        required: true
+        style: simple
+        schema:
+          type: string
+      - description: load-features
+        explode: true
+        in: query
+        name: load-features
+        required: false
+        schema:
+          type: string
+        style: form
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/timeZone'
+      - $ref: '#/components/parameters/consumerType'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppApiResponse'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      summary: Get a list of Tessell App
+      tags:
+      - Tessell App
+components:
+  schemas:
+    FeatureStatus:
+      title: FeatureStatus
+      type: string
+      description: This is a definition for Tessell feature status object
+      enum:
+      - DELETED
+      - ENABLED
+      - DISABLED
+      - NOT_SUPPORTED
+    Privilege:
+      description: This is a definition for Tessell internal privilege DTO object
+      example:
+        dateCreated: '2000-01-23T04:56:07'
+        name: name
+        description: description
+        dateModified: '2000-01-23T04:56:07'
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: DELETED
+      properties:
+        dateCreated:
+          description: Date when the privilege is created in Tessell metadata
+          format: date-time
+          type: string
+        dateModified:
+          description: Date when privilege is last modified in Tessell metadata
+          format: date-time
+          type: string
+        description:
+          description: Description of the privilege
+          type: string
+        id:
+          description: generated UUID for the privilege object
+          format: uuid
+          type: string
+        name:
+          description: Name of the privilege
+          type: string
+        status:
+          enum:
+          - DELETED
+          - ENABLED
+          type: string
+      title: Privilege
+      type: object
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    AppStatus:
+      x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n"
+      description: App Status
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+      type: string
+    AppFeature:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          description:
+            x-dao-annotations: '@NotNull
+
+              '
+            description: Description of the app family
+            type: string
+          name:
+            x-dao-query: true
+            x-dao-annotations: '@NotNull
+
+              '
+            description: Name of the app family
+            type: string
+          displayName:
+            x-dao-query: true
+            x-dao-annotations: '@NotNull
+
+              '
+            description: Name of the app family
+            type: string
+          status:
+            $ref: '#/components/schemas/FeatureStatus'
+        title: AppFeature
+        type: object
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    BaseEntity:
+      type: object
+      properties:
+        dateCreated:
+          x-dao-annotations: "@Column(name = \"DATE_CREATED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @CreationTimestamp\n"
+          description: Timestamp when the entity was created
+          format: date-time
+          type: string
+        dateModified:
+          x-dao-annotations: "@Column(name = \"DATE_MODIFIED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @UpdateTimestamp\n"
+          description: Timestamp when the entity was last modified
+          format: date-time
+          type: string
+        id:
+          x-dao-query: true
+          x-dao-annotations: "@Id\n  @GeneratedValue(generator = \"UUID\")\n  @GenericGenerator(name = \"UUID\", strategy = \"org.hibernate.id.UUIDGenerator\")\n  @Column(name = \"id\", updatable = false, nullable = false)\n"
+          description: generated UUID for the entity
+          example: 123e4567-e89b-12d3-a456-426614174000
+          format: uuid
+          type: string
+    AppApiResponse:
+      title: AppApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/App'
+    App:
+      x-dao-entity: true
+      x-dao-table-name: TESSELL_APPS
+      x-dao-entity-annotations: '@Table(name = "TESSELL_APPS")
+
+        '
+      description: This is a definition for Tessell app DTO object
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - title: App
+        type: object
+        properties:
+          appFamily:
+            x-dao-query: true
+            x-dao-annotations: '@Column(name = "APP_FAMILY")
+
+              '
+            description: App family this app belongs to
+            type: string
+          description:
+            x-dao-annotations: '@NotNull
+
+              '
+            description: Description of the app
+            type: string
+          name:
+            x-dao-query: true
+            x-dao-annotations: '@NotNull
+
+              '
+            description: Name of the app
+            type: string
+          privileges:
+            x-dao-ignore: true
+            description: List of privileges associated with the app
+            items:
+              $ref: '#/components/schemas/Privilege'
+            type: array
+          features:
+            x-dao-ignore: true
+            description: List of features associated with the app
+            items:
+              $ref: '#/components/schemas/AppFeature'
+            type: array
+          status:
+            $ref: '#/components/schemas/AppStatus'
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+  parameters:
+    consumerType:
+      name: consumer-type
+      in: query
+      description: API consumer type
+      required: false
+      schema:
+        type: string
+        default: OPS
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

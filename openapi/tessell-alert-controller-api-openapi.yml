@@ -1,0 +1,1415 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center alert-controller API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: alert-controller
+paths:
+  /monitoring/alert-profiles:
+    post:
+      tags:
+      - alert-controller
+      summary: Create Alert Profile
+      operationId: createAlertProfile
+      parameters:
+      - $ref: '#/components/parameters/tenant-id-in-header-required'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertProfileRequest'
+      responses:
+        '200':
+          description: Alert Profile created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertProfileDto'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    get:
+      tags:
+      - alert-controller
+      summary: Get a list of alert Profiles
+      operationId: getAlertProfiles
+      parameters:
+      - $ref: '#/components/parameters/tenant-id-in-header-required'
+      - $ref: '#/components/parameters/alert-entity-type-in-query'
+      - $ref: '#/components/parameters/user-type-in-query'
+      - $ref: '#/components/parameters/is-default-in-query'
+      - $ref: '#/components/parameters/status-in-query'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertProfileListResponse'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /monitoring/alert-profiles/{id}:
+    get:
+      tags:
+      - alert-controller
+      summary: Get Alert Profile by Id
+      operationId: getAlertProfileById
+      parameters:
+      - $ref: '#/components/parameters/alert-profile-id-in-path'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertProfileDto'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    put:
+      tags:
+      - alert-controller
+      summary: Update a Alert Profile by Id
+      operationId: updateAlertProfileById
+      parameters:
+      - $ref: '#/components/parameters/alert-profile-id-in-path'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertProfileUpdateRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertProfileDto'
+          description: OK
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - alert-controller
+      summary: Delete Alert Profile corresponding to given id
+      operationId: deleteAlertProfileById
+      parameters:
+      - $ref: '#/components/parameters/alert-profile-id-in-path'
+      - $ref: '#/components/parameters/check-entity-associations-in-query'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorOps'
+  /monitoring/alert-entities:
+    post:
+      tags:
+      - alert-controller
+      summary: Create Alert Entity
+      operationId: createAlertEntity
+      parameters:
+      - $ref: '#/components/parameters/tenant-id-in-header-required'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertEntityRequest'
+      responses:
+        '200':
+          description: Alert Entity created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertEntityDto'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    get:
+      tags:
+      - alert-controller
+      summary: Get Alert Entities
+      operationId: getAlertEntities
+      parameters:
+      - $ref: '#/components/parameters/alert-profile-id-in-query'
+      - $ref: '#/components/parameters/notification-profile-id-in-query'
+      - $ref: '#/components/parameters/alert-entity-type-in-query'
+      - $ref: '#/components/parameters/user-type-in-query'
+      - $ref: '#/components/parameters/entity-id-in-query'
+      - $ref: '#/components/parameters/alert-entity-status-in-query'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Get alert entities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertEntityListResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /monitoring/alert-entities/{id}:
+    get:
+      tags:
+      - alert-controller
+      summary: Get Alert entity
+      operationId: getAlertEntity
+      parameters:
+      - $ref: '#/components/parameters/alert-entity-id-in-path'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertEntityDto'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - alert-controller
+      summary: Update a Alert Entity by Id
+      operationId: updateAlertEntityById
+      parameters:
+      - $ref: '#/components/parameters/tenant-id-in-header-required'
+      - $ref: '#/components/parameters/alert-entity-id-in-path'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertEntityUpdateRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertEntityDto'
+          description: OK
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - alert-controller
+      summary: Delete Alert Entity corresponding to given id
+      operationId: deleteAlertEntityById
+      parameters:
+      - $ref: '#/components/parameters/tenant-id-in-header-required'
+      - $ref: '#/components/parameters/alert-entity-id-in-path'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorOps'
+  /monitoring/alert-policy:
+    get:
+      tags:
+      - alert-controller
+      summary: Get Alert Policies
+      operationId: getAlertPolicies
+      parameters:
+      - $ref: '#/components/parameters/tenant-id-in-header-required'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/alert-entity-type-in-query'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Get alert policies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertPolicyListResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+      - alert-controller
+      summary: Create Alert Policy
+      operationId: createAlertPolicy
+      parameters:
+      - $ref: '#/components/parameters/tenant-id-in-header-required'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertPolicyRequest'
+      responses:
+        '200':
+          description: Alert Policy created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertPolicyDto'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /monitoring/alert-policy/{id}:
+    get:
+      tags:
+      - alert-controller
+      summary: Get Alert Policy by Id
+      operationId: getAlertPolicyById
+      parameters:
+      - $ref: '#/components/parameters/alert-profile-id-in-path'
+      - $ref: '#/components/parameters/tenant-id-in-header-required'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertPolicyDto'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    put:
+      tags:
+      - alert-controller
+      summary: Update a Alert Policy by Id
+      operationId: updateAlertPolicyById
+      parameters:
+      - $ref: '#/components/parameters/alert-profile-id-in-path'
+      - $ref: '#/components/parameters/tenant-id-in-header-required'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertPolicyUpdateRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertPolicyDto'
+          description: OK
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - alert-controller
+      summary: Delete Alert Policy corresponding to given id
+      operationId: deleteAlertPolicyById
+      parameters:
+      - $ref: '#/components/parameters/alert-profile-id-in-path'
+      - $ref: '#/components/parameters/tenant-id-in-header-required'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorOps'
+  /monitoring/alert-policy/associations:
+    get:
+      tags:
+      - alert-controller
+      summary: Get Alert Policy Associations
+      operationId: getAlertPolicyAssociations
+      parameters:
+      - $ref: '#/components/parameters/tenant-id-in-header-required'
+      - $ref: '#/components/parameters/subscription-id-in-query'
+      - $ref: '#/components/parameters/alert-entity-type-in-query'
+      - $ref: '#/components/parameters/alert-profile-id-in-query'
+      - $ref: '#/components/parameters/subscriptionNameQuery'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Get alert policy associations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertEntityListResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    put:
+      tags:
+      - alert-controller
+      summary: Create or Update Alert Policy Associations by Subscription Id
+      operationId: createUpdateAlertPolicyAssociations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertPolicyAssociationRequest'
+      parameters:
+      - $ref: '#/components/parameters/tenant-id-in-header-required'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertEntityDto'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorOps'
+    delete:
+      tags:
+      - alert-controller
+      summary: Delete Alert Policy Associations by Subscription Id
+      operationId: deleteAlertPolicyAssociations
+      parameters:
+      - $ref: '#/components/parameters/tenant-id-in-header-required'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertPolicyAssociationRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorOps'
+  /monitoring/alert-policy/associations/details:
+    get:
+      tags:
+      - alert-controller
+      summary: Get Alert Policy Association Details
+      operationId: getAlertPolicyAssociationDetails
+      parameters:
+      - $ref: '#/components/parameters/tenant-id-in-header-required'
+      - $ref: '#/components/parameters/subscriptionNameQuery'
+      - $ref: '#/components/parameters/alert-entity-type-in-query'
+      - $ref: '#/components/parameters/subscription-id-in-query'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertPolicyAssociationResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /monitoring/alert-rules-config/{entityType}:
+    get:
+      tags:
+      - alert-controller
+      summary: Get Alert Rules Configuration
+      operationId: getAlertRulesConfig
+      parameters:
+      - name: entityType
+        in: path
+        description: Entity Type for alert rules
+        required: true
+        style: simple
+        schema:
+          $ref: '#/components/schemas/AlertEntityType'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertProfileRuleConfigResponse'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /monitoring/alert-annotations-catalog:
+    get:
+      tags:
+      - alert-controller
+      summary: Get Alert Annotations Catalog
+      description: Returns a catalog of available alert annotations.
+      operationId: getAlertAnnotationsCatalog
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertAnnotationsCatalog'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+components:
+  parameters:
+    check-entity-associations-in-query:
+      name: check-entity-associations
+      in: query
+      description: Check if entity associations exists against the profile id
+      required: false
+      schema:
+        type: boolean
+        default: true
+    subscriptionNameQuery:
+      name: subscription-name
+      description: Subscription name
+      in: query
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 64
+        example: Sub-Experiments-2
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    alert-profile-id-in-path:
+      name: id
+      in: path
+      description: Alert Profile Id
+      required: true
+      schema:
+        type: integer
+        format: int64
+      style: simple
+    tenant-id-in-header-required:
+      name: tenant-id
+      in: header
+      description: Tenant ID
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
+    status-in-query:
+      name: status
+      in: query
+      description: Status of the Alert Profile
+      required: false
+      schema:
+        $ref: '#/components/schemas/AlertProfileStatus'
+    entity-id-in-query:
+      name: entity-id
+      in: query
+      description: Entity id corresponding to Alert Profile
+      required: false
+      schema:
+        $ref: '#/components/schemas/EntityId'
+    user-type-in-query:
+      name: user-type
+      in: query
+      description: User type for the Alert Profile
+      required: false
+      schema:
+        $ref: '#/components/schemas/UserType'
+    alert-entity-id-in-path:
+      name: id
+      in: path
+      description: Alert Entity Id
+      required: true
+      schema:
+        type: string
+        format: uuid
+      style: simple
+    alert-profile-id-in-query:
+      name: alert-profile-id
+      in: query
+      description: Alert Profile Id
+      required: false
+      schema:
+        type: integer
+        format: int64
+    alert-entity-type-in-query:
+      name: entity-type
+      in: query
+      description: Supported entity type for the Alert Profile
+      required: false
+      schema:
+        $ref: '#/components/schemas/AlertEntityType'
+    alert-entity-status-in-query:
+      name: status
+      in: query
+      description: Status of Alert Entity
+      required: false
+      schema:
+        $ref: '#/components/schemas/AlertEntityStatus'
+    is-default-in-query:
+      name: is-default
+      in: query
+      description: If True then only default alert profile
+      required: false
+      schema:
+        type: boolean
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    subscription-id-in-query:
+      name: subscription-id
+      description: Subscription ID
+      in: query
+      required: false
+      schema:
+        type: string
+        format: uuid
+    notification-profile-id-in-query:
+      name: notification-profile-id
+      in: query
+      description: Notification Profile Id
+      required: false
+      schema:
+        type: string
+        format: uuid
+      style: form
+  schemas:
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    AlertProfileCommonProperties:
+      title: AlertProfileCommonProperties
+      required:
+      - name
+      - entityType
+      - userType
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the Alert profile
+        entityType:
+          $ref: '#/components/schemas/AlertEntityType'
+        rules:
+          type: array
+          description: List of rules for the Alert profile
+          items:
+            $ref: '#/components/schemas/AlertProfileRule'
+          minItems: 0
+          maxItems: 100
+        userType:
+          $ref: '#/components/schemas/UserType'
+        isDefault:
+          type: boolean
+          description: True if this is the default alert Profile
+          default: false
+        description:
+          type: string
+          description: Description of the Alert profile
+        annotations:
+          type: array
+          description: List of annotations for alert customization
+          items:
+            $ref: '#/components/schemas/AlertProfileAnnotation'
+    AlertEntityDto:
+      title: AlertEntityDto
+      allOf:
+      - $ref: '#/components/schemas/AlertEntityCommonProperties'
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Id of the Alert profile
+        status:
+          $ref: '#/components/schemas/AlertEntityStatus'
+        metadata:
+          description: Alert Entity Metadata information
+          $ref: '#/components/schemas/AlertEntityMetadata'
+        dateCreated:
+          type: string
+          description: Timestamp when the entity was created
+          format: date-time
+        dateModified:
+          type: string
+          description: Timestamp when the entity was last modified
+          format: date-time
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    AlertEntityStatus:
+      type: string
+      description: Status of the alert entity
+      enum:
+      - ACTIVE
+      - INACTIVE
+      - DELETED
+      - DELETING
+      - CREATING
+      - CREATION_FAILED
+      - UPDATING
+      - UPDATION_FAILED
+      - DELETION_FAILED
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    AlertProfileStatus:
+      type: string
+      description: Status of the Alert profile
+      enum:
+      - ACTIVE
+      - INACTIVE
+      - CREATING
+      - DELETED
+      - CREATION_FAILED
+    AlertProfileUpdateRequest:
+      title: AlertProfileUpdateRequest
+      type: object
+      required:
+      - name
+      - rules
+      properties:
+        name:
+          type: string
+          description: Name of the Alert profile
+        rules:
+          type: array
+          description: List of rules for the Alert profile
+          items:
+            $ref: '#/components/schemas/AlertProfileRule'
+          minItems: 0
+          maxItems: 100
+        description:
+          type: string
+          description: Description of the Alert profile
+        status:
+          $ref: '#/components/schemas/AlertProfileStatusRequest'
+        modifiedBy:
+          type: string
+          description: User who modified the alert profile
+          default: Tessell
+        annotations:
+          type: array
+          description: List of annotations for alert customization
+          items:
+            $ref: '#/components/schemas/AlertProfileAnnotation'
+    AlertProfileMetadata:
+      type: object
+      properties:
+        createdBy:
+          type: string
+          description: User who created the alert profile
+          default: Tessell
+        lastModifiedBy:
+          type: string
+          description: User who last modified the alert profile
+          default: Tessell
+      title: AlertProfileMetadata
+    AlertPolicyRequest:
+      title: AlertPolicyRequest
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AlertProfileRequest'
+      - $ref: '#/components/schemas/AlertPolicyCommonProperties'
+    AlertPolicyListResponse:
+      title: AlertPolicyListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertPolicyDto'
+    AlertEntityCommonProperties:
+      title: AlertEntityCommonProperties
+      type: object
+      required:
+      - entityType
+      - entityId
+      - alertProfileId
+      properties:
+        entityType:
+          $ref: '#/components/schemas/AlertEntityType'
+        entityId:
+          $ref: '#/components/schemas/EntityId'
+        alertProfileId:
+          $ref: '#/components/schemas/AlertProfileId'
+        notificationProfileId:
+          $ref: '#/components/schemas/NotificationProfileId'
+    EntityId:
+      title: EntityId
+      type: string
+      description: Id of the entity(service or compute resource or subscription)
+      format: uuid
+    ApiErrorOps:
+      type: object
+      description: Common error response object for non 2xx responses of internal or ops APIs
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+        userView:
+          $ref: '#/components/schemas/TessellExceptionUserView'
+    AlertPolicyUpdateRequest:
+      title: AlertPolicyUpdateRequest
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AlertProfileUpdateRequest'
+      - $ref: '#/components/schemas/AlertPolicyCommonProperties'
+    AlertProfileListResponse:
+      title: AlertProfileListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertProfileDto'
+    AlertProfileRuleConfigResponse:
+      type: object
+      properties:
+        alertRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertProfileRuleConfig'
+    ComparisonOperator:
+      type: string
+      description: Comparison Operator
+      default: GreaterThanThreshold
+      enum:
+      - GreaterThanOrEqualToThreshold
+      - GreaterThanThreshold
+      - LessThanThreshold
+      - LessThanOrEqualToThreshold
+      - EqualToThreshold
+      - NotEqualToThreshold
+    AlertRuleAnnotations:
+      type: object
+      description: Annotations of the alert rule
+      default: {}
+      additionalProperties:
+        type: string
+    AlertRuleSeverity:
+      type: string
+      description: Severity of the Alert
+      default: Warning
+      enum:
+      - Critical
+      - High
+      - Warning
+    AlertEntityType:
+      type: string
+      description: Entity Type
+      enum:
+      - DB
+      - NODE
+      - DB_SUBSCRIPTION
+      - NODE_SUBSCRIPTION
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    AlertProfileDto:
+      title: AlertProfileDto
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AlertProfileCommonProperties'
+      - type: object
+        properties:
+          id:
+            $ref: '#/components/schemas/AlertProfileId'
+          status:
+            $ref: '#/components/schemas/AlertProfileStatus'
+          tenantId:
+            type: string
+            description: Tenant for which this profile is created
+            format: uuid
+          dateCreated:
+            type: string
+            description: Timestamp when the entity was created
+            format: date-time
+          dateModified:
+            type: string
+            description: Timestamp when the entity was last modified
+            format: date-time
+          metadata:
+            $ref: '#/components/schemas/AlertProfileMetadata'
+      required:
+      - id
+    AlertAnnotationsCatalog:
+      type: array
+      items:
+        $ref: '#/components/schemas/AlertAnnotation'
+    AlertEntityUpdateRequest:
+      title: AlertEntityUpdateRequest
+      type: object
+      properties:
+        alertProfileId:
+          $ref: '#/components/schemas/AlertProfileId'
+        notificationProfileId:
+          $ref: '#/components/schemas/NotificationProfileId'
+        status:
+          $ref: '#/components/schemas/AlertEntityStatus'
+    NotificationProfileId:
+      type: string
+      format: uuid
+      description: Id of the Notification profile
+    AlertProfileRule:
+      type: object
+      required:
+      - id
+      - name
+      - threshold
+      - severity
+      - evaluationWindow
+      - comparisonOperator
+      properties:
+        id:
+          type: integer
+          description: Id of the Alert profile rule
+        name:
+          type: string
+          description: Name of the Alert profile rule
+        threshold:
+          type: number
+          format: double
+          description: Threshold of the rule
+        severity:
+          $ref: '#/components/schemas/AlertRuleSeverity'
+        evaluationWindow:
+          type: integer
+          description: Evaluation window in minutes over which data should be compared with threshold
+          minimum: 0
+          maximum: 1440
+        comparisonOperator:
+          $ref: '#/components/schemas/ComparisonOperator'
+        annotations:
+          $ref: '#/components/schemas/AlertRuleAnnotations'
+    AlertPolicyAssociationResponse:
+      title: AlertPolicyAssociationResponse
+      type: object
+      properties:
+        alertEntity:
+          $ref: '#/components/schemas/AlertEntityDto'
+        alertProfile:
+          $ref: '#/components/schemas/AlertProfileDto'
+        notificationProfile:
+          type: object
+    AlertProfileRuleConfig:
+      title: Alert Profiles Rules Configuration
+      description: This is the alert profile rules configuration
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Id of the Alert profile rule
+        name:
+          type: string
+          description: Name of the Alert profile rule
+        minThreshold:
+          type: number
+          format: double
+          description: Minimum threshold of the rule
+        maxThreshold:
+          type: number
+          format: double
+          description: Maximum threshold of the rule
+        validComparisonOperators:
+          type: array
+          description: List of comparison operators
+          items:
+            $ref: '#/components/schemas/ComparisonOperator'
+        description:
+          type: string
+          description: Description of the Alert profile rule
+        unit:
+          type: string
+          description: Unit of the metric
+        alertCategory:
+          type: string
+          description: Category of the alert
+    AlertProfileId:
+      type: integer
+      format: int64
+      description: Id of the Alert profile
+    AlertAnnotation:
+      type: object
+      properties:
+        key:
+          type: string
+          description: 'Unique identifier for the annotation. This key is used to resolve the corresponding `value` field from the `annotations` field associated with an alert profile.
+
+            '
+        description:
+          type: string
+          description: Description of the annotation
+        display_label:
+          type: string
+          description: Display label for the annotation
+        data_type:
+          type: string
+          description: Data type of the annotation value
+        default_user_type:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserType'
+          description: Default user types that can see this annotation
+        supported_entity_type:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertEntityType'
+          description: Supported entity types for this annotation
+        internal_key:
+          type: string
+          description: 'Internal key used for internal mapping across systems. This key is mapped to the `labelName` field of labels returned by validation endpoints in the database-system and monitoring services.
+
+            '
+        category:
+          type: string
+          description: Category grouping for the annotation
+    AlertPolicyCommonProperties:
+      title: AlertPolicyCommonProperties
+      type: object
+      properties:
+        notificationProfileId:
+          $ref: '#/components/schemas/NotificationProfileId'
+        targetSubscriptions:
+          type: array
+          description: List of target subscription names for the alert policy
+          items:
+            type: string
+    UserType:
+      type: string
+      description: User Type
+      enum:
+      - SRE
+      - CUSTOMER
+    AlertProfileAnnotation:
+      title: AlertProfileAnnotation
+      type: object
+      required:
+      - displayName
+      - value
+      properties:
+        displayName:
+          type: string
+          description: User-friendly label shown in UI or configuration
+        value:
+          type: string
+          description: Either a literal value or a templated reference
+        category:
+          type: string
+          description: Category grouping for the annotation
+    TessellExceptionUserView:
+      title: TessellExceptionUserView
+      type: object
+      properties:
+        message:
+          type: string
+          description: End-user representation of the message
+        resolution:
+          type: string
+          description: End-user representation of resolution
+        errorCode:
+          $ref: '#/components/schemas/TessellHTTPErrorCode'
+          description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
+    AlertEntityListResponse:
+      title: AlertEntityListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertEntityDto'
+    AlertPolicyAssociationRequest:
+      title: AlertPolicyAssociationRequest
+      type: object
+      required:
+      - subscriptionName
+      - alertProfileId
+      properties:
+        subscriptionName:
+          type: string
+        alertProfileId:
+          $ref: '#/components/schemas/AlertProfileId'
+        notificationProfileId:
+          $ref: '#/components/schemas/NotificationProfileId'
+    TessellHTTPErrorCode:
+      type: object
+      properties:
+        httpCode:
+          type: integer
+          description: HTTP code
+        code:
+          type: string
+          description: Tessell's specific code with more context on error
+    AlertPolicyDto:
+      title: AlertPolicyDto
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AlertProfileDto'
+      properties:
+        associations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertEntityDto'
+    AlertProfileRequest:
+      title: AlertProfileRequest
+      allOf:
+      - $ref: '#/components/schemas/AlertProfileCommonProperties'
+      - type: object
+        properties:
+          status:
+            $ref: '#/components/schemas/AlertProfileStatusRequest'
+          createdBy:
+            type: string
+            description: User who created the alert profile
+            default: Tessell
+    AlertEntityMetadata:
+      type: object
+      properties:
+        activityId:
+          type: string
+          description: User level activity id for tracking alert policy associations.
+        entityName:
+          type: string
+          default: ''
+          description: Name of the entity
+      title: AlertEntityMetadata
+    AlertProfileStatusRequest:
+      type: string
+      description: Status of the Alert profile
+      enum:
+      - ACTIVE
+      - INACTIVE
+    AlertEntityRequest:
+      title: AlertEntityRequest
+      allOf:
+      - $ref: '#/components/schemas/AlertEntityCommonProperties'
+      type: object
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

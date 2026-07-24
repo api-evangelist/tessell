@@ -1,0 +1,416 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center conversationControllerDeprecated API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: conversationControllerDeprecated
+paths:
+  /tickets/{id}/conversations:
+    get:
+      summary: ticket's conversation
+      description: Get conversations for a ticket
+      tags:
+      - conversationControllerDeprecated
+      operationId: getTicketConversations
+      parameters:
+      - name: id
+        in: path
+        description: Id of the ticket
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketConversationResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /tickets/{id}/notes:
+    post:
+      summary: Post ticket notes
+      description: Post a ticket note for a ticket with the given id
+      tags:
+      - conversationControllerDeprecated
+      operationId: postNotes
+      parameters:
+      - name: id
+        in: path
+        description: Id of the ticket
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: Request body to post notes
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteTicketRequestBody'
+      responses:
+        '200':
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /tickets/attachments/{id}:
+    post:
+      tags:
+      - conversationControllerDeprecated
+      summary: Add attachment
+      description: Add attachments to a ticket
+      operationId: addAttachment
+      parameters:
+      - name: id
+        in: path
+        description: The ID or key of the issue that attachments are added to.
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: Request body to add attachments to ticket
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/JiraAttachment'
+      responses:
+        '200':
+          description: Returned if the request is successful.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JiraAttachmentResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    Attachment:
+      title: Ticket conversation attachment
+      type: object
+      description: Conversation attachment
+      properties:
+        attachment_url:
+          type: string
+          description: attachment url
+        content_type:
+          type: string
+          description: attachment content type
+        created_at:
+          type: string
+          format: date-time
+          description: attachment creation date
+        id:
+          type: integer
+          format: int64
+          description: attachment identifier
+        name:
+          type: string
+          description: attachment name
+        size:
+          type: integer
+          format: int64
+          description: attachment size
+        updated_at:
+          type: string
+          format: date-time
+          description: attachment last updated
+    NoteTicketRequestBody:
+      title: Note to ticket body
+      type: object
+      description: Note to ticket body
+      properties:
+        body:
+          type: string
+          description: reply body
+        incoming:
+          type: boolean
+          description: if the note is incoming
+        private:
+          type: boolean
+          description: if the note is private
+        user_id:
+          type: integer
+          format: int64
+          description: user identifier who replied
+        notify_emails:
+          type: array
+          items:
+            type: string
+          description: Email address that needs to be notified when note is added
+        jiraComment:
+          type: object
+          additionalProperties: {}
+          description: Comment on jira ticket
+    JiraAttachmentResponse:
+      type: object
+      properties:
+        self:
+          type: string
+          description: The URL of the attachment details response.
+          readOnly: true
+        id:
+          type: string
+          description: The ID of the attachment.
+          readOnly: true
+        filename:
+          type: string
+          description: The file name of the attachment.
+          readOnly: true
+        author:
+          description: Details of the user who added the attachment.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/JiraAttachmentUserDetails'
+        size:
+          type: integer
+          description: The size of the attachment.
+          format: int64
+          readOnly: true
+        mimeType:
+          type: string
+          description: The MIME type of the attachment.
+          readOnly: true
+        content:
+          type: string
+          description: The content of the attachment.
+          readOnly: true
+        thumbnail:
+          type: string
+          description: The URL of a thumbnail representing the attachment.
+          readOnly: true
+      description: Details about an attachment.
+    JiraAttachmentUserDetails:
+      type: object
+      properties:
+        self:
+          type: string
+          description: The URL of the user.
+          readOnly: true
+        name:
+          type: string
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          readOnly: true
+        key:
+          type: string
+          description: This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
+          readOnly: true
+        accountId:
+          maxLength: 128
+          type: string
+          description: The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+        emailAddress:
+          type: string
+          description: The email address of the user. Depending on the user’s privacy settings, this may be returned as null.
+          readOnly: true
+        avatarUrls:
+          description: The avatars of the user.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/AvatarUrlsBean'
+        displayName:
+          type: string
+          description: The display name of the user. Depending on the user’s privacy settings, this may return an alternative value.
+          readOnly: true
+        active:
+          type: boolean
+          description: Whether the user is active.
+          readOnly: true
+        timeZone:
+          type: string
+          description: The time zone specified in the user's profile. Depending on the user’s privacy settings, this may be returned as null.
+          readOnly: true
+        accountType:
+          type: string
+          description: The type of account represented by this user. This will be one of 'atlassian' (normal users), 'app' (application user) or 'customer' (Jira Service Desk customer user)
+          readOnly: true
+      additionalProperties: false
+      description: "User details permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
+    TicketConversationResponse:
+      title: Ticket Conversation Response
+      description: array of conversations
+      type: array
+      items:
+        $ref: '#/components/schemas/ConversationDTO'
+    ConversationDTO:
+      title: Ticket conversation
+      type: object
+      description: Ticket conversation DTO
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Conversation identifier
+        attachments:
+          type: array
+          description: Get conversation attachments
+          items:
+            $ref: '#/components/schemas/Attachment'
+        body:
+          type: string
+          description: conversation body
+        body_text:
+          type: string
+          description: conversation body text
+        category:
+          type: integer
+          format: int64
+          description: conversation category
+        created_at:
+          type: string
+          format: date-time
+          description: conversation creation date
+        incoming:
+          type: boolean
+          description: if the conversation is incoming or outgoing
+        private:
+          type: boolean
+          description: if the conversation is private conversation
+        ticket_id:
+          type: integer
+          format: int64
+          description: ticket identifier
+        updated_at:
+          type: string
+          format: date-time
+          description: conversation last updated
+        last_edited_at:
+          type: string
+          format: date-time
+          description: conversation edited updated
+        last_edited_user_id:
+          type: integer
+          format: int64
+          description: user identifier who last edited the conversation
+        from_email:
+          type: string
+          description: from email
+        user_id:
+          type: integer
+          format: int64
+          description: user identifier
+        source:
+          type: integer
+          format: int64
+          description: conversation source
+        to_emails:
+          type: array
+          items:
+            type: string
+          description: Email address added in the 'to' field of the incoming ticket email
+        cc_emails:
+          type: array
+          items:
+            type: string
+          description: Email address added in the 'cc' field of the incoming ticket email
+        bcc_emails:
+          type: array
+          items:
+            type: string
+          description: Email address added in the 'bcc' field of the incoming ticket email
+        name:
+          type: string
+          description: user who made this conversation
+    AvatarUrlsBean:
+      type: object
+      description: An object that stores URLs for different sizes of an item's avatar.
+      properties:
+        16x16:
+          type: string
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
+        24x24:
+          type: string
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+        32x32:
+          type: string
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+        48x48:
+          type: string
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
+      additionalProperties: false
+    JiraAttachment:
+      title: Jira attachment
+      type: object
+      description: Jira attachment
+      properties:
+        file:
+          type: string
+          format: binary
+          description: File content
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

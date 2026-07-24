@@ -1,0 +1,694 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center SLA Policy API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: SLA Policy
+paths:
+  /availability-machines/{id}/rpo-policy:
+    get:
+      tags:
+      - SLA Policy
+      summary: Get the RPO policy configuration associated with an Availability Machine
+      description: '**DEPRECATED**: This endpoint returns only the service-level RPO policy.
+
+        Use `/availability-machines/{id}/rpo-policies` instead to get both service-level
+
+        and database-level (PDB) RPO policies.
+
+        '
+      deprecated: true
+      operationId: getAmRpoPolicy
+      parameters:
+      - name: id
+        description: Id of the Availability Machine
+        in: path
+        style: simple
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RpoPolicyConfig'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - SLA Policy
+      summary: Update RPO policy configuration for an Availability Machine
+      operationId: updateAmRpoPolicy
+      parameters:
+      - name: id
+        description: Id of the Availability Machine
+        in: path
+        style: simple
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RpoPolicyConfig'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RpoPolicyConfig'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /availability-machines/{id}/rpo-policies:
+    get:
+      tags:
+      - SLA Policy
+      summary: Get all RPO policies for an Availability Machine including service-level and database-level policies
+      description: 'Returns comprehensive RPO policy information for an Availability Machine, including:
+
+        - Service-level RPO policy (applies to the entire service/CDB)
+
+        - Database-level RPO policies (applies to individual databases like Oracle PDBs)
+
+
+        This endpoint should be used instead of the deprecated `/availability-machines/{id}/rpo-policy`
+
+        which only returns service-level RPO policy.
+
+        '
+      operationId: getAmRpoPolicies
+      parameters:
+      - name: id
+        description: Id of the Availability Machine
+        in: path
+        style: simple
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllRpoPoliciesResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /availability-machines/{id}/databases/{database-id}/rpo-policy:
+    get:
+      tags:
+      - SLA Policy
+      summary: Get RPO policy for a specific database within an Availability Machine
+      description: 'Retrieves the RPO policy configuration for a specific database (e.g., Oracle PDB) within an Availability Machine.
+
+        Returns the full policy summary including database name for display purposes.
+
+        '
+      operationId: getDatabaseRpoPolicy
+      parameters:
+      - name: id
+        description: Id of the Availability Machine
+        in: path
+        style: simple
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: database-id
+        description: Id of the database (e.g., PDB ID)
+        in: path
+        style: simple
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseRpoPolicySummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    put:
+      tags:
+      - SLA Policy
+      summary: Create or update RPO policy for a specific database within an Availability Machine
+      description: 'Configures automated backup schedules and retention policies for a specific database (e.g., Oracle PDB) within an Availability Machine.
+
+        If PITR is enabled in the policy, the parent service must also have PITR enabled.
+
+        '
+      operationId: createOrUpdateDatabaseRpoPolicy
+      parameters:
+      - name: id
+        description: Id of the Availability Machine
+        in: path
+        style: simple
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: database-id
+        description: Id of the database (e.g., PDB ID)
+        in: path
+        style: simple
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RpoPolicyConfig'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RpoPolicyConfig'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - SLA Policy
+      summary: Delete RPO policy for a specific database within an Availability Machine
+      description: 'Removes the RPO policy configuration for a specific database (e.g., Oracle PDB) within an Availability Machine.
+
+        This will stop automatic backups for the database and remove associated schedules.
+
+        '
+      operationId: deleteDatabaseRpoPolicy
+      parameters:
+      - name: id
+        description: Id of the Availability Machine
+        in: path
+        style: simple
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: database-id
+        description: Id of the database (e.g., PDB ID)
+        in: path
+        style: simple
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    commonYearlySchedule:
+      allOf:
+      - $ref: '#/components/schemas/DatesForEachMonth'
+      - type: object
+        properties:
+          months:
+            type: array
+            uniqueItems: true
+            items:
+              $ref: '#/components/schemas/Month'
+              x-enum: true
+    WeekDay:
+      description: Week Days
+      type: string
+      enum:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+      x-enum-varnames:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+    BackupStandardRpoPolicy:
+      description: This is the definition of Standard RPO Policy for Backup for Tessell DB Service
+      type: object
+      required:
+      - retentionDays
+      properties:
+        retentionDays:
+          description: Number of days for which the backup of DB Service would be retained
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 35
+        backupStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+    StandardRpoPolicy:
+      description: This is the definition of Standard RPO Policy for Snapshot for Tessell DB Service
+      type: object
+      required:
+      - retentionDays
+      - snapshotStartTime
+      properties:
+        retentionDays:
+          description: Number of days for which the snapshot of DB Service would be retained
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 35
+        includeTransactionLogs:
+          description: Determines whether transaction logs should be retained to enable Point-In-Time Recovery (PITR) functionality
+          type: boolean
+          default: false
+        snapshotStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+    DailySchedule:
+      type: object
+      properties:
+        backupsPerDay:
+          type: integer
+          format: int32
+          description: The number of backups to be captured per day.
+          minimum: 0
+    ServiceRpoPolicySummary:
+      description: 'Summary of service-level RPO policy.
+
+
+        To update this policy, use the `rpoPolicyConfig` object with:
+
+        `PATCH /availability-machines/{availabilityMachineId}/rpo-policy`
+
+        '
+      type: object
+      properties:
+        rpoPolicyConfig:
+          description: 'The RPO policy configuration. This object can be directly used (after modification if needed)
+
+            as the request body for the update API.
+
+            '
+          allOf:
+          - $ref: '#/components/schemas/RpoPolicyConfig'
+        status:
+          $ref: '#/components/schemas/DmmAvailabilityStatus'
+        dateCreated:
+          type: string
+          format: date-time
+          description: Timestamp when the RPO policy was created
+        dateModified:
+          type: string
+          format: date-time
+          description: Timestamp when the RPO policy was last modified
+    MonthWiseDates:
+      type: object
+      required:
+      - month
+      - dates
+      properties:
+        month:
+          $ref: '#/components/schemas/Month'
+          x-enum: true
+        dates:
+          uniqueItems: true
+          type: array
+          items:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 31
+    ScheduleInfo:
+      type: object
+      properties:
+        backupStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+        dailySchedule:
+          $ref: '#/components/schemas/DailySchedule'
+        weeklySchedule:
+          $ref: '#/components/schemas/WeeklySchedule'
+        monthlySchedule:
+          $ref: '#/components/schemas/MonthlySchedule'
+        yearlySchedule:
+          $ref: '#/components/schemas/YearlySchedule'
+    DatesForEachMonth:
+      type: object
+      properties:
+        dates:
+          description: Dates in a month to retain monthly backups
+          uniqueItems: true
+          type: array
+          items:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 31
+        lastDayOfMonth:
+          type: boolean
+          default: false
+    WeeklySchedule:
+      type: object
+      properties:
+        days:
+          description: Days in a week to retain weekly backups for
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/WeekDay'
+            x-enum: true
+    DatabaseRpoPolicySummary:
+      description: 'Summary of a database-level RPO policy.
+
+
+        To update this policy, use the `rpoPolicyConfig` object with:
+
+        `PUT /availability-machines/{availabilityMachineId}/databases/{databaseId}/rpo-policy`
+
+        '
+      type: object
+      properties:
+        databaseId:
+          type: string
+          format: uuid
+          description: 'Unique identifier of the database (e.g., PDB ID). Use this as the path parameter
+
+            `{database-id}` when calling the database RPO policy update API.
+
+            '
+        databaseName:
+          type: string
+          description: Name of the database (e.g., PDB name)
+        rpoPolicyConfig:
+          description: 'The RPO policy configuration. This object can be directly used (after modification if needed)
+
+            as the request body for the update API.
+
+            '
+          allOf:
+          - $ref: '#/components/schemas/RpoPolicyConfig'
+        status:
+          $ref: '#/components/schemas/DmmAvailabilityStatus'
+        dateCreated:
+          type: string
+          format: date-time
+          description: Timestamp when the RPO policy was created
+        dateModified:
+          type: string
+          format: date-time
+          description: Timestamp when the RPO policy was last modified
+    MonthlySchedule:
+      description: Definition for taking month specific schedule.
+      type: object
+      properties:
+        commonSchedule:
+          $ref: '#/components/schemas/DatesForEachMonth'
+    AllRpoPoliciesResponse:
+      description: 'Response containing all RPO policies for an Availability Machine, including
+
+        service-level and database-level (PDB) policies.
+
+
+        The response is designed to be compatible with the update APIs:
+
+        - Service RPO: Use `serviceRpoPolicy.rpoPolicyConfig` with `PATCH /availability-machines/{availabilityMachineId}/rpo-policy`
+
+        - Database RPO: Use `databaseRpoPolicies[].rpoPolicyConfig` with `PUT /availability-machines/{availabilityMachineId}/databases/{databaseId}/rpo-policy`
+
+        '
+      type: object
+      properties:
+        availabilityMachineId:
+          type: string
+          format: uuid
+          description: 'Id of the Availability Machine. Use this as the path parameter `{id}` when calling
+
+            update APIs for service-level or database-level RPO policies.
+
+            '
+        serviceRpoPolicy:
+          $ref: '#/components/schemas/ServiceRpoPolicySummary'
+        databaseRpoPolicies:
+          type: array
+          description: List of database-level RPO policies (e.g., Oracle PDBs)
+          items:
+            $ref: '#/components/schemas/DatabaseRpoPolicySummary'
+    DmmAvailabilityStatus:
+      description: DMM Availability Status
+      type: string
+      enum:
+      - ACTIVE
+      - DELETED
+      - DELETING
+      - FROZEN
+      - PAUSED
+    RpoPolicyConfig:
+      description: This is the definition for RPO Policy details for Tessell DB Service
+      type: object
+      required:
+      - enableAutoSnapshot
+      properties:
+        includeTransactionLogs:
+          description: Determines whether transaction logs should be retained to enable Point-In-Time Recovery (PITR) functionality
+          type: boolean
+          default: false
+        enableAutoSnapshot:
+          description: Specify whether system will take automatic snapshots
+          type: boolean
+          default: true
+        standardPolicy:
+          $ref: '#/components/schemas/StandardRpoPolicy'
+        customPolicy:
+          $ref: '#/components/schemas/CustomRpoPolicy'
+        fullBackupSchedule:
+          $ref: '#/components/schemas/FullBackupSchedule'
+        enableAutoBackup:
+          description: Specify whether system will take automatic backups
+          type: boolean
+          default: false
+        backupRpoConfig:
+          type: object
+          description: Config for the Native Backup RPO policies
+          properties:
+            fullBackupSchedule:
+              $ref: '#/components/schemas/FullBackupSchedule'
+            standardPolicy:
+              $ref: '#/components/schemas/BackupStandardRpoPolicy'
+            customPolicy:
+              $ref: '#/components/schemas/BackupCustomRpoPolicy'
+    TimeFormat:
+      title: TimeFormat
+      description: Clock time format value in hour and minute.
+      type: object
+      required:
+      - hour
+      - minute
+      properties:
+        hour:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 23
+          default: 1
+        minute:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 59
+          default: 0
+    CustomRpoPolicy:
+      description: This is the definition of Custom RPO Policy for Snapshot for Tessell DB Service
+      type: object
+      required:
+      - name
+      - schedule
+      properties:
+        name:
+          type: string
+          description: Custom RPO policy name
+        schedule:
+          $ref: '#/components/schemas/ScheduleInfo'
+    Month:
+      description: Name of a month
+      type: string
+      enum:
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+      x-enum-varnames:
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+    YearlySchedule:
+      type: object
+      properties:
+        commonSchedule:
+          $ref: '#/components/schemas/commonYearlySchedule'
+        monthSpecificSchedule:
+          type: array
+          uniqueItems: true
+          required:
+          - months
+          items:
+            $ref: '#/components/schemas/MonthWiseDates'
+    FullBackupSchedule:
+      description: The schedule at which full backups would be triggered
+      type: object
+      properties:
+        startTime:
+          description: Optional Time when full backup(s) has to be captured | If not specified, the default time (same as incremental backup) would be used
+          $ref: '#/components/schemas/TimeFormat'
+        weeklySchedule:
+          $ref: '#/components/schemas/WeeklySchedule'
+    BackupCustomRpoPolicy:
+      description: This is the definition of Custom RPO Policy for Backup for Tessell DB Service
+      allOf:
+      - $ref: '#/components/schemas/CustomRpoPolicy'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

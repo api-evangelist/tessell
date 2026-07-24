@@ -1,0 +1,798 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Software Library Governance API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Software Library Governance
+paths:
+  /software-library/governance/images/disable:
+    patch:
+      tags:
+      - Software Library Governance
+      summary: Disable Software Images
+      operationId: disableSoftwareImages
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - $ref: '#/components/parameters/cloudTypeOldConvention'
+      - $ref: '#/components/parameters/timeZoneOldConvention'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: Software Images to disable
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/disableSoftwareImagesRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/disableSoftwareImagesResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /software-library/governance/images/enable:
+    patch:
+      tags:
+      - Software Library Governance
+      summary: Enable Software Images
+      operationId: enableSoftwareImages
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - $ref: '#/components/parameters/cloudTypeOldConvention'
+      - $ref: '#/components/parameters/timeZoneOldConvention'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: Software Images to enable
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/enableSoftwareImagesRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/enableSoftwareImagesResponse'
+          description: Ok
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /software-library/governance/images/restrict-regions:
+    patch:
+      tags:
+      - Software Library Governance
+      summary: Restrict Software Images to certain regions
+      operationId: restrictSoftwareImagesInRegions
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - $ref: '#/components/parameters/timeZoneOldConvention'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/restrictSoftwareImagesInRegionsRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/restrictSoftwareImagesInRegionsResponse'
+          description: Ok
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /software-library/governance/images/restrict-access:
+    patch:
+      tags:
+      - Software Library Governance
+      summary: Restrict Software Images access to set of Personas
+      operationId: restrictAccessToSoftwareImages
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - $ref: '#/components/parameters/timeZoneOldConvention'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/restrictAccessToSoftwareImagesRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/restrictAccessToSoftwareImagesResponse'
+          description: Ok
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /software-library/governance/images:
+    get:
+      tags:
+      - Software Library Governance
+      summary: List Software Images (including disabled ones)
+      operationId: getAllSoftwareImages
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - $ref: '#/components/parameters/cloudTypeOldConvention'
+      - $ref: '#/components/parameters/cloudRegion'
+      - $ref: '#/components/parameters/timeZoneOldConvention'
+      - $ref: '#/components/parameters/software-image-provider-type-in-query'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of Software Images
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAllSoftwareImagesResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /software-library/governance/images/patchable:
+    get:
+      tags:
+      - Software Library Governance
+      summary: Get Details of Patchable Software Image Version identified by ImageId and VersionId.
+      operationId: getPatchableImageVersions
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: image-name
+        in: query
+        description: Software Image name
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 256
+          example: PostgreSQL 12
+      - name: version-name
+        in: query
+        description: Software Image version
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 256
+          example: '12'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getPatchableImageVersionsResponse'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    enableSoftwareImagesResponse:
+      type: object
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    TessellLibrarySnapshotConfig:
+      type: object
+      description: Configuration for Tessell Library Snapshot resource
+      required:
+      - cloudAccountId
+      properties:
+        cloudAccountId:
+          type: string
+          description: ID of the cloud account for Tessell Library Snapshot
+    SoftwareImageMetadata:
+      description: Software image metadata
+      type: object
+      properties:
+        engine:
+          type: string
+        edition:
+          type: string
+        version:
+          type: string
+        createContainer:
+          type: boolean
+        tessellLibBucketPath:
+          type: string
+        licenseModel:
+          $ref: '#/components/schemas/LicenseModel'
+    getPatchableImageVersionsResponse:
+      description: Response returned by getPatchableImageVersions.
+      type: object
+      properties:
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              imageName:
+                type: string
+              versions:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SoftwareImageVersionEntity'
+    enableSoftwareImagesRequest:
+      type: object
+      required:
+      - names
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 64
+          minItems: 1
+          maxItems: 100
+          example:
+          - MySQL 5.6
+          - MySQL 8.0
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    restrictSoftwareImagesInRegionsRequest:
+      description: Restrict software images in regions Request
+      type: object
+      required:
+      - images
+      properties:
+        images:
+          type: array
+          items:
+            type: object
+            required:
+            - name
+            - cloudAndAvailability
+            properties:
+              name:
+                type: string
+                minLength: 1
+                maxLength: 64
+                example: PostgreSQL 12
+              cloudAndAvailability:
+                type: array
+                items:
+                  type: string
+                  minLength: 1
+                  maxLength: 128
+                minItems: 0
+                maxItems: 100
+          minItems: 1
+          maxItems: 20
+    restrictSoftwareImagesInRegionsResponse:
+      type: object
+      properties:
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              cloudAndAvailabilty:
+                type: string
+              status:
+                $ref: '#/components/schemas/SoftwareImageStatus'
+    disableSoftwareImagesResponse:
+      type: object
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+    SoftwareImageWithStatus:
+      description: Software Image Response Object
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the SoftwareImage.
+          maxLength: 512
+        name:
+          type: string
+          maxLength: 128
+          description: Name of the Software Image.
+        provider:
+          $ref: '#/components/schemas/SoftwareImageProviderType'
+        cloudAndAvailability:
+          additionalProperties:
+            $ref: '#/components/schemas/SoftwareImageStatus'
+          description: Cloud and Location detail
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SoftwareImageVersionWithStatus'
+        status:
+          $ref: '#/components/schemas/SoftwareImageStatus'
+        metadata:
+          $ref: '#/components/schemas/SoftwareImageMetadata'
+    restrictAccessToSoftwareImagesRequest:
+      type: object
+      required:
+      - names
+      - personas
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 64
+          minItems: 1
+          maxItems: 20
+          example:
+          - MySQL 5.6
+          - MySQL 8.0
+        personas:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 64
+          minItems: 1
+          maxItems: 20
+    disableSoftwareImagesRequest:
+      type: object
+      required:
+      - names
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 64
+          minItems: 1
+          maxItems: 100
+          example:
+          - MySQL 5.6
+          - MySQL 8.0
+    SoftwareImageCloudLocationEntityMetadata:
+      description: Metadata entity for Software Image cloud location and resource availabilities
+      properties:
+        resourceConfig:
+          type: object
+          description: Configuration details of various resources
+          properties:
+            osImage:
+              $ref: '#/components/schemas/OsImageConfig'
+            dbEngineSnapshot:
+              $ref: '#/components/schemas/DbEngineSnapshotConfig'
+            tessellLibrarySnapshot:
+              $ref: '#/components/schemas/TessellLibrarySnapshotConfig'
+    SoftwareImageProviderType:
+      type: string
+      enum:
+      - TESSELL
+      - OCI_EXADATA
+    restrictAccessToSoftwareImagesResponse:
+      type: object
+      properties:
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              disabledInPersonas:
+                type: array
+                items:
+                  type: string
+              enabledInPersonas:
+                type: array
+                items:
+                  type: string
+    getAllSoftwareImagesResponse:
+      description: Response returned by APIs.
+      type: object
+      properties:
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/SoftwareImageWithStatus'
+    SoftwareImageVersionWithStatus:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Version name
+        version:
+          type: string
+          description: DB version string
+        osVersion:
+          type: string
+          description: OS Version string
+        cloudAndAvailability:
+          additionalProperties:
+            $ref: '#/components/schemas/SoftwareImageStatus'
+          description: Cloud and Location detail
+    SoftwareImageStatus:
+      description: Software Image Status
+      x-dao-query: true
+      x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n  @Type(type = \"pgsql_enum\")\n"
+      x-dto-annotations: '@ToString.Exclude
+
+        '
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+      - DEPRECATED
+      type: string
+    LicenseModel:
+      description: "Licensing model for a software image.\n  * PAYG - Pay-As-You-Go; license cost is bundled with compute and no\n           separate license acquisition is performed by Tessell.\n  * BYOL - Bring Your Own License; Tessell acquires/locks a license\n           from the customer's license pool.\n"
+      type: string
+      default: BYOL
+      enum:
+      - PAYG
+      - BYOL
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    SoftwareImageVersionEntity:
+      description: SoftwareImage Version Entity
+      x-dao-entity: true
+      x-dao-table-name: TESSELL_SOFTWARE_IMAGE_VERSIONS
+      x-dao-entity-annotations: '@Table(name = "TESSELL_SOFTWARE_IMAGE_VERSIONS")
+
+        '
+      type: object
+      properties:
+        id:
+          x-dao-annotations: "@Id\n  @Type(type = \"pg-uuid\")\n  @GeneratedValue(strategy = GenerationType.AUTO)\n"
+          type: string
+          format: uuid
+          description: Image Version identifier
+          x-dao-query: true
+        image:
+          x-dao-foreign-key-reference: true
+          x-dto-annotations: "@ToString.Exclude\n  @JsonBackReference\n"
+          x-dao-annotations: "@ManyToOne(fetch = FetchType.EAGER)\n  @JsonBackReference\n  @JoinColumn(name=\"software_image_id\", nullable=false)\n"
+          allOf:
+          - $ref: '#/components/schemas/SoftwareImageEntity'
+        osVersion:
+          x-dao-query: true
+          type: string
+          description: OS Version.
+        version:
+          x-dao-query: true
+          type: string
+          description: DB Version.
+        versionName:
+          x-dao-query: true
+          type: string
+          description: DB Version name string.
+        versionRefId:
+          x-dao-annotations: '@Column(name = "version_ref_id")
+
+            '
+          x-dao-query: true
+          type: string
+          format: uuid
+          description: DB Version reference Id
+        supportedVersions:
+          x-dao-annotations: '@Column(name = "supported_versions")
+
+            '
+          x-dao-query: true
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Column denoting the supported versions to patch
+        cloudAndAvailability:
+          x-dao-annotations: '@JsonManagedReference
+
+            @OneToMany(mappedBy = "version", cascade = CascadeType.ALL)
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/SoftwareImageCloudLocationEntity'
+          description: Cloud and Location detail
+        status:
+          $ref: '#/components/schemas/SoftwareImageStatus'
+    SoftwareImageEntity:
+      description: SoftwareImage Entity
+      x-dao-entity: true
+      x-dao-table-name: TESSELL_SOFTWARE_IMAGE_CATALOG
+      x-dao-entity-annotations: '@Table(name = "TESSELL_SOFTWARE_IMAGE_CATALOG")
+
+        '
+      type: object
+      properties:
+        id:
+          x-dao-query: true
+          x-dao-annotations: "@Id\n  @Column(name = \"id\", updatable = false, nullable = false)\n"
+          type: string
+          format: uuid
+          description: If provided, then use the provided uuid as the software image identifier.
+        terraformId:
+          x-dao-query: true
+          x-dao-annotations: '@NotNull
+
+            @Column(name = "terraform_id")
+
+            '
+          type: string
+          format: uuid
+          description: Software Image Identifier
+        description:
+          type: string
+          description: Description of the SoftwareImage.
+          maxLength: 512
+        custom:
+          x-dao-query: true
+          type: boolean
+          default: false
+          description: custom
+        name:
+          x-dao-query: true
+          type: string
+          maxLength: 128
+          description: Name of the Software Image.
+        dbEngineType:
+          x-dao-query: true
+          x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @Type(type = \"pgsql_enum\")\n"
+          allOf:
+          - $ref: '#/components/schemas/databaseEngineType'
+        versions:
+          type: array
+          x-dao-annotations: "@JsonManagedReference\n  @OneToMany(mappedBy = 'image', cascade = CascadeType.ALL)\n"
+          x-dto-annotations: '@ToString.Exclude
+
+            '
+          items:
+            $ref: '#/components/schemas/SoftwareImageVersionEntity'
+        status:
+          $ref: '#/components/schemas/SoftwareImageStatus'
+        metadata:
+          x-dao-column-converter: true
+          description: Extra metadata
+          allOf:
+          - $ref: '#/components/schemas/SoftwareImageMetadata'
+        softwareImageProviderType:
+          $ref: '#/components/schemas/SoftwareImageProviderType'
+        dateCreated:
+          x-dao-annotations: "@Column(name = \"DATE_CREATED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @CreationTimestamp\n"
+          description: Timestamp when the entity was created
+          format: date-time
+          type: string
+        dateModified:
+          x-dao-annotations: "@Column(name = \"DATE_MODIFIED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @UpdateTimestamp\n"
+          description: Timestamp when the entity was last modified
+          format: date-time
+          type: string
+    DbEngineSnapshotConfig:
+      type: object
+      description: Configuration for DB Engine Snapshot resource
+      required:
+      - cloudAccountId
+      properties:
+        cloudAccountId:
+          type: string
+          description: ID of the cloud account for DB Engine Snapshot
+    SoftwareImageCloudLocationEntity:
+      description: SoftwareImage Cloud Location Entity
+      x-dao-entity: true
+      x-dao-table-name: TESSELL_SOFTWARE_IMAGE_CLOUD_LOCATIONS
+      x-dao-entity-annotations: '@Table(name = "TESSELL_SOFTWARE_IMAGE_CLOUD_LOCATIONS")
+
+        '
+      type: object
+      properties:
+        id:
+          x-dao-annotations: "@Id\n  @Type(type = \"pg-uuid\")\n  @GeneratedValue(strategy = GenerationType.AUTO)\n"
+          description: Software Image Cloud Location identifier
+          type: string
+          format: uuid
+          x-dao-query: true
+        osImageId:
+          x-dao-query: true
+          type: string
+          maxLength: 2048
+          description: OS Image Identifier.
+        dbEngineSnapshotId:
+          x-dao-query: true
+          type: string
+          maxLength: 2048
+          description: DB Engine disk Identifier.
+        tessellLibrarySnapshotId:
+          type: string
+          maxLength: 2048
+          description: Tessell Library Disk Snapshot Id. This will be deprecated once os image is self sufficient.
+        version:
+          x-dao-foreign-key-reference: true
+          x-dao-annotations: "@ManyToOne(fetch = FetchType.EAGER)\n  @JoinColumn(name=\"software_image_version_id\", nullable=false)\n  @JsonBackReference\n"
+          x-dto-annotations: "@ToString.Exclude\n  @JsonBackReference\n"
+          allOf:
+          - $ref: '#/components/schemas/SoftwareImageVersionEntity'
+        cloudAndAvailability:
+          x-dao-annotations: '@Column(name=''cloud_location'')
+
+            '
+          description: Cloud Location
+          type: string
+        status:
+          $ref: '#/components/schemas/SoftwareImageStatus'
+        metadata:
+          x-dao-column-converter: true
+          $ref: '#/components/schemas/SoftwareImageCloudLocationEntityMetadata'
+    OsImageConfig:
+      type: object
+      description: Configuration for OS Image resource
+      required:
+      - cloudAccountId
+      properties:
+        cloudAccountId:
+          type: string
+          description: ID of the cloud account for OS Image
+  parameters:
+    cloudRegion:
+      name: region
+      description: Cloud Region
+      in: query
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+      examples:
+        aws:
+          value: us-east-1
+          summary: aws region example
+        azure:
+          value: eastUS
+          summary: azure region example
+    cloudTypeOldConvention:
+      name: cloudType
+      description: Name of the Cloud
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/cloudType'
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
+    software-image-provider-type-in-query:
+      name: softwareImageProviderType
+      in: query
+      description: softwareImageProviderType
+      required: false
+      schema:
+        type: array
+        uniqueItems: true
+        items:
+          $ref: '#/components/schemas/SoftwareImageProviderType'
+    timeZoneOldConvention:
+      in: query
+      name: timeZone
+      description: Time Zone
+      schema:
+        type: string
+      required: false
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

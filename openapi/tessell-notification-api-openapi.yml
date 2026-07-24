@@ -1,0 +1,519 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Notification API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Notification
+paths:
+  /event-service/notifications/count:
+    get:
+      summary: Get notification count
+      tags:
+      - Notification
+      operationId: getNotificationsCount
+      description: Get the current count of active notifications in the specified time
+      parameters:
+      - name: start-time
+        in: query
+        description: Start timestamp, when searching events in a range
+        required: false
+        schema:
+          type: string
+      - name: end-time
+        in: query
+        description: End timestamp, when searching events in a range
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationCount'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /event-service/notifications/batch-acknowledge:
+    post:
+      summary: Acknowledge notifications
+      tags:
+      - Notification
+      operationId: batchAcknowledgeNotification
+      description: Acknowledges notifications
+      requestBody:
+        description: Batch Acknowledge Body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchAcknowledgeRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcknowledgeNotificationResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /event-service/notifications/summary:
+    get:
+      summary: Get notifications summary
+      tags:
+      - Notification
+      operationId: getNotificationSummary
+      description: Get latest notifications summary for the current user.
+      parameters:
+      - name: start-time
+        in: query
+        description: Start timestamp, when searching events in a range
+        required: false
+        schema:
+          type: string
+      - name: end-time
+        in: query
+        description: End timestamp, when searching events in a range
+        required: false
+        schema:
+          type: string
+      - schema:
+          type: integer
+          default: 0
+        in: query
+        name: pageOffset
+        description: Page offset
+      - schema:
+          type: integer
+          default: 10
+        in: query
+        name: pageSize
+        description: Page Size
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationSummaryApiResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /event-service/notifications:
+    parameters: []
+    get:
+      summary: Returns the events for the user
+      tags:
+      - Notification
+      operationId: getNotifications
+      description: Reads notification for the current user.
+      parameters:
+      - name: start-time
+        in: query
+        description: Start timestamp, when searching events in a range
+        required: false
+        schema:
+          type: string
+      - name: end-time
+        in: query
+        description: End timestamp, when searching events in a range
+        required: false
+        schema:
+          type: string
+      - schema:
+          type: string
+        in: query
+        name: entityType
+        description: Entity Name
+      - schema:
+          type: string
+        in: query
+        name: entityName
+        description: Entity Name
+      - schema:
+          type: string
+        in: query
+        name: severity
+        description: Severity of the event
+      - schema:
+          type: string
+        in: query
+        name: eventType
+        description: Event type
+      - schema:
+          type: integer
+          format: int32
+          default: 0
+        in: query
+        name: pageOffset
+        description: Page offset
+      - schema:
+          type: integer
+          default: 10
+        in: query
+        name: pageSize
+        description: Page Size
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationApiResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    UserEvent:
+      title: User Event
+      type: object
+      description: User Event object
+      required:
+      - id
+      - tenantId
+      - userId
+      - event
+      - acknowledged
+      - acknowledgedAt
+      properties:
+        id:
+          type: string
+          x-exclude-from: service
+          x-gorm-primary-key: true
+          description: notification identifier
+        tenantId:
+          x-exclude-from: service
+          x-gorm-column-attrs: not null
+          type: string
+          description: Tenant identifier
+        userId:
+          type: string
+          description: User identifier
+        event:
+          $ref: '#/components/schemas/Event'
+          description: Event corresponding to this notification
+        acknowledged:
+          type: boolean
+          description: is event acknowledged?
+        acknowledgedAt:
+          type: string
+          format: date-time
+          description: acknowledged timestamp
+        notifyUser:
+          type: boolean
+          description: whether to notify the user
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    NotificationApiResponse:
+      title: NotificationApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/ApiMetadata'
+        response:
+          $ref: '#/components/schemas/GetNotificationResponse'
+    NotificationSummaryApiResponse:
+      title: NotificationSummaryApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/ApiMetadata'
+        response:
+          $ref: '#/components/schemas/NotificationSummaryResponse'
+    ApiMetadata:
+      properties:
+        pagination:
+          $ref: '#/components/schemas/ApiPaginationInfo'
+        records:
+          format: int32
+          type: integer
+        timeZone:
+          type: string
+      title: ApiMetadata
+      type: object
+    ApiPaginationInfo:
+      title: ApiPaginationInfo
+      type: object
+      required:
+      - pageSize
+      - pageOffset
+      properties:
+        pageOffset:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+    UserEventList:
+      title: User events list
+      type: object
+      properties:
+        parentEventId:
+          type: string
+          description: Entity name
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserEvent'
+    Severity:
+      type: string
+      description: Severity of a CVE or issue
+      enum:
+      - CRITICAL
+      - HIGH
+      - MEDIUM
+      - LOW
+    BatchAcknowledgeRequest:
+      title: Batch acknowledge request
+      type: object
+      description: Batch acknowledge request
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+        acknowledgeAll:
+          type: boolean
+          default: true
+          description: acknowledges all the notifications of the user
+    NotificationSummary:
+      title: Notification Summary
+      type: object
+      description: Notification summary object
+      required:
+      - id
+      - acknowledged
+      - message
+      - entityName
+      - entityType
+      - occurredAt
+      - appName
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: notification identifier
+        acknowledged:
+          type: boolean
+          description: is event acknowledged by the user?
+        message:
+          type: string
+          description: message
+        entityName:
+          type: string
+          description: Entity name
+        entityType:
+          type: string
+          description: Entity type
+        occurredAt:
+          type: string
+          format: date-time
+          description: occurred at timestamp
+        appName:
+          type: string
+          description: App that generated the event
+    GetNotificationResponse:
+      title: Get Notifications Response
+      type: array
+      items:
+        $ref: '#/components/schemas/UserEventList'
+    Event:
+      title: Event
+      type: object
+      description: Event object
+      required:
+      - id
+      - tenantId
+      - subscriptionName
+      - userId
+      - ownerName
+      - eventType
+      - appName
+      - severity
+      - entityId
+      - entityName
+      - entityType
+      - message
+      - occurredAt
+      - parentEventId
+      - order
+      - systemGenerated
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-exclude-from: service
+          x-gorm-primary-key: true
+          description: event identifier
+        tenantId:
+          x-exclude-from: service
+          x-gorm-column-attrs: not null
+          type: string
+          description: Tenant identifier
+        subscriptionName:
+          type: string
+          description: Subscription name
+        userId:
+          type: string
+          description: User identifier
+        userGroup:
+          type: string
+          description: User group
+        ownerName:
+          type: string
+          description: Owner of the entity
+        eventType:
+          x-gorm-column-attrs: not null
+          type: string
+        appName:
+          type: string
+          description: App that generated the event
+        severity:
+          x-gorm-column-attrs: not null
+          allOf:
+          - $ref: '#/components/schemas/Severity'
+        entityId:
+          type: string
+          description: Entity identifier
+        entityName:
+          type: string
+          description: Entity name
+        message:
+          x-gorm-column-attrs: not null
+          type: string
+          description: message
+        occurredAt:
+          type: string
+          format: date-time
+          description: occurred at timestamp
+        entityType:
+          type: string
+          description: entity type
+        parentEventId:
+          type: string
+          description: Parent event identifier
+        order:
+          type: integer
+          description: Event order under the parent event
+        entityMetadata:
+          type: string
+          description: Entity metadata
+        eventMetadata:
+          type: string
+          description: Event metadata
+        systemGenerated:
+          type: boolean
+          description: Is system generated event
+        visibility:
+          $ref: '#/components/schemas/Visibility'
+    NotificationCount:
+      title: Notification Count
+      type: object
+      description: Notification count object
+      required:
+      - acknowledgedCount
+      - count
+      properties:
+        count:
+          type: integer
+          description: Total number of events in the provided time range that are not acknowledged
+    AcknowledgeNotificationResponse:
+      title: Acknowledge Notifications Summary Response
+      type: array
+      items:
+        type: string
+    Visibility:
+      title: Visibility
+      type: string
+      description: Visibility level
+      enum:
+      - USER
+      - SYSTEM
+    NotificationSummaryResponse:
+      title: Get Notifications Summary Response
+      type: array
+      items:
+        $ref: '#/components/schemas/NotificationSummary'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

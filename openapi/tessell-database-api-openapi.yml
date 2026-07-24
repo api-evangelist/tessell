@@ -1,0 +1,1138 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Database API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Database
+paths:
+  /services/{service-id}/databases:
+    post:
+      tags:
+      - Database
+      summary: Create a new database in a DB service
+      operationId: createTessellServiceDatabase
+      parameters:
+      - name: service-id
+        in: path
+        description: The ID of the DB Service to which database will be added
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateDatabasePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{service-id}/databases/{database-id}:
+    patch:
+      tags:
+      - Database
+      summary: Update a database
+      operationId: updateTessellServiceDatabase
+      parameters:
+      - name: service-id
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: database-id
+        in: path
+        description: The ID of the database in the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDatabasePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - Database
+      summary: Delete a database
+      operationId: deleteTessellServiceDatabase
+      parameters:
+      - name: service-id
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: database-id
+        in: path
+        description: The ID of the database in the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteDatabasePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /availability-machines/{availability-machine-id}/databases/{database-id}/clones:
+    post:
+      tags:
+      - Database
+      summary: Clone a PDB from native backup to an existing Oracle service
+      description: 'Creates a new PDB (Pluggable Database) in an existing Oracle multi-tenant service by cloning
+
+        from a PDB-level native backup.
+
+
+        **Key differences from service clone (`/availability-machines/{id}/clones`):**
+
+        - Service clone creates a NEW service with all infrastructure
+
+        - Database clone adds a PDB to an EXISTING Oracle multi-tenant service
+
+
+        **Supported scenarios:**
+
+        - Clone from specific backup: Provide `sourceBackupId`
+
+        - Clone from point-in-time: Provide `pitr` (NOT SUPPORTED YET - planned for future release)
+
+
+        **Requirements:**
+
+        - Target service must be Oracle with multi-tenant (CDB/PDB) architecture
+
+        - Source backup must be a PDB-level native backup (not snapshot)
+
+        - PDB name must be unique within the target CDB
+
+        '
+      operationId: cloneDatabaseFromBackup
+      parameters:
+      - name: availability-machine-id
+        in: path
+        description: 'ID of the source availability machine. This identifies where the PDB backup or PITR data exists.
+
+          '
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: database-id
+        in: path
+        description: 'ID of the source database (PDB). This identifies which PDB''s native backups to clone from.
+
+          '
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CloneDatabasePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{service-id}/databases/{database-id}/validate-delete:
+    get:
+      tags:
+      - Database
+      summary: Validate if a database can be deleted
+      description: 'Checks if the specified database (e.g., Oracle PDB) has any associated backups.
+
+        This can be used to validate whether a database can be deleted or if it has
+
+        backups that need to be handled first.
+
+        '
+      operationId: validateDatabaseDelete
+      parameters:
+      - name: service-id
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: database-id
+        in: path
+        description: The ID of the database in the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateDatabaseDeleteResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{service-id}/databases/{database-id}/start:
+    patch:
+      tags:
+      - Database
+      summary: Starts a database in the DB Service
+      operationId: startTessellServiceDatabase
+      parameters:
+      - name: service-id
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: database-id
+        in: path
+        description: The ID of the database in the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartTessellServiceDatabasePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /services/{service-id}/databases/{database-id}/stop:
+    patch:
+      tags:
+      - Database
+      summary: Stops a database in the DB Service
+      operationId: stopTessellServiceDatabase
+      parameters:
+      - name: service-id
+        in: path
+        description: The ID of the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: database-id
+        in: path
+        description: The ID of the database in the DB Service
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StopTessellServiceDatabasePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/taskSummary'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    StartTessellServiceDatabasePayload:
+      title: Payload to start a database
+      allOf:
+      - $ref: '#/components/schemas/ActionWithCommentPayload'
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    commonYearlySchedule:
+      allOf:
+      - $ref: '#/components/schemas/DatesForEachMonth'
+      - type: object
+        properties:
+          months:
+            type: array
+            uniqueItems: true
+            items:
+              $ref: '#/components/schemas/Month'
+              x-enum: true
+    MilvusIndexMetricType:
+      type: string
+      enum:
+      - L2
+      - IP
+      - JACCARD
+      - TANIMOTO
+      - HAMMING
+      - SUPERSTRUCTURE
+      - SUBSTRUCTURE
+    WeekDay:
+      description: Week Days
+      type: string
+      enum:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+      x-enum-varnames:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+    BackupStandardRpoPolicy:
+      description: This is the definition of Standard RPO Policy for Backup for Tessell DB Service
+      type: object
+      required:
+      - retentionDays
+      properties:
+        retentionDays:
+          description: Number of days for which the backup of DB Service would be retained
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 35
+        backupStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+    IndexSpecification:
+      type: object
+      properties:
+        indexType:
+          $ref: '#/components/schemas/MilvusIndexType'
+        metricType:
+          $ref: '#/components/schemas/MilvusIndexMetricType'
+        parameters:
+          $ref: '#/components/schemas/MilvusIndexParameters'
+    SqlServerDatabaseConfig:
+      title: SqlServerDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+    StandardRpoPolicy:
+      description: This is the definition of Standard RPO Policy for Snapshot for Tessell DB Service
+      type: object
+      required:
+      - retentionDays
+      - snapshotStartTime
+      properties:
+        retentionDays:
+          description: Number of days for which the snapshot of DB Service would be retained
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 35
+        includeTransactionLogs:
+          description: Determines whether transaction logs should be retained to enable Point-In-Time Recovery (PITR) functionality
+          type: boolean
+          default: false
+        snapshotStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+    DailySchedule:
+      type: object
+      properties:
+        backupsPerDay:
+          type: integer
+          format: int32
+          description: The number of backups to be captured per day.
+          minimum: 0
+    MilvusIndexConfig:
+      type: object
+      properties:
+        indexSpecifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndexSpecification'
+    PostgresqlDatabaseConfig:
+      title: PostgresqlDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The options profile for the database
+    MonthWiseDates:
+      type: object
+      required:
+      - month
+      - dates
+      properties:
+        month:
+          $ref: '#/components/schemas/Month'
+          x-enum: true
+        dates:
+          uniqueItems: true
+          type: array
+          items:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 31
+    ScheduleInfo:
+      type: object
+      properties:
+        backupStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+        dailySchedule:
+          $ref: '#/components/schemas/DailySchedule'
+        weeklySchedule:
+          $ref: '#/components/schemas/WeeklySchedule'
+        monthlySchedule:
+          $ref: '#/components/schemas/MonthlySchedule'
+        yearlySchedule:
+          $ref: '#/components/schemas/YearlySchedule'
+    DatesForEachMonth:
+      type: object
+      properties:
+        dates:
+          description: Dates in a month to retain monthly backups
+          uniqueItems: true
+          type: array
+          items:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 31
+        lastDayOfMonth:
+          type: boolean
+          default: false
+    MilvusDatabaseConfig:
+      title: MilvusDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+    WeeklySchedule:
+      type: object
+      properties:
+        days:
+          description: Days in a week to retain weekly backups for
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/WeekDay'
+            x-enum: true
+    taskSummary:
+      title: taskSummary
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        taskType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        associatedResourceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        details:
+          type: object
+          additionalProperties:
+            type: string
+    MilvusIndexParameters:
+      type: object
+      properties:
+        m:
+          type: integer
+          nullable: true
+        nlist:
+          type: integer
+          nullable: true
+        efconstructions:
+          type: integer
+          nullable: true
+        ntrees:
+          type: integer
+          nullable: true
+    MongodbDatabaseConfig:
+      title: MongodbDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+    MilvusCreateCollectionConfig:
+      title: MilvusCreateCollectionConfig
+      type: object
+      nullable: true
+      properties:
+        name:
+          type: string
+          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
+          minLength: 1
+          maxLength: 255
+        shardNums:
+          type: integer
+          nullable: true
+          minimum: 1
+          maximum: 16
+        numPartitions:
+          type: integer
+          nullable: true
+          minimum: 1
+          maximum: 4096
+        schema:
+          type: object
+          properties:
+            description:
+              type: string
+              nullable: true
+            enableDynamicField:
+              type: boolean
+            fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/MilvusCreateCollectionField'
+    MonthlySchedule:
+      description: Definition for taking month specific schedule.
+      type: object
+      properties:
+        commonSchedule:
+          $ref: '#/components/schemas/DatesForEachMonth'
+    UpdateDatabasePayload:
+      title: UpdateDatabasePayload
+      type: object
+      required:
+      - description
+      properties:
+        description:
+          type: string
+          minLength: 0
+          maxLength: 512
+    OraclePdbConfig:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the PDB
+        username:
+          type: string
+          description: Username for the PDB
+        password:
+          type: string
+          description: Password for the PDB
+        postScriptInfo:
+          $ref: '#/components/schemas/ScriptInfo'
+          description: 'Optional: Post-provisioning script to run after PDB is created.
+
+            '
+        rpoPolicyConfig:
+          $ref: '#/components/schemas/RpoPolicyConfig'
+          description: 'Optional: RPO policy configuration for PDB-level native backups (not snapshots).
+
+            This policy governs automated native backup schedules for this specific PDB.
+
+            If PITR (includeTransactionLogs) is enabled in this policy, the parent CDB must also have PITR enabled.
+
+            Note: This does not affect snapshot-based backups, which are managed at the service level.
+
+            '
+    MilvusIndexType:
+      type: string
+      enum:
+      - BIN_FLAT
+      - BIN_IVF_FLAT
+      - FLAT
+      - IVF_FLAT
+      - IVF_SQ8
+      - IVF_PQ
+      - HNSW
+      - IVF_HNSW
+      - RHNSW_FLAT
+      - RHNSW_SQ
+      - RHNSW_PQ
+      - ANNOY
+    DbCollectionCreatePayload:
+      type: object
+      properties:
+        name:
+          type: string
+          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
+          minLength: 1
+          maxLength: 255
+        milvusCollectionConfig:
+          $ref: '#/components/schemas/MilvusCreateCollectionConfig'
+    StopTessellServiceDatabasePayload:
+      title: Payload to stop a database
+      allOf:
+      - $ref: '#/components/schemas/ActionWithCommentPayload'
+    ScriptInfo:
+      title: ScriptInfo
+      type: object
+      nullable: true
+      properties:
+        scriptId:
+          type: string
+          format: uuid
+          description: The Tessell Script ID
+        scriptName:
+          type: string
+          description: The Tessell Script Name
+        scriptVersion:
+          type: string
+          description: The Tessell Script version
+        useActiveVersion:
+          type: boolean
+          default: false
+          description: 'When set to true, the scriptVersion field should be null and the system
+
+            will automatically use the active version of the script.
+
+            When set to false (default), the scriptVersion field specifies the
+
+            exact version to use.
+
+            '
+    DbCollectionIndexPayload:
+      type: object
+      properties:
+        fieldName:
+          type: string
+        indexName:
+          type: string
+        milvusIndexConfig:
+          $ref: '#/components/schemas/MilvusIndexConfig'
+    RpoPolicyConfig:
+      description: This is the definition for RPO Policy details for Tessell DB Service
+      type: object
+      required:
+      - enableAutoSnapshot
+      properties:
+        includeTransactionLogs:
+          description: Determines whether transaction logs should be retained to enable Point-In-Time Recovery (PITR) functionality
+          type: boolean
+          default: false
+        enableAutoSnapshot:
+          description: Specify whether system will take automatic snapshots
+          type: boolean
+          default: true
+        standardPolicy:
+          $ref: '#/components/schemas/StandardRpoPolicy'
+        customPolicy:
+          $ref: '#/components/schemas/CustomRpoPolicy'
+        fullBackupSchedule:
+          $ref: '#/components/schemas/FullBackupSchedule'
+        enableAutoBackup:
+          description: Specify whether system will take automatic backups
+          type: boolean
+          default: false
+        backupRpoConfig:
+          type: object
+          description: Config for the Native Backup RPO policies
+          properties:
+            fullBackupSchedule:
+              $ref: '#/components/schemas/FullBackupSchedule'
+            standardPolicy:
+              $ref: '#/components/schemas/BackupStandardRpoPolicy'
+            customPolicy:
+              $ref: '#/components/schemas/BackupCustomRpoPolicy'
+    DeleteDatabasePayload:
+      title: DeleteDatabasePayload
+      type: object
+      description: Payload for deleting a database (e.g., Oracle PDB)
+      properties:
+        comment:
+          type: string
+          description: Comment for the database deletion operation
+        deleteConfiguration:
+          $ref: '#/components/schemas/DeleteDatabaseConfiguration'
+    CreateOracleDatabaseConfig:
+      title: CreateOracleDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+        optionsProfile:
+          type: string
+          description: The options profile for the database
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The options profile for the database
+        username:
+          type: string
+          description: Username for the oracle database
+        password:
+          type: string
+          description: Password for the oracle database
+        pdbConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/OraclePdbConfig'
+    CreateDatabasePayload:
+      title: CreateDatabasePayload
+      type: object
+      properties:
+        databaseName:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The name of the database to be created
+        description:
+          type: string
+          maxLength: 512
+          description: Description of database created
+        sourceDatabaseId:
+          type: string
+          format: uuid
+          description: Required while creating a clone. It specifies the Id of the source database from which the clone is being created.
+        databaseConfiguration:
+          type: object
+          properties:
+            oracleConfig:
+              $ref: '#/components/schemas/CreateOracleDatabaseConfig'
+            postgresqlConfig:
+              $ref: '#/components/schemas/PostgresqlDatabaseConfig'
+            mysqlConfig:
+              $ref: '#/components/schemas/MySqlDatabaseConfig'
+            sqlServerConfig:
+              $ref: '#/components/schemas/SqlServerDatabaseConfig'
+            mongodbConfig:
+              $ref: '#/components/schemas/MongodbDatabaseConfig'
+            milvusConfig:
+              $ref: '#/components/schemas/MilvusDatabaseConfig'
+        collectionConfig:
+          $ref: '#/components/schemas/DbCollectionCreatePayload'
+    ActionWithCommentPayload:
+      type: object
+      properties:
+        comment:
+          type: string
+          description: Comment for the action
+    TimeFormat:
+      title: TimeFormat
+      description: Clock time format value in hour and minute.
+      type: object
+      required:
+      - hour
+      - minute
+      properties:
+        hour:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 23
+          default: 1
+        minute:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 59
+          default: 0
+    DeleteDatabaseConfiguration:
+      type: object
+      description: Engine-specific delete configuration
+      properties:
+        oracleConfig:
+          $ref: '#/components/schemas/OracleDeleteDatabaseConfig'
+    CustomRpoPolicy:
+      description: This is the definition of Custom RPO Policy for Snapshot for Tessell DB Service
+      type: object
+      required:
+      - name
+      - schedule
+      properties:
+        name:
+          type: string
+          description: Custom RPO policy name
+        schedule:
+          $ref: '#/components/schemas/ScheduleInfo'
+    Month:
+      description: Name of a month
+      type: string
+      enum:
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+      x-enum-varnames:
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+    YearlySchedule:
+      type: object
+      properties:
+        commonSchedule:
+          $ref: '#/components/schemas/commonYearlySchedule'
+        monthSpecificSchedule:
+          type: array
+          uniqueItems: true
+          required:
+          - months
+          items:
+            $ref: '#/components/schemas/MonthWiseDates'
+    OracleDeleteDatabaseConfig:
+      type: object
+      description: Oracle-specific delete configuration
+      properties:
+        deleteNativeBackups:
+          type: boolean
+          default: false
+          description: 'Whether to delete PDB-level native backups when deleting the PDB.
+
+            If false (default), backups are retained for potential recovery.
+
+            '
+    CloneDatabasePayload:
+      title: CloneDatabasePayload
+      description: 'Payload for cloning a database (PDB) from a native backup to an existing Oracle multi-tenant service.
+
+        Creates a new PDB in the target CDB by restoring from either a specific backup or point-in-time recovery.
+
+        The source AM and database are identified by path parameters (availability-machine-id, database-id).
+
+        '
+      type: object
+      required:
+      - targetServiceId
+      - oraclePdbConfig
+      properties:
+        sourceBackupId:
+          type: string
+          format: uuid
+          description: 'ID of the PDB-level native backup to clone from.
+
+            Either sourceBackupId or pitr must be provided (mutually exclusive).
+
+            '
+        pitr:
+          type: string
+          description: 'Point-in-time for recovery (ISO 8601 format).
+
+            Either sourceBackupId or pitr must be provided (mutually exclusive).
+
+            NOTE: PITR is NOT SUPPORTED YET - planned for future release.
+
+            '
+          example: '2026-02-19T10:00:00Z'
+        targetServiceId:
+          type: string
+          format: uuid
+          description: 'ID of the target Oracle multi-tenant service (CDB) where the new PDB will be created.
+
+            '
+        oraclePdbConfig:
+          $ref: '#/components/schemas/OraclePdbConfig'
+          description: 'Configuration for the new PDB being created. Includes:
+
+            - name: Name for the new PDB (must be unique in target CDB)
+
+            - username/password: Credentials for the new PDB
+
+            - scriptInfo: Optional post-clone script (.sql)
+
+            - rpoPolicyConfig: Optional RPO policy for automated native backups
+
+            '
+    MySqlDatabaseConfig:
+      title: MySqlDatabaseConfig
+      type: object
+      nullable: true
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The options profile for the database
+    MilvusCreateCollectionField:
+      type: object
+      properties:
+        name:
+          type: string
+          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+          nullable: true
+        dtype:
+          $ref: '#/components/schemas/MilvusDatatype'
+        isPrimary:
+          type: boolean
+          default: false
+        autoId:
+          type: boolean
+          default: false
+        defaultValue:
+          type: string
+          nullable: true
+        isPartitionKey:
+          type: boolean
+          default: false
+        maxLength:
+          type: integer
+        dim:
+          type: integer
+        indexCreatePayload:
+          $ref: '#/components/schemas/DbCollectionIndexPayload'
+    FullBackupSchedule:
+      description: The schedule at which full backups would be triggered
+      type: object
+      properties:
+        startTime:
+          description: Optional Time when full backup(s) has to be captured | If not specified, the default time (same as incremental backup) would be used
+          $ref: '#/components/schemas/TimeFormat'
+        weeklySchedule:
+          $ref: '#/components/schemas/WeeklySchedule'
+    BackupCustomRpoPolicy:
+      description: This is the definition of Custom RPO Policy for Backup for Tessell DB Service
+      allOf:
+      - $ref: '#/components/schemas/CustomRpoPolicy'
+    ValidateDatabaseDeleteResponse:
+      type: object
+      description: Response for validate database delete API
+      properties:
+        hasAssociatedBackups:
+          type: boolean
+          description: Indicates whether the database has any associated backups
+    MilvusDatatype:
+      type: string
+      enum:
+      - VARCHAR
+      - INT64
+      - BOOL
+      - INT8
+      - INT16
+      - INT32
+      - FLOAT
+      - DOUBLE
+      - JSON
+      - BINARY_VECTOR
+      - FLOAT_VECTOR
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

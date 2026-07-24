@@ -1,0 +1,1262 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center Users API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: Users
+paths:
+  /iam/users:
+    get:
+      tags:
+      - Users
+      summary: Get list of all the users
+      operationId: getUsers
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: personas
+        in: query
+        description: Personas that users are belonging to
+        required: false
+        style: form
+        schema:
+          type: array
+          description: List of persona names
+          items:
+            type: string
+            minLength: 1
+            maxLength: 64
+        example:
+        - DBAdmins
+        - Data Owner
+      - name: load-apps
+        in: query
+        description: Flag to include/exclude Application details in response
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: false
+      - name: load-personas
+        in: query
+        description: Flag to include/exclude Persona details in response
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: false
+      - name: load-subscriptions
+        in: query
+        description: Flag to include/exclude Subscriptions details in response.
+        required: false
+        style: form
+        schema:
+          type: boolean
+          default: false
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/pageOffset'
+      - $ref: '#/components/parameters/timeZone'
+      - name: consumer-type
+        in: query
+        description: consumer-type ( Deprecated )
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/consumerType'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IamApiResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /iam/users/invite-user:
+    post:
+      tags:
+      - Users
+      summary: Create for a new user
+      operationId: inviteUser
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InviteUserPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /iam/users/accept-invite:
+    post:
+      tags:
+      - Users
+      summary: Accept invite
+      operationId: acceptInvite
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptInviteUserPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /iam/users/change-password:
+    post:
+      tags:
+      - Users
+      summary: Change current user's password
+      security:
+      - BearerAuth: []
+      operationId: changePassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /iam/users/force-reset-password:
+    post:
+      tags:
+      - Users
+      summary: Forcefully reset password for a user
+      operationId: forceResetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForceResetPasswordPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /iam/users/login:
+    post:
+      tags:
+      - Users
+      summary: Login a user
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginUserResponse'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /iam/users/refresh-token:
+    post:
+      tags:
+      - Users
+      summary: Acquire new access-token using refresh-token
+      operationId: refreshToken
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshTokenResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /iam/users/logout:
+    post:
+      tags:
+      - Users
+      summary: Logout a user
+      security:
+      - BearerAuth: []
+      operationId: logout
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /iam/users/forgot-password/{email-id}:
+    post:
+      tags:
+      - Users
+      summary: Forgot Password
+      operationId: forgotPassword
+      parameters:
+      - name: email-id
+        in: path
+        description: email-id
+        required: true
+        style: simple
+        schema:
+          $ref: '#/components/schemas/EmailId'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /iam/users/reset-password:
+    post:
+      tags:
+      - Users
+      summary: Reset password for a user
+      operationId: resetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /iam/users/reset-password-on-expiry:
+    post:
+      tags:
+      - Users
+      summary: Reset password for a user when password has been expired
+      operationId: resetPasswordOnExpiry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordOnExpiryPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /iam/users/whoami:
+    get:
+      tags:
+      - Users
+      summary: Get details of a user
+      security:
+      - BearerAuth: []
+      operationId: whoami
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserServiceConsumerDTO'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /iam/users/{email-id}:
+    delete:
+      tags:
+      - Users
+      summary: Delete a user
+      operationId: delete
+      parameters:
+      - name: email-id
+        in: path
+        description: email-id
+        required: true
+        style: simple
+        schema:
+          $ref: '#/components/schemas/EmailId'
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '204':
+          description: No Content
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      tags:
+      - Users
+      summary: Update a user
+      operationId: adminUpdateUser
+      security:
+      - BearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: email-id
+        in: path
+        description: emailId
+        required: true
+        style: simple
+        schema:
+          $ref: '#/components/schemas/EmailId'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /iam/users/profile:
+    patch:
+      tags:
+      - Users
+      summary: Update self profile
+      operationId: updateUserProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserProfilePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /iam/users/{email-id}/change-status:
+    post:
+      tags:
+      - Users
+      summary: Change status of a user
+      operationId: changeStatus
+      parameters:
+      - name: email-id
+        in: path
+        description: email-id
+        required: true
+        style: simple
+        schema:
+          $ref: '#/components/schemas/EmailId'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeStatusPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        '201':
+          description: Created
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /iam/users/session/mfa/verify:
+    post:
+      tags:
+      - Users
+      description: Verifies the multi factor authentication based otp
+      operationId: verifyMfa
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MfaVerificationPayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginUserResponse'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+  /iam/users/session/mfa/resend:
+    post:
+      tags:
+      - Users
+      description: Resend the totp for mfa verification
+      operationId: resendMfaOtp
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+components:
+  schemas:
+    UserServiceConsumerDTO:
+      title: UserServiceConsumerDTO
+      type: object
+      properties:
+        emailId:
+          $ref: '#/components/schemas/EmailId'
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        authType:
+          $ref: '#/components/schemas/AuthType'
+        tenantUserAttributes:
+          type: array
+          description: List of tenant's user attributes
+          items:
+            $ref: '#/components/schemas/TenantUserServiceConsumerAttributes'
+        status:
+          $ref: '#/components/schemas/UserStatus'
+        dateLastLoggedIn:
+          type: string
+          description: Date when the user last logged into Tessell (null if logging in for first time)
+          format: date-time
+      description: This is a definition for Tessell user object for service consumers
+    FirstName:
+      title: FirstName
+      type: string
+      description: First name of the user
+      minLength: 1
+      maxLength: 60
+      example: John
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    ResetPasswordPayload:
+      title: ResetPasswordPayload
+      type: object
+      description: This is a definition for Tessell's user password reset payload
+      required:
+      - otp
+      - emailId
+      - password
+      properties:
+        otp:
+          type: string
+          description: OTP to validate the request
+          minLength: 1
+          maxLength: 1000
+        emailId:
+          $ref: '#/components/schemas/EmailId'
+        password:
+          $ref: '#/components/schemas/NewPassword'
+    LoginUserPayload:
+      title: LoginUserPayload
+      type: object
+      description: This is a definition for Tessell login user object
+      required:
+      - emailId
+      - password
+      properties:
+        authType:
+          $ref: '#/components/schemas/AuthType'
+        emailId:
+          $ref: '#/components/schemas/EmailId'
+        password:
+          $ref: '#/components/schemas/Password'
+    EmailId:
+      title: EmailId
+      type: string
+      description: Email Id of the user
+      minLength: 3
+      maxLength: 255
+      example: abc@tessell.com
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    MfaSessionToken:
+      type: string
+      description: Temporary session token (JWT) to validate the user trying to login through mfa
+      minLength: 100
+      maxLength: 1000
+    UserPersonaServiceConsumerDTO:
+      title: UserPersonaServiceConsumerDTO
+      type: object
+      properties:
+        apps:
+          type: array
+          description: List of apps.
+          items:
+            $ref: '#/components/schemas/UserAppsDTO'
+        name:
+          type: string
+          description: Name of the persona
+      description: This is a definition for Tessell user persona DTO object
+    UserAppFeatures:
+      title: UserAppFeatures
+      type: object
+      properties:
+        name:
+          type: string
+          description: Internal name of the feature
+        displayName:
+          type: string
+          description: Display name of feature
+        description:
+          type: string
+          description: description of the feature.
+      description: This is a definition for Tessell user's apps object
+    AcceptInviteUserPayload:
+      title: AcceptInviteUserPayload
+      type: object
+      description: This is a definition for accept invite payload
+      required:
+      - emailId
+      - password
+      - otp
+      - firstName
+      - authType
+      properties:
+        emailId:
+          $ref: '#/components/schemas/EmailId'
+        otp:
+          type: string
+          description: OTP to validate the request
+          minLength: 1
+          maxLength: 1000
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        password:
+          $ref: '#/components/schemas/Password'
+        authType:
+          $ref: '#/components/schemas/AuthType'
+    UserStatus:
+      title: UserStatus
+      type: string
+      description: This is a definition for Tessell userpool type object
+      enum:
+      - ACTIVE
+      - FORCE_CHANGE_PASSWORD
+      - INACTIVE
+      - INVITED
+    IamApiResponse:
+      title: IamApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            type: object
+    UpdateUserProfilePayload:
+      title: UpdateUserProfilePayload
+      type: object
+      description: This is a definition for Tessell's user update profile payload object
+      properties:
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+    LoginUserResponse:
+      title: LoginUserResponse
+      type: object
+      description: This is a definition for Tessell login user response object
+      properties:
+        accessToken:
+          type: string
+          description: Api access token of the user
+        refreshToken:
+          type: string
+          description: Refresh token of the user
+        emailId:
+          $ref: '#/components/schemas/EmailId'
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        tenantUserAttributes:
+          type: array
+          description: List of tenant specific user attributes
+          items:
+            $ref: '#/components/schemas/TenantUserAttributes'
+        status:
+          $ref: '#/components/schemas/UserStatus'
+        dateLastLoggedIn:
+          type: string
+          description: Date when the user last logged into Tessell (null if logging in for first time)
+          format: date-time
+        isMfaRequired:
+          type: boolean
+          description: Specifies if login through multi factor authentication is required
+        mfaDetails:
+          type: object
+          description: Details related to multi factor authentication if it is required
+          properties:
+            sessionToken:
+              $ref: '#/components/schemas/MfaSessionToken'
+            sessionTokenExpiryInSec:
+              type: integer
+              format: int32
+              default: 900
+              minimum: 60
+              maximum: 3600
+            verificationMethod:
+              $ref: '#/components/schemas/MfaVerificationMethod'
+    ChangePasswordPayload:
+      title: ChangePasswordPayload
+      type: object
+      description: This is a definition for Tessell's user password update payload object
+      properties:
+        newPassword:
+          $ref: '#/components/schemas/NewPassword'
+        oldPassword:
+          $ref: '#/components/schemas/OldPassword'
+      required:
+      - newPassword
+      - oldPassword
+    UserSubscriptionDTO:
+      title: UserSubscriptionDTO
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Id of the subscription
+        name:
+          type: string
+          description: Name of the subscription
+      description: This is a definition for Tessell user subscription DTO object
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    UserPersonaDTO:
+      title: UserPersonaDTO
+      type: object
+      properties:
+        apps:
+          type: array
+          description: List of apps.
+          items:
+            $ref: '#/components/schemas/UserAppsDTO'
+        id:
+          type: string
+          format: uuid
+          description: Id of the persona
+        name:
+          type: string
+          description: Name of the persona
+      description: This is a definition for Tessell user persona DTO object
+    Password:
+      title: Password
+      type: string
+      description: Password of the user
+      minLength: 8
+      maxLength: 4096
+      example: Tessell@999
+    TenantUserServiceConsumerAttributes:
+      title: TenantUserServiceConsumerAttributes
+      type: object
+      properties:
+        tenantId:
+          type: string
+          description: Email id of the tenant
+        tenantFirstName:
+          type: string
+          description: First Name of the tenant
+        tenantLastName:
+          type: string
+          description: Last Name of the tenant
+        tenantEmail:
+          type: string
+          description: Tenant email using which the tenant was registered
+        tenantType:
+          type: string
+          description: Type of the tenant
+        tenantDomain:
+          type: string
+          description: Type of the tenant
+        tenantServicePlan:
+          type: string
+          description: Service Plan of tenant
+        tenantDateCreated:
+          type: string
+          description: Date tenant is created on
+          format: date-time
+        personas:
+          type: array
+          description: List of personas.
+          items:
+            $ref: '#/components/schemas/UserPersonaServiceConsumerDTO'
+        subscriptions:
+          type: array
+          description: List of subscriptions of user
+          items:
+            type: string
+        accessControlFlags:
+          type: array
+          description: List of Access Control Flags of user
+          items:
+            $ref: '#/components/schemas/UserAccessControlFlags'
+      description: This is a definition for Tessell user persona DTO object
+    UserAppsDTO:
+      title: UserAppsDTO
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the app
+        privileges:
+          type: array
+          description: List of privileges of user on the app.
+          items:
+            type: string
+        features:
+          type: array
+          description: List of features of user on the app.
+          items:
+            $ref: '#/components/schemas/UserAppFeatures'
+      description: This is a definition for Tessell user's apps object
+    MfaVerificationPayload:
+      title: MfaVerificationPayload
+      type: object
+      description: Payload for the MFA verification
+      required:
+      - otp
+      properties:
+        otp:
+          type: string
+          pattern: ^\d{6}$
+          description: OTP for MFA verification
+          example: 098765
+    ResetPasswordOnExpiryPayload:
+      title: ResetPasswordOnExpiryPayload
+      type: object
+      description: This is a definition for Tessell's user password reset payload while Password Expired
+      required:
+      - emailId
+      - oldPassword
+      - newPassword
+      properties:
+        emailId:
+          $ref: '#/components/schemas/EmailId'
+        oldPassword:
+          $ref: '#/components/schemas/OldPassword'
+        newPassword:
+          $ref: '#/components/schemas/NewPassword'
+    RefreshTokenResponse:
+      title: LoginUserPayload
+      description: Response of Refresh Token API
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: Access Token
+    UpdateUserPayload:
+      title: UpdateUserPayload
+      type: object
+      properties:
+        persona:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: Administrator
+        accessControlFlags:
+          type: array
+          uniqueItems: true
+          maxItems: 20
+          items:
+            $ref: '#/components/schemas/UserAccessControlFlags'
+      description: This is a definition for Tessell's user update payload object
+    ChangeStatusPayload:
+      title: ChangeStatusPayload
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/UserStatus'
+      description: This is a definition for Tessell's user status update payload object
+    NewPassword:
+      title: NewPassword
+      type: string
+      description: New password of the user
+      minLength: 8
+      maxLength: 4096
+      example: Tessell@888
+    TenantUserAttributes:
+      title: TenantUserAttributes
+      type: object
+      properties:
+        tenantId:
+          type: string
+          description: Tenant id to be used in the header in all the apis post login
+        tenantFirstName:
+          type: string
+          description: First Name of the tenant
+        tenantLastName:
+          type: string
+          description: Last Name of the tenant
+        tenantEmail:
+          type: string
+          description: Tenant email using which the tenant was registered
+        tenantType:
+          type: string
+          description: Type of the tenant
+        tenantDomain:
+          type: string
+          description: Type of the tenant
+        tenantServicePlan:
+          type: string
+          description: Service plan of tenant
+        tenantDateCreated:
+          type: string
+          description: Date tenant is created on
+          format: date-time
+        personas:
+          type: array
+          description: List of personas.
+          items:
+            $ref: '#/components/schemas/UserPersonaDTO'
+        subscriptions:
+          type: array
+          description: List of subscription names of user
+          items:
+            $ref: '#/components/schemas/UserSubscriptionDTO'
+        accessControlFlags:
+          type: array
+          description: List of Access Control Flags of user
+          items:
+            $ref: '#/components/schemas/UserAccessControlFlags'
+      description: This is a definition for Tessell user persona DTO object
+    LastName:
+      title: LastName
+      type: string
+      description: Last name of the user
+      minLength: 1
+      maxLength: 60
+      example: Martin
+    InviteUserPayload:
+      title: InviteUserPayload
+      type: object
+      description: This is a definition for Tessell's user payload object
+      properties:
+        emailId:
+          $ref: '#/components/schemas/EmailId'
+        personas:
+          type: array
+          description: List of personas
+          items:
+            type: string
+            minLength: 1
+            maxLength: 255
+          minItems: 1
+          maxItems: 1
+          example:
+          - Administrator
+        subscriptions:
+          type: array
+          description: List of subscription names
+          items:
+            type: string
+            minLength: 1
+            maxLength: 255
+          example:
+          - default
+          - Test123
+      required:
+      - emailId
+    ForceResetPasswordPayload:
+      title: ForceResetPasswordPayload
+      description: This is a definition for Tessell user's force password reset payload object
+      type: object
+      required:
+      - emailId
+      - newPassword
+      properties:
+        emailId:
+          $ref: '#/components/schemas/EmailId'
+        newPassword:
+          $ref: '#/components/schemas/NewPassword'
+    consumerType:
+      description: Tessell Consumer Type
+      type: string
+      enum:
+      - SERVICE
+      - OPS
+      - INTERNAL
+    AuthType:
+      title: AuthType
+      type: string
+      description: This is a definition for Tessell's auth type status object
+      enum:
+      - GOOGLE
+      - PASSWORD
+      - AZURE_AD
+      - OKTA
+    MfaVerificationMethod:
+      type: string
+      description: Verification method for Multi Factor Authentication
+      enum:
+      - EMAIL
+      default: EMAIL
+    UserAccessControlFlags:
+      type: string
+      enum:
+      - DB_SERVICE_APP_ADMIN
+    OldPassword:
+      title: OldPassword
+      type: string
+      description: Old password of the user
+      minLength: 8
+      maxLength: 4096
+      example: Tessell@999
+  parameters:
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

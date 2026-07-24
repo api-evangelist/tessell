@@ -1,0 +1,720 @@
+openapi: 3.0.3
+info:
+  title: Tessell APIs activity-center tessell-notification-profile-controller API
+  contact:
+    email: support@tessell.com
+    name: Tessell Inc
+    url: https://www.tessell.com
+  description: Tessell API Documentation
+  termsOfService: https://www.tessell.com/terms
+  version: '1.0'
+servers:
+- url: '{server}'
+  variables:
+    server:
+      default: console.tessell.com
+tags:
+- name: tessell-notification-profile-controller
+paths:
+  /governance/notification-profiles:
+    post:
+      operationId: createNotificationProfile
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationProfileCreateUpdatePayload'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationProfileDTO'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      summary: Create a Notification Profile
+      tags:
+      - tessell-notification-profile-controller
+    get:
+      operationId: getNotificationProfiles
+      parameters:
+      - $ref: '#/components/parameters/tenantIdMandatory'
+      - $ref: '#/components/parameters/name'
+      - description: notification profile ops status
+        explode: false
+        in: query
+        name: status
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/NotificationProfileStatus'
+      - description: notification profile source
+        explode: false
+        in: query
+        name: source
+        required: false
+        style: form
+        schema:
+          $ref: '#/components/schemas/NotificationProfileSourceDataType'
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationProfileDTO'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      summary: Get Notification Profiles
+      tags:
+      - tessell-notification-profile-controller
+  /governance/notification-profiles/{id}:
+    get:
+      operationId: getNotificationProfileById
+      parameters:
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+        style: simple
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationProfileDTO'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      summary: Get Notification Profile by ID
+      tags:
+      - tessell-notification-profile-controller
+    patch:
+      operationId: updateNotificationProfileInfoById
+      parameters:
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+        style: simple
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationProfileInfo'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationProfileDTO'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      summary: Update a Notification Profile Info by Id
+      tags:
+      - tessell-notification-profile-controller
+    delete:
+      operationId: deleteNotificationProfile
+      parameters:
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+        style: simple
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      summary: Delete Notification Profile corresponding to given id
+      tags:
+      - tessell-notification-profile-controller
+  /governance/notification-profiles/{id}/destinations:
+    post:
+      operationId: addNotificationProfileDestinations
+      parameters:
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+        style: simple
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationProfileCreateUpdatePayload'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationProfileDTO'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      summary: Add a Notification Profile Destination
+      tags:
+      - tessell-notification-profile-controller
+    put:
+      operationId: updateNotificationProfileDestinations
+      parameters:
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+        style: simple
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationProfileCreateUpdatePayload'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationProfileDTO'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      summary: Add a Notification Profile Destination
+      tags:
+      - tessell-notification-profile-controller
+  /governance/notification-profiles/{id}/destinations/{destId}:
+    delete:
+      operationId: deleteNotificationProfileDestination
+      parameters:
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+        style: simple
+      - description: destination Id
+        explode: false
+        in: path
+        name: destId
+        required: true
+        schema:
+          type: string
+          format: uuid
+        style: simple
+      - name: Authorization
+        in: header
+        description: Authorization Token
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationProfileDTO'
+          description: OK
+        default:
+          description: API error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      summary: Delete a Destination corresponding to given channelId (destId)
+      tags:
+      - tessell-notification-profile-controller
+components:
+  schemas:
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    NotificationProfileConsumer:
+      title: NotificationProfileConsumer
+      type: string
+      description: This is a definition for the Consumer Type
+      enum:
+      - CUSTOMER
+      - INTERNAL
+    GenericInputStringSecret:
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    NotificationProfileDestinationDetailsDTO:
+      title: NotificationProfileDestinationDetailsDTO
+      type: object
+      properties:
+        email:
+          type: object
+          properties:
+            destinationType:
+              $ref: '#/components/schemas/NotificationProfileDestinationType'
+            destinations:
+              type: array
+              items:
+                $ref: '#/components/schemas/NotificationProfileEmailInfo'
+        webhook:
+          type: object
+          properties:
+            destinationType:
+              $ref: '#/components/schemas/NotificationProfileDestinationType'
+            destinations:
+              type: array
+              items:
+                $ref: '#/components/schemas/NotificationProfileWebhookInfo'
+        splunk:
+          type: object
+          properties:
+            destinationType:
+              $ref: '#/components/schemas/NotificationProfileDestinationType'
+            destinations:
+              type: array
+              items:
+                $ref: '#/components/schemas/NotificationProfileSplunkInfo'
+        slack:
+          type: object
+          properties:
+            destinationType:
+              $ref: '#/components/schemas/NotificationProfileDestinationType'
+            destinations:
+              type: array
+              items:
+                $ref: '#/components/schemas/NotificationProfileSlackInfo'
+    NotificationProfileStatus:
+      title: NotificationProfileStatus
+      type: string
+      description: This is a definition for the current status of Notification Profile
+      enum:
+      - ACTIVE
+      - INACTIVE
+    NotificationProfileInfo:
+      title: NotificationProfileInfo
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    NotificationProfileDTO:
+      title: NotificationProfileDTO
+      allOf:
+      - $ref: '#/components/schemas/NotificationProfileCommonProperties'
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/NotificationProfileStatus'
+        destinationDetails:
+          $ref: '#/components/schemas/NotificationProfileDestinationDetailsDTO'
+    NotificationProfileWebhookInfo:
+      title: NotificationProfileWebhookInfo
+      type: object
+      properties:
+        destId:
+          description: Same as `notificationChannelId`. This will be the primary reference going forward.
+          type: string
+          format: uuid
+        endpoint:
+          $ref: '#/components/schemas/GenericInputString'
+        headers:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericInputString'
+    GenericInputString:
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    NotificationProfileWebhookCreateUpdatePayload:
+      title: NotificationProfileWebhookCreateUpdatePayload
+      type: object
+      properties:
+        endpoint:
+          $ref: '#/components/schemas/GenericInputString'
+        headers:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericInputString'
+        secretHeaders:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericInputStringSecret'
+    NotificationProfileSourceDataType:
+      title: NotificationProfileSourceDataType
+      type: string
+      description: This is a definition for the Source Data Type
+      enum:
+      - ACTIVITY_LOGS
+      - MONITORING_ALERTS
+    NotificationProfileEmailCreateUpdatePayload:
+      title: NotificationProfileEmailCreateUpdatePayload
+      type: object
+      properties:
+        emailId:
+          $ref: '#/components/schemas/GenericInputString'
+    NotificationProfileCreateUpdatePayload:
+      title: NotificationProfileCreateUpdatePayload
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the profile
+        name:
+          type: string
+          description: Name of the profile
+        sourceDataTypes:
+          type: array
+          minItems: 1
+          maxItems: 1
+          description: List of Source Data Types
+          items:
+            $ref: '#/components/schemas/NotificationProfileSourceDataType'
+        destinationTypes:
+          type: array
+          description: List of Destination Types
+          items:
+            $ref: '#/components/schemas/NotificationProfileDestinationType'
+        destinationDetails:
+          $ref: '#/components/schemas/NotificationProfileDestinationDetailsCreateUpdatePayload'
+        consumerType:
+          $ref: '#/components/schemas/NotificationProfileConsumer'
+        isDefaultProfile:
+          type: boolean
+          default: false
+          description: Is this the default profile
+    NotificationProfileSplunkCreateUpdatePayload:
+      title: NotificationProfileSplunkCreateUpdatePayload
+      type: object
+      properties:
+        endpoint:
+          $ref: '#/components/schemas/GenericInputString'
+        token:
+          $ref: '#/components/schemas/GenericInputStringSecret'
+    NotificationProfileMetadata:
+      title: NotificationProfileMetadata
+      type: object
+      properties:
+        createdBy:
+          type: string
+          description: User who created the alert profile
+          default: Tessell
+        lastModifiedBy:
+          type: string
+          description: User who last modified the alert profile
+          default: Tessell
+        channelsMigrated:
+          type: boolean
+          description: Tells weather the channels have been created for the destinations for existing profiles
+    NotificationChannelList:
+      title: NotificationChannelList
+      type: array
+      description: A list of notification channel identifiers.
+      items:
+        type: string
+        format: uuid
+    NotificationProfileEmailInfo:
+      title: NotificationProfileEmailInfo
+      type: object
+      properties:
+        destId:
+          description: Same as `notificationChannelId`. This will be the primary reference going forward.
+          type: string
+          format: uuid
+        emailId:
+          $ref: '#/components/schemas/GenericInputString'
+    NotificationProfileDestinationType:
+      title: NotificationProfileDestinationType
+      type: string
+      description: This is a definition for the Destination Type
+      enum:
+      - EMAIL
+      - WEBHOOK
+      - SPLUNK
+      - SLACK
+    NotificationProfileDestinationDetailsCreateUpdatePayload:
+      title: NotificationProfileDestinationDetailsCreateUpdatePayload
+      type: object
+      properties:
+        email:
+          type: object
+          properties:
+            destinationType:
+              $ref: '#/components/schemas/NotificationProfileDestinationType'
+            destinations:
+              type: array
+              items:
+                $ref: '#/components/schemas/NotificationProfileEmailCreateUpdatePayload'
+            destinationChannels:
+              $ref: '#/components/schemas/NotificationChannelList'
+        webhook:
+          type: object
+          properties:
+            destinationType:
+              $ref: '#/components/schemas/NotificationProfileDestinationType'
+            destinations:
+              type: array
+              items:
+                $ref: '#/components/schemas/NotificationProfileWebhookCreateUpdatePayload'
+            destinationChannels:
+              $ref: '#/components/schemas/NotificationChannelList'
+        splunk:
+          type: object
+          properties:
+            destinationType:
+              $ref: '#/components/schemas/NotificationProfileDestinationType'
+            destinations:
+              type: array
+              items:
+                $ref: '#/components/schemas/NotificationProfileSplunkCreateUpdatePayload'
+            destinationChannels:
+              $ref: '#/components/schemas/NotificationChannelList'
+        slack:
+          type: object
+          properties:
+            destinationType:
+              $ref: '#/components/schemas/NotificationProfileDestinationType'
+            destinations:
+              type: array
+              items:
+                $ref: '#/components/schemas/NotificationProfileSlackCreateUpdatePayload'
+            destinationChannels:
+              $ref: '#/components/schemas/NotificationChannelList'
+    NotificationProfileCommonProperties:
+      title: NotificationProfileCommonProperties
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the profile
+        name:
+          type: string
+          description: Name of the profile
+        id:
+          type: string
+          description: Tessell generated UUID for the notification profile object
+          format: uuid
+        dateCreated:
+          type: string
+          description: Date when the profile is created
+          format: date-time
+        dateModified:
+          type: string
+          description: Date when profile is last modified
+          format: date-time
+        tenantId:
+          type: string
+          description: Tenant for which this profile is created
+          minLength: 1
+          maxLength: 128
+        isDefaultProfile:
+          type: boolean
+          description: Is this the default profile
+        sourceDataTypes:
+          type: array
+          minItems: 1
+          maxItems: 1
+          description: List of Source Data Types
+          items:
+            $ref: '#/components/schemas/NotificationProfileSourceDataType'
+        destinationTypes:
+          type: array
+          description: List of Destination Types
+          items:
+            $ref: '#/components/schemas/NotificationProfileDestinationType'
+        metadata:
+          $ref: '#/components/schemas/NotificationProfileMetadata'
+    NotificationProfileSplunkInfo:
+      title: NotificationProfileSplunkInfo
+      type: object
+      properties:
+        destId:
+          description: Same as `notificationChannelId`. This will be the primary reference going forward.
+          type: string
+          format: uuid
+        endpoint:
+          $ref: '#/components/schemas/GenericInputString'
+    NotificationProfileSlackCreateUpdatePayload:
+      title: NotificationProfileSlackCreateUpdatePayload
+      type: object
+      required:
+      - slackApiUrl
+      - slackChannel
+      properties:
+        slackApiUrl:
+          $ref: '#/components/schemas/GenericInputStringSecret'
+        slackChannel:
+          $ref: '#/components/schemas/GenericInputString'
+    NotificationProfileSlackInfo:
+      title: NotificationProfileSlackInfo
+      type: object
+      properties:
+        destId:
+          description: Same as `notificationChannelId`. This will be the primary reference going forward.
+          type: string
+          format: uuid
+        slackChannel:
+          $ref: '#/components/schemas/GenericInputString'
+  parameters:
+    name:
+      name: name
+      in: query
+      description: Name of the Entity
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 512
+      example: example-123
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
