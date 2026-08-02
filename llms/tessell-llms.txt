@@ -1,0 +1,596 @@
+# Tessell API Documentation
+
+> Documentation for Tessell API
+
+## Guides
+- [Getting Started with Tessell API](https://developer.tessell.com/docs/getting-started.md): This page will help you get started with Tessell API. You'll be up and running in a jiffy!
+
+## API Reference
+- [/iam/authorize](https://developer.tessell.com/reference/authorizeapikey.md)
+- [/iam/api-keys](https://developer.tessell.com/reference/createapikey.md)
+- [Get a list of Tessell Permission](https://developer.tessell.com/reference/getapikeys.md)
+- [Delete a Tessell api key](https://developer.tessell.com/reference/revokeapikey.md)
+- [View list of available DB Services](https://developer.tessell.com/reference/gettessellservices.md)
+- [Provision a DB service](https://developer.tessell.com/reference/provisiontessellservice.md)
+- [Get a DB Service by Id](https://developer.tessell.com/reference/gettessellservice.md)
+- [Update a DB service](https://developer.tessell.com/reference/updatetessellservice.md)
+- [Delete a DB service](https://developer.tessell.com/reference/deletetessellservice.md)
+- [Add DB service Instances](https://developer.tessell.com/reference/addtessellserviceinstances.md)
+- [Delete DB service Instances](https://developer.tessell.com/reference/deletetessellserviceinstances.md)
+- [Starts the DB Service](https://developer.tessell.com/reference/starttessellservice.md)
+- [Stops the DB Service](https://developer.tessell.com/reference/stoptessellservice.md)
+- [Resize DB service storage/compute](https://developer.tessell.com/reference/resizedbservice.md)
+- [Update DB Service Connectivity](https://developer.tessell.com/reference/updatetessellserviceconnectivity.md)
+- [Switchover a DB Service](https://developer.tessell.com/reference/switchovertessellservice.md)
+- [Restore a DB Service](https://developer.tessell.com/reference/restoretessellservice.md)
+- [Patches the DB Service Software](https://developer.tessell.com/reference/patchsoftwarefortessellservice.md)
+- [Update parameter profile/s for instances in service](https://developer.tessell.com/reference/updatedbserviceparameterprofiles.md)
+- [Add/update an integration for the DB Service](https://developer.tessell.com/reference/updatetessellserviceintegration.md)
+- [Get a DB timeline by service ID](https://developer.tessell.com/reference/gettessellservicetimeline.md)
+- [Cleanup a failed DB service entry](https://developer.tessell.com/reference/cleanupfailedtessellserviceentry.md)
+- [Clone a DB service](https://developer.tessell.com/reference/clonetessellservice.md)
+- [View tags for the DB Service](https://developer.tessell.com/reference/gettessellservicetags.md)
+- [Create/update (override) tags for the DB Service](https://developer.tessell.com/reference/upserttessellservicetags.md)
+- [Delete tags for a DB Service](https://developer.tessell.com/reference/deletetessellservicetags.md)
+- [Update DB service timezone](https://developer.tessell.com/reference/updatedbservicetimezone.md)
+- [Impact assessment for update parameter profile request](https://developer.tessell.com/reference/getdbserviceparameterprofileupdateimpact.md)
+- [validate the parameter profile.](https://developer.tessell.com/reference/validateparameterprofile.md)
+- [Get list of services eligible as PDB clone targets](https://developer.tessell.com/reference/geteligiblepdbclonetargets.md): Returns a list of Oracle services that are eligible to receive a cloned PDB from the specified source database. Only services that meet ALL eligibility criteria are included in the response.  **Eligibility Criteria:** Services must meet ALL of the following requirements to be included: - **Engine Compatibility**: Target service must be Oracle with multi-tenant (CDB/PDB) architecture - **Version Compatibility**: Oracle version must be compatible (same or higher major version) - **Status**: Target service must be in an operational state (e.g., READY) - **Subscription Access**: User must have access to the target service (typically same subscription as source) - **Configuration Compatibility**: Target service must support the resource requirements of the source PDB - **PDB Capacity**: Target CDB must have capacity to host additional PDBs  **Use Cases:** - Display available target services in UI dropdown when user initiates PDB clone operation - Pre-validate that at least one eligible target exists before showing clone form - Allow users to select from pre-filtered list of compatible services
+- [View a list of available DB Service instances](https://developer.tessell.com/reference/gettessellserviceinstances.md)
+- [Create private link for instance](https://developer.tessell.com/reference/createprivatelinkforinstance.md)
+- [Update private link for instance](https://developer.tessell.com/reference/updateprivatelinkforinstance.md)
+- [Delete private link for instance](https://developer.tessell.com/reference/deleteprivatelinkforinstance.md)
+- [Get a DB Service instance by Id](https://developer.tessell.com/reference/gettessellserviceinstance.md)
+- [Create a new database in a DB service](https://developer.tessell.com/reference/createtessellservicedatabase.md)
+- [Update a database](https://developer.tessell.com/reference/updatetessellservicedatabase.md)
+- [Delete a database](https://developer.tessell.com/reference/deletetessellservicedatabase.md)
+- [Starts a database in the DB Service](https://developer.tessell.com/reference/starttessellservicedatabase-1.md)
+- [Stops a database in the DB Service](https://developer.tessell.com/reference/stoptessellservicedatabase-1.md)
+- [Clone a PDB from native backup to an existing Oracle service](https://developer.tessell.com/reference/clonedatabasefrombackup.md): Creates a new PDB (Pluggable Database) in an existing Oracle multi-tenant service by cloning from a PDB-level native backup.  **Key differences from service clone (`/availability-machines/{id}/clones`):** - Service clone creates a NEW service with all infrastructure - Database clone adds a PDB to an EXISTING Oracle multi-tenant service  **Supported scenarios:** - Clone from specific backup: Provide `sourceBackupId` - Clone from point-in-time: Provide `pitr` (NOT SUPPORTED YET - planned for future release)  **Requirements:** - Target service must be Oracle with multi-tenant (CDB/PDB) architecture - Source backup must be a PDB-level native backup (not snapshot) - PDB name must be unique within the target CDB
+- [Validate if a database can be deleted](https://developer.tessell.com/reference/validatedatabasedelete.md): Checks if the specified database (e.g., Oracle PDB) has any associated backups. This can be used to validate whether a database can be deleted or if it has backups that need to be handled first.
+- [Get all collections for the given database-id](https://developer.tessell.com/reference/getdbcollections.md)
+- [Create a collection for given database ID](https://developer.tessell.com/reference/createdbcollection.md)
+- [Get all collections for given database ID](https://developer.tessell.com/reference/getdbcollectionbyid.md)
+- [Update collection for given collection ID](https://developer.tessell.com/reference/updatedbcollection.md)
+- [Delete collection for given collection ID](https://developer.tessell.com/reference/deletedbcollection.md)
+- [Load collection into memory for given collection ID](https://developer.tessell.com/reference/loaddbcollection.md)
+- [Release collection from memory for given collection name](https://developer.tessell.com/reference/releasedbcollection.md)
+- [Get all indices for the given collection ID](https://developer.tessell.com/reference/getdbcollectionindices.md)
+- [Create a index for given collection ID](https://developer.tessell.com/reference/createdbcollectionindex.md)
+- [Get index for the given index ID](https://developer.tessell.com/reference/getdbcollectionindexbyid.md)
+- [Delete collection for given collection name](https://developer.tessell.com/reference/deletedbcollectionindex.md)
+- [Creates the deletion schedule for the DB Service](https://developer.tessell.com/reference/createservicedeletionschedule.md)
+- [Updates the deletion schedule for the DB Service](https://developer.tessell.com/reference/updateservicedeletionschedule.md)
+- [Returns the deletion schedule details for the DB Service](https://developer.tessell.com/reference/getservicedeletionschedule.md)
+- [Deletes the deletion schedule for the DB Service](https://developer.tessell.com/reference/deleteservicedeletionschedule.md)
+- [Returns the details about all the automated schedules on the DB Service](https://developer.tessell.com/reference/getserviceschedules.md)
+- [Creates a start/stop schedule for the DB Service](https://developer.tessell.com/reference/createservicestartstopschedule.md)
+- [Get the details of start/stop schedules for the DB Service](https://developer.tessell.com/reference/getservicestartstopschedules.md)
+- [Update the status of the given start/stop schedule for the DB Service.](https://developer.tessell.com/reference/updatestartstopschedulestatus.md)
+- [Updates the deletion schedule for the DB Service](https://developer.tessell.com/reference/updateservicedeletionscheduletfp.md)
+- [Returns the deletion schedule details for the DB Service](https://developer.tessell.com/reference/getservicedeletionscheduletfp.md)
+- [Deletes the deletion schedule for the DB Service](https://developer.tessell.com/reference/deleteservicedeletionscheduletfp.md)
+- [Updates the given start/stop schedule on the DB Service](https://developer.tessell.com/reference/updateservicestartstopschedule.md)
+- [Return the details about the start/stop schedule for given schedule ID for the DB Service](https://developer.tessell.com/reference/getservicestartstopschedule.md)
+- [Deletes the given start/stop schedule for the DB Service.](https://developer.tessell.com/reference/deleteservicestartstopschedule.md)
+- [View a list of available Compute Resources](https://developer.tessell.com/reference/getdbservercomputeresources.md)
+- [Get a Compute Resource by ID](https://developer.tessell.com/reference/getdbservercomputeresource.md)
+- [Delete a Database Server](https://developer.tessell.com/reference/deletedbservercomputeresource.md)
+- [Update a DB server](https://developer.tessell.com/reference/updatedbserver.md)
+- [View a list of available Compute Resources that can be used for newer provisioning](https://developer.tessell.com/reference/getsharingenableddbservercomputeresources.md)
+- [Enable compute resource sharing](https://developer.tessell.com/reference/enablecomputeresourcesharing.md)
+- [Update compute resource owner](https://developer.tessell.com/reference/updatecomputeresourceowner.md)
+- [Update owner for all compute resources of a given owner](https://developer.tessell.com/reference/bulkupdatecomputeresourceowner.md): Bulk update the owner for all compute resources currently owned by the specified user
+- [Get a Compute Resource by ID](https://developer.tessell.com/reference/getdbservertimeline.md)
+- [Resize a Database Server Compute Resource](https://developer.tessell.com/reference/resizedbservercomputeresource.md)
+- [Starts Database Server Compute Resource](https://developer.tessell.com/reference/startdbserver.md)
+- [Stops the DB Service](https://developer.tessell.com/reference/stopdbserver.md)
+- [Patch request for compute resource maintenance window](https://developer.tessell.com/reference/updatemaintenancewindowfordbserver.md)
+- [View tags for the DB Server](https://developer.tessell.com/reference/getdbservertags.md)
+- [Create/update (override) tags for the DB Server](https://developer.tessell.com/reference/upsertdbservertags.md)
+- [Delete tags for a DB Server](https://developer.tessell.com/reference/deletedbservertags.md)
+- [Add/update an integration for the DB Server](https://developer.tessell.com/reference/updatecomputeresourceintegration.md)
+- [Create or update the DB Service ACLs](https://developer.tessell.com/reference/updatetessellserviceacls.md)
+- [Revoke DB Service ACLs](https://developer.tessell.com/reference/revoketessellserviceacls.md)
+- [Get list of all the users by privileges for the given DB Service](https://developer.tessell.com/reference/getprivilegedusersfortessellservice.md)
+- [Get list of connection pools for the DB Service](https://developer.tessell.com/reference/getconnectionpoolsfortessellservice.md)
+- [Creates a new connection pool for the DB Service](https://developer.tessell.com/reference/createconnectionpoolfortessellservice.md)
+- [Delete an existing connection pool for the DB Service](https://developer.tessell.com/reference/deleteconnectionpoolfortessellservice.md)
+- [Update an existing connection pool for the DB Service](https://developer.tessell.com/reference/updateconnectionpoolfortessellservice.md)
+- [Returns details about sample datasets that can be loaded in the given DB Service](https://developer.tessell.com/reference/getsampledatasetsuggestions.md)
+- [Controls if the sample data loading suggestions should be shown for the given DB Service](https://developer.tessell.com/reference/updatesampledatasetsuggestion.md)
+- [Get details about existing sample datasets being/already loaded in the given DB Service](https://developer.tessell.com/reference/getsampledatasetloadinginfo.md)
+- [Submits a request to load sample-dataset in given DB Service.](https://developer.tessell.com/reference/loadsampledatasetrequest.md)
+- [Get a list of Availability Machines](https://developer.tessell.com/reference/getavailabilitymachines.md)
+- [Get details about an Availability Machine](https://developer.tessell.com/reference/getavailabilitymachine.md)
+- [Delete the Availability Machine and the associated data (if any) including snapshots, sanitized-snapshots, and backups.](https://developer.tessell.com/reference/deleteavailabilitymachine.md)
+- [Pause the automated backups for a Availability Machine](https://developer.tessell.com/reference/pauseavailabilitymachine.md)
+- [Allow backup download for a Availability Machine](https://developer.tessell.com/reference/updatebackupdownloadconfig.md)
+- [Resume the automated backups for a Availability Machine](https://developer.tessell.com/reference/resumeavailabilitymachine.md)
+- [Get list of ACLs for an Availability Machine](https://developer.tessell.com/reference/getavailabilitymachineacls.md)
+- [Create or update ACLs for an Availability Machine](https://developer.tessell.com/reference/createavailabilitymachineacls.md)
+- [Revoke ACLs for an Availability Machine](https://developer.tessell.com/reference/revokeavailabilitymachineacls.md)
+- [Get list of users which are eligible to grant access for an Availability Machine](https://developer.tessell.com/reference/geteligibleusersforavailabilitymachine.md)
+- [Get download url info for the backup](https://developer.tessell.com/reference/getdownloadurlinfo.md)
+- [Get list of all the users by privileges](https://developer.tessell.com/reference/geteligibleusersfordataflix.md)
+- [Get size consumption details for Tessell Data Management Machine](https://developer.tessell.com/reference/getavailabilitymachinesize.md)
+- [Get a list of accessible Dataflix](https://developer.tessell.com/reference/getdataflixes.md)
+- [Get Dataflix by AM id](https://developer.tessell.com/reference/getdataflixbyamid.md)
+- [Get snapshots and pitr catalog of the Availability Machine](https://developer.tessell.com/reference/getdataflixcatalog.md)
+- [Get sanitised snapshots catalog for the Availability Machine](https://developer.tessell.com/reference/getdataflixsanitizedcatalog.md)
+- [Get native backups catalog for the Availability Machine](https://developer.tessell.com/reference/getdataflixbackupscatalog.md)
+- [Get list of snapshots for an Availability Machine](https://developer.tessell.com/reference/getdatabasesnapshots.md)
+- [Submit a request to capture the associated DB Service's snapshot](https://developer.tessell.com/reference/createdatabasesnapshotrequest.md)
+- [Get details about the specified snapshot](https://developer.tessell.com/reference/getdatabasesnapshot.md)
+- [Submit a request to delete the snapshot](https://developer.tessell.com/reference/deletedatabasesnapshotrequest.md)
+- [Create download url for the backup](https://developer.tessell.com/reference/createdownloadurlrequest.md)
+- [Get the restore or clone information for the specified snapshot or the recovery-timestamp](https://developer.tessell.com/reference/getbackuprestoreinfo.md)
+- [View a list of available Tessell Backups](https://developer.tessell.com/reference/getdatabasebackups.md)
+- [Create backup for the snapshot](https://developer.tessell.com/reference/createbackuprequest.md)
+- [get backup](https://developer.tessell.com/reference/getbackuprequest.md)
+- [Submit a request to delete the backup](https://developer.tessell.com/reference/deletebackuprequest.md)
+- [Get list of sanitized snapshots for an Availability Machine](https://developer.tessell.com/reference/getsanitizeddatabasesnapshots.md)
+- [Submit a request to sanitize the specified snapshot](https://developer.tessell.com/reference/createsanitizeddatabasesnapshotrequest.md)
+- [Get details about the specified Sanitized Snapshot](https://developer.tessell.com/reference/getsanitizeddatabasesnapshot.md)
+- [Submit a request to delete the Sanitized Snapshot](https://developer.tessell.com/reference/deletesanitizeddatabasesnapshotrequest.md)
+- [Get the RPO policy configuration associated with an Availability Machine](https://developer.tessell.com/reference/getamrpopolicy.md): **DEPRECATED**: This endpoint returns only the service-level RPO policy. Use `/availability-machines/{id}/rpo-policies` instead to get both service-level and database-level (PDB) RPO policies.
+- [Update RPO policy configuration for an Availability Machine](https://developer.tessell.com/reference/updateamrpopolicy.md)
+- [Get all RPO policies for an Availability Machine including service-level and database-level policies](https://developer.tessell.com/reference/getamrpopolicies.md): Returns comprehensive RPO policy information for an Availability Machine, including: - Service-level RPO policy (applies to the entire service/CDB) - Database-level RPO policies (applies to individual databases like Oracle PDBs)  This endpoint should be used instead of the deprecated `/availability-machines/{id}/rpo-policy` which only returns service-level RPO policy.
+- [Get RPO policy for a specific database within an Availability Machine](https://developer.tessell.com/reference/getdatabaserpopolicy.md): Retrieves the RPO policy configuration for a specific database (e.g., Oracle PDB) within an Availability Machine. Returns the full policy summary including database name for display purposes.
+- [Create or update RPO policy for a specific database within an Availability Machine](https://developer.tessell.com/reference/createorupdatedatabaserpopolicy.md): Configures automated backup schedules and retention policies for a specific database (e.g., Oracle PDB) within an Availability Machine. If PITR is enabled in the policy, the parent service must also have PITR enabled.
+- [Delete RPO policy for a specific database within an Availability Machine](https://developer.tessell.com/reference/deletedatabaserpopolicy.md): Removes the RPO policy configuration for a specific database (e.g., Oracle PDB) within an Availability Machine. This will stop automatic backups for the database and remove associated schedules.
+- [Get list of Access Policies (DAP) that are associated with an Availability Machine](https://developer.tessell.com/reference/getdmmavailabilitypoliciesserviceview.md)
+- [Create a new Access Policy for an Availability Machine](https://developer.tessell.com/reference/createdmmavailabilitypolicy.md)
+- [Get details about an Access Policy](https://developer.tessell.com/reference/getdmmavailabilitypolicyserviceview.md)
+- [Delete an Access Policy](https://developer.tessell.com/reference/deletedmmavailabilitypolicy.md)
+- [Update an Access Policy](https://developer.tessell.com/reference/updatedmmavailabilitypolicyserviceview.md)
+- [View details about a Tessell Dap Catalog](https://developer.tessell.com/reference/getdapcatalogserviceview.md)
+- [Update users of an Access Policy](https://developer.tessell.com/reference/manageusersdmmavailabilitypolicy.md)
+- [Get a list of Personas](https://developer.tessell.com/reference/getpersonas.md)
+- [Create a new Persona](https://developer.tessell.com/reference/createpersona.md)
+- [Get upgradable list of Personas for all the Personas](https://developer.tessell.com/reference/getupgradablepersonas.md)
+- [Delete a Persona](https://developer.tessell.com/reference/deletepersona.md)
+- [Update a Persona](https://developer.tessell.com/reference/updatepersona.md)
+- [Create a privilege](https://developer.tessell.com/reference/createprivilege.md)
+- [Delete a privilege](https://developer.tessell.com/reference/deleteprivilege.md)
+- [Update a privilege](https://developer.tessell.com/reference/updateprivilege.md)
+- [Get list of all the users](https://developer.tessell.com/reference/getusers.md)
+- [Create for a new user](https://developer.tessell.com/reference/inviteuser.md)
+- [Accept invite](https://developer.tessell.com/reference/acceptinvite.md)
+- [Change current user's password](https://developer.tessell.com/reference/changepassword.md)
+- [Forcefully reset password for a user](https://developer.tessell.com/reference/forceresetpassword.md)
+- [Login a user](https://developer.tessell.com/reference/login.md)
+- [Acquire new access-token using refresh-token](https://developer.tessell.com/reference/refreshtoken.md)
+- [Logout a user](https://developer.tessell.com/reference/logout.md)
+- [Forgot Password](https://developer.tessell.com/reference/forgotpassword.md)
+- [Reset password for a user](https://developer.tessell.com/reference/resetpassword.md)
+- [Reset password for a user when password has been expired](https://developer.tessell.com/reference/resetpasswordonexpiry.md)
+- [Get details of a user](https://developer.tessell.com/reference/whoami.md)
+- [Delete a user](https://developer.tessell.com/reference/delete.md)
+- [Update a user](https://developer.tessell.com/reference/adminupdateuser.md)
+- [Update self profile](https://developer.tessell.com/reference/updateuserprofile.md)
+- [Change status of a user](https://developer.tessell.com/reference/changestatus.md)
+- [/iam/users/session/mfa/verify](https://developer.tessell.com/reference/verifymfa.md): Verifies the multi factor authentication based otp
+- [/iam/users/session/mfa/resend](https://developer.tessell.com/reference/resendmfaotp.md): Resend the totp for mfa verification
+- [Get list of all the userpools](https://developer.tessell.com/reference/getuserpools.md)
+- [Create for a new userpool](https://developer.tessell.com/reference/createuserpool.md)
+- [Delete a userpool](https://developer.tessell.com/reference/deleteuserpool.md)
+- [Update a userpool](https://developer.tessell.com/reference/updateuserpool.md)
+- [Get a list of Roles](https://developer.tessell.com/reference/getroles.md)
+- [/iam/sso](https://developer.tessell.com/reference/getssoconfiguration.md)
+- [Get a list of Scripts](https://developer.tessell.com/reference/getscriptsserviceview.md)
+- [Request to create a new Script](https://developer.tessell.com/reference/createscriptserviceview.md)
+- [Get information about a Script](https://developer.tessell.com/reference/getscriptserviceview.md)
+- [Update the specified Script](https://developer.tessell.com/reference/updatescriptserviceview.md)
+- [Delete the specified Script](https://developer.tessell.com/reference/deletescriptserviceview.md)
+- [Update the Script's maturity status](https://developer.tessell.com/reference/updatescriptmaturity.md)
+- [Get Tessell Script versions](https://developer.tessell.com/reference/getscriptversionsserviceview.md)
+- [Create a new Tessell Script Version](https://developer.tessell.com/reference/createscriptversionserviceview.md)
+- [Get Tessell Script versions](https://developer.tessell.com/reference/getscriptversionserviceview.md)
+- [Delete a new Tessell Script Version](https://developer.tessell.com/reference/deletescriptversionserviceview.md)
+- [Download Tessell Script Content](https://developer.tessell.com/reference/downloadscriptcontentserviceview.md)
+- [Upload Tessell Script Version blob](https://developer.tessell.com/reference/uploadscriptcontentserviceview.md)
+- [Get list of ACLs for the Script](https://developer.tessell.com/reference/getscriptacls.md)
+- [Create/update the Script ACLs](https://developer.tessell.com/reference/createscriptacls.md)
+- [Revoke Script ACLs](https://developer.tessell.com/reference/revokescriptacls.md)
+- [Get list of all the users by privileges](https://developer.tessell.com/reference/geteligibleusersforscript.md)
+- [Create a new integration with an Identity Provider](https://developer.tessell.com/reference/createidpconfiguration.md)
+- [Get a list of integrated Identity Providers](https://developer.tessell.com/reference/getconfiguredidps.md)
+- [Update an Identity Provider](https://developer.tessell.com/reference/updateidpconfiguration.md)
+- [Delete an Identity Provider integration](https://developer.tessell.com/reference/deleteidpconfiguration.md)
+- [Returns details about the Tessell Subscriptions](https://developer.tessell.com/reference/getuserviewsubscriptions.md): It returns the details about the Tessell Subscriptions
+- [Create a new Tessell subscription.](https://developer.tessell.com/reference/createsubscription.md): Creates a new Tessell subscription based on deployment type(shared/byoa) and cloud configurations.
+- [Returns details about the Tessell Subscriptions](https://developer.tessell.com/reference/getadminviewsubscriptions.md): Returns details about the Tessell Subscriptions
+- [Submits request to get the subscription details](https://developer.tessell.com/reference/getsubscriptionname.md): Submits request to get the subscription details
+- [Submits request to update a Tessell Subscription](https://developer.tessell.com/reference/updatesubscription.md): Submits request to update a Tessell Subscription
+- [Submits request to delete a Tessell Subscription](https://developer.tessell.com/reference/deletesubscription.md): Submits request to delete a Tessell Subscription
+- [Submits request to enable or disable a Tessell Subscription](https://developer.tessell.com/reference/actiononsubscription.md): Submits request to enable or disable a Tessell Subscription
+- [Adds cloud type to a new Tessell subscription](https://developer.tessell.com/reference/addcloudtypetosubscription.md): Adds cloud type to a new Tessell subscription
+- [Enables or disables a cloud type in a Tessell Subscription](https://developer.tessell.com/reference/actiononsubscriptioncloudtype.md): Enables or disables a cloud type in a Tessell Subscription
+- [Update regions for a cloud type in a Tessell Subscription](https://developer.tessell.com/reference/updateregionsinsubscription.md): Update regions for a cloud type in a Tessell Subscription
+- [Add regions for a cloud type in a Tessell Subscription](https://developer.tessell.com/reference/addregionsinsubscription.md): Add regions for a cloud type in a Tessell Subscription
+- [Adds users to a Tessell subscription](https://developer.tessell.com/reference/adduserstosubscription.md): Adds users to a Tessell subscription
+- [Removes users from a Tessell subscription](https://developer.tessell.com/reference/removeusersfromsubscription.md): Removes users from a Tessell subscription
+- [Get subscription's users' details](https://developer.tessell.com/reference/getsubscriptionusersdetails.md): Get the details of subscription's users
+- [Get users which can be added to the subscription](https://developer.tessell.com/reference/geteligibleusersforsubscription.md): Returns a list of users which can be added to the subscription
+- [/subscription-service/governance/subscription-metadata/byoa](https://developer.tessell.com/reference/getsubscriptionbyoastaticmetadata.md): Get subscription related metadata
+- [Track the progress of the ongoing subscription creation operation](https://developer.tessell.com/reference/tracksubscriptioncreation.md): Track the progress of the ongoing subscription creation operation
+- [Track the progress of the ongoing region onboarding operation](https://developer.tessell.com/reference/trackregiononboarding-1.md): Track the progress of the ongoing region onboarding operation
+- [Resubmits failed Tessell Subscription creation](https://developer.tessell.com/reference/resubmitcreatesubscription.md): Resubmits failed Tessell Subscription creation
+- [Resubmits failed region onboarding](https://developer.tessell.com/reference/resubmitregiononboarding-1.md): Resubmits failed region onboarding
+- [Skip a particular step in the subscription creation flow](https://developer.tessell.com/reference/skipcreatesubscriptionstep.md): Skip a particular step in the subscription creation flow
+- [Skip a particular step in the region onboarding flow](https://developer.tessell.com/reference/skipregiononboardingstep-1.md): Skip a particular step in the region onboarding flow
+- [Generate a script to register any compute resource with tessell](https://developer.tessell.com/reference/registervmscript.md): Generate a script to register any compute resource with tessell
+- [Register a compute resource after executing the script](https://developer.tessell.com/reference/registervm.md): Register a compute resource after executing the script
+- [Returns the list of user resources under a Tessell Subscription](https://developer.tessell.com/reference/getsubscriptionresources.md): Returns the list of user resources under a Tessell Subscription
+- [Track the progress of the ongoing subscription deletion operation](https://developer.tessell.com/reference/getsubscriptiondeletionprogress.md): Track the progress of the ongoing subscription deletion operation
+- [Fetch list of supported benchmarks (catalog)](https://developer.tessell.com/reference/getbenchmarkcatalog.md)
+- [Fetch benchmark catalog entry by id](https://developer.tessell.com/reference/getbenchmarkcatalogentrybyid.md)
+- [Fetch list of current benchmarks](https://developer.tessell.com/reference/getbenchmarks.md)
+- [Create new benchmark request](https://developer.tessell.com/reference/createbenchmark.md): Create new benchmark request
+- [Fetch benchmark by id](https://developer.tessell.com/reference/getbenchmarkbyid.md)
+- [Get a list of Tessell Encryption keys](https://developer.tessell.com/reference/getencryptionkeysconsumerview.md): Get a list of Tessell Encryption keys
+- [Get a list of eligible Tessell Encryption keys](https://developer.tessell.com/reference/geteligibleencryptionkeysconsumerview.md): Get a list of eligible Tessell Encryption keys
+- [Get a list of eligible Tessell Encryption keys](https://developer.tessell.com/reference/geteligibleencryptionkeys.md)
+- [Creates new encryption key](https://developer.tessell.com/reference/createencryptionkey.md): Creates new encryption key
+- [Get a list of Tessell Encryption keys](https://developer.tessell.com/reference/getencryptionkeys.md): Get a list of Tessell Encryption keys
+- [Disable Encryption Key](https://developer.tessell.com/reference/disableencryptionkeybyid.md): Disables Encryption Key by ID
+- [Enables Encryption Key](https://developer.tessell.com/reference/enableencryptionkeybyid.md): Enables Encryption Key by ID
+- [/encryption-keys/register](https://developer.tessell.com/reference/registerencryptionkeyexternal.md): Registers encryption key
+- [Creates/updates encryption key acls](https://developer.tessell.com/reference/createencryptionkeyacls.md): Creates/updates encryption key acls
+- [Revokes encryption key acls](https://developer.tessell.com/reference/revokeencryptionkeyacls.md): Revokes encryption key acls
+- [Get list of all the users by privileges](https://developer.tessell.com/reference/geteligibleusersforencryptionkeys.md): Gets list of all the users by privileges
+- [Upload encryption key file blob](https://developer.tessell.com/reference/uploadencryptionkeyfile.md): Upload encryption key file blob
+- [Get notification count](https://developer.tessell.com/reference/getnotificationscount.md): Get the current count of active notifications in the specified time
+- [Acknowledge notifications](https://developer.tessell.com/reference/batchacknowledgenotification.md): Acknowledges notifications
+- [Get notifications summary](https://developer.tessell.com/reference/getnotificationsummary.md): Get latest notifications summary for the current user.
+- [Returns the events for the user](https://developer.tessell.com/reference/getnotifications.md): Reads notification for the current user.
+- [Get a list of VPCs](https://developer.tessell.com/reference/getvpcs.md)
+- [Get VPC by Name](https://developer.tessell.com/reference/getvpcbyname.md)
+- [Get Default VPC Configuration](https://developer.tessell.com/reference/getdefaultvpcconfig.md)
+- [Update Tenant Password Policies](https://developer.tessell.com/reference/updatepasswordpolicy.md)
+- [Get Tenant Password Policies](https://developer.tessell.com/reference/getpasswordpolicybyid.md)
+- [Get a list of VPCs as an administrator](https://developer.tessell.com/reference/getvpcsgovernance.md)
+- [Create a VPC](https://developer.tessell.com/reference/createvpcgovernance.md)
+- [Get VPC as an administrator by Name](https://developer.tessell.com/reference/getvpcbynamegovernance.md)
+- [Delete a VPC](https://developer.tessell.com/reference/deletevpcgovernance.md)
+- [Register VPC from a BYOA subscription](https://developer.tessell.com/reference/registervpcgovernance.md)
+- [Get ACL (Access Control List) of a VPC](https://developer.tessell.com/reference/getvpcacls.md)
+- [Modify ACL (Access Control List) of a VPC](https://developer.tessell.com/reference/modifyvpcacls.md)
+- [Delete ACL (Access Control List) of a VPC](https://developer.tessell.com/reference/deletevpcacls.md)
+- [Get a list of Users with allowed accesses for a VPC](https://developer.tessell.com/reference/getvpceligibleuserlist.md)
+- [Apply action on a VPC](https://developer.tessell.com/reference/applyactiononvpc.md)
+- [Get a list of Subnets of a VPC](https://developer.tessell.com/reference/getvpcsubnetsgovernance.md)
+- [List VPCs from a BYOA Subscription to register in Tessell](https://developer.tessell.com/reference/getvpcstoregistergovernance.md)
+- [Get VPC and it's Subnets from a BYOA Subscription registered in Tessell](https://developer.tessell.com/reference/getregisteredvpcdetailsfromcloudgovernance.md)
+- [Track the progress of the ongoing VPC registration operation](https://developer.tessell.com/reference/trackvpcregistration-1.md): Track the progress of the ongoing VPC registration operation
+- [Skip a particular step in the VPC registration flow](https://developer.tessell.com/reference/skipvpcregistrationstep-1.md): Skip a particular step in the VPC registration flow
+- [Resubmit failed VPC registration](https://developer.tessell.com/reference/resubmitvpcregistration-1.md): Resubmit failed VPC registration
+- [Edit registered subnets of a VPC from a BYOA subscription](https://developer.tessell.com/reference/editregisteredvpcgovernance.md)
+- [List VPC Endpoints from a BYOA Subscription to register in Tessell](https://developer.tessell.com/reference/discovervpcendpointsgovernance.md)
+- [List Security Groups from a BYOA Subscription](https://developer.tessell.com/reference/discoversecuritygroupsgovernance.md)
+- [List Route Tables from a BYOA Subscription](https://developer.tessell.com/reference/discoverroutetablesgovernance.md)
+- [List Private Link Scopes from a BYOA Subscription](https://developer.tessell.com/reference/discoverprivatelinkscopes.md)
+- [Enable Genie for a specific database system](https://developer.tessell.com/reference/enablegenie.md): Enables Genie for a specific database system
+- [Disable Genie for a specific database system](https://developer.tessell.com/reference/disablegenie.md): Disable Genie for a specific database system
+- [Request access to VMs of a specific ÐB_SERVICE](https://developer.tessell.com/reference/getallrequests.md): Request access to VMs of a specific ÐB_SERVICE
+- [Request access to VMs of a specific ÐB_SERVICE](https://developer.tessell.com/reference/requestaccess.md): Request access to VMs of a specific ÐB_SERVICE
+- [get genie config for a tenant](https://developer.tessell.com/reference/getgenieconfigexternal.md)
+- [Extend Genie expiry time](https://developer.tessell.com/reference/extendcurrentgenierequest.md)
+- [Get status for a specific Genie request](https://developer.tessell.com/reference/checkrequeststatus.md)
+- [Downloads connection details](https://developer.tessell.com/reference/downloadgenieconnectiondetails.md): Download all the relevant details required for establishing the Genie connection to the VMs of a specific DB Service.
+- [Get a list of VPC Peerings of a VPC](https://developer.tessell.com/reference/getvpcpeeringsgovernance.md)
+- [Create a Peering between VPCs](https://developer.tessell.com/reference/createvpcpeeringgovernance.md)
+- [Get VPC Peering by Name for a given VPC](https://developer.tessell.com/reference/getvpcpeeringbynamegovernance.md)
+- [Delete Vpc Peering](https://developer.tessell.com/reference/deletevpcpeeringgovernance.md)
+- [Create a VPC Peering using AWS Cloudformation](https://developer.tessell.com/reference/createvpcpeeringawscloudformation.md)
+- [Get Cloudformation URL for VPC Peering](https://developer.tessell.com/reference/getvpcpeeringcloudformationurlgovernance.md)
+- [Get a list of Tessell Service Plans](https://developer.tessell.com/reference/getserviceplans.md)
+- [Get a list of enabled clouds in Tessell](https://developer.tessell.com/reference/getclouds.md)
+- [Add a cloud in Tessell](https://developer.tessell.com/reference/addcloud.md)
+- [Get a list of Tessell App](https://developer.tessell.com/reference/getapps.md)
+- [Get a list of all software images. Using the name filter, a software image can be found using name.](https://developer.tessell.com/reference/getsoftwareimages.md): Get a list of all software images.
+- [Get Software Image by name](https://developer.tessell.com/reference/getsoftwareimagebyname.md)
+- [Disable Software Images](https://developer.tessell.com/reference/disablesoftwareimages.md)
+- [Enable Software Images](https://developer.tessell.com/reference/enablesoftwareimages.md)
+- [Restrict Software Images to certain regions](https://developer.tessell.com/reference/restrictsoftwareimagesinregions.md)
+- [Restrict Software Images access to set of Personas](https://developer.tessell.com/reference/restrictaccesstosoftwareimages.md)
+- [List Software Images (including disabled ones)](https://developer.tessell.com/reference/getallsoftwareimages.md)
+- [Get Details of Patchable Software Image Version identified by ImageId and VersionId.](https://developer.tessell.com/reference/getpatchableimageversions.md)
+- [Returns all Ad Domain available.](https://developer.tessell.com/reference/getaddomainsserviceview.md): Returns all Ad Domain available.
+- [Returns an ad domain.](https://developer.tessell.com/reference/getaddomainbyid.md): Returns an ad domain.
+- [Get a list of Compute Profiles.](https://developer.tessell.com/reference/getcomputeprofiles.md): Get a list of Compute Profiles
+- [Get all available vcpus, even if some are disabled for an user](https://developer.tessell.com/reference/getallavailablevcpus.md): Get all available vcpus, even if some are disabled for an user
+- [Get a list of supported Integration Types](https://developer.tessell.com/reference/getintegrationtypes.md)
+- [Get Integration Type by Id](https://developer.tessell.com/reference/getintegrationtypebyid.md)
+- [Get a list of active Integrations (consumer view)](https://developer.tessell.com/reference/getintegrationsconsumerview.md)
+- [Get active Integration by Id (consumer view)](https://developer.tessell.com/reference/getintegrationbyidconsumerview.md)
+- [Create a new Integration](https://developer.tessell.com/reference/createintegration.md)
+- [Get a list of active Integrations](https://developer.tessell.com/reference/getintegrations.md)
+- [Get active Integration Details by Id](https://developer.tessell.com/reference/getintegrationbyid.md)
+- [Delete an Integration](https://developer.tessell.com/reference/deleteintegration.md)
+- [Update an Integration](https://developer.tessell.com/reference/updateintegration.md)
+- [Create/Update ACLs of an Integration](https://developer.tessell.com/reference/createintegrationacls.md)
+- [Revoke access of given users on an Integration](https://developer.tessell.com/reference/revokeintegrationacls.md)
+- [Get a list of all users along with role they are eligible on an Integration](https://developer.tessell.com/reference/geteligibleusersforintegration.md)
+- [Get all compute profiles.](https://developer.tessell.com/reference/getallcomputeprofiles.md): Get all compute profiles.
+- [Enable/Disable compute profile](https://developer.tessell.com/reference/updatecomputestatus.md): Enable/Disable compute profile
+- [Update compute regions](https://developer.tessell.com/reference/updatecomputeregions.md): Update compute regions
+- [Get a list of supported Database Parameters for all Database Engines with default configuration](https://developer.tessell.com/reference/getfactoryparameterprofiles.md)
+- [Create a new Parameter Profile](https://developer.tessell.com/reference/createdatabaseparameterprofile.md)
+- [Get a list of Parameter Profiles](https://developer.tessell.com/reference/getdatabaseparameterprofiles.md)
+- [Get a parameter profile by Id](https://developer.tessell.com/reference/getdatabaseparameterprofilebyid.md)
+- [Delete a Parameter Profile](https://developer.tessell.com/reference/deletedatabaseparameterprofile.md)
+- [Update a Parameter Profile](https://developer.tessell.com/reference/updatedatabaseparameterprofile.md)
+- [Compare two Parameter Profile configuration](https://developer.tessell.com/reference/comparedatabaseparameterconfigs.md)
+- [Copy Parameters of one Parameter Profile to other Parameter Profiles](https://developer.tessell.com/reference/copydatabaseparameterconfigs.md)
+- [Reset Parameters of Parameter Profile to its default values](https://developer.tessell.com/reference/resetparameterprofiletodefault.md)
+- [Get a list of available Parameter Profiles](https://developer.tessell.com/reference/getdatabaseparameterprofilesforconsumers.md)
+- [Check if Parameter Profile is deletable or not](https://developer.tessell.com/reference/isparameterprofiledeletable.md)
+- [View available Database Parameter Profiles by Id](https://developer.tessell.com/reference/getdatabaseparameterprofilebyidforconsumers.md)
+- [Provide Services/Instances that are using the Parameter Profile](https://developer.tessell.com/reference/getparameterprofileusages.md)
+- [Get a list of available Tessell Database Options Profile Types](https://developer.tessell.com/reference/getdatabaseoptionprofiletypes.md)
+- [Get Options Profile Types by name](https://developer.tessell.com/reference/getdatabaseoptionprofiletypesbyname.md)
+- [Create a new Options Profile](https://developer.tessell.com/reference/createdatabaseoptionprofile.md)
+- [Get a list of available Database Options Profiles](https://developer.tessell.com/reference/getdatabaseoptionprofiles.md)
+- [Get an Options Profile by name](https://developer.tessell.com/reference/getdatabaseoptionprofilesbyname.md)
+- [Get a list of available Tessell Database Options Profiles](https://developer.tessell.com/reference/getdatabaseoptionprofilesforconsumption.md)
+- [Get an Options Profile by name](https://developer.tessell.com/reference/getdatabaseoptionprofilesconsumptionbyname.md)
+- [Delete an Options Profile](https://developer.tessell.com/reference/deletedatabaseoptionprofile.md)
+- [Update an Options Profile](https://developer.tessell.com/reference/updatedatabaseoptionprofile.md)
+- [Get tickets](https://developer.tessell.com/reference/gettickets.md): Get tickets for the current user.
+- [Create ticket](https://developer.tessell.com/reference/createticket.md): Creates jira and freshdesk tickets for the user
+- [Get ticket by id](https://developer.tessell.com/reference/getticketbyid.md): returns ticket corresponding to an id
+- [Update ticket](https://developer.tessell.com/reference/updateticket.md): Updates ticket with the given id
+- [Open/Close a ticket](https://developer.tessell.com/reference/updateticketstatus.md): updates ticket status
+- [Update watchers list for a ticket](https://developer.tessell.com/reference/updatewatchers.md): Update watchers list for a ticket
+- [Get global watchers list](https://developer.tessell.com/reference/getglobalwatchers.md): Get global watchers list for a tenant
+- [Create global watchers list](https://developer.tessell.com/reference/createglobalwatchers.md): Create global watchers list for a tenant
+- [Update global watchers list](https://developer.tessell.com/reference/updateglobalwatchers.md): Update global watchers list for a tenant
+- [ticket's conversation](https://developer.tessell.com/reference/getticketconversations.md): Get conversations for a ticket
+- [Post ticket notes](https://developer.tessell.com/reference/postnotes.md): Post a ticket note for a ticket with the given id
+- [Add attachment](https://developer.tessell.com/reference/addattachment.md): Add attachments to a ticket
+- [Get agent list](https://developer.tessell.com/reference/getagents.md): returns a list of all agents
+- [Get agent by id](https://developer.tessell.com/reference/getagentbyid.md): returns an agent with the given id
+- [/logs/download](https://developer.tessell.com/reference/getlogsondb.md): Downloads the Logs on the Database Machine
+- [/logs/stream](https://developer.tessell.com/reference/streamdblogs.md): Stream database logs
+- [/logs/task/{taskId}](https://developer.tessell.com/reference/getlogsfortask.md): Returns the Logs corresponding to a task
+- [/logs/workflow/{workflowId}](https://developer.tessell.com/reference/getlogsforworkflow.md): Downloads the Logs corresponding to a workflow
+- [/logs/resources/logfiles](https://developer.tessell.com/reference/getdblogfiles.md): Get the log files available for a database
+- [/logs/resources/i/logfiles](https://developer.tessell.com/reference/getdblogfilesops.md): Get all the log files available for a database including host logs
+- [/logs/resources/i/loggroup](https://developer.tessell.com/reference/createloggroup.md): Create a log group
+- [/logs/service/{service-id}/script/download](https://developer.tessell.com/reference/downloadscriptlogs.md): Downloads the Script logs for Service
+- [/logs/resources/logfiles/cloud-info](https://developer.tessell.com/reference/logfilescloudinfo.md): Get the logs storage cloud info
+- [/logs/resources/i/loggroups/{logGroupName}/service-instance-info](https://developer.tessell.com/reference/getserviceinstanceinfo.md): Fetch Service Instance info using CloudWatch's Log Group name
+- [/logs/resources/aws/loggroup/i/update-retention](https://developer.tessell.com/reference/updateloggroupretention.md): Update AWS Cloudwatch log group rentention policy
+- [/monitoring/metrics/avg-db-load](https://developer.tessell.com/reference/getavgdbload.md): Returns Average DB Load
+- [/monitoring/metrics/top-dimensions](https://developer.tessell.com/reference/gettopdimensions.md): Returns Top dimensions
+- [/monitoring/metrics/extended-perf-metrics](https://developer.tessell.com/reference/getextendedperfmetrics.md): Returns Extended Perf Insights Metrics for a given metric
+- [/monitoring/metrics/top-processes](https://developer.tessell.com/reference/gettopprocesses.md): Returns top processes running on the vm
+- [/monitoring/metrics](https://developer.tessell.com/reference/getmonitoringmetrics.md): Returns the metrics data
+- [/monitoring/compute-resources/summary](https://developer.tessell.com/reference/getcomputeresourcesmonitoringsummary.md): View a list of available Compute Resources
+- [/monitoring/service/{id}/features/{feature-name}](https://developer.tessell.com/reference/getmonitoringfeature.md): Get monitoring feature details for a service
+- [/monitoring/service/{id}/features/{feature-name}](https://developer.tessell.com/reference/patchmonitoringfeature.md): Patches (enable / disable) monitoring features on a specific service
+- [/monitoring/infra](https://developer.tessell.com/reference/provisionmonitoringinfra.md): Provisioning a Monitoring Infra
+- [/monitoring/infras](https://developer.tessell.com/reference/getmonitoringinfras.md): Returns the Monitoring Infra deployment details
+- [/monitoring/infra/{id}](https://developer.tessell.com/reference/getmonitoringinfra.md): Gets the Monitoring Infra with the given id
+- [/monitoring/infra/{id}](https://developer.tessell.com/reference/deletemonitoringinfra.md): Deletes a Monitoring Infra
+- [/monitoring/infra/{id}/active-db-services](https://developer.tessell.com/reference/getmonitoringinfraactivedbservices.md): Gets all the active db services that are using the infra
+- [/monitoring/deployments/{deployment-id}](https://developer.tessell.com/reference/getmonitoringdeployment.md): Returns the monitoring service details data
+- [Create/Update ACLs of a Parameter Profile](https://developer.tessell.com/reference/createdbparameterprofileacls.md)
+- [Revoke access of given users from a Parameter Profile](https://developer.tessell.com/reference/revokedbparameterprofileacls.md)
+- [Create/Update ACLs of an Options Profile](https://developer.tessell.com/reference/createdboptionsprofileacls.md)
+- [Revoke access of given users from an Options Profile](https://developer.tessell.com/reference/revokedboptionsprofileacls.md)
+- [Get a list of all users along with role they are eligible on a Parameter Profile](https://developer.tessell.com/reference/getprivilegeduserfordbparameterprofile.md)
+- [Get a list of all users along with role they are eligible on an Options Profile](https://developer.tessell.com/reference/getprivilegeduserfordboptionsprofile.md)
+- [Update Options Profile's Maturity Status](https://developer.tessell.com/reference/updateoptionprofilestatus.md)
+- [Update Parameter Profile's Maturity Status](https://developer.tessell.com/reference/updateparameterprofilestatus.md)
+- [Reads event for the current user.](https://developer.tessell.com/reference/getevents.md): Reads event for the current user.
+- [Suppress an event type](https://developer.tessell.com/reference/suppressevent.md): Suppress an event type
+- [Unsuppress a previous suppressed event.](https://developer.tessell.com/reference/unsuppressevent.md): Unsuppress a previously suppressed event.
+- [View a list of Tessell Invoices](https://developer.tessell.com/reference/getinvoices.md): Returns an array of invoices corresponding to a tenant-id
+- [Get Invoice By Id](https://developer.tessell.com/reference/getinvoice.md): Returns invoice corresponding to an id
+- [Create a payment option update request](https://developer.tessell.com/reference/createpaymentoptionrequest.md): Creates a request for updating the payment option
+- [Update payment option](https://developer.tessell.com/reference/updatepaymentoption.md): Update the payment option in Tessell
+- [Cancel payment option request](https://developer.tessell.com/reference/cancelpaymentoptionrequest.md): Cancel an already requested payment option change request
+- [Get default payment option](https://developer.tessell.com/reference/getdefaultpaymentoption.md): View credit card listed with Tessell as default payment option
+- [/billing/meters](https://developer.tessell.com/reference/getmeteringdata.md): Get all hourly/daily/weekly/monthly Meters that include all usage and cost related details till date.
+- [/billing/bills](https://developer.tessell.com/reference/generatebill.md): Generate a bill based on the meters present for a provided start-date and end-date,
+- [/billing/bills](https://developer.tessell.com/reference/getbills.md): Get all the Bills
+- [/billing/rates](https://developer.tessell.com/reference/getrates.md): Get Tessell's billing rates for all computes and storage
+- [/billing/credits](https://developer.tessell.com/reference/getcredits.md): Get all the tenant's credits provided by the tessell
+- [/billing/credits/{id}](https://developer.tessell.com/reference/getcredit.md): Get credit by credit's Id that you want to fetch
+- [/billing/summary](https://developer.tessell.com/reference/getbillingsummary.md): Get billing summary for a tenant
+- [/billing/profile](https://developer.tessell.com/reference/getbillingprofile.md): Returns the details of the Billing profile that include billing address and payment details
+- [/billing/profile](https://developer.tessell.com/reference/updatebillingprofile.md): Update Billing profile that include billing address and payment details
+- [/billing/cost-till-date](https://developer.tessell.com/reference/getcosttilldate.md): Returns the meter cost for this month.
+- [Get regions](https://developer.tessell.com/reference/getregions.md): Returns the regions supported for subscription creation
+- [Returns a list detail of licenses from directory.](https://developer.tessell.com/reference/getlicensesfromdirectory.md): Returns a list detail of licenses from directory.
+- [Register license into license pool](https://developer.tessell.com/reference/registerlicensetodirectory.md): Register license into license pool
+- [Deletes an existing license from directory.](https://developer.tessell.com/reference/deletelicensefromdirectory.md): Deletes an existing license from directory.
+- [Create or update the DB Server ACLs](https://developer.tessell.com/reference/updatedbserveracls.md)
+- [Revoke DB Server Acls](https://developer.tessell.com/reference/revokedbserveracls.md)
+- [Get eligible users for a DB Server](https://developer.tessell.com/reference/getprivilegedusersfordbserver.md)
+- [Get eligible users for DB Servers](https://developer.tessell.com/reference/listeligibleusersfordbservers.md)
+- [Bulk share multiple DB Servers with multiple users, does not override the existing ACL if present](https://developer.tessell.com/reference/updatedbserversacls.md): Share multiple DB Servers with multiple users in a single operation. This is more efficient than individual ACL operations when sharing multiple resources.
+- [Get DB schema for a service](https://developer.tessell.com/reference/getdbschemabytessellserviceid.md): Retrieves the latest captured database schema for the specified DB service ID.
+- [Update the option profiles for a service](https://developer.tessell.com/reference/updatedbserviceoptionprofiles.md)
+- [get the status of option profile for a given service](https://developer.tessell.com/reference/getoptionprofilestatus.md)
+- [Get maintenance windows for given service](https://developer.tessell.com/reference/getmaintenancewindowsforservice.md)
+- [Update maintenance window config for given service](https://developer.tessell.com/reference/updatemaintenancewindowforservice.md)
+- [Get maintenance window by Id](https://developer.tessell.com/reference/getmaintenancewindowbyid.md)
+- [Update maintenance window](https://developer.tessell.com/reference/updatemaintenancewindow.md)
+- [Trigger maintenance window](https://developer.tessell.com/reference/triggermaintenancewindow.md)
+- [Apply Maintenance Window Task](https://developer.tessell.com/reference/applymaintenancewindowtasks.md)
+- [Remove task from existing maintenance window](https://developer.tessell.com/reference/cancelmaintenancewindowtask.md)
+- [Refresh service with parent service's snapshot or pitr.](https://developer.tessell.com/reference/refreshservice.md)
+- [Fetch all the refresh schedules for a service](https://developer.tessell.com/reference/getrefreshschedules.md)
+- [Create refresh schedule for a service](https://developer.tessell.com/reference/createrefreshschedule.md)
+- [Update the refresh schedule](https://developer.tessell.com/reference/updaterefreshschedule.md)
+- [Delete the refresh schedule](https://developer.tessell.com/reference/deleterefreshschedule.md)
+- [Update the refresh schedule status](https://developer.tessell.com/reference/updaterefreshschedulestatus.md)
+- [/data-pipelines](https://developer.tessell.com/reference/getdatapipelines.md): Get details of all the data pipelines
+- [/data-pipelines](https://developer.tessell.com/reference/createdatapipeline.md)
+- [/data-pipelines/{id}](https://developer.tessell.com/reference/getdatapipeline.md)
+- [/data-pipelines/{id}](https://developer.tessell.com/reference/deletedatapipeline.md)
+- [/data-pipelines/{id}/resume](https://developer.tessell.com/reference/startdatapipeline.md)
+- [/data-pipelines/{id}/pause](https://developer.tessell.com/reference/pausedatapipeline.md)
+- [/data-pipelines/{id}/db-services/{dp-db-service-id}/db-schema](https://developer.tessell.com/reference/getdatapipelineservicedatabaseschema.md)
+- [/data-pipelines/{id}/db-services/{dp-db-service-id}](https://developer.tessell.com/reference/detachdbservicefromdatapipeline.md): Detach Tessell DB Service from the Data Pipeline.
+- [/data-pipelines/{id}/db-services/{dp-db-service-id}/resume](https://developer.tessell.com/reference/startdatapipelinedbserviceoperations.md): Start Data Pipeline's DB Service Change Data Capture Operations.
+- [/data-pipelines/{id}/db-services/{dp-db-service-id}/pause](https://developer.tessell.com/reference/pausedatapipelinedbserviceoperations.md): Pause Data Pipeline's DB Service Change Data Capture Operations.
+- [/data-pipelines/db-services/{service-id}/publish-data](https://developer.tessell.com/reference/publishservicetodatapipeline.md)
+- [Track the progress of the ongoing data pipeline creation operation](https://developer.tessell.com/reference/trackdatapipelinecreation.md): Track the progress of the ongoing data pipeline creation operation
+- [Track the progress of the ongoing data pipeline DB service operation](https://developer.tessell.com/reference/trackdpdbserviceoperation.md)
+- [Returns the metrics data for Azure Event Hub Namespace](https://developer.tessell.com/reference/getpipelineazureeventhubmetrics.md)
+- [Returns the list of eligible DB services for the Data Pipeline](https://developer.tessell.com/reference/geteligibledbservicesforpipeline.md)
+- [Returns the list of eligible Data Pipelines for the DB Service](https://developer.tessell.com/reference/geteligiblepipelinesfordbservice.md)
+- [Get details of outbound access requests from the vpc / vnet](https://developer.tessell.com/reference/getnetworkoutboundaccessrules.md)
+- [Allow private cp dp endpoints](https://developer.tessell.com/reference/allowprivateendpointtenantinfra.md)
+- [Get details of control plane endpoint services](https://developer.tessell.com/reference/getdpcpcommunicationresources.md)
+- [Validate encryption key permissions for a key](https://developer.tessell.com/reference/validateencryptionkeypermissions.md)
+- [Get the encryption key policy](https://developer.tessell.com/reference/getencryptionkeypolicy.md)
+- [List Encryption Keys from a BYOA Subscription to register in Tessell](https://developer.tessell.com/reference/getencryptionkeystoregister.md)
+- [Register Encryption Key from a BYOA Subscription](https://developer.tessell.com/reference/registerencryptionkeyv2.md)
+- [Get a list of RPO policies](https://developer.tessell.com/reference/getrpopoliciesconsumptionview.md)
+- [Get details about a RPO policy](https://developer.tessell.com/reference/getrpopolicyconsumptionview.md)
+- [Get a list of custom RPO policies](https://developer.tessell.com/reference/getrpopolicies.md)
+- [Create a new custom RPO policy](https://developer.tessell.com/reference/createrpopolicy.md)
+- [Get details of a custom RPO policy](https://developer.tessell.com/reference/getrpopolicy.md)
+- [Update a custom RPO policy](https://developer.tessell.com/reference/updaterpopolicy.md)
+- [Delete a RPO policy](https://developer.tessell.com/reference/deleterpopolicy.md)
+- [Update RPO Policy maturity status](https://developer.tessell.com/reference/updaterpopolicymaturitystatus.md)
+- [Get details of Availability Machines which are using the RPO policy](https://developer.tessell.com/reference/getrpopolicyusage.md)
+- [Create a Notification Profile](https://developer.tessell.com/reference/createnotificationprofile.md)
+- [Get Notification Profiles](https://developer.tessell.com/reference/getnotificationprofiles.md)
+- [Get Notification Profile by ID](https://developer.tessell.com/reference/getnotificationprofilebyid.md)
+- [Update a Notification Profile Info by Id](https://developer.tessell.com/reference/updatenotificationprofileinfobyid.md)
+- [Delete Notification Profile corresponding to given id](https://developer.tessell.com/reference/deletenotificationprofile.md)
+- [Add a Notification Profile Destination](https://developer.tessell.com/reference/addnotificationprofiledestinations.md)
+- [Add a Notification Profile Destination](https://developer.tessell.com/reference/updatenotificationprofiledestinations.md)
+- [Delete a Destination corresponding to given channelId (destId)](https://developer.tessell.com/reference/deletenotificationprofiledestination.md)
+- [Create Notification Channels](https://developer.tessell.com/reference/createnotificationchannel.md)
+- [/governance/notification-channels](https://developer.tessell.com/reference/getnotificationchannels.md): Get Notification Channels
+- [/governance/notification-channels/{id}](https://developer.tessell.com/reference/getnotificationchannelbyid.md): Get Notification Channel by ID
+- [/governance/notification-channels/{id}](https://developer.tessell.com/reference/deletenotificationchannel.md)
+- [/governance/notification-channels/{id}](https://developer.tessell.com/reference/updatenotificationchannel.md): Updates a Notification Channel
+- [Get FSx NetApp(s) available for Provisioning DB services](https://developer.tessell.com/reference/getfsxnetappsconsumerresponse.md)
+- [Get FSx NetApp(s) registered with Tessell](https://developer.tessell.com/reference/getfsxnetapps.md)
+- [Get the FSx NetApp policy to enable access of resouces from aws](https://developer.tessell.com/reference/getfsxnetapppolicy.md)
+- [Get FSx NetApp registered with Tessell](https://developer.tessell.com/reference/getfsxnetapp.md)
+- [Update creds of FSx NetApp](https://developer.tessell.com/reference/updatefsxnetappcredentials.md)
+- [Sync details of FSx NetApp with cloud](https://developer.tessell.com/reference/syncfsxnetapp.md)
+- [Discover FSx NetApps](https://developer.tessell.com/reference/discoverfsxnetapps.md)
+- [Register FSx NetApp if not already registered](https://developer.tessell.com/reference/registerfsxnetapp.md)
+- [De-Register FSx NetApp](https://developer.tessell.com/reference/deregisterfsxnetapp.md)
+- [Discover Storage Virtual Machine(s) for a FSx NetApp](https://developer.tessell.com/reference/discoverfsxnetappsvms.md)
+- [Register FSx NetApp Storage Virtual Machine if not already registered](https://developer.tessell.com/reference/registerfsxnetappsvms.md)
+- [De-Register FSx NetApp Storage Virtual Machine](https://developer.tessell.com/reference/deregisterfsxnetappsvm.md)
+- [/storages/governance/fsx-netapp/{fsx-id}/metrics](https://developer.tessell.com/reference/getfsxnetappcloudmetrics.md): Returns the metrics data for FSx NetApp for iops, throughput and storage distribution
+- [/storages/governance/fsx-netapp/{fsx-id}/volumes/{volume-id}/metrics](https://developer.tessell.com/reference/getfsxnetappvolumecloudmetrics.md): Returns the metrics data for a FSx NetApp volume for iops, throughput and storage distribution
+- [/infrastructures/exadata/infrastructures/discovery](https://developer.tessell.com/reference/discoverexadatainfrastructures.md): Get a list of all discovered infrastructures in given subscription.
+- [/infrastructures/exadata/infrastructures/{id}/vm-clusters/discovery](https://developer.tessell.com/reference/discoverexadatavmclusters.md): Get a list of all discovered Vm clusters.
+- [/infrastructures/exadata/infrastructures](https://developer.tessell.com/reference/getexadatainfrastructures.md): Get all infrastructures
+- [/infrastructures/exadata/infrastructures/{id}](https://developer.tessell.com/reference/getexadatainfrastructurebyid.md): Get infrastructure by Id
+- [/infrastructures/exadata/infrastructures/{id}](https://developer.tessell.com/reference/deregisterexadatainfrastructure.md): Deregister Exadata Infrastructure
+- [/infrastructures/exadata/infrastructures/{id}/vm-clusters](https://developer.tessell.com/reference/getexadatavmclusters.md): Get all vm-clusters for infrastructure
+- [/infrastructures/exadata/infrastructures/{id}/vm-clusters/{cluster-id}](https://developer.tessell.com/reference/getexadatavmclusterbyid.md): Get vm-cluster by Id for infrastructure
+- [/infrastructures/exadata/infrastructures/{id}/vm-clusters/{cluster-id}](https://developer.tessell.com/reference/deregisterexadatavmcluster.md): Deregister Exadata VmCluster
+- [/infrastructures/exadata/infrastructures/register](https://developer.tessell.com/reference/registerexadatainfrastructure.md): Register Exadata Infrastructure
+- [/infrastructures/exadata/infrastructures/{id}/sync](https://developer.tessell.com/reference/syncexadatainfrastructurewithclusters.md): Sync exadata infrastructure & clusters with cloud
+- [/infrastructures/exadata/infrastructures/{id}/vm-clusters/register](https://developer.tessell.com/reference/registerexadatavmcluster.md): Register Exadata VM Cluster for already registered Exadata Infrastructure
+- [/infrastructures/exadata/vm-clusters/{id}/metrics](https://developer.tessell.com/reference/getvmclustermetricsbyid.md): Returns the metrics data for VM cluster
+- [Get Azure NetApp(s) available for Provisioning DB services](https://developer.tessell.com/reference/getazurenetappsconsumerresponse.md)
+- [Get tickets](https://developer.tessell.com/reference/getticketsv2.md): Get tickets for the current user.
+- [Create ticket](https://developer.tessell.com/reference/createticketv2.md): Creates jira and freshdesk tickets for the user
+- [Get ticket by id](https://developer.tessell.com/reference/getticketbyidv2.md): returns ticket corresponding to an id
+- [Update ticket](https://developer.tessell.com/reference/updateticketv2.md): Updates ticket with the given id
+- [Open/Close a ticket](https://developer.tessell.com/reference/updateticketstatusv2.md): updates ticket status
+- [Update watchers list for a ticket](https://developer.tessell.com/reference/updatewatchersv2.md): Update watchers list for a ticket
+- [Discover Azure NetApp Accounts(s)](https://developer.tessell.com/reference/discoverazurenetapps.md)
+- [Discover Capacity Pools(s) for a Azure NetApp](https://developer.tessell.com/reference/discoverazurenetappcapacitypools.md)
+- [Register Azure NetApp if not already registered](https://developer.tessell.com/reference/registerazurenetapp.md)
+- [Register Azure NetApp Capacity Pools if not already registered](https://developer.tessell.com/reference/registerazurenetappcapacitypools.md)
+- [De-Register Azure NetApp](https://developer.tessell.com/reference/deregisterazurenetapp.md)
+- [De-Register Azure NetApp](https://developer.tessell.com/reference/deregisterazurenetappcapacitypool.md)
+- [Get the Azure NetApp policy to enable access of resources from azure](https://developer.tessell.com/reference/getazurenetapppolicy.md)
+- [Get Azure NetApp(s) registered with Tessell](https://developer.tessell.com/reference/getazurenetapps.md)
+- [Get Azure NetApp registered with Tessell](https://developer.tessell.com/reference/getazurenetapp.md)
+- [Get the Azure NetApp Quotas for a region](https://developer.tessell.com/reference/getazurenetappquotaforsubscription.md)
+- [Sync details of Azure NetApp with cloud](https://developer.tessell.com/reference/syncazurenetapp.md)
+- [ticket's conversation](https://developer.tessell.com/reference/getticketconversationsv2.md): Get conversations for a ticket
+- [Post ticket reply](https://developer.tessell.com/reference/postreplyv2.md): Post a ticket reply for a ticket with the given id
+- [Post ticket notes](https://developer.tessell.com/reference/postnotesv2.md): Post a ticket note for a ticket with the given id
+- [Get list of Sanitization Schedules that are associated with an Availability Machine](https://developer.tessell.com/reference/getamsanitizationschedulesserviceview.md)
+- [Create a new Sanitization Schedule for an Availability Machine](https://developer.tessell.com/reference/createamsanitizationschedulesserviceview.md)
+- [Get details about a Sanitization Schedule](https://developer.tessell.com/reference/getamsanitizationscheduleserviceview.md)
+- [Submit a request to delete the Sanitization Schedule](https://developer.tessell.com/reference/deleteamsanitizationscheduleserviceview.md)
+- [Update a Sanitization `Schedule`](https://developer.tessell.com/reference/updateamsanitizationscheduleserviceview.md)
+- [Create Alert Profile](https://developer.tessell.com/reference/createalertprofile.md)
+- [Get a list of alert Profiles](https://developer.tessell.com/reference/getalertprofiles.md)
+- [Get Alert Profile by Id](https://developer.tessell.com/reference/getalertprofilebyid.md)
+- [Update a Alert Profile by Id](https://developer.tessell.com/reference/updatealertprofilebyid.md)
+- [Delete Alert Profile corresponding to given id](https://developer.tessell.com/reference/deletealertprofilebyid.md)
+- [Create Alert Entity](https://developer.tessell.com/reference/createalertentity.md)
+- [Get Alert Entities](https://developer.tessell.com/reference/getalertentities.md)
+- [Get Alert entity](https://developer.tessell.com/reference/getalertentity.md)
+- [Update a Alert Entity by Id](https://developer.tessell.com/reference/updatealertentitybyid.md)
+- [Delete Alert Entity corresponding to given id](https://developer.tessell.com/reference/deletealertentitybyid.md)
+- [Get Alert Policies](https://developer.tessell.com/reference/getalertpolicies.md)
+- [Create Alert Policy](https://developer.tessell.com/reference/createalertpolicy.md)
+- [Get Alert Policy by Id](https://developer.tessell.com/reference/getalertpolicybyid.md)
+- [Update a Alert Policy by Id](https://developer.tessell.com/reference/updatealertpolicybyid.md)
+- [Delete Alert Policy corresponding to given id](https://developer.tessell.com/reference/deletealertpolicybyid.md)
+- [Get Alert Policy Associations](https://developer.tessell.com/reference/getalertpolicyassociations.md)
+- [Create or Update Alert Policy Associations by Subscription Id](https://developer.tessell.com/reference/createupdatealertpolicyassociations.md)
+- [Delete Alert Policy Associations by Subscription Id](https://developer.tessell.com/reference/deletealertpolicyassociations.md)
+- [Get Alert Policy Association Details](https://developer.tessell.com/reference/getalertpolicyassociationdetails.md)
+- [Get Alert Rules Configuration](https://developer.tessell.com/reference/getalertrulesconfig.md)
+- [Get Alert Annotations Catalog](https://developer.tessell.com/reference/getalertannotationscatalog-1.md): Returns a catalog of available alert annotations.
+- [Get List of Active Directory Domain](https://developer.tessell.com/reference/getaddomainsgovernance.md)
+- [Register an Active Directory Domain](https://developer.tessell.com/reference/registeraddomain.md)
+- [Reconfigure an Active Directory Domain](https://developer.tessell.com/reference/reconfigureaddomain.md)
+- [Deregister an Active Directory Domain](https://developer.tessell.com/reference/deregisteraddomain.md)
+- [Return all activities to the user](https://developer.tessell.com/reference/getactivities.md)
+- [Provides ability to marks one/all notifications as read/notified for the current logged-in user](https://developer.tessell.com/reference/updateactivitynotifications.md)
+- [Add/update Security Configuration for the DB Server](https://developer.tessell.com/reference/updatedbserversecurityconfiguration.md)
+- [Update Security Configuration for instances in service](https://developer.tessell.com/reference/updatedbservicesecurityconfiguration.md)
+- [Get the status of tessell agent](https://developer.tessell.com/reference/gettessellagentstatus.md)
+- [Run prechecks for provisioning a DB service](https://developer.tessell.com/reference/runprechecksforprovision.md): Initiates cloud validation checks before provisioning a DB service. Returns a precheck ID that can be used to poll for status and retrieve the report.
+- [Get precheck status](https://developer.tessell.com/reference/getprecheckstatus.md): Returns the current status of a precheck request
+- [Get precheck report](https://developer.tessell.com/reference/getprecheckreport.md): Returns the detailed precheck report with individual check results
+- [Run prechecks for adding service instances to a DB service](https://developer.tessell.com/reference/runprechecksforserviceinstances.md): Initiates cloud validation checks before adding service instances to a DB service. Returns a precheck ID that can be used to poll for status and retrieve the report.
+- [Run prechecks for resizing a DB service](https://developer.tessell.com/reference/runprechecksforresize.md): Initiates cloud validation checks before resizing a DB service. Returns a precheck ID that can be used to poll for status and retrieve the report.
+- [Run prechecks for cloning a DB service](https://developer.tessell.com/reference/runprechecksforclone.md): Initiates cloud validation checks before cloning a DB service. Returns a precheck ID that can be used to poll for status and retrieve the report.
+- [Get maintenance details for services](https://developer.tessell.com/reference/getservicemaintenancedetails.md)
+- [Start maintenance for selected entities (services or servers)](https://developer.tessell.com/reference/startmaintenancewindows.md): Unified endpoint to start maintenance windows for both services and servers
+- [Schedule maintenance windows for services (supports existing MW, custom date/time, or start now)](https://developer.tessell.com/reference/scheduleservicemaintenancewindows.md)
+- [Edit maintenance windows for services](https://developer.tessell.com/reference/updateservicemaintenancewindows.md)
+- [Get maintenance details for servers](https://developer.tessell.com/reference/getservermaintenancedetails.md)
+- [Schedule maintenance windows for servers (supports existing MW, custom date/time, or start now)](https://developer.tessell.com/reference/scheduleservermaintenancewindows.md)
+- [Edit maintenance windows for servers](https://developer.tessell.com/reference/updateservermaintenancewindows.md)
+- [Delete maintenance window for a specific service](https://developer.tessell.com/reference/deleteservicemaintenancewindow.md)
+- [Get detailed maintenance information for a specific service](https://developer.tessell.com/reference/getservicemaintenancedetailsbyid.md)
+- [Edit maintenance window for a single service](https://developer.tessell.com/reference/updatesingleservicemaintenancewindow.md)
+- [Start maintenance for a single service](https://developer.tessell.com/reference/startsingleservicemaintenance.md)
+- [Get detailed maintenance information for a specific server](https://developer.tessell.com/reference/getservermaintenancedetailsbyid.md)
+- [Edit maintenance window for a single server](https://developer.tessell.com/reference/updatesingleservermaintenancewindow.md)
+- [Start maintenance for a single server](https://developer.tessell.com/reference/startsingleservermaintenance.md)
+- [Schedule maintenance for a single server (supports existing MW, custom date/time, or start now)](https://developer.tessell.com/reference/schedulesingleservermaintenance.md)
+- [Configure maintenance window for a single server](https://developer.tessell.com/reference/configuresingleservermaintenancewindow.md)
+- [Create a Security Profile](https://developer.tessell.com/reference/createsecurityprofile.md)
+- [Get a list of Security Profiles](https://developer.tessell.com/reference/getsecurityprofiles.md)
+- [Update Security Profile metadata](https://developer.tessell.com/reference/updatesecurityprofileinfo.md): Updates the basic information of an existing Security Profile (for example name, description, subscription, and regions).
+- [Delete a Security Profile](https://developer.tessell.com/reference/deletesecurityprofile.md)
+- [Get a Security Profile by Id](https://developer.tessell.com/reference/getsecurityprofilebyid.md)
+- [Update Security Profile status](https://developer.tessell.com/reference/updatesecurityprofilestatus.md): Updates the status of a Security Profile
+- [Provide Servers and Databases that are using the Security Profile](https://developer.tessell.com/reference/getsecurityprofileusages.md)
+- [Check if Security Profile is deletable or not](https://developer.tessell.com/reference/issecurityprofiledeletable.md)
+- [Add rule to a Security Profile](https://developer.tessell.com/reference/addsecurityprofilerule.md)
+- [Update a Security Profile rule](https://developer.tessell.com/reference/updatesecurityprofilerule.md)
+- [Delete a Security Profile rule](https://developer.tessell.com/reference/deletesecurityprofilerule.md)
+- [Get a Security Profile version](https://developer.tessell.com/reference/getsecurityprofilebyversionid.md)
+- [Get a list of Security Tags](https://developer.tessell.com/reference/getsecuritytags.md)
+- [Create or update the Security Profile ACLs](https://developer.tessell.com/reference/updatesecurityprofileacls.md)
+- [Revoke Security Profile Acls](https://developer.tessell.com/reference/revokesecurityprofileacls.md)
+- [Get eligible users for a Security Profile](https://developer.tessell.com/reference/getprivilegedusersforsecurityprofile.md)

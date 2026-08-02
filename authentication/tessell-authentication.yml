@@ -1,0 +1,22 @@
+generated: '2026-07-21'
+method: searched
+source: openapi/tessell-openapi-original.json
+docs: https://developer.tessell.com/docs/getting-started
+summary:
+  types:
+  - http
+  flow: api-key-exchange-to-bearer
+schemes:
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  sources:
+  - openapi/tessell-openapi-original.json
+  detail: >-
+    Tokens are minted by exchanging tenant credentials for an access token: obtain a Tenant ID and
+    API Key during onboarding, then POST to /iam/authorize with headers tenant-id,
+    content-type: application/json and the API key in the body (operationId authorizeApiKey). The
+    returned token is sent as the Authorization header on every call to
+    https://api.console.tessell.com. API keys themselves are managed via /iam/api-keys
+    (createApiKey, getApiKeys, revokeApiKey). No OAuth 2.0 / OIDC flow is exposed on the public
+    API; console sign-in supports SSO/identity providers separately.

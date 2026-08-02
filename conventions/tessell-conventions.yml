@@ -1,0 +1,68 @@
+generated: '2026-07-21'
+method: derived
+source: >-
+  Derived from openapi/tessell-openapi-original.json (588 operations) and the getting-started docs
+  at https://developer.tessell.com/docs/getting-started. Tessell publishes no consolidated
+  conventions page; these are the cross-cutting semantics the contract and docs imply.
+description: >-
+  How the Tessell control-plane REST API behaves across operations: tenant-scoped API-key-to-bearer
+  authentication, offset pagination on list endpoints, async task semantics for long-running
+  database operations, and a plain-JSON error envelope.
+base_url: https://api.console.tessell.com
+api_style: REST over HTTPS, JSON requests and responses
+authentication:
+  scheme: >-
+    Exchange a tenant API key for a bearer token via POST /iam/authorize (headers: tenant-id,
+    content-type: application/json); subsequent calls send the token in the Authorization header
+    (OpenAPI securityScheme BearerAuth, type http bearer).
+  docs: https://developer.tessell.com/docs/getting-started
+  detail: authentication/tessell-authentication.yml
+idempotency:
+  supported: false
+  notes: >-
+    No Idempotency-Key header or idempotency contract appears anywhere in the OpenAPI (0 matches)
+    or the developer docs. Mutating operations (provision, clone, restore, resize) are modeled as
+    asynchronous tasks instead.
+pagination:
+  style: offset
+  request_params:
+    page-size: 'number of records per page (default 10 on service listings)'
+    page-offset: 'zero-based page offset (default 0)'
+  notes: >-
+    Offset pagination via page-size/page-offset query parameters appears on list endpoints (e.g.
+    getTessellServices); most sub-resource listings return unpaginated arrays.
+async_operations:
+  supported: true
+  notes: >-
+    Long-running database operations (provision, clone, restore, patch, resize, maintenance,
+    prechecks) return task/precheck identifiers that are polled via status endpoints (e.g.
+    getPrecheckStatus, service timeline via getTessellServiceTimeline).
+field_expansion:
+  supported: true
+  notes: >-
+    List endpoints accept boolean expansion flags rather than a generic expand parameter — e.g.
+    load-instances (default true), load-databases, load-updates-info on getTessellServices.
+metadata:
+  supported: false
+  notes: No free-form metadata object on resources; resources support name/description and tags.
+resource_tags:
+  supported: true
+  notes: >-
+    DB services support key/value tags managed via getTessellServiceTags, upsertTessellServiceTags,
+    and deleteTessellServiceTags.
+request_tracing:
+  supported: partial
+  notes: >-
+    No request-id / correlation request header is documented, but the common ApiError envelope
+    returns contextId and sessionId correlation identifiers on every error response.
+versioning:
+  scheme: none-published
+  detail: lifecycle/tessell-lifecycle.yml
+error_envelope:
+  format: plain JSON (no RFC 9457 application/problem+json anywhere in the contract)
+  detail: errors/tessell-problem-types.yml
+rate_limits:
+  signaling: none-documented
+  notes: No rate-limit headers or limits are documented in the OpenAPI or developer docs.
+time_zone:
+  notes: List/timeline endpoints accept a time-zone query parameter defaulting to UTC.

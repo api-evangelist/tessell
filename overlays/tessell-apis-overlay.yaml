@@ -1,0 +1,34 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Tessell API
+  version: 1.0.0
+  x-generated: '2026-07-21'
+  x-method: generated
+extends: openapi/tessell-openapi-original.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist:
+      slug: tessell
+      harvested: '2026-07-21'
+      source: https://developer.tessell.com/openapi/tessell-apis.yaml
+      notes: >-
+        Spec published through the ReadMe developer hub (developer.tessell.com). Servers use a
+        {server} variable defaulting to console.tessell.com; the documented public API endpoint is
+        https://api.console.tessell.com and authentication exchanges a tenant API key for a bearer
+        token via POST /iam/authorize.
+      artifacts:
+        authentication: authentication/tessell-authentication.yml
+        conventions: conventions/tessell-conventions.yml
+        errors: errors/tessell-problem-types.yml
+        lifecycle: lifecycle/tessell-lifecycle.yml
+        data-model: data-model/tessell-data-model.yml
+- target: $.info.termsOfService
+  update: null
+  description: >-
+    The published termsOfService URL (https://www.tessell.com/terms) returned HTTP 404 on
+    2026-07-21; no public terms-of-service page was found on tessell.com.
+- target: $.servers
+  update:
+  - url: https://api.console.tessell.com
+    description: Documented public API endpoint (developer.tessell.com/docs/getting-started)

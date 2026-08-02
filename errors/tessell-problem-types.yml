@@ -1,0 +1,47 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/tessell-openapi-original.json
+format: plain-json
+description: >-
+  Error semantics derived from the Tessell OpenAPI contract (588 operations). The API does not
+  declare explicit per-status 4xx/5xx responses and does not use RFC 9457
+  application/problem+json (0 occurrences): every operation declares 2xx responses plus a single
+  "default" error response carrying a common JSON error envelope — ApiError on 570 operations,
+  ApiErrorOps (the ops/internal variant, which adds a userView) on 14, and 4 operations with no
+  error content declared.
+envelope:
+  schema: ApiError
+  media_type: application/json
+  declared_on_operations: 570
+  fields:
+  - name: code
+    type: string
+    description: Status code for the error response
+  - name: message
+    type: string
+    description: Error message for API response
+  - name: resolution
+    type: string
+    description: Suggested resolution for the error
+  - name: timestamp
+    type: string
+    format: date-time
+  - name: contextId
+    type: string
+    description: ContextId of API request (correlation/tracing identifier)
+  - name: sessionId
+    type: string
+    description: SessionId of API request
+  - name: tessellErrorCode
+    type: string
+    description: Unique error code specific to Tessell
+ops_envelope:
+  schema: ApiErrorOps
+  media_type: application/json
+  declared_on_operations: 14
+  notes: Same fields as ApiError plus userView ($ref TessellExceptionUserView) for internal/ops APIs.
+problems: []
+notes: >-
+  No public error-code registry (tessellErrorCode values) is published in the developer docs, so
+  problems[] is empty rather than fabricated. Success statuses observed across the contract:
+  200 (580 ops), 201 (61), 202 (5), 204 (63).

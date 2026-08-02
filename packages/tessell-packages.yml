@@ -1,0 +1,35 @@
+generated: '2026-07-21'
+method: searched
+source: >-
+  npm, PyPI, Maven Central, NuGet, pkg.go.dev, RubyGems, Packagist, crates.io and the Terraform
+  Registry searched 2026-07-21. Tessell ships no language SDKs on the public registries (PyPI
+  "tessell*" 404, npm has no first-party package); its first-party client surface is the Terraform
+  provider plus the REST API itself (the console's "Code Equivalent" button emits raw API calls).
+packages:
+- language: go
+  registry: terraform
+  name: tessell-cloud/tessell
+  url: https://registry.terraform.io/providers/tessell-cloud/tessell/latest
+  source: https://github.com/tessell-cloud/terraform-provider-tessell
+  version: 0.0.33
+  published: '2026-07-13'
+  install: |
+    terraform {
+      required_providers {
+        tessell = {
+          source = "tessell-cloud/tessell"
+        }
+      }
+    }
+  official: true
+  notes: >-
+    First-party Terraform provider (Mozilla Public License 2.0), configured with
+    TESSELL_API_ADDRESS, TESSELL_API_KEY, and TESSELL_TENANT_ID. The only public repo in the
+    tessell-cloud GitHub org.
+- language: typescript
+  registry: npm
+  name: '@cdktf-providers/tessell-cloud-tessell'
+  url: https://www.npmjs.com/package/@cdktf-providers/tessell-cloud-tessell
+  install: npm install @cdktf-providers/tessell-cloud-tessell
+  official: false
+  notes: Community prebuilt CDK for Terraform binding of the official provider (publisher shunueda).

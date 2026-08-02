@@ -1,0 +1,40 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/tessell-openapi-original.json
+type: Webhooks
+description: >-
+  Tessell publishes no AsyncAPI document, but the control-plane API exposes a real outbound
+  event/notification surface: notification profiles route platform events to configurable
+  destinations including generic webhooks, email, Slack, Splunk, and other channels. This file
+  captures that webhook/notification catalog as derived from the OpenAPI contract; it is not a
+  fabricated AsyncAPI spec.
+event_surface:
+  notification_profiles:
+    description: >-
+      Governance objects that select which platform events to deliver and to which destinations.
+      Destination payload schemas in the contract include webhook
+      (NotificationProfileWebhookCreateUpdatePayload with an endpoint), email, Slack, and Splunk
+      variants (NotificationProfileDestinationsCreateUpdatePayload).
+    operations:
+    - openapi/tessell-openapi-original.json#/governance/notification-profiles
+    - openapi/tessell-openapi-original.json#/governance/notification-profiles/{id}/destinations
+  notification_channels:
+    description: Channel objects managed under /governance/notification-channels.
+    operations:
+    - openapi/tessell-openapi-original.json#/governance/notification-channels
+  in_app_notifications:
+    description: >-
+      Pull-based notification feed for the console under /event-service/notifications (count,
+      summary, batch-acknowledge) and /activity-center/notifications.
+    operations:
+    - openapi/tessell-openapi-original.json#/event-service/notifications
+    - openapi/tessell-openapi-original.json#/activity-center/notifications
+destination_types:
+- webhook
+- email
+- slack
+- splunk
+notes: >-
+  No event payload schemas for the outbound webhook deliveries are published in the developer
+  docs; the schemas above describe destination configuration only, so no AsyncAPI document can be
+  honestly constructed.
