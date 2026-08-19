@@ -1,0 +1,157 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center tessell-compute-resource-acl-controller API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "tessell-compute-resource-acl-controller",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create or update the DB Server ACLs",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/compute-resources/dbservers/:id/acls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create or update the DB Server ACLs"
+        },
+        {
+          "info": {
+            "name": "Revoke DB Server Acls",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/compute-resources/dbservers/:id/acls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the DB Server"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Revoke DB Server Acls"
+        },
+        {
+          "info": {
+            "name": "Get eligible users for a DB Server",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/compute-resources/dbservers/:id/acls/eligible-users",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "roles",
+                "value": "CO_OWNER,CONSUMER",
+                "type": "query",
+                "description": "Filter based on the privilege roles"
+              }
+            ]
+          },
+          "docs": "Get eligible users for a DB Server"
+        },
+        {
+          "info": {
+            "name": "Get eligible users for DB Servers",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/compute-resources/dbservers/acls/eligible-users",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "role",
+                "value": "CO_OWNER",
+                "type": "query",
+                "description": "Filter based on the privilege role"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get eligible users for DB Servers"
+        },
+        {
+          "info": {
+            "name": "Bulk share multiple DB Servers with multiple users, does not override the existing ACL if present",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/compute-resources/dbservers/acls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Share multiple DB Servers with multiple users in a single operation. This is more efficient than individual ACL operations when sharing multiple resources."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

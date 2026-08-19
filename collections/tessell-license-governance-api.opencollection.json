@@ -1,0 +1,180 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center License Governance API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "License Governance",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns a list detail of licenses from directory.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/license-manager/governance/licenses",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "licenseCategory",
+                "value": "DB",
+                "type": "query",
+                "description": "License Category"
+              },
+              {
+                "name": "licenseType",
+                "value": "",
+                "type": "query",
+                "description": "License Type"
+              },
+              {
+                "name": "vendor",
+                "value": "",
+                "type": "query",
+                "description": "License Vendor"
+              },
+              {
+                "name": "includeAudit",
+                "value": "",
+                "type": "query",
+                "description": "Flag to include/exclude to Audit"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Maturity Status"
+              },
+              {
+                "name": "licenseIds",
+                "value": "",
+                "type": "query",
+                "description": "Comma separated license Ids"
+              },
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "query",
+                "description": "Id of subscription"
+              },
+              {
+                "name": "createdBy",
+                "value": "",
+                "type": "query",
+                "description": "Owner name"
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "Date on which license was added."
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "Date on which license would expire."
+              },
+              {
+                "name": "timeZone",
+                "value": "",
+                "type": "query",
+                "description": "Time Zone"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a list detail of licenses from directory."
+        },
+        {
+          "info": {
+            "name": "Register license into license pool",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/license-manager/governance/licenses",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "timeZone",
+                "value": "",
+                "type": "query",
+                "description": "Time Zone"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Register license into license pool"
+        },
+        {
+          "info": {
+            "name": "Deletes an existing license from directory.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/license-manager/governance/licenses/:licenseId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "timeZone",
+                "value": "",
+                "type": "query",
+                "description": "Time Zone"
+              },
+              {
+                "name": "licenseId",
+                "value": "bdb2aabd-c374-423f-9315-de7e6dd141cb",
+                "type": "path",
+                "description": "License Id"
+              },
+              {
+                "name": "secure",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes an existing license from directory."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

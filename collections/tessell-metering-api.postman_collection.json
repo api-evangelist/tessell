@@ -1,0 +1,2203 @@
+{
+  "item": [
+    {
+      "id": "1977c37f-5cba-4df0-811a-8764c9b49872",
+      "name": "Metering",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "582c89e7-0ebf-4b58-aaae-d9bff3523296",
+          "name": "get Metering Data",
+          "request": {
+            "name": "get Metering Data",
+            "description": {
+              "content": "Get all hourly/daily/weekly/monthly Meters that include all usage and cost related details till date.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "billing",
+                "meters"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "subscription-name",
+                  "value": "<string>",
+                  "description": "The subscription name in the tenant"
+                },
+                {
+                  "disabled": false,
+                  "key": "cloud-type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "engine",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "user-name",
+                  "value": "<string>",
+                  "description": "The User Name"
+                },
+                {
+                  "disabled": false,
+                  "key": "start-date",
+                  "value": "<string>",
+                  "description": "The timestamp of the start date of the meter"
+                },
+                {
+                  "disabled": false,
+                  "key": "end-date",
+                  "value": "<string>",
+                  "description": "The timestamp of the end date of the meter"
+                },
+                {
+                  "disabled": false,
+                  "key": "entity-type",
+                  "value": "<string>",
+                  "description": "The Entity Type"
+                },
+                {
+                  "disabled": false,
+                  "key": "entity-name",
+                  "value": "<string>",
+                  "description": "The name of the entity. Entity name will be compute resource name when entity type is COMPUTE_RESOURCE, backup name in case of BACKUP and am name in case of LOGS."
+                },
+                {
+                  "disabled": false,
+                  "key": "compute-shape",
+                  "value": "<string>",
+                  "description": "The compute shape of a database"
+                },
+                {
+                  "disabled": false,
+                  "key": "service-name",
+                  "value": "<string>",
+                  "description": "The name of the service"
+                },
+                {
+                  "disabled": false,
+                  "key": "availability-machine-name",
+                  "value": "<string>",
+                  "description": "The name of the availability machine"
+                },
+                {
+                  "disabled": false,
+                  "key": "duration",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "am-details",
+                  "value": "<boolean>",
+                  "description": "Whether or not to include backup and logs information along with AM."
+                },
+                {
+                  "disabled": false,
+                  "key": "service-id",
+                  "value": "<uuid>",
+                  "description": "The id of the service"
+                },
+                {
+                  "disabled": false,
+                  "key": "availability-machine-id",
+                  "value": "<uuid>",
+                  "description": "The id of the availability machine"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) tenant-id",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7ec00d94-6426-4111-8dc6-1ccdbf5487a7",
+              "name": "The list of Meter objects",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "meters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subscription-name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cloud-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "engine",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "user-name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "end-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entity-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entity-name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "compute-shape",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "service-name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "availability-machine-name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "duration",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "am-details",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "service-id",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "availability-machine-id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"subscriptionName\": \"string\",\n    \"entityId\": \"a0e936cc-3949-634a-0c26-b5570b1ec5d5\",\n    \"entityType\": \"<string>\",\n    \"availabilityMachineId\": \"38a3c511-48d6-c6b2-0430-f8c43b89cbd9\",\n    \"computeShape\": \"string\",\n    \"objectStorePath\": \"string\",\n    \"engineType\": \"<string>\",\n    \"cloudType\": \"<string>\",\n    \"region\": \"string\",\n    \"userName\": \"string\",\n    \"usage\": 5898.252008371899,\n    \"usageUnit\": \"string\",\n    \"cost\": 7724.091373518893,\n    \"discount\": 9166.61505368307,\n    \"meterHours\": 114,\n    \"metadata\": {},\n    \"internal\": false,\n    \"amDetails\": [\n      {\n        \"entityId\": \"a92e8aa8-fc83-4268-d5a9-78f6987cb290\",\n        \"entityType\": \"<string>\",\n        \"cloudType\": \"<string>\",\n        \"region\": \"string\",\n        \"userName\": \"string\",\n        \"usage\": 8303.713069182892,\n        \"usageUnit\": \"string\",\n        \"meterHours\": 3122,\n        \"dateCreated\": \"1954-03-28T22:19:40.921Z\"\n      },\n      {\n        \"entityId\": \"6f6d64ce-943d-733f-fbbc-0e6cd847bfeb\",\n        \"entityType\": \"<string>\",\n        \"cloudType\": \"<string>\",\n        \"region\": \"string\",\n        \"userName\": \"string\",\n        \"usage\": 2839.483471425368,\n        \"usageUnit\": \"string\",\n        \"meterHours\": 7508,\n        \"dateCreated\": \"2022-08-31T16:24:56.498Z\"\n      }\n    ]\n  },\n  {\n    \"subscriptionName\": \"string\",\n    \"entityId\": \"56a4af04-11ea-cc3e-0494-0694e662299f\",\n    \"entityType\": \"<string>\",\n    \"availabilityMachineId\": \"bd659912-9551-2235-83c1-2955324fbd27\",\n    \"computeShape\": \"string\",\n    \"objectStorePath\": \"string\",\n    \"engineType\": \"<string>\",\n    \"cloudType\": \"<string>\",\n    \"region\": \"string\",\n    \"userName\": \"string\",\n    \"usage\": 5660.886818774969,\n    \"usageUnit\": \"string\",\n    \"cost\": 8684.20560118648,\n    \"discount\": 3770.5687872972826,\n    \"meterHours\": 3648,\n    \"metadata\": {},\n    \"internal\": true,\n    \"amDetails\": [\n      {\n        \"entityId\": \"24fd68a5-30f2-768e-8a59-41509483dd40\",\n        \"entityType\": \"<string>\",\n        \"cloudType\": \"<string>\",\n        \"region\": \"string\",\n        \"userName\": \"string\",\n        \"usage\": 9625.14387237985,\n        \"usageUnit\": \"string\",\n        \"meterHours\": 1901,\n        \"dateCreated\": \"1979-12-25T06:56:52.190Z\"\n      },\n      {\n        \"entityId\": \"46ae5474-c623-1c32-2c76-07de37de059b\",\n        \"entityType\": \"<string>\",\n        \"cloudType\": \"<string>\",\n        \"region\": \"string\",\n        \"userName\": \"string\",\n        \"usage\": 8679.00773094391,\n        \"usageUnit\": \"string\",\n        \"meterHours\": 6483,\n        \"dateCreated\": \"2006-03-09T05:51:48.548Z\"\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "38ff0048-9185-4394-8104-d92ffb12b559",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "meters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subscription-name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cloud-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "engine",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "user-name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "end-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entity-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entity-name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "compute-shape",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "service-name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "availability-machine-name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "duration",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "am-details",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "service-id",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "availability-machine-id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1958-10-18T11:18:46.978Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9f3c222c-96d2-42e5-aa09-7c55bf64ea95",
+          "name": "generate Bill",
+          "request": {
+            "name": "generate Bill",
+            "description": {
+              "content": "Generate a bill based on the meters present for a provided start-date and end-date,",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "billing",
+                "bills"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start-date",
+                  "value": "<string>",
+                  "description": "(Required) The timestamp of the start date of the meter"
+                },
+                {
+                  "disabled": false,
+                  "key": "end-date",
+                  "value": "<string>",
+                  "description": "(Required) The timestamp of the end date of the meter"
+                },
+                {
+                  "disabled": false,
+                  "key": "system-generated",
+                  "value": "<boolean>",
+                  "description": "system-generated"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "tenant-id",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1f9ad30e-a8ae-45cc-988e-2d0fae9081e2",
+              "name": "The Bill Object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "bills"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "end-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "system-generated",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"startDate\": \"1963-11-15T22:08:46.272Z\",\n  \"endDate\": \"2011-06-13T19:39:13.972Z\",\n  \"billPdf\": \"string\",\n  \"totalCharges\": 1098.8640483835165,\n  \"discount\": 8908.855511897744,\n  \"credit\": 1145.5326687516965,\n  \"amountDue\": 8909.409738456325,\n  \"bucketPath\": \"string\",\n  \"metadata\": {},\n  \"duration\": \"MONTHLY\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "42940df3-8670-4efd-8ac6-4e92adbca18b",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "bills"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "end-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "system-generated",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1958-10-18T11:18:46.978Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fe46bc32-a6df-451d-b6ef-255a3fd8ae60",
+          "name": "get Bills",
+          "request": {
+            "name": "get Bills",
+            "description": {
+              "content": "Get all the Bills",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "billing",
+                "bills"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "The Name of the Bill"
+                },
+                {
+                  "disabled": false,
+                  "key": "start-date",
+                  "value": "<string>",
+                  "description": "The timestamp of the start date of the meter"
+                },
+                {
+                  "disabled": false,
+                  "key": "end-date",
+                  "value": "<string>",
+                  "description": "The timestamp of the end date of the meter"
+                },
+                {
+                  "disabled": false,
+                  "key": "system-generated",
+                  "value": "<boolean>",
+                  "description": "Whether the bill is system generated."
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) tenant-id",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cf3cdd0b-6e04-409b-b24a-ea21f447343b",
+              "name": "List of Bills",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "bills"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "end-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "system-generated",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"startDate\": \"2017-06-24T07:37:50.565Z\",\n    \"endDate\": \"1968-03-23T11:32:53.458Z\",\n    \"billPdf\": \"string\",\n    \"totalCharges\": 29.420137030290448,\n    \"discount\": 7468.392461955431,\n    \"credit\": 9460.983710612192,\n    \"amountDue\": 9991.345880225737,\n    \"bucketPath\": \"string\",\n    \"metadata\": {},\n    \"duration\": \"YEARLY\"\n  },\n  {\n    \"startDate\": \"1956-12-23T10:47:14.940Z\",\n    \"endDate\": \"1962-03-15T07:39:22.737Z\",\n    \"billPdf\": \"string\",\n    \"totalCharges\": 1467.8565109718788,\n    \"discount\": 6893.181348631355,\n    \"credit\": 5798.959722348866,\n    \"amountDue\": 4522.2775139549585,\n    \"bucketPath\": \"string\",\n    \"metadata\": {},\n    \"duration\": \"YEARLY\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c7376480-62c9-4255-bf3d-bdc79f86fa16",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "bills"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "end-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "system-generated",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1958-10-18T11:18:46.978Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c2a4d22b-e18d-43f3-ba0a-71241d5d5c53",
+          "name": "get Rates",
+          "request": {
+            "name": "get Rates",
+            "description": {
+              "content": "Get Tessell's billing rates for all computes and storage",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "billing",
+                "rates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "cloud-type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "entity-type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "entity-name",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) tenant-id",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "47c03261-b26d-4db2-a6c3-10624a980a95",
+              "name": "The list of Tessell billing rates",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "rates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cloud-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entity-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entity-name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"c7eb539c-4123-f247-e3a4-bbe099f9ebf2\",\n    \"entityName\": \"string\",\n    \"entityType\": \"<string>\",\n    \"cloudType\": \"<string>\",\n    \"engineType\": \"<string>\",\n    \"costPerUnit\": 9201.677221498961,\n    \"costPerUnitBYOC\": 9889.93714663816,\n    \"usageUnit\": \"string\",\n    \"custom\": false\n  },\n  {\n    \"id\": \"653d8ac2-cb41-8cdd-7161-ef8391dcdd68\",\n    \"entityName\": \"string\",\n    \"entityType\": \"<string>\",\n    \"cloudType\": \"<string>\",\n    \"engineType\": \"<string>\",\n    \"costPerUnit\": 1037.1402975933486,\n    \"costPerUnitBYOC\": 891.2423630532451,\n    \"usageUnit\": \"string\",\n    \"custom\": false\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "118d3310-9cf7-4b27-8217-85ee34a56d79",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "rates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cloud-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entity-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entity-name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1958-10-18T11:18:46.978Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eb92337a-935b-4cf6-8ed1-74945122bfef",
+          "name": "get Credits",
+          "request": {
+            "name": "get Credits",
+            "description": {
+              "content": "Get all the tenant's credits provided by the tessell",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "billing",
+                "credits"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Credit name"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Credit status"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Credit type"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-size",
+                  "value": "10",
+                  "description": "Page size for get query"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-offset",
+                  "value": "0",
+                  "description": "Page offset for get query"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) tenant-id",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1157f823-0587-450e-924c-b7d5d990cf55",
+              "name": "List of Credits",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "credits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"79c3d72f-83c6-7968-5a61-69f7adedac11\",\n    \"name\": \"string\",\n    \"dateCreated\": \"1983-10-11T16:31:41.907Z\",\n    \"dateModified\": \"1964-03-21T05:39:11.054Z\",\n    \"expiryDate\": \"1999-11-22T08:59:26.734Z\",\n    \"amount\": 7371.575418163414,\n    \"hideBillingCreditsUnit\": true,\n    \"balance\": 7244.152077770094,\n    \"tenantId\": \"string\",\n    \"status\": \"ACTIVE\",\n    \"type\": \"TRIAL\",\n    \"metadata\": {}\n  },\n  {\n    \"id\": \"97ac4a6e-9c8d-f9fe-fcff-00a66bf0f6b4\",\n    \"name\": \"string\",\n    \"dateCreated\": \"2001-05-06T20:52:57.259Z\",\n    \"dateModified\": \"1982-08-26T06:40:11.602Z\",\n    \"expiryDate\": \"1985-05-23T13:16:03.784Z\",\n    \"amount\": 1976.6820194145862,\n    \"hideBillingCreditsUnit\": true,\n    \"balance\": 2791.7006289081637,\n    \"tenantId\": \"string\",\n    \"status\": \"ACTIVE\",\n    \"type\": \"PURCHASED\",\n    \"metadata\": {}\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63592972-0989-46ef-8c54-46c1f6bb60dd",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "credits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1958-10-18T11:18:46.978Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ea9068fd-b75d-4baf-b507-55821425fbcc",
+          "name": "get Credit",
+          "request": {
+            "name": "get Credit",
+            "description": {
+              "content": "Get credit by credit's Id that you want to fetch",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "billing",
+                "credits",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Credit Id"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) tenant-id",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d48403cd-a91a-4997-a537-2c77cf730237",
+              "name": "Details of a credit",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "credits",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Credit Id"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"8fce0f0f-488f-a7bd-5e99-48011505ed30\",\n  \"name\": \"string\",\n  \"dateCreated\": \"2006-05-30T02:49:57.751Z\",\n  \"dateModified\": \"1946-10-28T23:03:52.948Z\",\n  \"expiryDate\": \"2013-05-22T12:30:26.523Z\",\n  \"amount\": 3852.8856979239144,\n  \"hideBillingCreditsUnit\": true,\n  \"balance\": 786.4866109658764,\n  \"tenantId\": \"string\",\n  \"status\": \"EXHAUSTED\",\n  \"type\": \"TRIAL\",\n  \"metadata\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "efdde3ff-fe65-4e41-ab24-fbabcc3575f1",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "credits",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Credit Id"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1958-10-18T11:18:46.978Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a43e0a06-769d-47d9-b260-7a762424d448",
+          "name": "get Billing Summary",
+          "request": {
+            "name": "get Billing Summary",
+            "description": {
+              "content": "Get billing summary for a tenant",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "billing",
+                "summary"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) tenant-id",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8255d1fd-d57a-4ac3-98b5-dc8344b9b976",
+              "name": "Billing configuration details of this tenant",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"serviceEnabled\": false,\n  \"validPaymentMethod\": false,\n  \"discount\": {\n    \"discountPercentage\": 40.51981113554739,\n    \"effectiveStartDate\": \"2015-10-18T03:15:03.295Z\",\n    \"endDate\": \"1967-04-19T19:53:31.354Z\",\n    \"skipBillGeneration\": false\n  },\n  \"credit\": {\n    \"amount\": 1969.6276601254337,\n    \"balance\": 7688.669473801052,\n    \"activeCredits\": 9342\n  },\n  \"invoice\": {\n    \"finalizeInvoice\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "da85f90c-1fa1-4d1f-a8e9-70fe139b3b09",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1958-10-18T11:18:46.978Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8ac134ae-2ae3-4deb-a4ad-2221689574fd",
+          "name": "get Billing Profile",
+          "request": {
+            "name": "get Billing Profile",
+            "description": {
+              "content": "Returns the details of the Billing profile that include billing address and payment details",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "billing",
+                "profile"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) tenant-id",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "61fcc5dd-d522-4a10-bc29-7570ab857ea3",
+              "name": "The list of all billing Profiles",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"cc4a0dc5-35eb-bb85-dd60-ec8e6759cfa7\",\n    \"name\": \"string\",\n    \"companyName\": \"string\",\n    \"emailLists\": [\n      \"string\",\n      \"string\"\n    ],\n    \"description\": \"string\",\n    \"tenantId\": \"string\",\n    \"address\": {\n      \"city\": \"string\",\n      \"country\": \"string\",\n      \"state\": \"string\",\n      \"addressLine1\": \"string\",\n      \"addressLine2\": \"string\",\n      \"zipCode\": \"string\"\n    }\n  },\n  {\n    \"id\": \"d3feebe8-c8f1-f58e-550c-7401c9699471\",\n    \"name\": \"string\",\n    \"companyName\": \"string\",\n    \"emailLists\": [\n      \"string\",\n      \"string\"\n    ],\n    \"description\": \"string\",\n    \"tenantId\": \"string\",\n    \"address\": {\n      \"city\": \"string\",\n      \"country\": \"string\",\n      \"state\": \"string\",\n      \"addressLine1\": \"string\",\n      \"addressLine2\": \"string\",\n      \"zipCode\": \"string\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ad60337c-6f38-4ff9-b15c-42b10a08a5f9",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1958-10-18T11:18:46.978Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cd179119-57ca-4e8f-9d3b-29b4b26962df",
+          "name": "update Billing Profile",
+          "request": {
+            "name": "update Billing Profile",
+            "description": {
+              "content": "Update Billing profile that include billing address and payment details",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "billing",
+                "profile"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) tenant-id",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<uuid>\",\n  \"name\": \"<string>\",\n  \"companyName\": \"<string>\",\n  \"emailLists\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\",\n  \"tenantId\": \"<string>\",\n  \"address\": {\n    \"city\": \"<string>\",\n    \"country\": \"<string>\",\n    \"state\": \"<string>\",\n    \"addressLine1\": \"<string>\",\n    \"addressLine2\": \"<string>\",\n    \"zipCode\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "caaa91bc-0fd4-467c-81e5-108ec3c6164a",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<uuid>\",\n  \"name\": \"<string>\",\n  \"companyName\": \"<string>\",\n  \"emailLists\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\",\n  \"tenantId\": \"<string>\",\n  \"address\": {\n    \"city\": \"<string>\",\n    \"country\": \"<string>\",\n    \"state\": \"<string>\",\n    \"addressLine1\": \"<string>\",\n    \"addressLine2\": \"<string>\",\n    \"zipCode\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"<uuid>\",\n  \"name\": \"<string>\",\n  \"companyName\": \"<string>\",\n  \"emailLists\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\",\n  \"tenantId\": \"<string>\",\n  \"address\": {\n    \"city\": \"<string>\",\n    \"country\": \"<string>\",\n    \"state\": \"<string>\",\n    \"addressLine1\": \"<string>\",\n    \"addressLine2\": \"<string>\",\n    \"zipCode\": \"<string>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b2692614-8f13-4c3c-90ea-312910884d4e",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<uuid>\",\n  \"name\": \"<string>\",\n  \"companyName\": \"<string>\",\n  \"emailLists\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\",\n  \"tenantId\": \"<string>\",\n  \"address\": {\n    \"city\": \"<string>\",\n    \"country\": \"<string>\",\n    \"state\": \"<string>\",\n    \"addressLine1\": \"<string>\",\n    \"addressLine2\": \"<string>\",\n    \"zipCode\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1958-10-18T11:18:46.978Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a4079e10-7e65-4de8-acad-8d953fd9d74f",
+          "name": "get Cost Till Date",
+          "request": {
+            "name": "get Cost Till Date",
+            "description": {
+              "content": "Returns the meter cost for this month.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "billing",
+                "cost-till-date"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) tenant-id",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f55849d5-3733-4b80-991b-1ce585173456",
+              "name": "meter cost for this month",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "cost-till-date"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"formTime\": \"1988-06-27T10:20:51.206Z\",\n  \"toTime\": \"1996-03-20T13:23:45.405Z\",\n  \"cost\": 7623.883304829964\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f1a02570-f253-4028-b70a-af23d776fa34",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "billing",
+                    "cost-till-date"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) tenant-id",
+                    "key": "tenant-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1958-10-18T11:18:46.978Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "console.tessell.com",
+      "key": "server"
+    },
+    {
+      "type": "string",
+      "value": "{{server}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "255b0fb1-baa3-42f9-88f2-186b158466f5",
+    "name": "Tessell APIs activity-center Metering API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tessell API Documentation\n\nContact Support:\n Name: Tessell Inc\n Email: support@tessell.com",
+      "type": "text/plain"
+    }
+  }
+}

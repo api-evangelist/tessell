@@ -1,0 +1,551 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Monitoring API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Monitoring",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "getAvgDbLoad",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/monitoring/metrics/avg-db-load",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns Average DB Load"
+        },
+        {
+          "info": {
+            "name": "getTopDimensions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/monitoring/metrics/top-dimensions",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns Top dimensions"
+        },
+        {
+          "info": {
+            "name": "getExtendedPerfMetrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/monitoring/metrics/extended-perf-metrics",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns Extended Perf Insights Metrics for a given metric"
+        },
+        {
+          "info": {
+            "name": "getTopProcesses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/metrics/top-processes",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "compute-resource-id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the Compute Resource(NODE). This parameter is required when entity-type is NODE"
+              },
+              {
+                "name": "start-time",
+                "value": "",
+                "type": "query",
+                "description": "Start timestamp in prometheus date-time format yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'"
+              },
+              {
+                "name": "end-time",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp in prometheus date-time format yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'"
+              },
+              {
+                "name": "num-top-k",
+                "value": "",
+                "type": "query",
+                "description": "Number of top entities"
+              }
+            ]
+          },
+          "docs": "Returns top processes running on the vm"
+        },
+        {
+          "info": {
+            "name": "getMonitoringMetrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/metrics",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "entity-type",
+                "value": "",
+                "type": "query",
+                "description": "Monitoring entity type"
+              },
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the DB Service. This parameter is required when entity-type is one of DB Engines"
+              },
+              {
+                "name": "service-instance-id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the service's instance. This parameter is required when entity-type is one of DB Engines"
+              },
+              {
+                "name": "compute-resource-id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the Compute Resource(NODE). This parameter is required when entity-type is NODE"
+              },
+              {
+                "name": "start-time",
+                "value": "",
+                "type": "query",
+                "description": "Start timestamp in prometheus date-time format yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'"
+              },
+              {
+                "name": "end-time",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp in prometheus date-time format yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'"
+              },
+              {
+                "name": "step",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the frequency at which data points are sampled or aggregated within the specified time range"
+              },
+              {
+                "name": "metric-source",
+                "value": "",
+                "type": "query",
+                "description": "Metric Source (Prometheus/Victoria metrics)"
+              },
+              {
+                "name": "aggregation-types",
+                "value": "",
+                "type": "query",
+                "description": "List of aggregation types to be performed on the metric"
+              },
+              {
+                "name": "granularity",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the time window for the aggregation functions. Use a string with a time unit, e.g., '1m', '5m', '1h'. Maximum valid unit of time - day (d). Minimum valid unit of time - min (m)."
+              },
+              {
+                "name": "chart-title",
+                "value": "",
+                "type": "query",
+                "description": "Name of chart that contains metrics"
+              },
+              {
+                "name": "get-all-aggregations",
+                "value": "",
+                "type": "query",
+                "description": "If true, returns all available aggregation types for the metrics, overriding any specific aggregation-types provided in the query."
+              }
+            ]
+          },
+          "docs": "Returns the metrics data"
+        },
+        {
+          "info": {
+            "name": "getComputeResourcesMonitoringSummary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/compute-resources/summary",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "compute-resource-ids",
+                "value": "",
+                "type": "query",
+                "description": "Array of Compute Resource Ids"
+              },
+              {
+                "name": "time-duration-for-aggregation",
+                "value": "",
+                "type": "query",
+                "description": "Time duration in minutes to aggregate the metrics, defaults to 5mins."
+              },
+              {
+                "name": "aggregation-type",
+                "value": "",
+                "type": "query",
+                "description": "Type of aggregation to be performed on the metric"
+              }
+            ]
+          },
+          "docs": "View a list of available Compute Resources"
+        },
+        {
+          "info": {
+            "name": "getMonitoringFeature",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/service/:id/features/:feature-name",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              },
+              {
+                "name": "feature-name",
+                "value": "",
+                "type": "path",
+                "description": "feature name"
+              }
+            ]
+          },
+          "docs": "Get monitoring feature details for a service"
+        },
+        {
+          "info": {
+            "name": "patchMonitoringFeature",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/monitoring/service/:id/features/:feature-name",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              },
+              {
+                "name": "feature-name",
+                "value": "",
+                "type": "path",
+                "description": "feature name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Patches (enable / disable) monitoring features on a specific service"
+        },
+        {
+          "info": {
+            "name": "provisionMonitoringInfra",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/monitoring/infra",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Provisioning a Monitoring Infra"
+        },
+        {
+          "info": {
+            "name": "getMonitoringInfras",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/infras",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cloud",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Type, e.g AWS, AZURE, etc,."
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Region in the cloud, e.g ap-south-1"
+              },
+              {
+                "name": "vpc-id",
+                "value": "",
+                "type": "query",
+                "description": "VPC ID"
+              },
+              {
+                "name": "subscription-id",
+                "value": "",
+                "type": "query",
+                "description": "Subscription ID"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "skip-statuses",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Returns the Monitoring Infra deployment details"
+        },
+        {
+          "info": {
+            "name": "getMonitoringInfra",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/infra/:id",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Monitoring Infra id"
+              }
+            ]
+          },
+          "docs": "Gets the Monitoring Infra with the given id"
+        },
+        {
+          "info": {
+            "name": "deleteMonitoringInfra",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/monitoring/infra/:id",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Monitoring Infra id"
+              },
+              {
+                "name": "force",
+                "value": "",
+                "type": "query",
+                "description": "Force deletes the Monitoring Infra even if some services are using the infra"
+              }
+            ]
+          },
+          "docs": "Deletes a Monitoring Infra"
+        },
+        {
+          "info": {
+            "name": "getMonitoringInfraActiveDbServices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/infra/:id/active-db-services",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Monitoring Infra id"
+              }
+            ]
+          },
+          "docs": "Gets all the active db services that are using the infra"
+        },
+        {
+          "info": {
+            "name": "getMonitoringDeployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/deployments/:deployment-id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "deployment-id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "load-instances",
+                "value": "",
+                "type": "query",
+                "description": "Boolean to indicate if instances to be fetched or not"
+              }
+            ]
+          },
+          "docs": "Returns the monitoring service details data"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

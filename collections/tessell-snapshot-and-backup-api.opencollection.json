@@ -1,0 +1,594 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Snapshot and Backup API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Snapshot and Backup",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get list of snapshots for an Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:availabilityMachineId/snapshots",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter the result based on snapshot name"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter the result based on snapshot status"
+              },
+              {
+                "name": "automated",
+                "value": "",
+                "type": "query",
+                "description": "Filter the result based on if the snapshot is automated"
+              },
+              {
+                "name": "manual",
+                "value": "",
+                "type": "query",
+                "description": "Filter the result based on if the snapshot is manual"
+              },
+              {
+                "name": "sanitizable",
+                "value": "",
+                "type": "query",
+                "description": "Filter the result based on if the snapshot is sanitizable"
+              },
+              {
+                "name": "load-acls",
+                "value": "",
+                "type": "query",
+                "description": "Load ACL information"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get list of snapshots for an Availability Machine"
+        },
+        {
+          "info": {
+            "name": "Submit a request to capture the associated DB Service's snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/availability-machines/:availabilityMachineId/snapshots",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit a request to capture the associated DB Service's snapshot"
+        },
+        {
+          "info": {
+            "name": "Get details about the specified snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:availabilityMachineId/snapshots/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the snapshot"
+              }
+            ]
+          },
+          "docs": "Get details about the specified snapshot"
+        },
+        {
+          "info": {
+            "name": "Submit a request to delete the snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/availability-machines/:availabilityMachineId/snapshots/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the snapshot"
+              }
+            ]
+          },
+          "docs": "Submit a request to delete the snapshot"
+        },
+        {
+          "info": {
+            "name": "Create download url for the backup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/availability-machines/:id/backups/:backup-id/download-url",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              },
+              {
+                "name": "backup-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the backup"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create download url for the backup"
+        },
+        {
+          "info": {
+            "name": "Get the restore or clone information for the specified snapshot or the recovery-timestamp",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:id/restore-info",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              },
+              {
+                "name": "backup-id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the snapshot"
+              },
+              {
+                "name": "recovery-timestamp",
+                "value": "",
+                "type": "query",
+                "description": "The recovery timestamp"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get the restore or clone information for the specified snapshot or the recovery-timestamp"
+        },
+        {
+          "info": {
+            "name": "View a list of available Tessell Backups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:availabilityMachineId/backups",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Name of the backup"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "status"
+              },
+              {
+                "name": "automated",
+                "value": "",
+                "type": "query",
+                "description": "Specify if automated backups info is to be fetched"
+              },
+              {
+                "name": "manual",
+                "value": "",
+                "type": "query",
+                "description": "Specify if manual backups info is to be fetched"
+              },
+              {
+                "name": "load-acls",
+                "value": "",
+                "type": "query",
+                "description": "Load ACL information"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "View a list of available Tessell Backups"
+        },
+        {
+          "info": {
+            "name": "Create backup for the snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/availability-machines/:availabilityMachineId/backups",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create backup for the snapshot"
+        },
+        {
+          "info": {
+            "name": "get backup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:availabilityMachineId/backups/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the database backup"
+              }
+            ]
+          },
+          "docs": "get backup"
+        },
+        {
+          "info": {
+            "name": "Submit a request to delete the backup",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/availability-machines/:availabilityMachineId/backups/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the database backup"
+              }
+            ]
+          },
+          "docs": "Submit a request to delete the backup"
+        },
+        {
+          "info": {
+            "name": "Get list of sanitized snapshots for an Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:availabilityMachineId/sanitized-snapshots",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter the result based on Sanitized Snapshot name"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter the result based on Sanitized Snapshot status"
+              },
+              {
+                "name": "automated",
+                "value": "",
+                "type": "query",
+                "description": "Filter the result based on if the Sanitized Snapshot is automated"
+              },
+              {
+                "name": "manual",
+                "value": "",
+                "type": "query",
+                "description": "Filter the result based on if the Sanitized Snapshot is manual"
+              },
+              {
+                "name": "load-acls",
+                "value": "",
+                "type": "query",
+                "description": "Load ACL information"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get list of sanitized snapshots for an Availability Machine"
+        },
+        {
+          "info": {
+            "name": "Submit a request to sanitize the specified snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/availability-machines/:availabilityMachineId/sanitized-snapshots",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit a request to sanitize the specified snapshot"
+        },
+        {
+          "info": {
+            "name": "Get details about the specified Sanitized Snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:availabilityMachineId/sanitized-snapshots/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Sanitized Snapshot"
+              }
+            ]
+          },
+          "docs": "Get details about the specified Sanitized Snapshot"
+        },
+        {
+          "info": {
+            "name": "Submit a request to delete the Sanitized Snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/availability-machines/:availabilityMachineId/sanitized-snapshots/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Sanitized Snapshot"
+              }
+            ]
+          },
+          "docs": "Submit a request to delete the Sanitized Snapshot"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,703 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center alert-controller API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "alert-controller",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a list of alert Profiles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/alert-profiles",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "entity-type",
+                "value": "",
+                "type": "query",
+                "description": "Supported entity type for the Alert Profile"
+              },
+              {
+                "name": "user-type",
+                "value": "",
+                "type": "query",
+                "description": "User type for the Alert Profile"
+              },
+              {
+                "name": "is-default",
+                "value": "",
+                "type": "query",
+                "description": "If True then only default alert profile"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Status of the Alert Profile"
+              }
+            ]
+          },
+          "docs": "Get a list of alert Profiles"
+        },
+        {
+          "info": {
+            "name": "Create Alert Profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/monitoring/alert-profiles",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Alert Profile"
+        },
+        {
+          "info": {
+            "name": "Get Alert Profile by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/alert-profiles/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Alert Profile Id"
+              }
+            ]
+          },
+          "docs": "Get Alert Profile by Id"
+        },
+        {
+          "info": {
+            "name": "Update a Alert Profile by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/monitoring/alert-profiles/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Alert Profile Id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a Alert Profile by Id"
+        },
+        {
+          "info": {
+            "name": "Delete Alert Profile corresponding to given id",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/monitoring/alert-profiles/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Alert Profile Id"
+              },
+              {
+                "name": "check-entity-associations",
+                "value": "",
+                "type": "query",
+                "description": "Check if entity associations exists against the profile id"
+              }
+            ]
+          },
+          "docs": "Delete Alert Profile corresponding to given id"
+        },
+        {
+          "info": {
+            "name": "Get Alert Entities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/alert-entities",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "alert-profile-id",
+                "value": "",
+                "type": "query",
+                "description": "Alert Profile Id"
+              },
+              {
+                "name": "notification-profile-id",
+                "value": "",
+                "type": "query",
+                "description": "Notification Profile Id"
+              },
+              {
+                "name": "entity-type",
+                "value": "",
+                "type": "query",
+                "description": "Supported entity type for the Alert Profile"
+              },
+              {
+                "name": "user-type",
+                "value": "",
+                "type": "query",
+                "description": "User type for the Alert Profile"
+              },
+              {
+                "name": "entity-id",
+                "value": "",
+                "type": "query",
+                "description": "Entity id corresponding to Alert Profile"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Status of Alert Entity"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get Alert Entities"
+        },
+        {
+          "info": {
+            "name": "Create Alert Entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/monitoring/alert-entities",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Alert Entity"
+        },
+        {
+          "info": {
+            "name": "Get Alert entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/alert-entities/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Alert Entity Id"
+              }
+            ]
+          },
+          "docs": "Get Alert entity"
+        },
+        {
+          "info": {
+            "name": "Update a Alert Entity by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/monitoring/alert-entities/:id",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Alert Entity Id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a Alert Entity by Id"
+        },
+        {
+          "info": {
+            "name": "Delete Alert Entity corresponding to given id",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/monitoring/alert-entities/:id",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Alert Entity Id"
+              }
+            ]
+          },
+          "docs": "Delete Alert Entity corresponding to given id"
+        },
+        {
+          "info": {
+            "name": "Get Alert Policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/alert-policy",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              },
+              {
+                "name": "entity-type",
+                "value": "",
+                "type": "query",
+                "description": "Supported entity type for the Alert Profile"
+              }
+            ]
+          },
+          "docs": "Get Alert Policies"
+        },
+        {
+          "info": {
+            "name": "Create Alert Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/monitoring/alert-policy",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Alert Policy"
+        },
+        {
+          "info": {
+            "name": "Get Alert Policy by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/alert-policy/:id",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Alert Profile Id"
+              }
+            ]
+          },
+          "docs": "Get Alert Policy by Id"
+        },
+        {
+          "info": {
+            "name": "Update a Alert Policy by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/monitoring/alert-policy/:id",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Alert Profile Id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a Alert Policy by Id"
+        },
+        {
+          "info": {
+            "name": "Delete Alert Policy corresponding to given id",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/monitoring/alert-policy/:id",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Alert Profile Id"
+              }
+            ]
+          },
+          "docs": "Delete Alert Policy corresponding to given id"
+        },
+        {
+          "info": {
+            "name": "Get Alert Policy Associations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/alert-policy/associations",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "subscription-id",
+                "value": "",
+                "type": "query",
+                "description": "Subscription ID"
+              },
+              {
+                "name": "entity-type",
+                "value": "",
+                "type": "query",
+                "description": "Supported entity type for the Alert Profile"
+              },
+              {
+                "name": "alert-profile-id",
+                "value": "",
+                "type": "query",
+                "description": "Alert Profile Id"
+              },
+              {
+                "name": "subscription-name",
+                "value": "",
+                "type": "query",
+                "description": "Subscription name"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get Alert Policy Associations"
+        },
+        {
+          "info": {
+            "name": "Create or Update Alert Policy Associations by Subscription Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/monitoring/alert-policy/associations",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create or Update Alert Policy Associations by Subscription Id"
+        },
+        {
+          "info": {
+            "name": "Delete Alert Policy Associations by Subscription Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/monitoring/alert-policy/associations",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete Alert Policy Associations by Subscription Id"
+        },
+        {
+          "info": {
+            "name": "Get Alert Policy Association Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/alert-policy/associations/details",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "subscription-name",
+                "value": "",
+                "type": "query",
+                "description": "Subscription name"
+              },
+              {
+                "name": "entity-type",
+                "value": "",
+                "type": "query",
+                "description": "Supported entity type for the Alert Profile"
+              },
+              {
+                "name": "subscription-id",
+                "value": "",
+                "type": "query",
+                "description": "Subscription ID"
+              }
+            ]
+          },
+          "docs": "Get Alert Policy Association Details"
+        },
+        {
+          "info": {
+            "name": "Get Alert Rules Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/alert-rules-config/:entityType",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "entityType",
+                "value": "",
+                "type": "path",
+                "description": "Entity Type for alert rules"
+              }
+            ]
+          },
+          "docs": "Get Alert Rules Configuration"
+        },
+        {
+          "info": {
+            "name": "Get Alert Annotations Catalog",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/monitoring/alert-annotations-catalog",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Returns a catalog of available alert annotations."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

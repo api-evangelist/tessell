@@ -1,0 +1,528 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center data-pipeline API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "data-pipeline",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "getDataPipelines",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/data-pipelines",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "Filter pipeline based on its status"
+              },
+              {
+                "name": "cloud",
+                "value": "",
+                "type": "query",
+                "description": "Name of the Cloud"
+              },
+              {
+                "name": "subscription-name",
+                "value": "",
+                "type": "query",
+                "description": "Subscription name"
+              },
+              {
+                "name": "db-engines",
+                "value": "",
+                "type": "query",
+                "description": "Filter entities based on database engine types"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              },
+              {
+                "name": "vpc",
+                "value": "",
+                "type": "query",
+                "description": "Filter entity based on VPC name"
+              },
+              {
+                "name": "load-instances-cr",
+                "value": "",
+                "type": "query",
+                "description": "Boolean to indicate if instances' compute resource id need to be fetched"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get details of all the data pipelines"
+        },
+        {
+          "info": {
+            "name": "createDataPipeline",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/data-pipelines",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "getDataPipeline",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/data-pipelines/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "deleteDataPipeline",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/data-pipelines/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "startDataPipeline",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/data-pipelines/:id/resume",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "pauseDataPipeline",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/data-pipelines/:id/pause",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "getDataPipelineServiceDatabaseSchema",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/data-pipelines/:id/db-services/:dp-db-service-id/db-schema",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "dp-db-service-id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "detachDbServiceFromDataPipeline",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/data-pipelines/:id/db-services/:dp-db-service-id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "dp-db-service-id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "startDataPipelineDbServiceOperations",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/data-pipelines/:id/db-services/:dp-db-service-id/resume",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "dp-db-service-id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "pauseDataPipelineDbServiceOperations",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/data-pipelines/:id/db-services/:dp-db-service-id/pause",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "dp-db-service-id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "publishServiceToDataPipeline",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/data-pipelines/db-services/:service-id/publish-data",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "Track the progress of the ongoing data pipeline creation operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/data-pipelines/:id/events/create/track",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ]
+          },
+          "docs": "Track the progress of the ongoing data pipeline creation operation"
+        },
+        {
+          "info": {
+            "name": "Track the progress of the ongoing data pipeline DB service operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/data-pipelines/db-services/:dp-db-service-id/events/track",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "dp-db-service-id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Track the progress of the ongoing data pipeline DB service operation"
+        },
+        {
+          "info": {
+            "name": "Returns the metrics data for Azure Event Hub Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/data-pipelines/:id/metrics/event-hub",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "start-time",
+                "value": "",
+                "type": "query",
+                "description": "Start timestamp for metric"
+              },
+              {
+                "name": "end-time",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp for metrics"
+              },
+              {
+                "name": "step",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the frequency at which data points are sampled or aggregated within the specified time range in seconds"
+              }
+            ]
+          },
+          "docs": "Returns the metrics data for Azure Event Hub Namespace"
+        },
+        {
+          "info": {
+            "name": "Returns the list of eligible DB services for the Data Pipeline",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/data-pipelines/:id/eligible-db-services",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "load-db-instances",
+                "value": "",
+                "type": "query",
+                "description": "Load the instances that are part of the DB Service"
+              },
+              {
+                "name": "load-db-databases",
+                "value": "",
+                "type": "query",
+                "description": "Load the databases that are part of the DB Service"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Returns the list of eligible DB services for the Data Pipeline"
+        },
+        {
+          "info": {
+            "name": "Returns the list of eligible Data Pipelines for the DB Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/data-pipelines/db-services/:id/eligible-pipelines",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Returns the list of eligible Data Pipelines for the DB Service"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

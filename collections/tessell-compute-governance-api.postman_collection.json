@@ -1,0 +1,818 @@
+{
+  "item": [
+    {
+      "id": "7bed0000-8b57-46f6-a24a-41202ccc3576",
+      "name": "Compute Governance",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a72079ba-7320-4b46-8cb1-141c29def2e3",
+          "name": "Get all compute profiles.",
+          "request": {
+            "name": "Get all compute profiles.",
+            "description": {
+              "content": "Get all compute profiles.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "compute-service",
+                "governance",
+                "computes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include-availability",
+                  "value": "false",
+                  "description": "Whether to include availability info"
+                },
+                {
+                  "disabled": false,
+                  "key": "subscription-name",
+                  "value": "<string>",
+                  "description": "Subscription Name"
+                },
+                {
+                  "disabled": false,
+                  "key": "cloud-type",
+                  "value": "<string>",
+                  "description": "Cloud type of the compute"
+                },
+                {
+                  "disabled": false,
+                  "key": "use-cases",
+                  "value": "<string>",
+                  "description": "Use Case of the compute"
+                },
+                {
+                  "disabled": false,
+                  "key": "use-cases",
+                  "value": "<string>",
+                  "description": "Use Case of the compute"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-size",
+                  "value": "10",
+                  "description": "Page size for get query"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-offset",
+                  "value": "0",
+                  "description": "Page offset for get query"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d394aaf9-8e72-434a-a9a7-abf684f5763b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "compute-service",
+                    "governance",
+                    "computes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include-availability",
+                      "value": "false"
+                    },
+                    {
+                      "key": "subscription-name",
+                      "value": "default"
+                    },
+                    {
+                      "key": "cloud-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "use-cases",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "use-cases",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"description\": \"string\",\n    \"name\": \"string\",\n    \"family\": \"string\",\n    \"cloudType\": \"<string>\",\n    \"availability\": [\n      {\n        \"subscriptionName\": \"default\",\n        \"status\": \"DISABLED\",\n        \"regions\": [\n          \"us-east-1\",\n          \"eu-west-2\"\n        ],\n        \"allRegions\": [\n          \"us-east-1\",\n          \"us-east-2\",\n          \"eu-west-2\"\n        ]\n      },\n      {\n        \"subscriptionName\": \"default\",\n        \"status\": \"DISABLED\",\n        \"regions\": [\n          \"us-east-1\",\n          \"eu-west-2\"\n        ],\n        \"allRegions\": [\n          \"us-east-1\",\n          \"us-east-2\",\n          \"eu-west-2\"\n        ]\n      }\n    ],\n    \"tsm\": false,\n    \"profileInfo\": {\n      \"readIops\": 1361,\n      \"writeIops\": 2769,\n      \"memoryGB\": 4908.792372260925,\n      \"maxNoOfDisks\": 7204,\n      \"minStorageGB\": 1653,\n      \"maxStorageGB\": 9447,\n      \"storageGB\": 7466,\n      \"vcpus\": 9083,\n      \"allowedVcpuValues\": [\n        1054,\n        3360\n      ],\n      \"io2BlockExpressEnabled\": false,\n      \"workloadType\": \"string\",\n      \"architecture\": \"arm64\",\n      \"maxThroughputMBps\": 710,\n      \"maxBurstThroughputMBps\": 1515,\n      \"maxIops\": 4034,\n      \"maxBurstIops\": 2285\n    },\n    \"useCases\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"metadata\": {\n      \"storageUtilizations\": [\n        {\n          \"engineType\": \"MONGODB\",\n          \"tsmMetaSize\": 9464,\n          \"tsmUsableStorageGB\": 2789\n        },\n        {\n          \"engineType\": \"POSTGRESQL\",\n          \"tsmMetaSize\": 8545,\n          \"tsmUsableStorageGB\": 7565\n        }\n      ]\n    },\n    \"vmCompatibility\": {\n      \"diskControllerTypes\": [\n        \"SCSI\",\n        \"SCSI\"\n      ]\n    }\n  },\n  {\n    \"description\": \"string\",\n    \"name\": \"string\",\n    \"family\": \"string\",\n    \"cloudType\": \"<string>\",\n    \"availability\": [\n      {\n        \"subscriptionName\": \"default\",\n        \"status\": \"ENABLED\",\n        \"regions\": [\n          \"us-east-1\",\n          \"eu-west-2\"\n        ],\n        \"allRegions\": [\n          \"us-east-1\",\n          \"us-east-2\",\n          \"eu-west-2\"\n        ]\n      },\n      {\n        \"subscriptionName\": \"default\",\n        \"status\": \"DISABLED\",\n        \"regions\": [\n          \"us-east-1\",\n          \"eu-west-2\"\n        ],\n        \"allRegions\": [\n          \"us-east-1\",\n          \"us-east-2\",\n          \"eu-west-2\"\n        ]\n      }\n    ],\n    \"tsm\": false,\n    \"profileInfo\": {\n      \"readIops\": 589,\n      \"writeIops\": 1232,\n      \"memoryGB\": 4563.059718302965,\n      \"maxNoOfDisks\": 7659,\n      \"minStorageGB\": 6301,\n      \"maxStorageGB\": 2918,\n      \"storageGB\": 2214,\n      \"vcpus\": 642,\n      \"allowedVcpuValues\": [\n        4856,\n        6032\n      ],\n      \"io2BlockExpressEnabled\": false,\n      \"workloadType\": \"string\",\n      \"architecture\": \"arm64\",\n      \"maxThroughputMBps\": 1893,\n      \"maxBurstThroughputMBps\": 7710,\n      \"maxIops\": 5033,\n      \"maxBurstIops\": 3623\n    },\n    \"useCases\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"metadata\": {\n      \"storageUtilizations\": [\n        {\n          \"engineType\": \"MYSQL\",\n          \"tsmMetaSize\": 594,\n          \"tsmUsableStorageGB\": 4247\n        },\n        {\n          \"engineType\": \"SQLSERVER\",\n          \"tsmMetaSize\": 3492,\n          \"tsmUsableStorageGB\": 3000\n        }\n      ]\n    },\n    \"vmCompatibility\": {\n      \"diskControllerTypes\": [\n        \"NVME\",\n        \"NVME\"\n      ]\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a8c9a7a-f0d5-4f15-99ce-e43f4475b908",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "compute-service",
+                    "governance",
+                    "computes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include-availability",
+                      "value": "false"
+                    },
+                    {
+                      "key": "subscription-name",
+                      "value": "default"
+                    },
+                    {
+                      "key": "cloud-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "use-cases",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "use-cases",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1975-07-18T19:52:08.017Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d98dcd77-026b-4e51-86b3-0c8e6ea08d2b",
+          "name": "Enable/Disable compute profile",
+          "request": {
+            "name": "Enable/Disable compute profile",
+            "description": {
+              "content": "Enable/Disable compute profile",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "compute-service",
+                "governance",
+                "computes",
+                ":name",
+                "subscription",
+                ":subscription-name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) Compute Name"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subscription-name",
+                  "description": "(Required) Subscription Name"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cloud\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "813ed0aa-0be4-4e93-acaf-af20e06ab318",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "compute-service",
+                    "governance",
+                    "computes",
+                    ":name",
+                    "subscription",
+                    ":subscription-name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Compute Name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subscription-name",
+                      "description": "(Required) Subscription Name"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cloud\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8fc7c5dd-71a7-4bc5-88bc-2888c87e9eb6",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "compute-service",
+                    "governance",
+                    "computes",
+                    ":name",
+                    "subscription",
+                    ":subscription-name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Compute Name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subscription-name",
+                      "description": "(Required) Subscription Name"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cloud\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1975-07-18T19:52:08.017Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8dfd12e1-15db-4fc1-a65b-1b35efc974cd",
+          "name": "Update compute regions",
+          "request": {
+            "name": "Update compute regions",
+            "description": {
+              "content": "Update compute regions",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "compute-service",
+                "governance",
+                "computes",
+                ":name",
+                "subscription",
+                ":subscription-name",
+                "regions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) Compute Name"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subscription-name",
+                  "description": "(Required) Subscription Name"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cloud\": \"<string>\",\n  \"regions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "348ba90d-6e52-46e2-9cf7-0b9479731431",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "compute-service",
+                    "governance",
+                    "computes",
+                    ":name",
+                    "subscription",
+                    ":subscription-name",
+                    "regions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Compute Name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subscription-name",
+                      "description": "(Required) Subscription Name"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cloud\": \"<string>\",\n  \"regions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"subscriptionName\": \"string\",\n  \"name\": \"string\",\n  \"cloud\": \"<string>\",\n  \"regions\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e4b45802-a85b-44ae-998e-e2a7717e053a",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "compute-service",
+                    "governance",
+                    "computes",
+                    ":name",
+                    "subscription",
+                    ":subscription-name",
+                    "regions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Compute Name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subscription-name",
+                      "description": "(Required) Subscription Name"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cloud\": \"<string>\",\n  \"regions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1975-07-18T19:52:08.017Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "console.tessell.com",
+      "key": "server"
+    },
+    {
+      "type": "string",
+      "value": "{{server}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "81d4d8d4-1f9d-4154-8f26-fffa3bbfb885",
+    "name": "Tessell APIs activity-center Compute Governance API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tessell API Documentation\n\nContact Support:\n Name: Tessell Inc\n Email: support@tessell.com",
+      "type": "text/plain"
+    }
+  }
+}

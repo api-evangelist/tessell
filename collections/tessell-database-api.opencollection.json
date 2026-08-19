@@ -1,0 +1,253 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Database API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Database",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a new database in a DB service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/services/:service-id/databases",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service to which database will be added"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new database in a DB service"
+        },
+        {
+          "info": {
+            "name": "Update a database",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:service-id/databases/:database-id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              },
+              {
+                "name": "database-id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the database in the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a database"
+        },
+        {
+          "info": {
+            "name": "Delete a database",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/services/:service-id/databases/:database-id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              },
+              {
+                "name": "database-id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the database in the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete a database"
+        },
+        {
+          "info": {
+            "name": "Clone a PDB from native backup to an existing Oracle service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/availability-machines/:availability-machine-id/databases/:database-id/clones",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availability-machine-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the source availability machine. This identifies where the PDB backup or PITR data exists.\n"
+              },
+              {
+                "name": "database-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the source database (PDB). This identifies which PDB's native backups to clone from.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new PDB (Pluggable Database) in an existing Oracle multi-tenant service by cloning\nfrom a PDB-level native backup.\n\n**Key differences from service clone (`/availability-machines/{id}/clones`):**\n- Service clone creates a NEW service with all infrastructure\n- Database clone adds a PDB to an EXISTING Oracle multi-tenant service\n\n**Supported scenarios:**\n- Clone from specific backup: Provide `sourceBackupId`\n- Clone from point-in-time: Provide `pitr` (NOT SUPPORTED YET - planned for futur"
+        },
+        {
+          "info": {
+            "name": "Validate if a database can be deleted",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/services/:service-id/databases/:database-id/validate-delete",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              },
+              {
+                "name": "database-id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the database in the DB Service"
+              }
+            ]
+          },
+          "docs": "Checks if the specified database (e.g., Oracle PDB) has any associated backups.\nThis can be used to validate whether a database can be deleted or if it has\nbackups that need to be handled first.\n"
+        },
+        {
+          "info": {
+            "name": "Starts a database in the DB Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:service-id/databases/:database-id/start",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              },
+              {
+                "name": "database-id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the database in the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Starts a database in the DB Service"
+        },
+        {
+          "info": {
+            "name": "Stops a database in the DB Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:service-id/databases/:database-id/stop",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              },
+              {
+                "name": "database-id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the database in the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Stops a database in the DB Service"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

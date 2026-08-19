@@ -1,0 +1,180 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Notification API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Notification",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get notification count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/event-service/notifications/count",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "start-time",
+                "value": "",
+                "type": "query",
+                "description": "Start timestamp, when searching events in a range"
+              },
+              {
+                "name": "end-time",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp, when searching events in a range"
+              }
+            ]
+          },
+          "docs": "Get the current count of active notifications in the specified time"
+        },
+        {
+          "info": {
+            "name": "Acknowledge notifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/event-service/notifications/batch-acknowledge",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Acknowledges notifications"
+        },
+        {
+          "info": {
+            "name": "Get notifications summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/event-service/notifications/summary",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "start-time",
+                "value": "",
+                "type": "query",
+                "description": "Start timestamp, when searching events in a range"
+              },
+              {
+                "name": "end-time",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp, when searching events in a range"
+              },
+              {
+                "name": "pageOffset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Page Size"
+              }
+            ]
+          },
+          "docs": "Get latest notifications summary for the current user."
+        },
+        {
+          "info": {
+            "name": "Returns the events for the user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/event-service/notifications",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "start-time",
+                "value": "",
+                "type": "query",
+                "description": "Start timestamp, when searching events in a range"
+              },
+              {
+                "name": "end-time",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp, when searching events in a range"
+              },
+              {
+                "name": "entityType",
+                "value": "",
+                "type": "query",
+                "description": "Entity Name"
+              },
+              {
+                "name": "entityName",
+                "value": "",
+                "type": "query",
+                "description": "Entity Name"
+              },
+              {
+                "name": "severity",
+                "value": "",
+                "type": "query",
+                "description": "Severity of the event"
+              },
+              {
+                "name": "eventType",
+                "value": "",
+                "type": "query",
+                "description": "Event type"
+              },
+              {
+                "name": "pageOffset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Page Size"
+              }
+            ]
+          },
+          "docs": "Reads notification for the current user."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

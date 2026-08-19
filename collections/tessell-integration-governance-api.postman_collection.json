@@ -1,0 +1,2771 @@
+{
+  "item": [
+    {
+      "id": "77a8b49f-1c02-432b-ad8c-b0e3efeaa41e",
+      "name": "Integration Governance",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d3fd5632-c61c-4465-8559-ff1b6b52f39d",
+          "name": "Get a list of supported Integration Types",
+          "request": {
+            "name": "Get a list of supported Integration Types",
+            "description": {},
+            "url": {
+              "path": [
+                "integration-types"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "integration-type",
+                  "value": "<string>",
+                  "description": "Type of an Integration"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-size",
+                  "value": "10",
+                  "description": "Page size for get query"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-offset",
+                  "value": "0",
+                  "description": "Page offset for get query"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a2f80a21-6b07-4194-b6f1-5f46a3e0608d",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integration-types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "integration-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "72faf591-27c3-4a6f-ae8f-261944d99c0a",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integration-types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "integration-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2012-04-28T12:07:06.265Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "96d76cd8-6788-4286-b5cc-f243612fbb58",
+          "name": "Get Integration Type by Id",
+          "request": {
+            "name": "Get Integration Type by Id",
+            "description": {},
+            "url": {
+              "path": [
+                "integration-types",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1b887617-eed2-4cba-b853-db81c74ce331",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integration-types",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"dd944987-4a0a-aac7-fc2f-e49ded793f2f\",\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"dateCreated\": \"1974-03-02T14:15:32.264Z\",\n  \"dateModified\": \"1981-02-23T08:34:17.529Z\",\n  \"owner\": \"string\",\n  \"integrationType\": \"<string>\",\n  \"multiple\": true,\n  \"maturityStatus\": \"UNPUBLISHED\",\n  \"metadata\": {\n    \"supportedEngineTypes\": [\n      {\n        \"engineType\": \"MONGODB\"\n      },\n      {\n        \"engineType\": \"MYSQL\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c84c6ad4-bee0-4c7f-81b4-788c557670e6",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integration-types",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2012-04-28T12:07:06.265Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c730d4e4-df21-42fd-b0de-587b0b02e41c",
+          "name": "Get a list of active Integrations (consumer view)",
+          "request": {
+            "name": "Get a list of active Integrations (consumer view)",
+            "description": {},
+            "url": {
+              "path": [
+                "integrations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "integration-type",
+                  "value": "<string>",
+                  "description": "Type of an Integration"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-size",
+                  "value": "10",
+                  "description": "Page size for get query"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-offset",
+                  "value": "0",
+                  "description": "Page offset for get query"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8428afb8-7848-41ae-8cb3-2957e0544502",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "integration-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4073e9c7-f975-4f14-87a3-6bef3b08175b",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "integration-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2012-04-28T12:07:06.265Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "16afb8e3-84f5-4322-9962-99653e001978",
+          "name": "Get active Integration by Id (consumer view)",
+          "request": {
+            "name": "Get active Integration by Id (consumer view)",
+            "description": {},
+            "url": {
+              "path": [
+                "integrations",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) id"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3e920eb3-c096-4aaf-9cc6-4be16e2686fa",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) id"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"Datadog Integration\",\n  \"integrationType\": \"<string>\",\n  \"metadata\": {\n    \"cloudwatchMetrics\": {\n      \"cloudwatchNamespace\": \"string\",\n      \"awsToken\": \"string\",\n      \"awsSecret\": \"string\"\n    },\n    \"datadog\": {\n      \"apiKey\": \"string\",\n      \"site\": \"string\"\n    },\n    \"sumologic\": {\n      \"apiKey\": \"string\",\n      \"site\": \"string\"\n    },\n    \"newrelic\": {\n      \"apiKey\": \"string\"\n    },\n    \"qualys\": {\n      \"customerId\": \"string\",\n      \"activationId\": \"str\",\n      \"serverUri\": \"http://EvsHQvzokfMkNSBq.pcZ7yP1LD-sZmweK8hloQE5aUVoYUoCWWljLRi-TkJyjFdpUZumBjSNdWqBSP2ijjYdLHIy0A3gtQ\"\n    },\n    \"oem\": {\n      \"serverName\": \"string\",\n      \"ip\": \"string\",\n      \"agentPassword\": \"string\",\n      \"sysmanPassword\": \"string\",\n      \"oemUploadPort\": 9272,\n      \"agentPort\": 7940,\n      \"oemConsolePort\": 7349,\n      \"inboundIPs\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"splunk\": {\n      \"hostname\": \"string\",\n      \"port\": 6483,\n      \"serverType\": \"DEPLOYMENT_SERVER\",\n      \"apiToken\": \"string\",\n      \"index\": \"string\"\n    }\n  },\n  \"id\": \"92be4502-77f3-4700-8e7e-60ea23eccec9\",\n  \"description\": \"Integration for Monitoring\",\n  \"tenantId\": \"string\",\n  \"dateCreated\": \"1993-04-15T14:52:09.271Z\",\n  \"dateModified\": \"1966-05-17T01:54:02.549Z\",\n  \"owner\": \"string\",\n  \"loggedInUserRole\": \"string\",\n  \"sharedWith\": {\n    \"users\": [\n      {\n        \"emailId\": \"string\",\n        \"role\": \"string\",\n        \"sharedBy\": \"string\",\n        \"sharedOn\": \"1994-11-02T06:19:45.496Z\"\n      },\n      {\n        \"emailId\": \"string\",\n        \"role\": \"string\",\n        \"sharedBy\": \"string\",\n        \"sharedOn\": \"2010-03-12T20:43:51.627Z\"\n      }\n    ]\n  },\n  \"status\": \"ACTIVE\",\n  \"maturityStatus\": \"DRAFT\",\n  \"integrationTypeMetadata\": {\n    \"supportedEngineTypes\": [\n      {\n        \"engineType\": \"APACHE_KAFKA\"\n      },\n      {\n        \"engineType\": \"MYSQL\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c6becafa-aced-452a-ab0b-1a23a75ea05e",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) id"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2012-04-28T12:07:06.265Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fbfeee48-c69e-4aea-a2d5-1e7b0bb39066",
+          "name": "Create a new Integration",
+          "request": {
+            "name": "Create a new Integration",
+            "description": {},
+            "url": {
+              "path": [
+                "integrations",
+                "governance"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"integrationType\": \"<string>\",\n  \"metadata\": {\n    \"cloudwatchMetrics\": {\n      \"cloudwatchNamespace\": \"<string>\",\n      \"awsToken\": \"<string>\",\n      \"awsSecret\": \"<string>\"\n    },\n    \"datadog\": {\n      \"apiKey\": \"<string>\",\n      \"site\": \"<string>\"\n    },\n    \"sumologic\": {\n      \"apiKey\": \"<string>\",\n      \"site\": \"<string>\"\n    },\n    \"newrelic\": {\n      \"apiKey\": \"<string>\"\n    },\n    \"qualys\": {\n      \"customerId\": \"<string>\",\n      \"activationId\": \"<string>\",\n      \"serverUri\": \"<uri>\"\n    },\n    \"oem\": {\n      \"serverName\": \"<string>\",\n      \"ip\": \"<ip4>\",\n      \"agentPassword\": \"<string>\",\n      \"sysmanPassword\": \"<string>\",\n      \"oemUploadPort\": \"<integer>\",\n      \"agentPort\": \"<integer>\",\n      \"oemConsolePort\": \"<integer>\",\n      \"inboundIPs\": [\n        \"<ip4>\",\n        \"<ip4>\"\n      ]\n    },\n    \"splunk\": {\n      \"hostname\": \"<string>\",\n      \"port\": \"<integer>\",\n      \"serverType\": \"<string>\",\n      \"apiToken\": \"<string>\",\n      \"index\": \"<string>\"\n    }\n  },\n  \"id\": \"<uuid>\",\n  \"description\": \"<string>\",\n  \"tenantId\": \"<string>\",\n  \"dateCreated\": \"<dateTime>\",\n  \"dateModified\": \"<dateTime>\",\n  \"owner\": \"<string>\",\n  \"loggedInUserRole\": \"<string>\",\n  \"sharedWith\": {\n    \"users\": [\n      {\n        \"emailId\": \"<string>\",\n        \"role\": \"<string>\",\n        \"sharedBy\": \"<string>\",\n        \"sharedOn\": \"<dateTime>\"\n      },\n      {\n        \"emailId\": \"<string>\",\n        \"role\": \"<string>\",\n        \"sharedBy\": \"<string>\",\n        \"sharedOn\": \"<dateTime>\"\n      }\n    ]\n  },\n  \"status\": \"<string>\",\n  \"maturityStatus\": \"<string>\",\n  \"integrationTypeMetadata\": {\n    \"supportedEngineTypes\": [\n      {\n        \"engineType\": \"<string>\"\n      },\n      {\n        \"engineType\": \"<string>\"\n      }\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4821b232-4bb3-4534-9c32-3128f4446084",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Datadog Integration\",\n  \"integrationType\": \"<string>\",\n  \"metadata\": {\n    \"cloudwatchMetrics\": {\n      \"cloudwatchNamespace\": \"<string>\",\n      \"awsToken\": \"<string>\",\n      \"awsSecret\": \"<string>\"\n    },\n    \"datadog\": {\n      \"apiKey\": \"<string>\",\n      \"site\": \"<string>\"\n    },\n    \"sumologic\": {\n      \"apiKey\": \"<string>\",\n      \"site\": \"<string>\"\n    },\n    \"newrelic\": {\n      \"apiKey\": \"<string>\"\n    },\n    \"qualys\": {\n      \"customerId\": \"<string>\",\n      \"activationId\": \"<string>\",\n      \"serverUri\": \"<uri>\"\n    },\n    \"oem\": {\n      \"serverName\": \"<string>\",\n      \"ip\": \"<ip4>\",\n      \"agentPassword\": \"<string>\",\n      \"sysmanPassword\": \"<string>\",\n      \"oemUploadPort\": \"<integer>\",\n      \"agentPort\": \"<integer>\",\n      \"oemConsolePort\": \"<integer>\",\n      \"inboundIPs\": [\n        \"<ip4>\",\n        \"<ip4>\"\n      ]\n    },\n    \"splunk\": {\n      \"hostname\": \"<string>\",\n      \"port\": \"<integer>\",\n      \"serverType\": \"<string>\",\n      \"apiToken\": \"<string>\",\n      \"index\": \"<string>\"\n    }\n  },\n  \"id\": \"<uuid>\",\n  \"description\": \"Integration for Monitoring\",\n  \"tenantId\": \"<string>\",\n  \"dateCreated\": \"<dateTime>\",\n  \"dateModified\": \"<dateTime>\",\n  \"owner\": \"<string>\",\n  \"loggedInUserRole\": \"<string>\",\n  \"sharedWith\": {\n    \"users\": [\n      {\n        \"emailId\": \"<string>\",\n        \"role\": \"<string>\",\n        \"sharedBy\": \"<string>\",\n        \"sharedOn\": \"<dateTime>\"\n      },\n      {\n        \"emailId\": \"<string>\",\n        \"role\": \"<string>\",\n        \"sharedBy\": \"<string>\",\n        \"sharedOn\": \"<dateTime>\"\n      }\n    ]\n  },\n  \"status\": \"<string>\",\n  \"maturityStatus\": \"<string>\",\n  \"integrationTypeMetadata\": {\n    \"supportedEngineTypes\": [\n      {\n        \"engineType\": \"<string>\"\n      },\n      {\n        \"engineType\": \"<string>\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"Datadog Integration\",\n  \"integrationType\": \"<string>\",\n  \"metadata\": {\n    \"cloudwatchMetrics\": {\n      \"cloudwatchNamespace\": \"<string>\",\n      \"awsToken\": \"<string>\",\n      \"awsSecret\": \"<string>\"\n    },\n    \"datadog\": {\n      \"apiKey\": \"<string>\",\n      \"site\": \"<string>\"\n    },\n    \"sumologic\": {\n      \"apiKey\": \"<string>\",\n      \"site\": \"<string>\"\n    },\n    \"newrelic\": {\n      \"apiKey\": \"<string>\"\n    },\n    \"qualys\": {\n      \"customerId\": \"<string>\",\n      \"activationId\": \"<string>\",\n      \"serverUri\": \"<uri>\"\n    },\n    \"oem\": {\n      \"serverName\": \"<string>\",\n      \"ip\": \"<ip4>\",\n      \"agentPassword\": \"<string>\",\n      \"sysmanPassword\": \"<string>\",\n      \"oemUploadPort\": \"<integer>\",\n      \"agentPort\": \"<integer>\",\n      \"oemConsolePort\": \"<integer>\",\n      \"inboundIPs\": [\n        \"<ip4>\",\n        \"<ip4>\"\n      ]\n    },\n    \"splunk\": {\n      \"hostname\": \"<string>\",\n      \"port\": \"<integer>\",\n      \"serverType\": \"<string>\",\n      \"apiToken\": \"<string>\",\n      \"index\": \"<string>\"\n    }\n  },\n  \"id\": \"<uuid>\",\n  \"description\": \"Integration for Monitoring\",\n  \"tenantId\": \"<string>\",\n  \"dateCreated\": \"<dateTime>\",\n  \"dateModified\": \"<dateTime>\",\n  \"owner\": \"<string>\",\n  \"loggedInUserRole\": \"<string>\",\n  \"sharedWith\": {\n    \"users\": [\n      {\n        \"emailId\": \"<string>\",\n        \"role\": \"<string>\",\n        \"sharedBy\": \"<string>\",\n        \"sharedOn\": \"<dateTime>\"\n      },\n      {\n        \"emailId\": \"<string>\",\n        \"role\": \"<string>\",\n        \"sharedBy\": \"<string>\",\n        \"sharedOn\": \"<dateTime>\"\n      }\n    ]\n  },\n  \"status\": \"<string>\",\n  \"maturityStatus\": \"<string>\",\n  \"integrationTypeMetadata\": {\n    \"supportedEngineTypes\": [\n      {\n        \"engineType\": \"<string>\"\n      },\n      {\n        \"engineType\": \"<string>\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "37df68a3-5f1c-4609-95c1-d7110c85c762",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Datadog Integration\",\n  \"integrationType\": \"<string>\",\n  \"metadata\": {\n    \"cloudwatchMetrics\": {\n      \"cloudwatchNamespace\": \"<string>\",\n      \"awsToken\": \"<string>\",\n      \"awsSecret\": \"<string>\"\n    },\n    \"datadog\": {\n      \"apiKey\": \"<string>\",\n      \"site\": \"<string>\"\n    },\n    \"sumologic\": {\n      \"apiKey\": \"<string>\",\n      \"site\": \"<string>\"\n    },\n    \"newrelic\": {\n      \"apiKey\": \"<string>\"\n    },\n    \"qualys\": {\n      \"customerId\": \"<string>\",\n      \"activationId\": \"<string>\",\n      \"serverUri\": \"<uri>\"\n    },\n    \"oem\": {\n      \"serverName\": \"<string>\",\n      \"ip\": \"<ip4>\",\n      \"agentPassword\": \"<string>\",\n      \"sysmanPassword\": \"<string>\",\n      \"oemUploadPort\": \"<integer>\",\n      \"agentPort\": \"<integer>\",\n      \"oemConsolePort\": \"<integer>\",\n      \"inboundIPs\": [\n        \"<ip4>\",\n        \"<ip4>\"\n      ]\n    },\n    \"splunk\": {\n      \"hostname\": \"<string>\",\n      \"port\": \"<integer>\",\n      \"serverType\": \"<string>\",\n      \"apiToken\": \"<string>\",\n      \"index\": \"<string>\"\n    }\n  },\n  \"id\": \"<uuid>\",\n  \"description\": \"Integration for Monitoring\",\n  \"tenantId\": \"<string>\",\n  \"dateCreated\": \"<dateTime>\",\n  \"dateModified\": \"<dateTime>\",\n  \"owner\": \"<string>\",\n  \"loggedInUserRole\": \"<string>\",\n  \"sharedWith\": {\n    \"users\": [\n      {\n        \"emailId\": \"<string>\",\n        \"role\": \"<string>\",\n        \"sharedBy\": \"<string>\",\n        \"sharedOn\": \"<dateTime>\"\n      },\n      {\n        \"emailId\": \"<string>\",\n        \"role\": \"<string>\",\n        \"sharedBy\": \"<string>\",\n        \"sharedOn\": \"<dateTime>\"\n      }\n    ]\n  },\n  \"status\": \"<string>\",\n  \"maturityStatus\": \"<string>\",\n  \"integrationTypeMetadata\": {\n    \"supportedEngineTypes\": [\n      {\n        \"engineType\": \"<string>\"\n      },\n      {\n        \"engineType\": \"<string>\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f014588d-ca52-4395-8511-9028d34d4534",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Datadog Integration\",\n  \"integrationType\": \"<string>\",\n  \"metadata\": {\n    \"cloudwatchMetrics\": {\n      \"cloudwatchNamespace\": \"<string>\",\n      \"awsToken\": \"<string>\",\n      \"awsSecret\": \"<string>\"\n    },\n    \"datadog\": {\n      \"apiKey\": \"<string>\",\n      \"site\": \"<string>\"\n    },\n    \"sumologic\": {\n      \"apiKey\": \"<string>\",\n      \"site\": \"<string>\"\n    },\n    \"newrelic\": {\n      \"apiKey\": \"<string>\"\n    },\n    \"qualys\": {\n      \"customerId\": \"<string>\",\n      \"activationId\": \"<string>\",\n      \"serverUri\": \"<uri>\"\n    },\n    \"oem\": {\n      \"serverName\": \"<string>\",\n      \"ip\": \"<ip4>\",\n      \"agentPassword\": \"<string>\",\n      \"sysmanPassword\": \"<string>\",\n      \"oemUploadPort\": \"<integer>\",\n      \"agentPort\": \"<integer>\",\n      \"oemConsolePort\": \"<integer>\",\n      \"inboundIPs\": [\n        \"<ip4>\",\n        \"<ip4>\"\n      ]\n    },\n    \"splunk\": {\n      \"hostname\": \"<string>\",\n      \"port\": \"<integer>\",\n      \"serverType\": \"<string>\",\n      \"apiToken\": \"<string>\",\n      \"index\": \"<string>\"\n    }\n  },\n  \"id\": \"<uuid>\",\n  \"description\": \"Integration for Monitoring\",\n  \"tenantId\": \"<string>\",\n  \"dateCreated\": \"<dateTime>\",\n  \"dateModified\": \"<dateTime>\",\n  \"owner\": \"<string>\",\n  \"loggedInUserRole\": \"<string>\",\n  \"sharedWith\": {\n    \"users\": [\n      {\n        \"emailId\": \"<string>\",\n        \"role\": \"<string>\",\n        \"sharedBy\": \"<string>\",\n        \"sharedOn\": \"<dateTime>\"\n      },\n      {\n        \"emailId\": \"<string>\",\n        \"role\": \"<string>\",\n        \"sharedBy\": \"<string>\",\n        \"sharedOn\": \"<dateTime>\"\n      }\n    ]\n  },\n  \"status\": \"<string>\",\n  \"maturityStatus\": \"<string>\",\n  \"integrationTypeMetadata\": {\n    \"supportedEngineTypes\": [\n      {\n        \"engineType\": \"<string>\"\n      },\n      {\n        \"engineType\": \"<string>\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2012-04-28T12:07:06.265Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d9935ef4-8bec-4950-bbaa-fac11cfa2a16",
+          "name": "Get a list of active Integrations",
+          "request": {
+            "name": "Get a list of active Integrations",
+            "description": {},
+            "url": {
+              "path": [
+                "integrations",
+                "governance"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "id",
+                  "value": "<uuid>",
+                  "description": "ID of an Integration"
+                },
+                {
+                  "disabled": false,
+                  "key": "include-shared-with-users",
+                  "value": "<boolean>",
+                  "description": "Flag indicating if ACL information should be included for all entities"
+                },
+                {
+                  "disabled": false,
+                  "key": "integration-type",
+                  "value": "<string>",
+                  "description": "Type of an Integration"
+                },
+                {
+                  "disabled": false,
+                  "key": "owners",
+                  "value": "<string>",
+                  "description": "List of Email Addresses for entity or resource owners"
+                },
+                {
+                  "disabled": false,
+                  "key": "owners",
+                  "value": "<string>",
+                  "description": "List of Email Addresses for entity or resource owners"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-size",
+                  "value": "10",
+                  "description": "Page size for get query"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-offset",
+                  "value": "0",
+                  "description": "Page offset for get query"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "270442ba-77a0-4a0f-9a3f-23aa8c4c857a",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "include-shared-with-users",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "integration-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owners",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owners",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "126d3b4b-d599-4025-8a8b-461d887b2ac6",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "include-shared-with-users",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "integration-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owners",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owners",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2012-04-28T12:07:06.265Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e95a412e-b8ec-4b5e-a8d4-9e533848e69a",
+          "name": "Get active Integration Details by Id",
+          "request": {
+            "name": "Get active Integration Details by Id",
+            "description": {},
+            "url": {
+              "path": [
+                "integrations",
+                "governance",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) ID of an Integration"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9c40a0cf-7431-4720-9976-9fd2100872ed",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of an Integration"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"Datadog Integration\",\n  \"integrationType\": \"<string>\",\n  \"metadata\": {\n    \"cloudwatchMetrics\": {\n      \"cloudwatchNamespace\": \"<string>\",\n      \"awsToken\": \"<string>\",\n      \"awsSecret\": \"<string>\"\n    },\n    \"datadog\": {\n      \"apiKey\": \"<string>\",\n      \"site\": \"<string>\"\n    },\n    \"sumologic\": {\n      \"apiKey\": \"<string>\",\n      \"site\": \"<string>\"\n    },\n    \"newrelic\": {\n      \"apiKey\": \"<string>\"\n    },\n    \"qualys\": {\n      \"customerId\": \"<string>\",\n      \"activationId\": \"<string>\",\n      \"serverUri\": \"<uri>\"\n    },\n    \"oem\": {\n      \"serverName\": \"<string>\",\n      \"ip\": \"<ip4>\",\n      \"agentPassword\": \"<string>\",\n      \"sysmanPassword\": \"<string>\",\n      \"oemUploadPort\": \"<integer>\",\n      \"agentPort\": \"<integer>\",\n      \"oemConsolePort\": \"<integer>\",\n      \"inboundIPs\": [\n        \"<ip4>\",\n        \"<ip4>\"\n      ]\n    },\n    \"splunk\": {\n      \"hostname\": \"<string>\",\n      \"port\": \"<integer>\",\n      \"serverType\": \"<string>\",\n      \"apiToken\": \"<string>\",\n      \"index\": \"<string>\"\n    }\n  },\n  \"id\": \"<uuid>\",\n  \"description\": \"Integration for Monitoring\",\n  \"tenantId\": \"<string>\",\n  \"dateCreated\": \"<dateTime>\",\n  \"dateModified\": \"<dateTime>\",\n  \"owner\": \"<string>\",\n  \"loggedInUserRole\": \"<string>\",\n  \"sharedWith\": {\n    \"users\": [\n      {\n        \"emailId\": \"<string>\",\n        \"role\": \"<string>\",\n        \"sharedBy\": \"<string>\",\n        \"sharedOn\": \"<dateTime>\"\n      },\n      {\n        \"emailId\": \"<string>\",\n        \"role\": \"<string>\",\n        \"sharedBy\": \"<string>\",\n        \"sharedOn\": \"<dateTime>\"\n      }\n    ]\n  },\n  \"status\": \"<string>\",\n  \"maturityStatus\": \"<string>\",\n  \"integrationTypeMetadata\": {\n    \"supportedEngineTypes\": [\n      {\n        \"engineType\": \"<string>\"\n      },\n      {\n        \"engineType\": \"<string>\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7e9e96de-1fd7-4cd5-a478-c8529d755e17",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of an Integration"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2012-04-28T12:07:06.265Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4ed08d1a-c419-4eb9-84a5-7778f30ee83a",
+          "name": "Delete an Integration",
+          "request": {
+            "name": "Delete an Integration",
+            "description": {},
+            "url": {
+              "path": [
+                "integrations",
+                "governance",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) ID of an Integration"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "261d4afd-23f0-48a8-bdaf-3438ac4cdb17",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of an Integration"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d60c4c3b-3443-4009-829e-4f61fd9637ad",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of an Integration"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "01e0239b-4bfd-4cad-874b-2065600b513b",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of an Integration"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2012-04-28T12:07:06.265Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "790d6f64-c29b-4638-a87e-1fed11a04c76",
+          "name": "Update an Integration",
+          "request": {
+            "name": "Update an Integration",
+            "description": {},
+            "url": {
+              "path": [
+                "integrations",
+                "governance",
+                ":id",
+                ":action"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) ID of an Integration"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "action",
+                  "description": "(Required) Update the integration maturity status as \"publish\" and \"unpublish\""
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d01fa71e-5324-4cbd-8c9c-f4697d75aff3",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance",
+                    ":id",
+                    ":action"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of an Integration"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "action",
+                      "description": "(Required) Update the integration maturity status as \"publish\" and \"unpublish\""
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "746b7a4d-a28f-4b8e-a19e-28df39fd6f54",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance",
+                    ":id",
+                    ":action"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of an Integration"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "action",
+                      "description": "(Required) Update the integration maturity status as \"publish\" and \"unpublish\""
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "688c0dbe-d68c-4e0d-81c2-57efd3b5b217",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance",
+                    ":id",
+                    ":action"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of an Integration"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "action",
+                      "description": "(Required) Update the integration maturity status as \"publish\" and \"unpublish\""
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2012-04-28T12:07:06.265Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ca539903-d394-4564-8e90-e422e65884e3",
+          "name": "Create/Update ACLs of an Integration",
+          "request": {
+            "name": "Create/Update ACLs of an Integration",
+            "description": {},
+            "url": {
+              "path": [
+                "integrations",
+                "governance",
+                ":id",
+                "acls"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) ID of an Integration"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"users\": [\n    {\n      \"emailId\": \"<string>\",\n      \"role\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d23ebe34-70ea-4acb-8281-7e464862c9f8",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance",
+                    ":id",
+                    "acls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of an Integration"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"users\": [\n    {\n      \"emailId\": \"<string>\",\n      \"role\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"users\": [\n    {\n      \"emailId\": \"<string>\",\n      \"role\": \"<string>\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b91969c5-a669-4995-be04-80c32b8869b4",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance",
+                    ":id",
+                    "acls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of an Integration"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"users\": [\n    {\n      \"emailId\": \"<string>\",\n      \"role\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1e1a6415-122e-4240-b037-89214d9674b2",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance",
+                    ":id",
+                    "acls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of an Integration"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"users\": [\n    {\n      \"emailId\": \"<string>\",\n      \"role\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2012-04-28T12:07:06.265Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6f540a7f-44a0-4efa-8e5b-b6c6ce01cd92",
+          "name": "Revoke access of given users on an Integration",
+          "request": {
+            "name": "Revoke access of given users on an Integration",
+            "description": {},
+            "url": {
+              "path": [
+                "integrations",
+                "governance",
+                ":id",
+                "acls"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) ID of an Integration"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"users\": [\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cf18e17a-b84c-4422-aec6-72a4243c384d",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance",
+                    ":id",
+                    "acls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of an Integration"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"users\": [\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0d33aeee-3db4-48f6-9e5e-8316128c9670",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance",
+                    ":id",
+                    "acls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of an Integration"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"users\": [\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2012-04-28T12:07:06.265Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5e1a6f48-7657-408b-abbd-0037d270296c",
+          "name": "Get a list of all users along with role they are eligible on an Integration",
+          "request": {
+            "name": "Get a list of all users along with role they are eligible on an Integration",
+            "description": {},
+            "url": {
+              "path": [
+                "integrations",
+                "governance",
+                ":id",
+                "acls",
+                "eligible-users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "role",
+                  "value": "<string>",
+                  "description": "Name of roles"
+                },
+                {
+                  "disabled": false,
+                  "key": "role",
+                  "value": "<string>",
+                  "description": "Name of roles"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) ID of an Integration"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "27d7fece-0118-4701-9716-3c60755260eb",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance",
+                    ":id",
+                    "acls",
+                    "eligible-users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "role",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "role",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of an Integration"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"emailId\": \"string\",\n    \"eligibleRoles\": [\n      \"string\",\n      \"string\"\n    ],\n    \"accessibleSubscriptions\": [\n      \"string\",\n      \"string\"\n    ]\n  },\n  {\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"emailId\": \"string\",\n    \"eligibleRoles\": [\n      \"string\",\n      \"string\"\n    ],\n    \"accessibleSubscriptions\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2b6ffb55-7674-4d4d-8d5b-6cf4597e695c",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    "governance",
+                    ":id",
+                    "acls",
+                    "eligible-users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "role",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "role",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of an Integration"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2012-04-28T12:07:06.265Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "console.tessell.com",
+      "key": "server"
+    },
+    {
+      "type": "string",
+      "value": "{{server}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "9fa2a02a-c476-4f83-8932-91ce30c682d6",
+    "name": "Tessell APIs activity-center Integration Governance API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tessell API Documentation\n\nContact Support:\n Name: Tessell Inc\n Email: support@tessell.com",
+      "type": "text/plain"
+    }
+  }
+}

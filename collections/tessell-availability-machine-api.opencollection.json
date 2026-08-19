@@ -1,0 +1,483 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Availability Machine API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Availability Machine",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a list of Availability Machines",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter the result based on Availability Machine name"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter the result based on Availability Machine status"
+              },
+              {
+                "name": "engine-type",
+                "value": "",
+                "type": "query",
+                "description": "Filter the result based on Availability Machine's database engine-type"
+              },
+              {
+                "name": "load-daps",
+                "value": "",
+                "type": "query",
+                "description": "Boolean to indicate if AM's DAPs to be fetched or not"
+              },
+              {
+                "name": "load-rpo-policy",
+                "value": "",
+                "type": "query",
+                "description": "Load RPO policy configuration associated with the Availability Machine"
+              },
+              {
+                "name": "load-storage-config",
+                "value": "",
+                "type": "query",
+                "description": "Load storage details of the corresponding DB Service"
+              },
+              {
+                "name": "load-acls",
+                "value": "",
+                "type": "query",
+                "description": "Load ACL information"
+              },
+              {
+                "name": "owners",
+                "value": "",
+                "type": "query",
+                "description": "List of Email Addresses for entity or resource owners"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get a list of Availability Machines"
+        },
+        {
+          "info": {
+            "name": "Get details about an Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              },
+              {
+                "name": "load-daps",
+                "value": "",
+                "type": "query",
+                "description": "Boolean to indicate if AM's DAPs to be fetched or not"
+              },
+              {
+                "name": "load-rpo-policy",
+                "value": "",
+                "type": "query",
+                "description": "Load RPO policy configuration associated with the Availability Machine"
+              },
+              {
+                "name": "load-storage-config",
+                "value": "",
+                "type": "query",
+                "description": "Load storage details of the corresponding DB Service"
+              },
+              {
+                "name": "load-clones",
+                "value": "",
+                "type": "query",
+                "description": "Load cloned DB Services details created using Availability Machine"
+              },
+              {
+                "name": "load-acls",
+                "value": "",
+                "type": "query",
+                "description": "Load ACL information"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get details about an Availability Machine"
+        },
+        {
+          "info": {
+            "name": "Delete the Availability Machine and the associated data (if any) including snapshots, sanitized-snapshots, and backups.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/availability-machines/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              }
+            ]
+          },
+          "docs": "Delete the Availability Machine and the associated data (if any) including snapshots, sanitized-snapshots, and backups."
+        },
+        {
+          "info": {
+            "name": "Pause the automated backups for a Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/availability-machines/:id/pause",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Pause the automated backups for a Availability Machine"
+        },
+        {
+          "info": {
+            "name": "Allow backup download for a Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/availability-machines/:id/backup-download-config",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allow backup download for a Availability Machine"
+        },
+        {
+          "info": {
+            "name": "Resume the automated backups for a Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/availability-machines/:id/resume",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Resume the automated backups for a Availability Machine"
+        },
+        {
+          "info": {
+            "name": "Get list of ACLs for an Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:id/acls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              }
+            ]
+          },
+          "docs": "Get list of ACLs for an Availability Machine"
+        },
+        {
+          "info": {
+            "name": "Create or update ACLs for an Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/availability-machines/:id/acls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create or update ACLs for an Availability Machine"
+        },
+        {
+          "info": {
+            "name": "Revoke ACLs for an Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/availability-machines/:id/acls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Revoke ACLs for an Availability Machine"
+        },
+        {
+          "info": {
+            "name": "Get list of users which are eligible to grant access for an Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:id/acls/eligible-users",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              },
+              {
+                "name": "roles",
+                "value": "",
+                "type": "query",
+                "description": "Filter the result based on specified roles"
+              }
+            ]
+          },
+          "docs": "Get list of users which are eligible to grant access for an Availability Machine"
+        },
+        {
+          "info": {
+            "name": "Get download url info for the backup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/dataflix/:id/catalog/backups/:backup-id/download-url",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              },
+              {
+                "name": "backup-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the backup"
+              }
+            ]
+          },
+          "docs": "Get download url info for the backup"
+        },
+        {
+          "info": {
+            "name": "Get list of all the users by privileges",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/dataflix/:id/acls/eligible-users",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              },
+              {
+                "name": "roles",
+                "value": "",
+                "type": "query",
+                "description": "roles"
+              }
+            ]
+          },
+          "docs": "Get list of all the users by privileges"
+        },
+        {
+          "info": {
+            "name": "Get size consumption details for Tessell Data Management Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:id/size",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get size consumption details for Tessell Data Management Machine"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

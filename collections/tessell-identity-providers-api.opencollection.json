@@ -1,0 +1,134 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Identity Providers API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Identity Providers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a new integration with an Identity Provider",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/idps",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new integration with an Identity Provider"
+        },
+        {
+          "info": {
+            "name": "Get a list of integrated Identity Providers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/iam/idps/configured-idps",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Get a list of integrated Identity Providers"
+        },
+        {
+          "info": {
+            "name": "Update an Identity Provider",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/iam/idps/:idp-id",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "idp-id",
+                "value": "",
+                "type": "path",
+                "description": "UUID of an Identity Provider Integration"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update an Identity Provider"
+        },
+        {
+          "info": {
+            "name": "Delete an Identity Provider integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/iam/idps/:idp-id",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "idp-id",
+                "value": "",
+                "type": "path",
+                "description": "UUID of an Identity Provider Integration"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete an Identity Provider integration"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

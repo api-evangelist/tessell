@@ -1,0 +1,595 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Compute Resource API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Compute Resource",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "View a list of available Compute Resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/compute-resources/dbservers",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter Compute Resource based on name"
+              },
+              {
+                "name": "load-db-services",
+                "value": "",
+                "type": "query",
+                "description": "Flag to load DB Service instances hosted on the DB Servers"
+              },
+              {
+                "name": "machine-type",
+                "value": "",
+                "type": "query",
+                "description": "machine-type"
+              },
+              {
+                "name": "providerAccountId",
+                "value": "",
+                "type": "query",
+                "description": "Filter Compute Resource provider Id"
+              },
+              {
+                "name": "providerSubAcctId",
+                "value": "",
+                "type": "query",
+                "description": "Filter Compute Resource provider sub account Id"
+              },
+              {
+                "name": "load-updates-info",
+                "value": "",
+                "type": "query",
+                "description": "Include update availability information for each DB Server"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "View a list of available Compute Resources"
+        },
+        {
+          "info": {
+            "name": "Get a Compute Resource by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/compute-resources/dbservers/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Compute Resource"
+              },
+              {
+                "name": "load-updates-info",
+                "value": "",
+                "type": "query",
+                "description": "Include update availability information for the DB Server"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get a Compute Resource by ID"
+        },
+        {
+          "info": {
+            "name": "Update a DB server",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/compute-resources/dbservers/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Server"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a DB server"
+        },
+        {
+          "info": {
+            "name": "Delete a Database Server",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/compute-resources/dbservers/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ]
+          },
+          "docs": "Delete a Database Server"
+        },
+        {
+          "info": {
+            "name": "View a list of available Compute Resources that can be used for newer provisioning",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/compute-resources/dbservers/sharing-enabled",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "subscription-id",
+                "value": "",
+                "type": "query",
+                "description": "Filter Compute Resources based on subscription ID"
+              },
+              {
+                "name": "engine-type",
+                "value": "",
+                "type": "query",
+                "description": "Filter Compute Resources based on engine type"
+              },
+              {
+                "name": "cloud",
+                "value": "",
+                "type": "query",
+                "description": "Filter Compute Resources based on cloud type"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Filter Compute Resources based on cloud region"
+              },
+              {
+                "name": "load-updates-info",
+                "value": "",
+                "type": "query",
+                "description": "Include update availability information for each DB Server"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "View a list of available Compute Resources that can be used for newer provisioning"
+        },
+        {
+          "info": {
+            "name": "Enable compute resource sharing",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/compute-resources/dbservers/:id/enable-compute-sharing",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enable compute resource sharing"
+        },
+        {
+          "info": {
+            "name": "Update compute resource owner",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/compute-resources/dbservers/:id/owner",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update compute resource owner"
+        },
+        {
+          "info": {
+            "name": "Update owner for all compute resources of a given owner",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/compute-resources/dbservers/owner/:email-id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "email-id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the owner"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Bulk update the owner for all compute resources currently owned by the specified user"
+        },
+        {
+          "info": {
+            "name": "Get a Compute Resource by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/compute-resources/dbservers/:id/timeline",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get a Compute Resource by ID"
+        },
+        {
+          "info": {
+            "name": "Resize a Database Server Compute Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/compute-resources/dbservers/:id/resize",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Resize a Database Server Compute Resource"
+        },
+        {
+          "info": {
+            "name": "Starts Database Server Compute Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/compute-resources/dbservers/:id/start",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Starts Database Server Compute Resource"
+        },
+        {
+          "info": {
+            "name": "Stops the DB Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/compute-resources/dbservers/:id/stop",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Stops the DB Service"
+        },
+        {
+          "info": {
+            "name": "Patch request for compute resource maintenance window",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/compute-resources/dbservers/:id/maintenance-windows",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Patch request for compute resource maintenance window"
+        },
+        {
+          "info": {
+            "name": "View tags for the DB Server",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/compute-resources/dbservers/:id/tags",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ]
+          },
+          "docs": "View tags for the DB Server"
+        },
+        {
+          "info": {
+            "name": "Create/update (override) tags for the DB Server",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/compute-resources/dbservers/:id/tags",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Server"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create/update (override) tags for the DB Server"
+        },
+        {
+          "info": {
+            "name": "Delete tags for a DB Server",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/compute-resources/dbservers/:id/tags",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Server"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete tags for a DB Server"
+        },
+        {
+          "info": {
+            "name": "Add/update an integration for the DB Server",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/compute-resources/dbservers/:id/integrations",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add/update an integration for the DB Server"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

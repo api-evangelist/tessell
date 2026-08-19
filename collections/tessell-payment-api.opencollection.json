@@ -1,0 +1,172 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Payment API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payment",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "View a list of Tessell Invoices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/billing/invoices",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "includeDraft",
+                "value": "",
+                "type": "query",
+                "description": "whether to include draft invoices or not"
+              }
+            ]
+          },
+          "docs": "Returns an array of invoices corresponding to a tenant-id"
+        },
+        {
+          "info": {
+            "name": "Get Invoice By Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/billing/invoices/:id",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id of invoice"
+              }
+            ]
+          },
+          "docs": "Returns invoice corresponding to an id"
+        },
+        {
+          "info": {
+            "name": "Create a payment option update request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/billing/payments",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Creates a request for updating the payment option"
+        },
+        {
+          "info": {
+            "name": "Update payment option",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/billing/payments",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the payment option in Tessell"
+        },
+        {
+          "info": {
+            "name": "Cancel payment option request",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/billing/payments/:intentId",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "intentId",
+                "value": "",
+                "type": "path",
+                "description": "Id of the intent to change payment option"
+              }
+            ]
+          },
+          "docs": "Cancel an already requested payment option change request"
+        },
+        {
+          "info": {
+            "name": "Get default payment option",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/billing/payments/default",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "View credit card listed with Tessell as default payment option"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

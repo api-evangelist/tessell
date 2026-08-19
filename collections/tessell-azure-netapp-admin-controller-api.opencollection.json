@@ -1,0 +1,353 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center azure-netapp-admin-controller API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "azure-netapp-admin-controller",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Discover Azure NetApp Accounts(s)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/storages/governance/azure-netapp/discovery",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "subscription",
+                "value": "",
+                "type": "query",
+                "description": "Filter the entities based on cloud-subscription"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Filter the entities based on cloud-region"
+              }
+            ]
+          },
+          "docs": "Discover Azure NetApp Accounts(s)"
+        },
+        {
+          "info": {
+            "name": "Discover Capacity Pools(s) for a Azure NetApp",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/storages/governance/azure-netapp/:anf-id/capacity-pools/discovery",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "anf-id",
+                "value": "12345678-abcd-1234-abcd-1234abcd5678",
+                "type": "path",
+                "description": "Tessell Generated UUID of the Azure NetApp"
+              },
+              {
+                "name": "subscription",
+                "value": "",
+                "type": "query",
+                "description": "Filter the entities based on cloud-subscription"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Filter the entities based on cloud-region"
+              }
+            ]
+          },
+          "docs": "Discover Capacity Pools(s) for a Azure NetApp"
+        },
+        {
+          "info": {
+            "name": "Register Azure NetApp if not already registered",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/storages/governance/azure-netapp/register",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register Azure NetApp if not already registered"
+        },
+        {
+          "info": {
+            "name": "Register Azure NetApp Capacity Pools if not already registered",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/storages/governance/azure-netapp/:anf-id/capacity-pools/register",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "anf-id",
+                "value": "12345678-abcd-1234-abcd-1234abcd5678",
+                "type": "path",
+                "description": "Tessell Generated UUID of the Azure NetApp"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register Azure NetApp Capacity Pools if not already registered"
+        },
+        {
+          "info": {
+            "name": "De-Register Azure NetApp",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/storages/governance/azure-netapp/:anf-id/deregister",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "anf-id",
+                "value": "12345678-abcd-1234-abcd-1234abcd5678",
+                "type": "path",
+                "description": "Tessell Generated UUID of the Azure NetApp"
+              }
+            ]
+          },
+          "docs": "De-Register Azure NetApp"
+        },
+        {
+          "info": {
+            "name": "De-Register Azure NetApp",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/storages/governance/azure-netapp/:anf-id/capacity-pools/:cp-id/deregister",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "anf-id",
+                "value": "12345678-abcd-1234-abcd-1234abcd5678",
+                "type": "path",
+                "description": "Tessell Generated UUID of the Azure NetApp"
+              },
+              {
+                "name": "cp-id",
+                "value": "",
+                "type": "path",
+                "description": "Tessell Generated UUID of the Capacity-Pool"
+              }
+            ]
+          },
+          "docs": "De-Register Azure NetApp"
+        },
+        {
+          "info": {
+            "name": "Get the Azure NetApp policy to enable access of resources from azure",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/storages/governance/azure-netapp/policy",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "subscription-name",
+                "value": "",
+                "type": "query",
+                "description": "Subscription name"
+              }
+            ]
+          },
+          "docs": "Get the Azure NetApp policy to enable access of resources from azure"
+        },
+        {
+          "info": {
+            "name": "Get Azure NetApp(s) registered with Tessell",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/storages/governance/azure-netapp",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "Statuses of Azure NetApp to be included"
+              },
+              {
+                "name": "skip-statuses",
+                "value": "",
+                "type": "query",
+                "description": "Statuses of Azure NetApp to be skipped"
+              },
+              {
+                "name": "subscription",
+                "value": "",
+                "type": "query",
+                "description": "Filter the entities based on cloud-subscription"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Filter the entities based on cloud-region"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get Azure NetApp(s) registered with Tessell"
+        },
+        {
+          "info": {
+            "name": "Get Azure NetApp registered with Tessell",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/storages/governance/azure-netapp/:anf-id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "anf-id",
+                "value": "12345678-abcd-1234-abcd-1234abcd5678",
+                "type": "path",
+                "description": "Tessell Generated UUID of the Azure NetApp"
+              }
+            ]
+          },
+          "docs": "Get Azure NetApp registered with Tessell"
+        },
+        {
+          "info": {
+            "name": "Get the Azure NetApp Quotas for a region",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/storages/governance/azure-netapp/quotas",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "subscription",
+                "value": "",
+                "type": "query",
+                "description": "Subscription name"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Region name"
+              }
+            ]
+          },
+          "docs": "Get the Azure NetApp Quotas for a region"
+        },
+        {
+          "info": {
+            "name": "Sync details of Azure NetApp with cloud",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/storages/governance/azure-netapp/:anf-id/sync-with-cloud",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "anf-id",
+                "value": "12345678-abcd-1234-abcd-1234abcd5678",
+                "type": "path",
+                "description": "Tessell Generated UUID of the Azure NetApp"
+              }
+            ]
+          },
+          "docs": "Sync details of Azure NetApp with cloud"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

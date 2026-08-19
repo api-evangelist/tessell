@@ -1,0 +1,1052 @@
+{
+  "item": [
+    {
+      "id": "b2af85a5-eb50-4532-973d-fb226295d230",
+      "name": "Ad Domain Governance",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8d717dc8-3078-48f5-adb3-b54ffac2449f",
+          "name": "Get List of Active Directory Domain",
+          "request": {
+            "name": "Get List of Active Directory Domain",
+            "description": {},
+            "url": {
+              "path": [
+                "ad-domains",
+                "governance"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page-size",
+                  "value": "10",
+                  "description": "Page size for get query"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-offset",
+                  "value": "0",
+                  "description": "Page offset for get query"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "75e2e7d7-60e8-476a-bc34-73aec0f4544f",
+              "name": "List of ad Domains",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ad-domains",
+                    "governance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"7a6773d0-3b1d-4062-e55c-60f2c16041c8\",\n    \"tessellName\": \"string\",\n    \"domainName\": \"string\",\n    \"netBIOSorOU\": \"string\",\n    \"dnsServer\": [\n      \"string\",\n      \"string\"\n    ],\n    \"domainAccountUser\": \"string\"\n  },\n  {\n    \"id\": \"f3c7f685-c438-2378-2d36-287b1683c58a\",\n    \"tessellName\": \"string\",\n    \"domainName\": \"string\",\n    \"netBIOSorOU\": \"string\",\n    \"dnsServer\": [\n      \"string\",\n      \"string\"\n    ],\n    \"domainAccountUser\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4fa9f474-513e-45fa-b623-51312043af1f",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ad-domains",
+                    "governance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1987-08-05T03:13:05.416Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6ec7c8a9-711f-427a-b542-25510a8c47a5",
+          "name": "Register an Active Directory Domain",
+          "request": {
+            "name": "Register an Active Directory Domain",
+            "description": {},
+            "url": {
+              "path": [
+                "ad-domains",
+                "governance",
+                "register"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tessellName\": \"<string>\",\n  \"domainName\": \"<string>\",\n  \"netBIOSorOU\": \"<string>\",\n  \"dnsServer\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"domainAccountUser\": \"<string>\",\n  \"domainAccountPassword\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d28ba45e-519f-498a-9872-a5e4b9febc0f",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ad-domains",
+                    "governance",
+                    "register"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tessellName\": \"<string>\",\n  \"domainName\": \"<string>\",\n  \"netBIOSorOU\": \"<string>\",\n  \"dnsServer\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"domainAccountUser\": \"<string>\",\n  \"domainAccountPassword\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"59f5f2bd-9d62-7000-e3f3-945ea54e595a\",\n  \"tessellName\": \"string\",\n  \"domainName\": \"string\",\n  \"netBIOSorOU\": \"string\",\n  \"dnsServer\": [\n    \"string\",\n    \"string\"\n  ],\n  \"domainAccountUser\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "09496010-5830-4267-aca7-20859b4dc4bf",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ad-domains",
+                    "governance",
+                    "register"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tessellName\": \"<string>\",\n  \"domainName\": \"<string>\",\n  \"netBIOSorOU\": \"<string>\",\n  \"dnsServer\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"domainAccountUser\": \"<string>\",\n  \"domainAccountPassword\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e51ae6cc-3025-4169-afc0-9e2ac425eb7e",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ad-domains",
+                    "governance",
+                    "register"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tessellName\": \"<string>\",\n  \"domainName\": \"<string>\",\n  \"netBIOSorOU\": \"<string>\",\n  \"dnsServer\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"domainAccountUser\": \"<string>\",\n  \"domainAccountPassword\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1987-08-05T03:13:05.416Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "22a034c4-9873-425b-b8f6-984dd76aaefa",
+          "name": "Reconfigure an Active Directory Domain",
+          "request": {
+            "name": "Reconfigure an Active Directory Domain",
+            "description": {},
+            "url": {
+              "path": [
+                "ad-domains",
+                "governance",
+                "id",
+                ":id",
+                "reconfigure"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Ad Domain Identifier"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dnsServer\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"domainAccountUser\": \"<string>\",\n  \"domainAccountPassword\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5f9af140-ba1f-4a16-bb5f-49fc09cc41f9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ad-domains",
+                    "governance",
+                    "id",
+                    ":id",
+                    "reconfigure"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Ad Domain Identifier"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dnsServer\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"domainAccountUser\": \"<string>\",\n  \"domainAccountPassword\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"59f5f2bd-9d62-7000-e3f3-945ea54e595a\",\n  \"tessellName\": \"string\",\n  \"domainName\": \"string\",\n  \"netBIOSorOU\": \"string\",\n  \"dnsServer\": [\n    \"string\",\n    \"string\"\n  ],\n  \"domainAccountUser\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1e4c1459-5e13-4f04-89b1-550d06cd1897",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ad-domains",
+                    "governance",
+                    "id",
+                    ":id",
+                    "reconfigure"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Ad Domain Identifier"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dnsServer\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"domainAccountUser\": \"<string>\",\n  \"domainAccountPassword\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9c847df8-8221-449c-a6fc-5c320ffb9625",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ad-domains",
+                    "governance",
+                    "id",
+                    ":id",
+                    "reconfigure"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Ad Domain Identifier"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dnsServer\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"domainAccountUser\": \"<string>\",\n  \"domainAccountPassword\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1987-08-05T03:13:05.416Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ece4803b-6466-42c2-87a8-ba413fb7f373",
+          "name": "Deregister an Active Directory Domain",
+          "request": {
+            "name": "Deregister an Active Directory Domain",
+            "description": {},
+            "url": {
+              "path": [
+                "ad-domains",
+                "governance",
+                "id",
+                ":id",
+                "deregister"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Ad Domain Identifier"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8c387c9b-b447-4181-a120-68177622ed62",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ad-domains",
+                    "governance",
+                    "id",
+                    ":id",
+                    "deregister"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Ad Domain Identifier"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "589918e5-edd2-425d-add3-74e05e13a848",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ad-domains",
+                    "governance",
+                    "id",
+                    ":id",
+                    "deregister"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Ad Domain Identifier"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2e1f4f89-0f2c-4179-b01e-180afc094306",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ad-domains",
+                    "governance",
+                    "id",
+                    ":id",
+                    "deregister"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Ad Domain Identifier"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1987-08-05T03:13:05.416Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "console.tessell.com",
+      "key": "server"
+    },
+    {
+      "type": "string",
+      "value": "{{server}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "01c2105e-5a46-44a3-96c8-ca8c290d2433",
+    "name": "Tessell APIs activity-center Ad Domain Governance API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tessell API Documentation\n\nContact Support:\n Name: Tessell Inc\n Email: support@tessell.com",
+      "type": "text/plain"
+    }
+  }
+}

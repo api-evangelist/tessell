@@ -1,0 +1,440 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Parameter Profile API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Parameter Profile",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a list of supported Database Parameters for all Database Engines with default configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/governance/parameter-profiles/validations",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Parameter Profile name"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Status of Parameter Profile"
+              },
+              {
+                "name": "engineType",
+                "value": "",
+                "type": "query",
+                "description": "Database Engine type"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Database Engine version"
+              },
+              {
+                "name": "infraType",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get a list of supported Database Parameters for all Database Engines with default configuration"
+        },
+        {
+          "info": {
+            "name": "Get a list of Parameter Profiles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/governance/parameter-profiles",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Status of a Parameter Profile"
+              },
+              {
+                "name": "engineType",
+                "value": "",
+                "type": "query",
+                "description": "Database Engine type"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Database Engine version"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Parameter Profile name"
+              },
+              {
+                "name": "infraType",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get a list of Parameter Profiles"
+        },
+        {
+          "info": {
+            "name": "Create a new Parameter Profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/governance/parameter-profiles",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new Parameter Profile"
+        },
+        {
+          "info": {
+            "name": "Get a parameter profile by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/governance/parameter-profiles/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ]
+          },
+          "docs": "Get a parameter profile by Id"
+        },
+        {
+          "info": {
+            "name": "Update a Parameter Profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/governance/parameter-profiles/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a Parameter Profile"
+        },
+        {
+          "info": {
+            "name": "Delete a Parameter Profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/governance/parameter-profiles/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Parameter Profile Id"
+              },
+              {
+                "name": "softDelete",
+                "value": "",
+                "type": "query",
+                "description": "When set to false, it permanently deletes a Parameter Profile. When set to true, Parameter Profile can be recovered by contacting Tessell Support."
+              }
+            ]
+          },
+          "docs": "Delete a Parameter Profile"
+        },
+        {
+          "info": {
+            "name": "Compare two Parameter Profile configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/governance/parameter-profiles/:id/compare",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Parameter Profile"
+              },
+              {
+                "name": "compareTo",
+                "value": "",
+                "type": "query",
+                "description": "Id of the Parameter Profile to be compared with"
+              }
+            ]
+          },
+          "docs": "Compare two Parameter Profile configuration"
+        },
+        {
+          "info": {
+            "name": "Copy Parameters of one Parameter Profile to other Parameter Profiles",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/governance/parameter-profiles/:id/copy-configuration",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of Parameter Profile (Parameters will be copied from this Parameter Profile)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Copy Parameters of one Parameter Profile to other Parameter Profiles"
+        },
+        {
+          "info": {
+            "name": "Reset Parameters of Parameter Profile to its default values",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/governance/parameter-profiles/:id/reset",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ]
+          },
+          "docs": "Reset Parameters of Parameter Profile to its default values"
+        },
+        {
+          "info": {
+            "name": "Get a list of available Parameter Profiles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/databases/parameter-profiles",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Parameter Profile status"
+              },
+              {
+                "name": "engineType",
+                "value": "",
+                "type": "query",
+                "description": "Database Engine type"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Database Engine version"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Parameter Profile name"
+              },
+              {
+                "name": "infraType",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get a list of available Parameter Profiles"
+        },
+        {
+          "info": {
+            "name": "Check if Parameter Profile is deletable or not",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/governance/parameter-profiles/:id/deletable",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Parameter Profile Id"
+              }
+            ]
+          },
+          "docs": "Check if Parameter Profile is deletable or not"
+        },
+        {
+          "info": {
+            "name": "View available Database Parameter Profiles by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/databases/parameter-profiles/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Parameter profile Id"
+              },
+              {
+                "name": "versionId",
+                "value": "",
+                "type": "query",
+                "description": "Parameter profile version Id"
+              }
+            ]
+          },
+          "docs": "View available Database Parameter Profiles by Id"
+        },
+        {
+          "info": {
+            "name": "Provide Services/Instances that are using the Parameter Profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/governance/parameter-profiles/:id/usages",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Parameter Profile Id"
+              },
+              {
+                "name": "loadMaintenanceWindowDetails",
+                "value": "",
+                "type": "query",
+                "description": "Load maintenance window details for instances which are out of sync"
+              }
+            ]
+          },
+          "docs": "Provide Services/Instances that are using the Parameter Profile"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

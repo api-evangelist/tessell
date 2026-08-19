@@ -1,0 +1,853 @@
+{
+  "item": [
+    {
+      "id": "95c9feb3-08f0-416e-8670-9142a677aad9",
+      "name": "DB Connection Pool",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e3a582a2-ba50-4a3d-b6d7-119efa8a2987",
+          "name": "Get list of connection pools for the DB Service",
+          "request": {
+            "name": "Get list of connection pools for the DB Service",
+            "description": {},
+            "url": {
+              "path": [
+                "services",
+                ":service-id",
+                "connection-pools"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Name of connection pool whose details will be returned."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "service-id",
+                  "description": "(Required) The ID of the DB Service"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fe08eb49-27e9-4cbc-96c0-05080e7c65df",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "services",
+                    ":service-id",
+                    "connection-pools"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "service-id",
+                      "description": "(Required) The ID of the DB Service"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"postgresqlConfig\": [\n    {\n      \"id\": \"c17078c6-4351-780c-6a82-bf6a7c9c1b9e\",\n      \"connPoolName\": \"string\",\n      \"connPoolSize\": 6043,\n      \"connMaxDbConnections\": 9427,\n      \"connMinPoolSize\": 7884,\n      \"connPoolMode\": \"TRANSACTION\",\n      \"dbName\": \"string\",\n      \"dbUsername\": \"string\",\n      \"serviceName\": \"string\",\n      \"status\": \"DELETING\",\n      \"connectionDetails\": {\n        \"type\": \"string\",\n        \"connectDescriptor\": \"string\",\n        \"endpoint\": \"string\",\n        \"dbUsername\": \"string\",\n        \"port\": 8135\n      }\n    },\n    {\n      \"id\": \"a56ca215-41bd-fefb-933f-d6cb9d8ea27f\",\n      \"connPoolName\": \"string\",\n      \"connPoolSize\": 7322,\n      \"connMaxDbConnections\": 7312,\n      \"connMinPoolSize\": 4881,\n      \"connPoolMode\": \"TRANSACTION\",\n      \"dbName\": \"string\",\n      \"dbUsername\": \"string\",\n      \"serviceName\": \"string\",\n      \"status\": \"UPDATING\",\n      \"connectionDetails\": {\n        \"type\": \"string\",\n        \"connectDescriptor\": \"string\",\n        \"endpoint\": \"string\",\n        \"dbUsername\": \"string\",\n        \"port\": 5196\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "293508e5-07ec-4e8d-bd1d-ea899cee7aea",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "services",
+                    ":service-id",
+                    "connection-pools"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "service-id",
+                      "description": "(Required) The ID of the DB Service"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1981-07-10T06:04:43.333Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4dc5db10-190b-4366-8c52-ca2f6a90ab5b",
+          "name": "Creates a new connection pool for the DB Service",
+          "request": {
+            "name": "Creates a new connection pool for the DB Service",
+            "description": {},
+            "url": {
+              "path": [
+                "services",
+                ":service-id",
+                "connection-pools"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "service-id",
+                  "description": "(Required) The ID of the DB Service"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"postgresqlConfig\": [\n    {\n      \"connPoolName\": \"<string>\",\n      \"dbName\": \"<string>\",\n      \"connPoolMode\": \"<string>\",\n      \"connPoolSize\": \"<integer>\",\n      \"dbUsername\": \"<string>\",\n      \"connMaxDbConnections\": \"<integer>\",\n      \"connMinPoolSize\": \"<integer>\"\n    },\n    {\n      \"connPoolName\": \"<string>\",\n      \"dbName\": \"<string>\",\n      \"connPoolMode\": \"<string>\",\n      \"connPoolSize\": \"<integer>\",\n      \"dbUsername\": \"<string>\",\n      \"connMaxDbConnections\": \"<integer>\",\n      \"connMinPoolSize\": \"<integer>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6ca802ea-fc0d-4560-a2fa-45bf0e44fb64",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "services",
+                    ":service-id",
+                    "connection-pools"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "service-id",
+                      "description": "(Required) The ID of the DB Service"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"postgresqlConfig\": [\n    {\n      \"connPoolName\": \"<string>\",\n      \"dbName\": \"<string>\",\n      \"connPoolMode\": \"<string>\",\n      \"connPoolSize\": \"<integer>\",\n      \"dbUsername\": \"<string>\",\n      \"connMaxDbConnections\": \"<integer>\",\n      \"connMinPoolSize\": \"<integer>\"\n    },\n    {\n      \"connPoolName\": \"<string>\",\n      \"dbName\": \"<string>\",\n      \"connPoolMode\": \"<string>\",\n      \"connPoolSize\": \"<integer>\",\n      \"dbUsername\": \"<string>\",\n      \"connMaxDbConnections\": \"<integer>\",\n      \"connMinPoolSize\": \"<integer>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"taskId\": \"4f38e721-ca47-e572-d74b-dc89561ca23c\",\n  \"taskType\": \"string\",\n  \"resourceId\": \"f1b14e0a-60c5-de7e-b5c9-d834dd65b064\",\n  \"associatedResourceIds\": [\n    \"bb2aa981-28d1-f941-901e-c26523adc2f8\",\n    \"ddd1b859-b220-ffd2-b33e-1ca285ec87f8\"\n  ],\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "66101d32-1c6e-40a0-94cf-b7d680c92f92",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "services",
+                    ":service-id",
+                    "connection-pools"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "service-id",
+                      "description": "(Required) The ID of the DB Service"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"postgresqlConfig\": [\n    {\n      \"connPoolName\": \"<string>\",\n      \"dbName\": \"<string>\",\n      \"connPoolMode\": \"<string>\",\n      \"connPoolSize\": \"<integer>\",\n      \"dbUsername\": \"<string>\",\n      \"connMaxDbConnections\": \"<integer>\",\n      \"connMinPoolSize\": \"<integer>\"\n    },\n    {\n      \"connPoolName\": \"<string>\",\n      \"dbName\": \"<string>\",\n      \"connPoolMode\": \"<string>\",\n      \"connPoolSize\": \"<integer>\",\n      \"dbUsername\": \"<string>\",\n      \"connMaxDbConnections\": \"<integer>\",\n      \"connMinPoolSize\": \"<integer>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1981-07-10T06:04:43.333Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9f5d5956-2134-4c25-b595-23da5f3622e1",
+          "name": "Delete an existing connection pool for the DB Service",
+          "request": {
+            "name": "Delete an existing connection pool for the DB Service",
+            "description": {},
+            "url": {
+              "path": [
+                "services",
+                ":service-id",
+                "connection-pools"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "service-id",
+                  "description": "(Required) The ID of the DB Service"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"postgresqlConfig\": {\n    \"connectionPools\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5601a59d-90ef-40ea-9fc0-65d8c90e9ab0",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "services",
+                    ":service-id",
+                    "connection-pools"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "service-id",
+                      "description": "(Required) The ID of the DB Service"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"postgresqlConfig\": {\n    \"connectionPools\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"taskId\": \"783c74b3-6b3b-3da4-e113-80c6d83dcb59\",\n  \"taskType\": \"string\",\n  \"resourceId\": \"9df5aced-a51a-5872-a479-4bb393fc139e\",\n  \"associatedResourceIds\": [\n    \"6ce1b110-b345-4bde-a233-100b2f2e9ace\",\n    \"9c06eda0-6890-ebdd-ad7e-38d0c38c91f4\"\n  ],\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "921e5ea8-b690-46a9-9557-62cf500d8f0f",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "services",
+                    ":service-id",
+                    "connection-pools"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "service-id",
+                      "description": "(Required) The ID of the DB Service"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"postgresqlConfig\": {\n    \"connectionPools\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1981-07-10T06:04:43.333Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ce35f18f-2324-4376-bc2c-24e062415257",
+          "name": "Update an existing connection pool for the DB Service",
+          "request": {
+            "name": "Update an existing connection pool for the DB Service",
+            "description": {},
+            "url": {
+              "path": [
+                "services",
+                ":service-id",
+                "connection-pools",
+                ":connection-pool-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "service-id",
+                  "description": "(Required) The ID of the DB Service"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "connection-pool-id",
+                  "description": "(Required) The ID of the connection pool"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"postgresqlConfig\": {\n    \"connPoolName\": \"<string>\",\n    \"dbName\": \"<string>\",\n    \"connPoolMode\": \"<string>\",\n    \"connPoolSize\": \"<integer>\",\n    \"dbUsername\": \"<string>\",\n    \"connMaxDbConnections\": \"<integer>\",\n    \"connMinPoolSize\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c3273708-3815-426c-b50d-bdf97b62b017",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "services",
+                    ":service-id",
+                    "connection-pools",
+                    ":connection-pool-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "service-id",
+                      "description": "(Required) The ID of the DB Service"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "connection-pool-id",
+                      "description": "(Required) The ID of the connection pool"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"postgresqlConfig\": {\n    \"connPoolName\": \"<string>\",\n    \"dbName\": \"<string>\",\n    \"connPoolMode\": \"<string>\",\n    \"connPoolSize\": \"<integer>\",\n    \"dbUsername\": \"<string>\",\n    \"connMaxDbConnections\": \"<integer>\",\n    \"connMinPoolSize\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"taskId\": \"783c74b3-6b3b-3da4-e113-80c6d83dcb59\",\n  \"taskType\": \"string\",\n  \"resourceId\": \"9df5aced-a51a-5872-a479-4bb393fc139e\",\n  \"associatedResourceIds\": [\n    \"6ce1b110-b345-4bde-a233-100b2f2e9ace\",\n    \"9c06eda0-6890-ebdd-ad7e-38d0c38c91f4\"\n  ],\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6afa6ff3-530b-4d47-9e5b-d5ddc5926cba",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "services",
+                    ":service-id",
+                    "connection-pools",
+                    ":connection-pool-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "service-id",
+                      "description": "(Required) The ID of the DB Service"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "connection-pool-id",
+                      "description": "(Required) The ID of the connection pool"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"postgresqlConfig\": {\n    \"connPoolName\": \"<string>\",\n    \"dbName\": \"<string>\",\n    \"connPoolMode\": \"<string>\",\n    \"connPoolSize\": \"<integer>\",\n    \"dbUsername\": \"<string>\",\n    \"connMaxDbConnections\": \"<integer>\",\n    \"connMinPoolSize\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1981-07-10T06:04:43.333Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "console.tessell.com",
+      "key": "server"
+    },
+    {
+      "type": "string",
+      "value": "{{server}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "7b515c10-6522-449b-8d4e-c9d9037b36f2",
+    "name": "Tessell APIs activity-center DB Connection Pool API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tessell API Documentation\n\nContact Support:\n Name: Tessell Inc\n Email: support@tessell.com",
+      "type": "text/plain"
+    }
+  }
+}

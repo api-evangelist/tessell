@@ -1,0 +1,158 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center VPC API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "VPC",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a list of VPCs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/network/vpcs",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "subscriptionName",
+                "value": "default",
+                "type": "query",
+                "description": "Name of the Subscription"
+              },
+              {
+                "name": "cloudType",
+                "value": "",
+                "type": "query",
+                "description": "Name of the Cloud"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              },
+              {
+                "name": "include-subnets",
+                "value": "",
+                "type": "query",
+                "description": "Boolean flag to specify if Subnet details are required in response"
+              },
+              {
+                "name": "usageType",
+                "value": "",
+                "type": "query",
+                "description": "Filter VPCs by usage type (GENERAL or EXADATA). If not specified, returns VPCs of all usage types."
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get a list of VPCs"
+        },
+        {
+          "info": {
+            "name": "Get VPC by Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/network/vpcs/:name",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "entity-123",
+                "type": "path",
+                "description": "Name of the Entity"
+              },
+              {
+                "name": "subscriptionName",
+                "value": "default",
+                "type": "query",
+                "description": "Name of the Subscription"
+              },
+              {
+                "name": "cloudType",
+                "value": "",
+                "type": "query",
+                "description": "Name of the Cloud"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              }
+            ]
+          },
+          "docs": "Get VPC by Name"
+        },
+        {
+          "info": {
+            "name": "Get Default VPC Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/network/vpcs/default-vpc-config",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cloud-type",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Type"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              },
+              {
+                "name": "cidr-block",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get Default VPC Configuration"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

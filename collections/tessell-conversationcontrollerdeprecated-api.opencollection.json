@@ -1,0 +1,101 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center conversationControllerDeprecated API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "conversationControllerDeprecated",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ticket's conversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/tickets/:id/conversations",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the ticket"
+              }
+            ]
+          },
+          "docs": "Get conversations for a ticket"
+        },
+        {
+          "info": {
+            "name": "Post ticket notes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/tickets/:id/notes",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the ticket"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Post a ticket note for a ticket with the given id"
+        },
+        {
+          "info": {
+            "name": "Add attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/tickets/attachments/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID or key of the issue that attachments are added to."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Add attachments to a ticket"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

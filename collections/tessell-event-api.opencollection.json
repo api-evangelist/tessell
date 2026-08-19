@@ -1,0 +1,147 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Event API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Event",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Reads event for the current user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/event-service/events",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "start-time",
+                "value": "",
+                "type": "query",
+                "description": "Start timestamp, when searching events in a range"
+              },
+              {
+                "name": "end-time",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp, when searching events in a range"
+              },
+              {
+                "name": "entityType",
+                "value": "",
+                "type": "query",
+                "description": "Entity Type"
+              },
+              {
+                "name": "entityID",
+                "value": "",
+                "type": "query",
+                "description": "Entity/Resource ID"
+              },
+              {
+                "name": "severity",
+                "value": "",
+                "type": "query",
+                "description": "Severity of the event"
+              },
+              {
+                "name": "parentEventId",
+                "value": "",
+                "type": "query",
+                "description": "Parent event identifier"
+              },
+              {
+                "name": "eventType",
+                "value": "",
+                "type": "query",
+                "description": "Event Type"
+              },
+              {
+                "name": "pageOffset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Page Size"
+              }
+            ]
+          },
+          "docs": "Reads event for the current user."
+        },
+        {
+          "info": {
+            "name": "Suppress an event type",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/event-service/event/:eventType/suppress",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "eventType",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Suppress an event type"
+        },
+        {
+          "info": {
+            "name": "Unsuppress a previous suppressed event.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/event-service/event/:eventType/unsuppress",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "eventType",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Unsuppress a previously suppressed event."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

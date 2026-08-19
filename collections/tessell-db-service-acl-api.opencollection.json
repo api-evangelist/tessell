@@ -1,0 +1,107 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center DB Service ACL API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "DB Service ACL",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create or update the DB Service ACLs",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:id/acls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create or update the DB Service ACLs"
+        },
+        {
+          "info": {
+            "name": "Revoke DB Service ACLs",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/services/:id/acls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Revoke DB Service ACLs"
+        },
+        {
+          "info": {
+            "name": "Get list of all the users by privileges for the given DB Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/services/:id/acls/eligible-users",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              },
+              {
+                "name": "roles",
+                "value": "",
+                "type": "query",
+                "description": "Filter based on the privilege roles"
+              }
+            ]
+          },
+          "docs": "Get list of all the users by privileges for the given DB Service"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

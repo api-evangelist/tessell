@@ -1,0 +1,443 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center fsx-netapp-admin-controller API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "fsx-netapp-admin-controller",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get FSx NetApp(s) registered with Tessell",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/storages/governance/fsx-netapp",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "subscription",
+                "value": "",
+                "type": "query",
+                "description": "Filter the entities based on cloud-subscription"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Filter the entities based on cloud-region"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "Statuses of FSx file system to be included"
+              },
+              {
+                "name": "skip-statuses",
+                "value": "",
+                "type": "query",
+                "description": "Statuses of FSx file system to be skipped"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get FSx NetApp(s) registered with Tessell"
+        },
+        {
+          "info": {
+            "name": "Get the FSx NetApp policy to enable access of resouces from aws",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/storages/governance/fsx-netapp/policy",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "subscription-name",
+                "value": "",
+                "type": "query",
+                "description": "Subscription name"
+              }
+            ]
+          },
+          "docs": "Get the FSx NetApp policy to enable access of resouces from aws"
+        },
+        {
+          "info": {
+            "name": "Get FSx NetApp registered with Tessell",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/storages/governance/fsx-netapp/:fsx-id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fsx-id",
+                "value": "12345678-abcd-1234-abcd-1234abcd5678",
+                "type": "path",
+                "description": "Tessell Generated UUID of the FSx NetApp"
+              }
+            ]
+          },
+          "docs": "Get FSx NetApp registered with Tessell"
+        },
+        {
+          "info": {
+            "name": "Update creds of FSx NetApp",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/storages/governance/fsx-netapp/:fsx-id/update-creds",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fsx-id",
+                "value": "12345678-abcd-1234-abcd-1234abcd5678",
+                "type": "path",
+                "description": "Tessell Generated UUID of the FSx NetApp"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update creds of FSx NetApp"
+        },
+        {
+          "info": {
+            "name": "Sync details of FSx NetApp with cloud",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/storages/governance/fsx-netapp/:fsx-id/sync-with-cloud",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fsx-id",
+                "value": "12345678-abcd-1234-abcd-1234abcd5678",
+                "type": "path",
+                "description": "Tessell Generated UUID of the FSx NetApp"
+              }
+            ]
+          },
+          "docs": "Sync details of FSx NetApp with cloud"
+        },
+        {
+          "info": {
+            "name": "Discover FSx NetApps",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/storages/governance/fsx-netapp/discovery",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "subscription",
+                "value": "",
+                "type": "query",
+                "description": "Filter the entities based on cloud-subscription"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Filter the entities based on cloud-region"
+              }
+            ]
+          },
+          "docs": "Discover FSx NetApps"
+        },
+        {
+          "info": {
+            "name": "Register FSx NetApp if not already registered",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/storages/governance/fsx-netapp/register",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register FSx NetApp if not already registered"
+        },
+        {
+          "info": {
+            "name": "De-Register FSx NetApp",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/storages/governance/fsx-netapp/:fsx-id/deregister",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fsx-id",
+                "value": "12345678-abcd-1234-abcd-1234abcd5678",
+                "type": "path",
+                "description": "Tessell Generated UUID of the FSx NetApp"
+              }
+            ]
+          },
+          "docs": "De-Register FSx NetApp"
+        },
+        {
+          "info": {
+            "name": "Discover Storage Virtual Machine(s) for a FSx NetApp",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/storages/governance/fsx-netapp/:fsx-id/svms/discovery",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fsx-id",
+                "value": "12345678-abcd-1234-abcd-1234abcd5678",
+                "type": "path",
+                "description": "Tessell Generated UUID of the FSx NetApp"
+              },
+              {
+                "name": "subscription",
+                "value": "",
+                "type": "query",
+                "description": "Filter the entities based on cloud-subscription"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Filter the entities based on cloud-region"
+              }
+            ]
+          },
+          "docs": "Discover Storage Virtual Machine(s) for a FSx NetApp"
+        },
+        {
+          "info": {
+            "name": "Register FSx NetApp Storage Virtual Machine if not already registered",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/storages/governance/fsx-netapp/:fsx-id/svms/register",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fsx-id",
+                "value": "12345678-abcd-1234-abcd-1234abcd5678",
+                "type": "path",
+                "description": "Tessell Generated UUID of the FSx NetApp"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register FSx NetApp Storage Virtual Machine if not already registered"
+        },
+        {
+          "info": {
+            "name": "De-Register FSx NetApp Storage Virtual Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/storages/governance/fsx-netapp/:fsx-id/svms/:svm-id/deregister",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fsx-id",
+                "value": "12345678-abcd-1234-abcd-1234abcd5678",
+                "type": "path",
+                "description": "Tessell Generated UUID of the FSx NetApp"
+              },
+              {
+                "name": "svm-id",
+                "value": "",
+                "type": "path",
+                "description": "Tessell Generated UUID of the SVM (Storage Virtual Machines)"
+              }
+            ]
+          },
+          "docs": "De-Register FSx NetApp Storage Virtual Machine"
+        },
+        {
+          "info": {
+            "name": "getFsxNetAppCloudMetrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/storages/governance/fsx-netapp/:fsx-id/metrics",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fsx-id",
+                "value": "12345678-abcd-1234-abcd-1234abcd5678",
+                "type": "path",
+                "description": "Tessell Generated UUID of the FSx NetApp"
+              },
+              {
+                "name": "start-time",
+                "value": "",
+                "type": "query",
+                "description": "Start timestamp for metric"
+              },
+              {
+                "name": "end-time",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp for metrics"
+              },
+              {
+                "name": "step",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the frequency at which data points are sampled or aggregated within the specified time range in seconds"
+              }
+            ]
+          },
+          "docs": "Returns the metrics data for FSx NetApp for iops, throughput and storage distribution"
+        },
+        {
+          "info": {
+            "name": "getFsxNetAppVolumeCloudMetrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/storages/governance/fsx-netapp/:fsx-id/volumes/:volume-id/metrics",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fsx-id",
+                "value": "12345678-abcd-1234-abcd-1234abcd5678",
+                "type": "path",
+                "description": "Tessell Generated UUID of the FSx NetApp"
+              },
+              {
+                "name": "volume-id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the FSx NetApp Volume"
+              },
+              {
+                "name": "start-time",
+                "value": "",
+                "type": "query",
+                "description": "Start timestamp for metric"
+              },
+              {
+                "name": "end-time",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp for metrics"
+              },
+              {
+                "name": "step",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the frequency at which data points are sampled or aggregated within the specified time range in seconds"
+              }
+            ]
+          },
+          "docs": "Returns the metrics data for a FSx NetApp volume for iops, throughput and storage distribution"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,699 @@
+{
+  "item": [
+    {
+      "id": "99c0958d-1173-4dd1-b3a1-637560e2c7e8",
+      "name": "VPC",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a4646b3a-1a41-433d-91f3-45ec114aef54",
+          "name": "Get a list of VPCs",
+          "request": {
+            "name": "Get a list of VPCs",
+            "description": {},
+            "url": {
+              "path": [
+                "network",
+                "vpcs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "subscriptionName",
+                  "value": "<string>",
+                  "description": "Name of the Subscription"
+                },
+                {
+                  "disabled": false,
+                  "key": "cloudType",
+                  "value": "<string>",
+                  "description": "Name of the Cloud"
+                },
+                {
+                  "disabled": false,
+                  "key": "region",
+                  "value": "<string>",
+                  "description": "Cloud Region"
+                },
+                {
+                  "disabled": false,
+                  "key": "include-subnets",
+                  "value": "false",
+                  "description": "Boolean flag to specify if Subnet details are required in response"
+                },
+                {
+                  "disabled": false,
+                  "key": "usageType",
+                  "value": "<string>",
+                  "description": "Filter VPCs by usage type (GENERAL or EXADATA). If not specified, returns VPCs of all usage types."
+                },
+                {
+                  "disabled": false,
+                  "key": "page-size",
+                  "value": "10",
+                  "description": "Page size for get query"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-offset",
+                  "value": "0",
+                  "description": "Page offset for get query"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7fffcff4-e512-4ddb-864f-e0bf5b2e925e",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network",
+                    "vpcs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subscriptionName",
+                      "value": "default"
+                    },
+                    {
+                      "key": "cloudType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "region",
+                      "value": "us-east-1"
+                    },
+                    {
+                      "key": "include-subnets",
+                      "value": "false"
+                    },
+                    {
+                      "key": "usageType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"string\",\n    \"cidrBlock\": \"string\",\n    \"cloudType\": \"<string>\",\n    \"region\": \"string\",\n    \"status\": \"DELETED\",\n    \"subscriptionName\": \"string\",\n    \"metadata\": {\n      \"validationFailureReason\": \"string\",\n      \"vpcEndpoints\": \"string\",\n      \"privateLinkScopeId\": \"string\",\n      \"gcpNetworkTag\": {\n        \"type\": \"SECURE_TAG\",\n        \"networkTags\": [\n          \"string\",\n          \"string\"\n        ],\n        \"secureTag\": {\n          \"tagKeyId\": \"tagKeys/281480073415006\",\n          \"tagValueId\": \"tagValues/281479109151347\"\n        }\n      },\n      \"onboardingInfo\": {\n        \"activityId\": \"string\",\n        \"workflowId\": \"string\"\n      }\n    },\n    \"isDefault\": false,\n    \"isTessellCreated\": true,\n    \"cloudId\": \"string\",\n    \"owner\": \"tLXy5XLbFbj@BICtanEKiRIxo.bqw\",\n    \"loggedInUserRole\": \"OWNER\",\n    \"sharedWith\": {\n      \"users\": [\n        {\n          \"emailId\": \"string\",\n          \"role\": \"string\",\n          \"sharedBy\": \"string\",\n          \"sharedOn\": \"1988-05-20T13:40:00.293Z\"\n        },\n        {\n          \"emailId\": \"string\",\n          \"role\": \"string\",\n          \"sharedBy\": \"string\",\n          \"sharedOn\": \"1969-03-10T08:47:00.499Z\"\n        }\n      ]\n    },\n    \"maturityStatus\": \"DRAFT\",\n    \"onlyForPrivateAccess\": false,\n    \"usageType\": \"GENERAL\",\n    \"subnets\": {\n      \"publicSubnets\": [\n        {\n          \"name\": \"Default Subnet\",\n          \"cloudId\": \"Default Subnet\",\n          \"cidrBlock\": \"10.0.0.4/24\",\n          \"availabilityZone\": \"string\",\n          \"region\": \"string\",\n          \"type\": \"UNKNOWN\",\n          \"eligibleForPrivate\": false,\n          \"registeredWithTessell\": false,\n          \"subnetGroupIds\": [\n            \"576b2192-903b-da39-9f84-b165765eeba6\",\n            \"2b2ec6ab-575c-e98c-1c5e-fe00575c9feb\"\n          ],\n          \"configurations\": {\n            \"delegations\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"gcpNetworkTag\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"name\": \"Default Subnet\",\n          \"cloudId\": \"Default Subnet\",\n          \"cidrBlock\": \"10.0.0.4/24\",\n          \"availabilityZone\": \"string\",\n          \"region\": \"string\",\n          \"type\": \"PRIVATE\",\n          \"eligibleForPrivate\": false,\n          \"registeredWithTessell\": false,\n          \"subnetGroupIds\": [\n            \"0099fece-daed-e5c7-f006-cda7f0aaca47\",\n            \"88789e69-e75f-eb40-85a8-124a7bef3acc\"\n          ],\n          \"configurations\": {\n            \"delegations\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"gcpNetworkTag\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ],\n      \"privateSubnets\": [\n        {\n          \"name\": \"Default Subnet\",\n          \"cloudId\": \"Default Subnet\",\n          \"cidrBlock\": \"10.0.0.4/24\",\n          \"availabilityZone\": \"string\",\n          \"region\": \"string\",\n          \"type\": \"UNKNOWN\",\n          \"eligibleForPrivate\": true,\n          \"registeredWithTessell\": false,\n          \"subnetGroupIds\": [\n            \"6896b051-34f1-ad0a-9359-edc0239acb23\",\n            \"233e5bf5-2ff5-648c-dc4e-2d3a950bedf2\"\n          ],\n          \"configurations\": {\n            \"delegations\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"gcpNetworkTag\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"name\": \"Default Subnet\",\n          \"cloudId\": \"Default Subnet\",\n          \"cidrBlock\": \"10.0.0.4/24\",\n          \"availabilityZone\": \"string\",\n          \"region\": \"string\",\n          \"type\": \"PUBLIC\",\n          \"eligibleForPrivate\": true,\n          \"registeredWithTessell\": false,\n          \"subnetGroupIds\": [\n            \"2a2cd09f-edee-cc66-f4d4-e495b6be86bb\",\n            \"9b864b81-d6cb-ec19-ed72-ec7916f8f1c6\"\n          ],\n          \"configurations\": {\n            \"delegations\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"gcpNetworkTag\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ]\n    },\n    \"dateCreated\": \"1948-01-12T18:15:42.448Z\",\n    \"eligibleActions\": [\n      \"CHANGE_MATURITY\",\n      \"DELETE\"\n    ]\n  },\n  {\n    \"name\": \"string\",\n    \"cidrBlock\": \"string\",\n    \"cloudType\": \"<string>\",\n    \"region\": \"string\",\n    \"status\": \"DELETED\",\n    \"subscriptionName\": \"string\",\n    \"metadata\": {\n      \"validationFailureReason\": \"string\",\n      \"vpcEndpoints\": \"string\",\n      \"privateLinkScopeId\": \"string\",\n      \"gcpNetworkTag\": {\n        \"type\": \"SECURE_TAG\",\n        \"networkTags\": [\n          \"string\",\n          \"string\"\n        ],\n        \"secureTag\": {\n          \"tagKeyId\": \"tagKeys/281480073415006\",\n          \"tagValueId\": \"tagValues/281479109151347\"\n        }\n      },\n      \"onboardingInfo\": {\n        \"activityId\": \"string\",\n        \"workflowId\": \"string\"\n      }\n    },\n    \"isDefault\": true,\n    \"isTessellCreated\": false,\n    \"cloudId\": \"string\",\n    \"owner\": \"HST5v7@yrndSriMWzbtzlrOrbWZvF.sid\",\n    \"loggedInUserRole\": \"CO_OWNER\",\n    \"sharedWith\": {\n      \"users\": [\n        {\n          \"emailId\": \"string\",\n          \"role\": \"string\",\n          \"sharedBy\": \"string\",\n          \"sharedOn\": \"1992-09-11T23:33:53.695Z\"\n        },\n        {\n          \"emailId\": \"string\",\n          \"role\": \"string\",\n          \"sharedBy\": \"string\",\n          \"sharedOn\": \"1982-12-13T00:10:06.234Z\"\n        }\n      ]\n    },\n    \"maturityStatus\": \"DRAFT\",\n    \"onlyForPrivateAccess\": false,\n    \"usageType\": \"GENERAL\",\n    \"subnets\": {\n      \"publicSubnets\": [\n        {\n          \"name\": \"Default Subnet\",\n          \"cloudId\": \"Default Subnet\",\n          \"cidrBlock\": \"10.0.0.4/24\",\n          \"availabilityZone\": \"string\",\n          \"region\": \"string\",\n          \"type\": \"PUBLIC\",\n          \"eligibleForPrivate\": false,\n          \"registeredWithTessell\": false,\n          \"subnetGroupIds\": [\n            \"cfa0d786-cfdb-593a-1803-4c9de5429509\",\n            \"8c902641-5056-d408-7e87-5853712fd8d4\"\n          ],\n          \"configurations\": {\n            \"delegations\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"gcpNetworkTag\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"name\": \"Default Subnet\",\n          \"cloudId\": \"Default Subnet\",\n          \"cidrBlock\": \"10.0.0.4/24\",\n          \"availabilityZone\": \"string\",\n          \"region\": \"string\",\n          \"type\": \"PUBLIC\",\n          \"eligibleForPrivate\": true,\n          \"registeredWithTessell\": false,\n          \"subnetGroupIds\": [\n            \"4ddc5b53-68aa-51fb-f863-8942156cc80c\",\n            \"a164ac8f-9b84-a82a-f696-76666bfc6b52\"\n          ],\n          \"configurations\": {\n            \"delegations\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"gcpNetworkTag\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ],\n      \"privateSubnets\": [\n        {\n          \"name\": \"Default Subnet\",\n          \"cloudId\": \"Default Subnet\",\n          \"cidrBlock\": \"10.0.0.4/24\",\n          \"availabilityZone\": \"string\",\n          \"region\": \"string\",\n          \"type\": \"UNKNOWN\",\n          \"eligibleForPrivate\": true,\n          \"registeredWithTessell\": false,\n          \"subnetGroupIds\": [\n            \"a2a4b8d1-64db-416e-b4bf-36089c9c4a29\",\n            \"b4b718bc-8585-aab5-3df2-df3555949295\"\n          ],\n          \"configurations\": {\n            \"delegations\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"gcpNetworkTag\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"name\": \"Default Subnet\",\n          \"cloudId\": \"Default Subnet\",\n          \"cidrBlock\": \"10.0.0.4/24\",\n          \"availabilityZone\": \"string\",\n          \"region\": \"string\",\n          \"type\": \"PRIVATE\",\n          \"eligibleForPrivate\": true,\n          \"registeredWithTessell\": false,\n          \"subnetGroupIds\": [\n            \"b4ea069c-bc4a-ee82-b524-94479db27b1a\",\n            \"7c874c06-bbeb-71c4-37a3-a1bba119a0d5\"\n          ],\n          \"configurations\": {\n            \"delegations\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"gcpNetworkTag\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ]\n    },\n    \"dateCreated\": \"1991-07-13T15:28:57.457Z\",\n    \"eligibleActions\": [\n      \"DEREGISTER\",\n      \"DELETE\"\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "857a9868-dcd6-4a8f-8288-9c722e3f2034",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network",
+                    "vpcs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subscriptionName",
+                      "value": "default"
+                    },
+                    {
+                      "key": "cloudType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "region",
+                      "value": "us-east-1"
+                    },
+                    {
+                      "key": "include-subnets",
+                      "value": "false"
+                    },
+                    {
+                      "key": "usageType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2024-04-25T15:43:10.638Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "055caa7e-1765-44b1-8dfa-3fe190997e43",
+          "name": "Get VPC by Name",
+          "request": {
+            "name": "Get VPC by Name",
+            "description": {},
+            "url": {
+              "path": [
+                "network",
+                "vpcs",
+                ":name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "subscriptionName",
+                  "value": "<string>",
+                  "description": "(Required) Name of the Subscription"
+                },
+                {
+                  "disabled": false,
+                  "key": "cloudType",
+                  "value": "<string>",
+                  "description": "(Required) Name of the Cloud"
+                },
+                {
+                  "disabled": false,
+                  "key": "region",
+                  "value": "<string>",
+                  "description": "(Required) Cloud Region"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) Name of the Entity"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3f07434d-5833-44a9-8796-d154ea86a9d4",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network",
+                    "vpcs",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subscriptionName",
+                      "value": "default"
+                    },
+                    {
+                      "key": "cloudType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "region",
+                      "value": "us-east-1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Name of the Entity"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"string\",\n  \"cidrBlock\": \"string\",\n  \"cloudType\": \"<string>\",\n  \"region\": \"string\",\n  \"status\": \"DELETING\",\n  \"subscriptionName\": \"string\",\n  \"metadata\": {\n    \"validationFailureReason\": \"string\",\n    \"vpcEndpoints\": \"string\",\n    \"privateLinkScopeId\": \"string\",\n    \"gcpNetworkTag\": {\n      \"type\": \"SECURE_TAG\",\n      \"networkTags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"secureTag\": {\n        \"tagKeyId\": \"tagKeys/281480073415006\",\n        \"tagValueId\": \"tagValues/281479109151347\"\n      }\n    },\n    \"onboardingInfo\": {\n      \"activityId\": \"string\",\n      \"workflowId\": \"string\"\n    }\n  },\n  \"isDefault\": true,\n  \"isTessellCreated\": true,\n  \"cloudId\": \"string\",\n  \"owner\": \"LDPz8XC-TB7y@iRBfNkPWYmCjrHmqvwDoPVU.vvdn\",\n  \"loggedInUserRole\": \"OWNER\",\n  \"sharedWith\": {\n    \"users\": [\n      {\n        \"emailId\": \"string\",\n        \"role\": \"string\",\n        \"sharedBy\": \"string\",\n        \"sharedOn\": \"1949-10-27T06:19:05.623Z\"\n      },\n      {\n        \"emailId\": \"string\",\n        \"role\": \"string\",\n        \"sharedBy\": \"string\",\n        \"sharedOn\": \"2014-09-28T12:39:10.366Z\"\n      }\n    ]\n  },\n  \"maturityStatus\": \"UNPUBLISHED\",\n  \"onlyForPrivateAccess\": false,\n  \"usageType\": \"GENERAL\",\n  \"subnets\": {\n    \"publicSubnets\": [\n      {\n        \"name\": \"Default Subnet\",\n        \"cloudId\": \"Default Subnet\",\n        \"cidrBlock\": \"10.0.0.4/24\",\n        \"availabilityZone\": \"string\",\n        \"region\": \"string\",\n        \"type\": \"UNKNOWN\",\n        \"eligibleForPrivate\": true,\n        \"registeredWithTessell\": false,\n        \"subnetGroupIds\": [\n          \"738fe5da-7fe8-c7e7-9571-192fd8713592\",\n          \"81c69ae0-7caf-8042-5422-d46aff38325a\"\n        ],\n        \"configurations\": {\n          \"delegations\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"gcpNetworkTag\": {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"networkTags\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"secureTag\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      },\n      {\n        \"name\": \"Default Subnet\",\n        \"cloudId\": \"Default Subnet\",\n        \"cidrBlock\": \"10.0.0.4/24\",\n        \"availabilityZone\": \"string\",\n        \"region\": \"string\",\n        \"type\": \"UNKNOWN\",\n        \"eligibleForPrivate\": false,\n        \"registeredWithTessell\": false,\n        \"subnetGroupIds\": [\n          \"068fcd28-6752-2edf-dc2c-275dd610e490\",\n          \"95607489-b8b3-65dd-df2e-e213183d2eb7\"\n        ],\n        \"configurations\": {\n          \"delegations\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"gcpNetworkTag\": {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"networkTags\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"secureTag\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      }\n    ],\n    \"privateSubnets\": [\n      {\n        \"name\": \"Default Subnet\",\n        \"cloudId\": \"Default Subnet\",\n        \"cidrBlock\": \"10.0.0.4/24\",\n        \"availabilityZone\": \"string\",\n        \"region\": \"string\",\n        \"type\": \"UNKNOWN\",\n        \"eligibleForPrivate\": false,\n        \"registeredWithTessell\": false,\n        \"subnetGroupIds\": [\n          \"3c265886-7e80-9e0b-f521-db357908c84a\",\n          \"e338a852-723a-7229-69a0-85c078d0c33e\"\n        ],\n        \"configurations\": {\n          \"delegations\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"gcpNetworkTag\": {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"networkTags\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"secureTag\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      },\n      {\n        \"name\": \"Default Subnet\",\n        \"cloudId\": \"Default Subnet\",\n        \"cidrBlock\": \"10.0.0.4/24\",\n        \"availabilityZone\": \"string\",\n        \"region\": \"string\",\n        \"type\": \"UNKNOWN\",\n        \"eligibleForPrivate\": false,\n        \"registeredWithTessell\": false,\n        \"subnetGroupIds\": [\n          \"d2e6e4eb-db27-98c3-c98c-4cc1495f3043\",\n          \"7a386881-5fff-fe48-f58f-c1a28d2e2933\"\n        ],\n        \"configurations\": {\n          \"delegations\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"gcpNetworkTag\": {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"networkTags\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"secureTag\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      }\n    ]\n  },\n  \"dateCreated\": \"1951-04-12T22:26:13.607Z\",\n  \"eligibleActions\": [\n    \"DEREGISTER\",\n    \"CHANGE_MATURITY\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8b75c02e-d996-47fb-b051-7734d8192631",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network",
+                    "vpcs",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subscriptionName",
+                      "value": "default"
+                    },
+                    {
+                      "key": "cloudType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "region",
+                      "value": "us-east-1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Name of the Entity"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2024-04-25T15:43:10.638Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3276fc43-7d5c-4e1b-9da1-4fbb11de948a",
+          "name": "Get Default VPC Configuration",
+          "request": {
+            "name": "Get Default VPC Configuration",
+            "description": {},
+            "url": {
+              "path": [
+                "network",
+                "vpcs",
+                "default-vpc-config"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "cloud-type",
+                  "value": "<string>",
+                  "description": "(Required) Cloud Type"
+                },
+                {
+                  "disabled": false,
+                  "key": "region",
+                  "value": "<string>",
+                  "description": "(Required) Cloud Region"
+                },
+                {
+                  "disabled": false,
+                  "key": "cidr-block",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0aaaf069-b404-4b3b-8a7a-cc88ba1ce9ff",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network",
+                    "vpcs",
+                    "default-vpc-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cloud-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "region",
+                      "value": "us-east-1"
+                    },
+                    {
+                      "key": "cidr-block",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"Prod-VPC-01\",\n  \"cloudType\": \"<string>\",\n  \"subscriptionName\": \"default\",\n  \"cidrBlock\": \"10.10.0.0/16\",\n  \"region\": \"us-east-1\",\n  \"publicAccess\": true,\n  \"subnets\": {\n    \"publicSubnets\": [\n      {\n        \"name\": \"subnet-1\",\n        \"cidrBlock\": \"10.10.5.0/24\",\n        \"availabilityZone\": \"us-east-1a\",\n        \"region\": \"us-central1\",\n        \"subnetGroups\": [\n          \"group-1\"\n        ]\n      },\n      {\n        \"name\": \"subnet-1\",\n        \"cidrBlock\": \"10.10.5.0/24\",\n        \"availabilityZone\": \"us-east-1a\",\n        \"region\": \"us-central1\",\n        \"subnetGroups\": [\n          \"group-1\"\n        ]\n      }\n    ],\n    \"privateSubnets\": [\n      {\n        \"name\": \"subnet-1\",\n        \"cidrBlock\": \"10.10.5.0/24\",\n        \"availabilityZone\": \"us-east-1a\",\n        \"region\": \"us-central1\",\n        \"subnetGroups\": [\n          \"group-1\"\n        ]\n      },\n      {\n        \"name\": \"subnet-1\",\n        \"cidrBlock\": \"10.10.5.0/24\",\n        \"availabilityZone\": \"us-east-1a\",\n        \"region\": \"us-central1\",\n        \"subnetGroups\": [\n          \"group-1\"\n        ]\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "64a6d64e-7448-47be-a144-2b87be841cca",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "network",
+                    "vpcs",
+                    "default-vpc-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cloud-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "region",
+                      "value": "us-east-1"
+                    },
+                    {
+                      "key": "cidr-block",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2024-04-25T15:43:10.638Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "console.tessell.com",
+      "key": "server"
+    },
+    {
+      "type": "string",
+      "value": "{{server}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "23ecc51b-bb74-407e-9a33-3390db0b7770",
+    "name": "Tessell APIs activity-center VPC API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tessell API Documentation\n\nContact Support:\n Name: Tessell Inc\n Email: support@tessell.com",
+      "type": "text/plain"
+    }
+  }
+}

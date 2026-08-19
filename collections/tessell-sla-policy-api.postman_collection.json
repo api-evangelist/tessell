@@ -1,0 +1,1221 @@
+{
+  "item": [
+    {
+      "id": "1b2491aa-578e-4787-8314-70f1027173d1",
+      "name": "SLA Policy",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "16912f83-ae75-4dad-ad41-ce023cb6a14e",
+          "name": "Get the RPO policy configuration associated with an Availability Machine",
+          "request": {
+            "name": "Get the RPO policy configuration associated with an Availability Machine",
+            "description": {
+              "content": "**DEPRECATED**: This endpoint returns only the service-level RPO policy.\nUse `/availability-machines/{id}/rpo-policies` instead to get both service-level\nand database-level (PDB) RPO policies.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "availability-machines",
+                ":id",
+                "rpo-policy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Id of the Availability Machine"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "65adc9be-8e0f-4de7-84e6-00bafff987e0",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "rpo-policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"enableAutoSnapshot\": true,\n  \"includeTransactionLogs\": false,\n  \"standardPolicy\": {\n    \"retentionDays\": 20,\n    \"snapshotStartTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"includeTransactionLogs\": false\n  },\n  \"customPolicy\": {\n    \"name\": \"string\",\n    \"schedule\": {\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"dailySchedule\": {\n        \"backupsPerDay\": 316\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"Monday\",\n          \"Friday\"\n        ]\n      },\n      \"monthlySchedule\": {\n        \"commonSchedule\": {\n          \"dates\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"lastDayOfMonth\": false\n        }\n      },\n      \"yearlySchedule\": {\n        \"commonSchedule\": {\n          \"months\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthSpecificSchedule\": [\n          {\n            \"month\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"dates\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    }\n  },\n  \"fullBackupSchedule\": {\n    \"startTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"weeklySchedule\": {\n      \"days\": [\n        \"Sunday\",\n        \"Monday\"\n      ]\n    }\n  },\n  \"enableAutoBackup\": false,\n  \"backupRpoConfig\": {\n    \"fullBackupSchedule\": {\n      \"startTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"Monday\",\n          \"Wednesday\"\n        ]\n      }\n    },\n    \"standardPolicy\": {\n      \"retentionDays\": 30,\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      }\n    },\n    \"customPolicy\": {\n      \"name\": \"string\",\n      \"schedule\": {\n        \"backupStartTime\": {\n          \"hour\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"minute\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"dailySchedule\": {\n          \"backupsPerDay\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"weeklySchedule\": {\n          \"days\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"yearlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"monthSpecificSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5db780ee-c27e-4f1e-bb98-b7fb594af244",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "rpo-policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1951-01-30T15:35:05.464Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "05338747-3e98-4e05-90d0-0b24ee961845",
+          "name": "Update RPO policy configuration for an Availability Machine",
+          "request": {
+            "name": "Update RPO policy configuration for an Availability Machine",
+            "description": {},
+            "url": {
+              "path": [
+                "availability-machines",
+                ":id",
+                "rpo-policy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Id of the Availability Machine"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enableAutoSnapshot\": true,\n  \"includeTransactionLogs\": false,\n  \"standardPolicy\": {\n    \"retentionDays\": \"<integer>\",\n    \"snapshotStartTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"includeTransactionLogs\": false\n  },\n  \"customPolicy\": {\n    \"name\": \"<string>\",\n    \"schedule\": {\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"dailySchedule\": {\n        \"backupsPerDay\": \"<integer>\"\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"monthlySchedule\": {\n        \"commonSchedule\": {\n          \"dates\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"lastDayOfMonth\": false\n        }\n      },\n      \"yearlySchedule\": {\n        \"commonSchedule\": {\n          \"months\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthSpecificSchedule\": [\n          {\n            \"month\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"dates\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"month\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"dates\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    }\n  },\n  \"fullBackupSchedule\": {\n    \"startTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"weeklySchedule\": {\n      \"days\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"enableAutoBackup\": false,\n  \"backupRpoConfig\": {\n    \"fullBackupSchedule\": {\n      \"startTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    \"standardPolicy\": {\n      \"retentionDays\": \"<integer>\",\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      }\n    },\n    \"customPolicy\": {\n      \"name\": \"<string>\",\n      \"schedule\": {\n        \"backupStartTime\": {\n          \"hour\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"minute\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"dailySchedule\": {\n          \"backupsPerDay\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"weeklySchedule\": {\n          \"days\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"yearlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"monthSpecificSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a8931aeb-6cad-4c2b-9894-a9897ff1bbcc",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "rpo-policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"enableAutoSnapshot\": true,\n  \"includeTransactionLogs\": false,\n  \"standardPolicy\": {\n    \"retentionDays\": \"<integer>\",\n    \"snapshotStartTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"includeTransactionLogs\": false\n  },\n  \"customPolicy\": {\n    \"name\": \"<string>\",\n    \"schedule\": {\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"dailySchedule\": {\n        \"backupsPerDay\": \"<integer>\"\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"<string>\"\n        ]\n      },\n      \"monthlySchedule\": {\n        \"commonSchedule\": {\n          \"dates\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"lastDayOfMonth\": false\n        }\n      },\n      \"yearlySchedule\": {\n        \"commonSchedule\": {\n          \"months\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthSpecificSchedule\": [\n          {\n            \"month\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"dates\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    }\n  },\n  \"fullBackupSchedule\": {\n    \"startTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"weeklySchedule\": {\n      \"days\": [\n        \"<string>\"\n      ]\n    }\n  },\n  \"enableAutoBackup\": false,\n  \"backupRpoConfig\": {\n    \"fullBackupSchedule\": {\n      \"startTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"<string>\"\n        ]\n      }\n    },\n    \"standardPolicy\": {\n      \"retentionDays\": \"<integer>\",\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      }\n    },\n    \"customPolicy\": {\n      \"name\": \"<string>\",\n      \"schedule\": {\n        \"backupStartTime\": {\n          \"hour\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"minute\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"dailySchedule\": {\n          \"backupsPerDay\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"weeklySchedule\": {\n          \"days\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"yearlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"monthSpecificSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"enableAutoSnapshot\": true,\n  \"includeTransactionLogs\": false,\n  \"standardPolicy\": {\n    \"retentionDays\": \"<integer>\",\n    \"snapshotStartTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"includeTransactionLogs\": false\n  },\n  \"customPolicy\": {\n    \"name\": \"<string>\",\n    \"schedule\": {\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"dailySchedule\": {\n        \"backupsPerDay\": \"<integer>\"\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"<string>\"\n        ]\n      },\n      \"monthlySchedule\": {\n        \"commonSchedule\": {\n          \"dates\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"lastDayOfMonth\": false\n        }\n      },\n      \"yearlySchedule\": {\n        \"commonSchedule\": {\n          \"months\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthSpecificSchedule\": [\n          {\n            \"month\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"dates\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    }\n  },\n  \"fullBackupSchedule\": {\n    \"startTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"weeklySchedule\": {\n      \"days\": [\n        \"<string>\"\n      ]\n    }\n  },\n  \"enableAutoBackup\": false,\n  \"backupRpoConfig\": {\n    \"fullBackupSchedule\": {\n      \"startTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"<string>\"\n        ]\n      }\n    },\n    \"standardPolicy\": {\n      \"retentionDays\": \"<integer>\",\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      }\n    },\n    \"customPolicy\": {\n      \"name\": \"<string>\",\n      \"schedule\": {\n        \"backupStartTime\": {\n          \"hour\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"minute\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"dailySchedule\": {\n          \"backupsPerDay\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"weeklySchedule\": {\n          \"days\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"yearlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"monthSpecificSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "18963903-e721-4a85-a2ef-39b58cfcaf6c",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "rpo-policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"enableAutoSnapshot\": true,\n  \"includeTransactionLogs\": false,\n  \"standardPolicy\": {\n    \"retentionDays\": \"<integer>\",\n    \"snapshotStartTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"includeTransactionLogs\": false\n  },\n  \"customPolicy\": {\n    \"name\": \"<string>\",\n    \"schedule\": {\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"dailySchedule\": {\n        \"backupsPerDay\": \"<integer>\"\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"<string>\"\n        ]\n      },\n      \"monthlySchedule\": {\n        \"commonSchedule\": {\n          \"dates\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"lastDayOfMonth\": false\n        }\n      },\n      \"yearlySchedule\": {\n        \"commonSchedule\": {\n          \"months\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthSpecificSchedule\": [\n          {\n            \"month\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"dates\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    }\n  },\n  \"fullBackupSchedule\": {\n    \"startTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"weeklySchedule\": {\n      \"days\": [\n        \"<string>\"\n      ]\n    }\n  },\n  \"enableAutoBackup\": false,\n  \"backupRpoConfig\": {\n    \"fullBackupSchedule\": {\n      \"startTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"<string>\"\n        ]\n      }\n    },\n    \"standardPolicy\": {\n      \"retentionDays\": \"<integer>\",\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      }\n    },\n    \"customPolicy\": {\n      \"name\": \"<string>\",\n      \"schedule\": {\n        \"backupStartTime\": {\n          \"hour\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"minute\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"dailySchedule\": {\n          \"backupsPerDay\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"weeklySchedule\": {\n          \"days\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"yearlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"monthSpecificSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1951-01-30T15:35:05.464Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d18e3c1c-ef5c-465c-bc65-ee4043993a2b",
+          "name": "Get all RPO policies for an Availability Machine including service-level and database-level policies",
+          "request": {
+            "name": "Get all RPO policies for an Availability Machine including service-level and database-level policies",
+            "description": {
+              "content": "Returns comprehensive RPO policy information for an Availability Machine, including:\n- Service-level RPO policy (applies to the entire service/CDB)\n- Database-level RPO policies (applies to individual databases like Oracle PDBs)\n\nThis endpoint should be used instead of the deprecated `/availability-machines/{id}/rpo-policy`\nwhich only returns service-level RPO policy.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "availability-machines",
+                ":id",
+                "rpo-policies"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Id of the Availability Machine"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4ed6a3b5-0ba3-40e9-8df2-b70df4f1b998",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "rpo-policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"availabilityMachineId\": \"6ea814a6-5049-a0c0-0cee-b218c82b5465\",\n  \"serviceRpoPolicy\": {\n    \"rpoPolicyConfig\": {\n      \"enableAutoSnapshot\": true,\n      \"includeTransactionLogs\": false,\n      \"standardPolicy\": {\n        \"retentionDays\": \"<integer>\",\n        \"snapshotStartTime\": {\n          \"hour\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"minute\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"includeTransactionLogs\": false\n      },\n      \"customPolicy\": {\n        \"name\": \"<string>\",\n        \"schedule\": {\n          \"backupStartTime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"dailySchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"weeklySchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"monthlySchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"yearlySchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"fullBackupSchedule\": {\n        \"startTime\": {\n          \"hour\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"minute\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"weeklySchedule\": {\n          \"days\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"enableAutoBackup\": false,\n      \"backupRpoConfig\": {\n        \"fullBackupSchedule\": {\n          \"startTime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"weeklySchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"standardPolicy\": {\n          \"retentionDays\": \"<integer>\",\n          \"backupStartTime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"customPolicy\": {\n          \"description\": \"This is the definition of Custom RPO Policy for Backup for Tessell DB Service\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"status\": \"ACTIVE\",\n    \"dateCreated\": \"1961-02-21T05:32:53.313Z\",\n    \"dateModified\": \"1969-04-25T05:15:22.342Z\"\n  },\n  \"databaseRpoPolicies\": [\n    {\n      \"databaseId\": \"8c398b23-424c-4d8b-d10c-a063acb9dbd1\",\n      \"databaseName\": \"string\",\n      \"rpoPolicyConfig\": {\n        \"enableAutoSnapshot\": true,\n        \"includeTransactionLogs\": false,\n        \"standardPolicy\": {\n          \"retentionDays\": \"<integer>\",\n          \"snapshotStartTime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"includeTransactionLogs\": false\n        },\n        \"customPolicy\": {\n          \"name\": \"<string>\",\n          \"schedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"fullBackupSchedule\": {\n          \"startTime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"weeklySchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"enableAutoBackup\": false,\n        \"backupRpoConfig\": {\n          \"fullBackupSchedule\": {\n            \"startTime\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"weeklySchedule\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"standardPolicy\": {\n            \"retentionDays\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"backupStartTime\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"customPolicy\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"status\": \"DELETED\",\n      \"dateCreated\": \"2021-11-16T01:40:02.938Z\",\n      \"dateModified\": \"2007-11-19T13:31:19.225Z\"\n    },\n    {\n      \"databaseId\": \"50e930b2-138f-15f6-6ac9-07b31cafaadc\",\n      \"databaseName\": \"string\",\n      \"rpoPolicyConfig\": {\n        \"enableAutoSnapshot\": true,\n        \"includeTransactionLogs\": false,\n        \"standardPolicy\": {\n          \"retentionDays\": \"<integer>\",\n          \"snapshotStartTime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"includeTransactionLogs\": false\n        },\n        \"customPolicy\": {\n          \"name\": \"<string>\",\n          \"schedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"fullBackupSchedule\": {\n          \"startTime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"weeklySchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"enableAutoBackup\": false,\n        \"backupRpoConfig\": {\n          \"fullBackupSchedule\": {\n            \"startTime\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"weeklySchedule\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"standardPolicy\": {\n            \"retentionDays\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"backupStartTime\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"customPolicy\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"status\": \"ACTIVE\",\n      \"dateCreated\": \"2021-09-05T22:28:11.023Z\",\n      \"dateModified\": \"2009-03-14T16:13:20.992Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "942f3b27-7d27-42e8-b33d-2641950d5266",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "rpo-policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1951-01-30T15:35:05.464Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "75e2f49e-6665-471b-9915-4fc67368c21b",
+          "name": "Get RPO policy for a specific database within an Availability Machine",
+          "request": {
+            "name": "Get RPO policy for a specific database within an Availability Machine",
+            "description": {
+              "content": "Retrieves the RPO policy configuration for a specific database (e.g., Oracle PDB) within an Availability Machine.\nReturns the full policy summary including database name for display purposes.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "availability-machines",
+                ":id",
+                "databases",
+                ":database-id",
+                "rpo-policy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Id of the Availability Machine"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "database-id",
+                  "description": "(Required) Id of the database (e.g., PDB ID)"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b836a217-20fe-4fa8-aca3-b19b3887d6ff",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "databases",
+                    ":database-id",
+                    "rpo-policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database-id",
+                      "description": "(Required) Id of the database (e.g., PDB ID)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"databaseId\": \"c6fab6c5-10af-fb32-c4c2-0525a7194db4\",\n  \"databaseName\": \"string\",\n  \"rpoPolicyConfig\": {\n    \"enableAutoSnapshot\": true,\n    \"includeTransactionLogs\": false,\n    \"standardPolicy\": {\n      \"retentionDays\": \"<integer>\",\n      \"snapshotStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"includeTransactionLogs\": false\n    },\n    \"customPolicy\": {\n      \"name\": \"<string>\",\n      \"schedule\": {\n        \"backupStartTime\": {\n          \"hour\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"minute\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"dailySchedule\": {\n          \"backupsPerDay\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"weeklySchedule\": {\n          \"days\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"yearlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"monthSpecificSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    },\n    \"fullBackupSchedule\": {\n      \"startTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      }\n    },\n    \"enableAutoBackup\": false,\n    \"backupRpoConfig\": {\n      \"fullBackupSchedule\": {\n        \"startTime\": {\n          \"hour\": 1,\n          \"minute\": 0\n        },\n        \"weeklySchedule\": {\n          \"days\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"standardPolicy\": {\n        \"retentionDays\": \"<integer>\",\n        \"backupStartTime\": {\n          \"hour\": 1,\n          \"minute\": 0\n        }\n      },\n      \"customPolicy\": {\n        \"name\": \"<string>\",\n        \"schedule\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    }\n  },\n  \"status\": \"DELETED\",\n  \"dateCreated\": \"1949-08-13T06:43:04.221Z\",\n  \"dateModified\": \"1998-05-26T14:13:11.911Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "37f3727f-96f8-4d7f-b5b3-90f06bef7565",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "databases",
+                    ":database-id",
+                    "rpo-policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database-id",
+                      "description": "(Required) Id of the database (e.g., PDB ID)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1951-01-30T15:35:05.464Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7d66a379-0eb6-47aa-8fad-6a6ffba13ffa",
+          "name": "Create or update RPO policy for a specific database within an Availability Machine",
+          "request": {
+            "name": "Create or update RPO policy for a specific database within an Availability Machine",
+            "description": {
+              "content": "Configures automated backup schedules and retention policies for a specific database (e.g., Oracle PDB) within an Availability Machine.\nIf PITR is enabled in the policy, the parent service must also have PITR enabled.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "availability-machines",
+                ":id",
+                "databases",
+                ":database-id",
+                "rpo-policy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Id of the Availability Machine"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "database-id",
+                  "description": "(Required) Id of the database (e.g., PDB ID)"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enableAutoSnapshot\": true,\n  \"includeTransactionLogs\": false,\n  \"standardPolicy\": {\n    \"retentionDays\": \"<integer>\",\n    \"snapshotStartTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"includeTransactionLogs\": false\n  },\n  \"customPolicy\": {\n    \"name\": \"<string>\",\n    \"schedule\": {\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"dailySchedule\": {\n        \"backupsPerDay\": \"<integer>\"\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"monthlySchedule\": {\n        \"commonSchedule\": {\n          \"dates\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"lastDayOfMonth\": false\n        }\n      },\n      \"yearlySchedule\": {\n        \"commonSchedule\": {\n          \"months\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthSpecificSchedule\": [\n          {\n            \"month\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"dates\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"month\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"dates\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    }\n  },\n  \"fullBackupSchedule\": {\n    \"startTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"weeklySchedule\": {\n      \"days\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"enableAutoBackup\": false,\n  \"backupRpoConfig\": {\n    \"fullBackupSchedule\": {\n      \"startTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    \"standardPolicy\": {\n      \"retentionDays\": \"<integer>\",\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      }\n    },\n    \"customPolicy\": {\n      \"name\": \"<string>\",\n      \"schedule\": {\n        \"backupStartTime\": {\n          \"hour\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"minute\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"dailySchedule\": {\n          \"backupsPerDay\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"weeklySchedule\": {\n          \"days\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"yearlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"monthSpecificSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f281a455-5988-4f38-b873-578b88fee965",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "databases",
+                    ":database-id",
+                    "rpo-policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database-id",
+                      "description": "(Required) Id of the database (e.g., PDB ID)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"enableAutoSnapshot\": true,\n  \"includeTransactionLogs\": false,\n  \"standardPolicy\": {\n    \"retentionDays\": \"<integer>\",\n    \"snapshotStartTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"includeTransactionLogs\": false\n  },\n  \"customPolicy\": {\n    \"name\": \"<string>\",\n    \"schedule\": {\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"dailySchedule\": {\n        \"backupsPerDay\": \"<integer>\"\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"<string>\"\n        ]\n      },\n      \"monthlySchedule\": {\n        \"commonSchedule\": {\n          \"dates\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"lastDayOfMonth\": false\n        }\n      },\n      \"yearlySchedule\": {\n        \"commonSchedule\": {\n          \"months\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthSpecificSchedule\": [\n          {\n            \"month\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"dates\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    }\n  },\n  \"fullBackupSchedule\": {\n    \"startTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"weeklySchedule\": {\n      \"days\": [\n        \"<string>\"\n      ]\n    }\n  },\n  \"enableAutoBackup\": false,\n  \"backupRpoConfig\": {\n    \"fullBackupSchedule\": {\n      \"startTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"<string>\"\n        ]\n      }\n    },\n    \"standardPolicy\": {\n      \"retentionDays\": \"<integer>\",\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      }\n    },\n    \"customPolicy\": {\n      \"name\": \"<string>\",\n      \"schedule\": {\n        \"backupStartTime\": {\n          \"hour\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"minute\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"dailySchedule\": {\n          \"backupsPerDay\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"weeklySchedule\": {\n          \"days\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"yearlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"monthSpecificSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"enableAutoSnapshot\": true,\n  \"includeTransactionLogs\": false,\n  \"standardPolicy\": {\n    \"retentionDays\": \"<integer>\",\n    \"snapshotStartTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"includeTransactionLogs\": false\n  },\n  \"customPolicy\": {\n    \"name\": \"<string>\",\n    \"schedule\": {\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"dailySchedule\": {\n        \"backupsPerDay\": \"<integer>\"\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"<string>\"\n        ]\n      },\n      \"monthlySchedule\": {\n        \"commonSchedule\": {\n          \"dates\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"lastDayOfMonth\": false\n        }\n      },\n      \"yearlySchedule\": {\n        \"commonSchedule\": {\n          \"months\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthSpecificSchedule\": [\n          {\n            \"month\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"dates\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    }\n  },\n  \"fullBackupSchedule\": {\n    \"startTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"weeklySchedule\": {\n      \"days\": [\n        \"<string>\"\n      ]\n    }\n  },\n  \"enableAutoBackup\": false,\n  \"backupRpoConfig\": {\n    \"fullBackupSchedule\": {\n      \"startTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"<string>\"\n        ]\n      }\n    },\n    \"standardPolicy\": {\n      \"retentionDays\": \"<integer>\",\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      }\n    },\n    \"customPolicy\": {\n      \"name\": \"<string>\",\n      \"schedule\": {\n        \"backupStartTime\": {\n          \"hour\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"minute\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"dailySchedule\": {\n          \"backupsPerDay\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"weeklySchedule\": {\n          \"days\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"yearlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"monthSpecificSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "866d581e-c482-4c42-b198-5a80d23ab0f2",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "databases",
+                    ":database-id",
+                    "rpo-policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database-id",
+                      "description": "(Required) Id of the database (e.g., PDB ID)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"enableAutoSnapshot\": true,\n  \"includeTransactionLogs\": false,\n  \"standardPolicy\": {\n    \"retentionDays\": \"<integer>\",\n    \"snapshotStartTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"includeTransactionLogs\": false\n  },\n  \"customPolicy\": {\n    \"name\": \"<string>\",\n    \"schedule\": {\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"dailySchedule\": {\n        \"backupsPerDay\": \"<integer>\"\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"<string>\"\n        ]\n      },\n      \"monthlySchedule\": {\n        \"commonSchedule\": {\n          \"dates\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"lastDayOfMonth\": false\n        }\n      },\n      \"yearlySchedule\": {\n        \"commonSchedule\": {\n          \"months\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthSpecificSchedule\": [\n          {\n            \"month\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"dates\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    }\n  },\n  \"fullBackupSchedule\": {\n    \"startTime\": {\n      \"hour\": 1,\n      \"minute\": 0\n    },\n    \"weeklySchedule\": {\n      \"days\": [\n        \"<string>\"\n      ]\n    }\n  },\n  \"enableAutoBackup\": false,\n  \"backupRpoConfig\": {\n    \"fullBackupSchedule\": {\n      \"startTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      },\n      \"weeklySchedule\": {\n        \"days\": [\n          \"<string>\"\n        ]\n      }\n    },\n    \"standardPolicy\": {\n      \"retentionDays\": \"<integer>\",\n      \"backupStartTime\": {\n        \"hour\": 1,\n        \"minute\": 0\n      }\n    },\n    \"customPolicy\": {\n      \"name\": \"<string>\",\n      \"schedule\": {\n        \"backupStartTime\": {\n          \"hour\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"minute\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"dailySchedule\": {\n          \"backupsPerDay\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"weeklySchedule\": {\n          \"days\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"monthlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"yearlySchedule\": {\n          \"commonSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"monthSpecificSchedule\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1951-01-30T15:35:05.464Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9ee8c902-3a16-4cfd-afca-5a4625260bb0",
+          "name": "Delete RPO policy for a specific database within an Availability Machine",
+          "request": {
+            "name": "Delete RPO policy for a specific database within an Availability Machine",
+            "description": {
+              "content": "Removes the RPO policy configuration for a specific database (e.g., Oracle PDB) within an Availability Machine.\nThis will stop automatic backups for the database and remove associated schedules.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "availability-machines",
+                ":id",
+                "databases",
+                ":database-id",
+                "rpo-policy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Id of the Availability Machine"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "database-id",
+                  "description": "(Required) Id of the database (e.g., PDB ID)"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e5fc01fb-34f5-4f63-9489-a76e0d7b4ad6",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "databases",
+                    ":database-id",
+                    "rpo-policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database-id",
+                      "description": "(Required) Id of the database (e.g., PDB ID)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e956ed9d-ceb8-42e1-afc1-8fa12dff5049",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "databases",
+                    ":database-id",
+                    "rpo-policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database-id",
+                      "description": "(Required) Id of the database (e.g., PDB ID)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"1951-01-30T15:35:05.464Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "console.tessell.com",
+      "key": "server"
+    },
+    {
+      "type": "string",
+      "value": "{{server}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "5102bc13-c594-4771-a946-27919ce339bd",
+    "name": "Tessell APIs activity-center SLA Policy API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tessell API Documentation\n\nContact Support:\n Name: Tessell Inc\n Email: support@tessell.com",
+      "type": "text/plain"
+    }
+  }
+}

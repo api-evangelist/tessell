@@ -1,0 +1,155 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Compute Governance API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Compute Governance",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get all compute profiles.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/compute-service/governance/computes",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "include-availability",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include availability info"
+              },
+              {
+                "name": "subscription-name",
+                "value": "default",
+                "type": "query",
+                "description": "Subscription Name"
+              },
+              {
+                "name": "cloud-type",
+                "value": "[object Object]",
+                "type": "query",
+                "description": "Cloud type of the compute"
+              },
+              {
+                "name": "use-cases",
+                "value": "",
+                "type": "query",
+                "description": "Use Case of the compute"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get all compute profiles."
+        },
+        {
+          "info": {
+            "name": "Enable/Disable compute profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/compute-service/governance/computes/:name/subscription/:subscription-name",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "tesl_2_b",
+                "type": "path",
+                "description": "Compute Name"
+              },
+              {
+                "name": "subscription-name",
+                "value": "default",
+                "type": "path",
+                "description": "Subscription Name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enable/Disable compute profile"
+        },
+        {
+          "info": {
+            "name": "Update compute regions",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/compute-service/governance/computes/:name/subscription/:subscription-name/regions",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "tesl_2_b",
+                "type": "path",
+                "description": "Compute Name"
+              },
+              {
+                "name": "subscription-name",
+                "value": "default",
+                "type": "path",
+                "description": "Subscription Name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update compute regions"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

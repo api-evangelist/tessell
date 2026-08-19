@@ -1,0 +1,168 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Ticket API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Ticket",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/tickets/v2",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Get tickets for the current user."
+        },
+        {
+          "info": {
+            "name": "Create ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/tickets/v2",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates jira and freshdesk tickets for the user"
+        },
+        {
+          "info": {
+            "name": "Get ticket by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/tickets/v2/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the ticket"
+              }
+            ]
+          },
+          "docs": "returns ticket corresponding to an id"
+        },
+        {
+          "info": {
+            "name": "Update ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/tickets/v2/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the ticket"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates ticket with the given id"
+        },
+        {
+          "info": {
+            "name": "Open/Close a ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/tickets/v2/:id/status",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the ticket"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "updates ticket status"
+        },
+        {
+          "info": {
+            "name": "Update watchers list for a ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/tickets/v2/:id/watchers",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the ticket"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update watchers list for a ticket"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

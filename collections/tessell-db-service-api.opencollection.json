@@ -1,0 +1,870 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center DB Service API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "DB Service",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "View list of available DB Services",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/services",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter DB Service based on name"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "Filter DB Service based on status/es"
+              },
+              {
+                "name": "engine-types",
+                "value": "",
+                "type": "query",
+                "description": "Filter DB Service based on engine type"
+              },
+              {
+                "name": "cloned-from-service-id",
+                "value": "",
+                "type": "query",
+                "description": "Filter DB Service based on ID of the DB Service from which the services are cloned"
+              },
+              {
+                "name": "cloned-from-availability-machine-id",
+                "value": "",
+                "type": "query",
+                "description": "Filter DB Service based on ID of the Availability Machine from which the services are cloned"
+              },
+              {
+                "name": "load-instances",
+                "value": "",
+                "type": "query",
+                "description": "Load the instances that are part of the DB Service"
+              },
+              {
+                "name": "load-databases",
+                "value": "",
+                "type": "query",
+                "description": "Load the databases that are part of the DB Service"
+              },
+              {
+                "name": "load-updates-info",
+                "value": "",
+                "type": "query",
+                "description": "Include update availability information for each DB Service"
+              },
+              {
+                "name": "owners",
+                "value": "",
+                "type": "query",
+                "description": "List of Email Addresses for entity or resource owners"
+              },
+              {
+                "name": "load-acls",
+                "value": "",
+                "type": "query",
+                "description": "Load ACL information"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "View list of available DB Services"
+        },
+        {
+          "info": {
+            "name": "Provision a DB service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/services",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Provision a DB service"
+        },
+        {
+          "info": {
+            "name": "Get a DB Service by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/services/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              },
+              {
+                "name": "load-instances",
+                "value": "",
+                "type": "query",
+                "description": "Load the instances that are part of the DB Service"
+              },
+              {
+                "name": "load-databases",
+                "value": "",
+                "type": "query",
+                "description": "Load the databases that are part of the DB Service"
+              },
+              {
+                "name": "load-updates-info",
+                "value": "",
+                "type": "query",
+                "description": "Include update availability information for the DB Service"
+              },
+              {
+                "name": "load-acls",
+                "value": "",
+                "type": "query",
+                "description": "Load ACL information"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get a DB Service by Id"
+        },
+        {
+          "info": {
+            "name": "Update a DB service",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a DB service"
+        },
+        {
+          "info": {
+            "name": "Delete a DB service",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/services/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete a DB service"
+        },
+        {
+          "info": {
+            "name": "Add DB service Instances",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/services/:id/service-instances",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add DB service Instances"
+        },
+        {
+          "info": {
+            "name": "Delete DB service Instances",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/services/:id/service-instances",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete DB service Instances"
+        },
+        {
+          "info": {
+            "name": "Starts the DB Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:id/start",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Starts the DB Service"
+        },
+        {
+          "info": {
+            "name": "Stops the DB Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:id/stop",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Stops the DB Service"
+        },
+        {
+          "info": {
+            "name": "Resize DB service storage/compute",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:id/resize",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Resize DB service storage/compute"
+        },
+        {
+          "info": {
+            "name": "Update DB Service Connectivity",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:id/connectivity",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update DB Service Connectivity"
+        },
+        {
+          "info": {
+            "name": "Switchover a DB Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:id/switchover",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Switchover a DB Service"
+        },
+        {
+          "info": {
+            "name": "Restore a DB Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/services/:id/restore",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Restore a DB Service"
+        },
+        {
+          "info": {
+            "name": "Patches the DB Service Software",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:id/patch-software",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Patches the DB Service Software"
+        },
+        {
+          "info": {
+            "name": "Update parameter profile/s for instances in service",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:service-id/parameter-profiles",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path",
+                "description": "DB Service ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update parameter profile/s for instances in service"
+        },
+        {
+          "info": {
+            "name": "Add/update an integration for the DB Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:id/integrations",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add/update an integration for the DB Service"
+        },
+        {
+          "info": {
+            "name": "Get a DB timeline by service ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/services/:id/timeline",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ]
+          },
+          "docs": "Get a DB timeline by service ID"
+        },
+        {
+          "info": {
+            "name": "Cleanup a failed DB service entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/services/:id/cleanup-entry",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ]
+          },
+          "docs": "Cleanup a failed DB service entry"
+        },
+        {
+          "info": {
+            "name": "Clone a DB service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/availability-machines/:availability-machine-id/clones",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availability-machine-id",
+                "value": "",
+                "type": "path",
+                "description": "The Id of the Availability Machine"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Clone a DB service"
+        },
+        {
+          "info": {
+            "name": "View tags for the DB Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/services/:id/tags",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ]
+          },
+          "docs": "View tags for the DB Service"
+        },
+        {
+          "info": {
+            "name": "Create/update (override) tags for the DB Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:id/tags",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create/update (override) tags for the DB Service"
+        },
+        {
+          "info": {
+            "name": "Delete tags for a DB Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/services/:id/tags",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the DB Service"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete tags for a DB Service"
+        },
+        {
+          "info": {
+            "name": "Get list of services eligible as PDB clone targets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/services/eligible-pdb-clone-targets",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "source-availability-machine-id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the source availability machine"
+              },
+              {
+                "name": "source-database-id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the source database (PDB) to be cloned"
+              },
+              {
+                "name": "load-instances",
+                "value": "",
+                "type": "query",
+                "description": "Load the instances that are part of the DB Service"
+              },
+              {
+                "name": "load-databases",
+                "value": "",
+                "type": "query",
+                "description": "Load the databases (PDBs) that are part of the DB Service"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Returns a list of Oracle services that are eligible to receive a cloned PDB from the specified source database.\nOnly services that meet ALL eligibility criteria are included in the response.\n\n**Eligibility Criteria:**\nServices must meet ALL of the following requirements to be included:\n- **Engine Compatibility**: Target service must be Oracle with multi-tenant (CDB/PDB) architecture\n- **Version Compatibility**: Oracle version must be compatible (same or higher major version)\n- **Status**: Target"
+        },
+        {
+          "info": {
+            "name": "Update DB service timezone",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:id/timezone",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update DB service timezone"
+        },
+        {
+          "info": {
+            "name": "Impact assessment for update parameter profile request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/services/:service-id/parameter-profiles/impact",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path",
+                "description": "DB Service ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Impact assessment for update parameter profile request"
+        },
+        {
+          "info": {
+            "name": "validate the parameter profile.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/parameter-profile/validate",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "validate the parameter profile."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

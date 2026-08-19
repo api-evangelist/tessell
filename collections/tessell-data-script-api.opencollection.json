@@ -1,0 +1,572 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Data Script API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data Script",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a list of Scripts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/scripts",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter result based on the specified name"
+              },
+              {
+                "name": "engine-type",
+                "value": "",
+                "type": "query",
+                "description": "Filter result based on the specified database engine type"
+              },
+              {
+                "name": "script-type",
+                "value": "",
+                "type": "query",
+                "description": "Filter result based on the specified script types"
+              },
+              {
+                "name": "load-versions",
+                "value": "",
+                "type": "query",
+                "description": "Specify if the versions are to be fetched for the script"
+              },
+              {
+                "name": "load-acls",
+                "value": "",
+                "type": "query",
+                "description": "Load ACL information"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              },
+              {
+                "name": "owners",
+                "value": "",
+                "type": "query",
+                "description": "List of Email Addresses for entity or resource owners"
+              }
+            ]
+          },
+          "docs": "Get a list of Scripts"
+        },
+        {
+          "info": {
+            "name": "Request to create a new Script",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/scripts",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Request to create a new Script"
+        },
+        {
+          "info": {
+            "name": "Get information about a Script",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/scripts/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Script"
+              },
+              {
+                "name": "load-versions",
+                "value": "",
+                "type": "query",
+                "description": "Specify if the versions are to be fetched for the script"
+              },
+              {
+                "name": "load-subscriptions-inuse",
+                "value": "",
+                "type": "query",
+                "description": "When set to true, this specifies the subscriptions of the script that are currently in use"
+              },
+              {
+                "name": "load-acls",
+                "value": "",
+                "type": "query",
+                "description": "Load ACL information"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get information about a Script"
+        },
+        {
+          "info": {
+            "name": "Update the specified Script",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/scripts/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Script"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the specified Script"
+        },
+        {
+          "info": {
+            "name": "Delete the specified Script",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/scripts/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Script"
+              }
+            ]
+          },
+          "docs": "Delete the specified Script"
+        },
+        {
+          "info": {
+            "name": "Update the Script's maturity status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/scripts/:id/:action",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Script"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "path",
+                "description": "Maturity status for the Script, which could be any of - DRAFT, PUBLISH, or UNPUBLISH"
+              }
+            ]
+          },
+          "docs": "Update the Script's maturity status"
+        },
+        {
+          "info": {
+            "name": "Get Tessell Script versions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/scripts/:id/versions",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Tessell Script"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Script version"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get Tessell Script versions"
+        },
+        {
+          "info": {
+            "name": "Create a new Tessell Script Version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/scripts/:id/versions",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Tessell Script"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new Tessell Script Version"
+        },
+        {
+          "info": {
+            "name": "Get Tessell Script versions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/scripts/:id/versions/:version",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Tessell Script"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the Tessell Script"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get Tessell Script versions"
+        },
+        {
+          "info": {
+            "name": "Delete a new Tessell Script Version",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/scripts/:id/versions/:version",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Tessell Script"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the Tessell Script"
+              }
+            ]
+          },
+          "docs": "Delete a new Tessell Script Version"
+        },
+        {
+          "info": {
+            "name": "Download Tessell Script Content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/scripts/:id/versions/:version/content",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Tessell Script"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the Tessell Script"
+              }
+            ]
+          },
+          "docs": "Download Tessell Script Content"
+        },
+        {
+          "info": {
+            "name": "Upload Tessell Script Version blob",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/scripts/:id/versions/:version/content",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Tessell Script"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the Tessell Script"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload Tessell Script Version blob"
+        },
+        {
+          "info": {
+            "name": "Get list of ACLs for the Script",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/scripts/:id/acls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Script"
+              }
+            ]
+          },
+          "docs": "Get list of ACLs for the Script"
+        },
+        {
+          "info": {
+            "name": "Create/update the Script ACLs",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/scripts/:id/acls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Script"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create/update the Script ACLs"
+        },
+        {
+          "info": {
+            "name": "Revoke Script ACLs",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/scripts/:id/acls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Script"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Revoke Script ACLs"
+        },
+        {
+          "info": {
+            "name": "Get list of all the users by privileges",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/scripts/:id/acls/eligible-users",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Script"
+              },
+              {
+                "name": "roles",
+                "value": "",
+                "type": "query",
+                "description": "roles"
+              }
+            ]
+          },
+          "docs": "Get list of all the users by privileges"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

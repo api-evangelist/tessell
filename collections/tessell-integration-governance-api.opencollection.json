@@ -1,0 +1,428 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Integration Governance API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Integration Governance",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a list of supported Integration Types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/integration-types",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "integration-type",
+                "value": "",
+                "type": "query",
+                "description": "Type of an Integration"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get a list of supported Integration Types"
+        },
+        {
+          "info": {
+            "name": "Get Integration Type by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/integration-types/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID"
+              }
+            ]
+          },
+          "docs": "Get Integration Type by Id"
+        },
+        {
+          "info": {
+            "name": "Get a list of active Integrations (consumer view)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/integrations",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "integration-type",
+                "value": "",
+                "type": "query",
+                "description": "Type of an Integration"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get a list of active Integrations (consumer view)"
+        },
+        {
+          "info": {
+            "name": "Get active Integration by Id (consumer view)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/integrations/:id",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ]
+          },
+          "docs": "Get active Integration by Id (consumer view)"
+        },
+        {
+          "info": {
+            "name": "Get a list of active Integrations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/integrations/governance",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "ID of an Integration"
+              },
+              {
+                "name": "include-shared-with-users",
+                "value": "",
+                "type": "query",
+                "description": "Flag indicating if ACL information should be included for all entities"
+              },
+              {
+                "name": "integration-type",
+                "value": "",
+                "type": "query",
+                "description": "Type of an Integration"
+              },
+              {
+                "name": "owners",
+                "value": "",
+                "type": "query",
+                "description": "List of Email Addresses for entity or resource owners"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get a list of active Integrations"
+        },
+        {
+          "info": {
+            "name": "Create a new Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/integrations/governance",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new Integration"
+        },
+        {
+          "info": {
+            "name": "Get active Integration Details by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/integrations/governance/:id",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of an Integration"
+              }
+            ]
+          },
+          "docs": "Get active Integration Details by Id"
+        },
+        {
+          "info": {
+            "name": "Delete an Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/integrations/governance/:id",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of an Integration"
+              }
+            ]
+          },
+          "docs": "Delete an Integration"
+        },
+        {
+          "info": {
+            "name": "Update an Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/integrations/governance/:id/:action",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of an Integration"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "path",
+                "description": "Update the integration maturity status as \"publish\" and \"unpublish\""
+              }
+            ]
+          },
+          "docs": "Update an Integration"
+        },
+        {
+          "info": {
+            "name": "Create/Update ACLs of an Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/integrations/governance/:id/acls",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of an Integration"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create/Update ACLs of an Integration"
+        },
+        {
+          "info": {
+            "name": "Revoke access of given users on an Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/integrations/governance/:id/acls",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of an Integration"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Revoke access of given users on an Integration"
+        },
+        {
+          "info": {
+            "name": "Get a list of all users along with role they are eligible on an Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/integrations/governance/:id/acls/eligible-users",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of an Integration"
+              },
+              {
+                "name": "role",
+                "value": "",
+                "type": "query",
+                "description": "Name of roles"
+              }
+            ]
+          },
+          "docs": "Get a list of all users along with role they are eligible on an Integration"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

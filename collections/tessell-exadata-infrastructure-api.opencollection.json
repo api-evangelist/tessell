@@ -1,0 +1,399 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center exadata-infrastructure API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "exadata-infrastructure",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "discoverExadataInfrastructures",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/infrastructures/exadata/infrastructures/discovery",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "subscription-name",
+                "value": "",
+                "type": "query",
+                "description": "Subscription name"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "compartment-id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get a list of all discovered infrastructures in given subscription."
+        },
+        {
+          "info": {
+            "name": "discoverExadataVMClusters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/infrastructures/exadata/infrastructures/:id/vm-clusters/discovery",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "subscription-name",
+                "value": "",
+                "type": "query",
+                "description": "Subscription name"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get a list of all discovered Vm clusters."
+        },
+        {
+          "info": {
+            "name": "getExadataInfrastructures",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/infrastructures/exadata/infrastructures",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "load-vm-clusters",
+                "value": "",
+                "type": "query",
+                "description": "Load the vm-clusters that are part of the Exadata Infra"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get all infrastructures"
+        },
+        {
+          "info": {
+            "name": "getExadataInfrastructureById",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/infrastructures/exadata/infrastructures/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "load-vm-clusters",
+                "value": "",
+                "type": "query",
+                "description": "Load the vm-clusters that are part of the Exadata Infra"
+              }
+            ]
+          },
+          "docs": "Get infrastructure by Id"
+        },
+        {
+          "info": {
+            "name": "deregisterExadataInfrastructure",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/infrastructures/exadata/infrastructures/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ]
+          },
+          "docs": "Deregister Exadata Infrastructure"
+        },
+        {
+          "info": {
+            "name": "getExadataVmClusters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/infrastructures/exadata/infrastructures/:id/vm-clusters",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get all vm-clusters for infrastructure"
+        },
+        {
+          "info": {
+            "name": "getExadataVmClusterById",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/infrastructures/exadata/infrastructures/:id/vm-clusters/:cluster-id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "cluster-id",
+                "value": "",
+                "type": "path",
+                "description": "Id of vm-cluster"
+              }
+            ]
+          },
+          "docs": "Get vm-cluster by Id for infrastructure"
+        },
+        {
+          "info": {
+            "name": "deregisterExadataVmCluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/infrastructures/exadata/infrastructures/:id/vm-clusters/:cluster-id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "cluster-id",
+                "value": "",
+                "type": "path",
+                "description": "Id of vm-cluster"
+              }
+            ]
+          },
+          "docs": "Deregister Exadata VmCluster"
+        },
+        {
+          "info": {
+            "name": "registerExadataInfrastructure",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/infrastructures/exadata/infrastructures/register",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register Exadata Infrastructure"
+        },
+        {
+          "info": {
+            "name": "syncExadataInfrastructureWithClusters",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/infrastructures/exadata/infrastructures/:id/sync",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ]
+          },
+          "docs": "Sync exadata infrastructure & clusters with cloud"
+        },
+        {
+          "info": {
+            "name": "registerExadataVMCluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/infrastructures/exadata/infrastructures/:id/vm-clusters/register",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register Exadata VM Cluster for already registered Exadata Infrastructure"
+        },
+        {
+          "info": {
+            "name": "getVmClusterMetricsById",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/infrastructures/exadata/vm-clusters/:id/metrics",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "start-time",
+                "value": "",
+                "type": "query",
+                "description": "Start timestamp for metric"
+              },
+              {
+                "name": "end-time",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp for metrics"
+              },
+              {
+                "name": "step",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the frequency at which data points are sampled or aggregated within the specified time range in seconds"
+              }
+            ]
+          },
+          "docs": "Returns the metrics data for VM cluster"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

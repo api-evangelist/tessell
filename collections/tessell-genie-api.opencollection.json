@@ -1,0 +1,226 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Genie API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Genie",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Enable Genie for a specific database system",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/enable",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enables Genie for a specific database system"
+        },
+        {
+          "info": {
+            "name": "Disable Genie for a specific database system",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/disable",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Disable Genie for a specific database system"
+        },
+        {
+          "info": {
+            "name": "Request access to VMs of a specific ÐB_SERVICE",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/request-access",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "serviceId",
+                "value": "",
+                "type": "query",
+                "description": "DB Service Id for which the Genie Access request is in context"
+              },
+              {
+                "name": "computeResourceId",
+                "value": "",
+                "type": "query",
+                "description": "Compute Resource Id for which the Genie Access request is in context"
+              }
+            ]
+          },
+          "docs": "Request access to VMs of a specific ÐB_SERVICE"
+        },
+        {
+          "info": {
+            "name": "Request access to VMs of a specific ÐB_SERVICE",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/request-access",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Request access to VMs of a specific ÐB_SERVICE"
+        },
+        {
+          "info": {
+            "name": "get genie config for a tenant",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/genie-config/:tenantId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "path",
+                "description": "Tenant ID"
+              }
+            ]
+          },
+          "docs": "get genie config for a tenant"
+        },
+        {
+          "info": {
+            "name": "Extend Genie expiry time",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/extend",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Extend Genie expiry time"
+        },
+        {
+          "info": {
+            "name": "Get status for a specific Genie request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/status",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "requestId",
+                "value": "",
+                "type": "query",
+                "description": "Request ID of the Genie request"
+              }
+            ]
+          },
+          "docs": "Get status for a specific Genie request"
+        },
+        {
+          "info": {
+            "name": "Downloads connection details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/download/connection-details",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "requestId",
+                "value": "",
+                "type": "query",
+                "description": "Request ID of the Genie request"
+              },
+              {
+                "name": "computeResourceId",
+                "value": "",
+                "type": "query",
+                "description": "Compute Resource Id for which the Genie Access request is in context"
+              }
+            ]
+          },
+          "docs": "Download all the relevant details required for establishing the Genie connection to the VMs of a specific DB Service."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,3689 @@
+{
+  "item": [
+    {
+      "id": "65c08781-f2b7-4972-89a0-bcaa72f349a8",
+      "name": "Snapshot and Backup",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c81f7f36-00c6-46d2-a00f-ffc864a095d9",
+          "name": "Get list of snapshots for an Availability Machine",
+          "request": {
+            "name": "Get list of snapshots for an Availability Machine",
+            "description": {},
+            "url": {
+              "path": [
+                "availability-machines",
+                ":availabilityMachineId",
+                "snapshots"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Filter the result based on snapshot name"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter the result based on snapshot status"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter the result based on snapshot status"
+                },
+                {
+                  "disabled": false,
+                  "key": "automated",
+                  "value": "true",
+                  "description": "Filter the result based on if the snapshot is automated"
+                },
+                {
+                  "disabled": false,
+                  "key": "manual",
+                  "value": "true",
+                  "description": "Filter the result based on if the snapshot is manual"
+                },
+                {
+                  "disabled": false,
+                  "key": "sanitizable",
+                  "value": "false",
+                  "description": "Filter the result based on if the snapshot is sanitizable"
+                },
+                {
+                  "disabled": false,
+                  "key": "load-acls",
+                  "value": "false",
+                  "description": "Load ACL information"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-size",
+                  "value": "10",
+                  "description": "Page size for get query"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-offset",
+                  "value": "0",
+                  "description": "Page offset for get query"
+                },
+                {
+                  "disabled": false,
+                  "key": "time-zone",
+                  "value": "UTC",
+                  "description": "Timezone for return data"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "availabilityMachineId",
+                  "description": "(Required) ID of the Availability Machine"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9226823f-f0f0-4d7f-bc46-64ae3d64790a",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "snapshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "automated",
+                      "value": "true"
+                    },
+                    {
+                      "key": "manual",
+                      "value": "true"
+                    },
+                    {
+                      "key": "sanitizable",
+                      "value": "false"
+                    },
+                    {
+                      "key": "load-acls",
+                      "value": "false"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "time-zone",
+                      "value": "UTC"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"availabilityMachineId\": \"d26ee228-5813-469c-9cbd-ca80b41aa2bc\",\n  \"tessellServiceId\": \"1145817d-0486-cd05-54da-5e490d7dbb2a\",\n  \"serviceName\": \"string\",\n  \"engineType\": \"MILVUS\",\n  \"timeZone\": \"string\",\n  \"owner\": \"string\",\n  \"pitrCatalog\": [\n    {\n      \"cloud\": \"GCP\",\n      \"regions\": [\n        {\n          \"region\": \"string\",\n          \"timeRanges\": [\n            {\n              \"fromTime\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"toTime\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"sharedWith\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"fromTime\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"toTime\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"sharedWith\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"region\": \"string\",\n          \"timeRanges\": [\n            {\n              \"fromTime\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"toTime\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"sharedWith\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"fromTime\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"toTime\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"sharedWith\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"cloud\": \"AWS\",\n      \"regions\": [\n        {\n          \"region\": \"string\",\n          \"timeRanges\": [\n            {\n              \"fromTime\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"toTime\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"sharedWith\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"fromTime\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"toTime\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"sharedWith\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"region\": \"string\",\n          \"timeRanges\": [\n            {\n              \"fromTime\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"toTime\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"sharedWith\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"fromTime\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"toTime\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"sharedWith\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"snapshots\": [\n    {\n      \"id\": \"54b25920-4da1-501f-61de-49bb05465dc1\",\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"snapshotTime\": \"1991-10-27T16:54:09.443Z\",\n      \"status\": \"<string>\",\n      \"size\": 6761,\n      \"manual\": true,\n      \"incremental\": false,\n      \"cloudAvailability\": [\n        {\n          \"cloud\": \"GCP\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"cloud\": \"AWS\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ],\n      \"availabilityConfig\": [\n        {\n          \"availabilityConfiguredManually\": false,\n          \"dapId\": \"37647b54-25b1-ff1b-a7c2-d7bb66c2af7e\",\n          \"cloudAvailabilityConfig\": [\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"availabilityConfiguredManually\": false,\n          \"dapId\": \"d7d16f50-ae9d-53f9-db38-4b45056c65aa\",\n          \"cloudAvailabilityConfig\": [\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ],\n      \"databases\": [\n        {\n          \"id\": \"0fadfbc5-6fa5-334b-4327-518369fe7bd0\",\n          \"name\": \"string\",\n          \"status\": \"string\",\n          \"sizeInMB\": 5669.363375176573,\n          \"dateCreated\": \"1952-12-17T03:15:21.139Z\"\n        },\n        {\n          \"id\": \"f775f7d6-088d-9c95-3176-40dc0ebca60a\",\n          \"name\": \"string\",\n          \"status\": \"string\",\n          \"sizeInMB\": 166.85204028280776,\n          \"dateCreated\": \"1951-05-08T17:04:55.346Z\"\n        }\n      ],\n      \"sharedWith\": {\n        \"users\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"backupStatus\": \"CREATING\"\n    },\n    {\n      \"id\": \"02003312-1749-7014-327c-398e77dc55fa\",\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"snapshotTime\": \"1963-08-01T09:10:39.715Z\",\n      \"status\": \"<string>\",\n      \"size\": 2355,\n      \"manual\": true,\n      \"incremental\": false,\n      \"cloudAvailability\": [\n        {\n          \"cloud\": \"AZURE\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"cloud\": \"AZURE\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ],\n      \"availabilityConfig\": [\n        {\n          \"availabilityConfiguredManually\": false,\n          \"dapId\": \"473d1135-e6f9-5cf7-6264-e45633866dee\",\n          \"cloudAvailabilityConfig\": [\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"availabilityConfiguredManually\": false,\n          \"dapId\": \"2902d90d-632a-e48b-4350-f3a56ac5a890\",\n          \"cloudAvailabilityConfig\": [\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ],\n      \"databases\": [\n        {\n          \"id\": \"fd4d38ca-9e80-75bf-d35f-e3f1dc287251\",\n          \"name\": \"string\",\n          \"status\": \"string\",\n          \"sizeInMB\": 6297.81479350638,\n          \"dateCreated\": \"1976-03-20T09:27:41.147Z\"\n        },\n        {\n          \"id\": \"ea294f30-d3d0-e738-8b20-b2f7d251a55d\",\n          \"name\": \"string\",\n          \"status\": \"string\",\n          \"sizeInMB\": 3256.362596265393,\n          \"dateCreated\": \"1957-11-20T20:09:00.682Z\"\n        }\n      ],\n      \"sharedWith\": {\n        \"users\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"backupStatus\": \"CREATING\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "49c3cf4d-8b11-4d88-ba4b-d61197017816",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "snapshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "automated",
+                      "value": "true"
+                    },
+                    {
+                      "key": "manual",
+                      "value": "true"
+                    },
+                    {
+                      "key": "sanitizable",
+                      "value": "false"
+                    },
+                    {
+                      "key": "load-acls",
+                      "value": "false"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "time-zone",
+                      "value": "UTC"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2018-11-08T17:53:46.823Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "93e1b69a-b1c5-4054-bd46-3b6c2a8062c9",
+          "name": "Submit a request to capture the associated DB Service's snapshot",
+          "request": {
+            "name": "Submit a request to capture the associated DB Service's snapshot",
+            "description": {},
+            "url": {
+              "path": [
+                "availability-machines",
+                ":availabilityMachineId",
+                "snapshots"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "availabilityMachineId",
+                  "description": "(Required) ID of the Availability Machine"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "099b9b4f-3e82-4123-8e13-e5ba23168cd0",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "snapshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"manual-snapshot-1\",\n  \"description\": \"This is a manual snapshot taken as a bookmark for today\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"taskId\": \"3745c8a0-cc28-46bb-8737-f83f981b9627\",\n  \"taskType\": \"createDatabaseSnapshot\",\n  \"resourceId\": \"4725435e-1d59-4d88-b89e-303208c9924d\",\n  \"details\": {\n    \"databaseBackup\": \"manual-snapshot-2\",\n    \"tessellService\": \"finance-db-mysql-si\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "14a09a4b-b8fa-417b-84ee-892a61e747db",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "snapshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"manual-snapshot-1\",\n  \"description\": \"This is a manual snapshot taken as a bookmark for today\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e946780d-84fc-4cbf-a98a-5f29fa4552f4",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "snapshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"manual-snapshot-1\",\n  \"description\": \"This is a manual snapshot taken as a bookmark for today\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2018-11-08T17:53:46.823Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4eae8fa6-8ec6-4852-9dc7-003ad57b416d",
+          "name": "Get details about the specified snapshot",
+          "request": {
+            "name": "Get details about the specified snapshot",
+            "description": {},
+            "url": {
+              "path": [
+                "availability-machines",
+                ":availabilityMachineId",
+                "snapshots",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "availabilityMachineId",
+                  "description": "(Required) ID of the Availability Machine"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) ID of the snapshot"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7e004260-cebd-411c-934b-e98a1421608d",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "snapshots",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of the snapshot"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"bcb7c815-4c60-47e1-9ca6-f3665a8cbbe0\",\n  \"name\": \"manual-snapshot-1\",\n  \"description\": \"This is a manual snapshot taken as a bookmark for today\",\n  \"snapshotTime\": \"2022-08-12T10:42:14.906+00:00\",\n  \"status\": \"AVAILABLE\",\n  \"size\": 1023523,\n  \"manual\": true,\n  \"cloudAvailability\": [\n    {\n      \"cloud\": \"AWS\",\n      \"regions\": [\n        {\n          \"region\": \"ap-south-1\",\n          \"availabilityZones\": null\n        }\n      ]\n    }\n  ],\n  \"databases\": [\n    {\n      \"id\": \"e4b734eb-7141-455d-b36c-80d3ba98ceb2\",\n      \"name\": \"db1\",\n      \"status\": \"READY\"\n    }\n  ],\n  \"sharedWith\": {\n    \"users\": []\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "512011d7-e95d-4cfc-972c-ccb35b23a449",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "snapshots",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of the snapshot"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2018-11-08T17:53:46.823Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9abd63e8-a966-4028-9f66-8a1843b5b974",
+          "name": "Submit a request to delete the snapshot",
+          "request": {
+            "name": "Submit a request to delete the snapshot",
+            "description": {},
+            "url": {
+              "path": [
+                "availability-machines",
+                ":availabilityMachineId",
+                "snapshots",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "availabilityMachineId",
+                  "description": "(Required) ID of the Availability Machine"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) ID of the snapshot"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "332d4bff-1d2d-4e77-9b4b-fbee6bd3234b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "snapshots",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of the snapshot"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Database Backup '4725435e-1d59-4d88-b89e-303208c9924d' is scheduled for deletion and would be deleted soon.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "29d6230f-2fe8-409d-97c6-970e422dd700",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "snapshots",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of the snapshot"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c7e33fc7-6864-463f-9238-89f1c469decd",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "snapshots",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of the snapshot"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2018-11-08T17:53:46.823Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "55d8bce5-38e4-4ee2-9361-503351d041c1",
+          "name": "Create download url for the backup",
+          "request": {
+            "name": "Create download url for the backup",
+            "description": {},
+            "url": {
+              "path": [
+                "availability-machines",
+                ":id",
+                "backups",
+                ":backup-id",
+                "download-url"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Id of the Availability Machine"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "backup-id",
+                  "description": "(Required) ID of the backup"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"expireAt\": \"<dateTime>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c596e489-2840-40ba-a1b0-213315207880",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "backups",
+                    ":backup-id",
+                    "download-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "backup-id",
+                      "description": "(Required) ID of the backup"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"expireAt\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"taskId\": \"252e56e9-3e04-cd87-c277-c81193bae7c1\",\n  \"taskType\": \"string\",\n  \"resourceId\": \"8b2df2de-f3d6-32fe-f74a-3473c3769578\",\n  \"associatedResourceIds\": [\n    \"f04dc51a-6d23-d0aa-dcae-cd513e1ba413\",\n    \"42add4fc-3401-2d2b-edb9-75cdcaf6fe53\"\n  ],\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\",\n    \"key_3\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ae50dcdc-deaa-40bd-9a7a-929366793cc5",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "backups",
+                    ":backup-id",
+                    "download-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "backup-id",
+                      "description": "(Required) ID of the backup"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"expireAt\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b61fde77-03e5-4e2f-af5b-e67c917f7d13",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "backups",
+                    ":backup-id",
+                    "download-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "backup-id",
+                      "description": "(Required) ID of the backup"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"expireAt\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2018-11-08T17:53:46.823Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7715af90-4690-4561-98bc-630049cc7cc6",
+          "name": "Get the restore or clone information for the specified snapshot or the recovery-timestamp",
+          "request": {
+            "name": "Get the restore or clone information for the specified snapshot or the recovery-timestamp",
+            "description": {},
+            "url": {
+              "path": [
+                "availability-machines",
+                ":id",
+                "restore-info"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "backup-id",
+                  "value": "<uuid>",
+                  "description": "ID of the snapshot"
+                },
+                {
+                  "disabled": false,
+                  "key": "recovery-timestamp",
+                  "value": "<string>",
+                  "description": "The recovery timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "time-zone",
+                  "value": "UTC",
+                  "description": "Timezone for return data"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) ID of the Availability Machine"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4a889f86-6f6b-4949-81b1-2fca74d4b47b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "restore-info"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "backup-id",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "recovery-timestamp",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "time-zone",
+                      "value": "UTC"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"availabilityMachineId\": \"1f059b6f-deca-9c15-6022-5e3889defd0a\",\n  \"tessellServiceId\": \"0dfc4e8d-5e0e-64ee-8d94-ae597b389ea9\",\n  \"serviceName\": \"string\",\n  \"snapshotId\": \"562f1ba5-1186-031c-8cb3-0908a3af9ab3\",\n  \"backupId\": \"74e7a850-dd04-e220-85f9-df1447bbe4e2\",\n  \"sourceType\": \"SNAPSHOT\",\n  \"recoveryTime\": \"1970-03-26T22:38:51.860Z\",\n  \"backupName\": \"string\",\n  \"manual\": true,\n  \"engineType\": \"POSTGRESQL\",\n  \"contentType\": \"AS_IS\",\n  \"timeZone\": \"string\",\n  \"availability\": [\n    {\n      \"subscription\": \"string\",\n      \"cloudAvailability\": [\n        {\n          \"cloud\": \"AZURE\",\n          \"regions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        {\n          \"cloud\": \"GCP\",\n          \"regions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"subscription\": \"string\",\n      \"cloudAvailability\": [\n        {\n          \"cloud\": \"GCP\",\n          \"regions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        {\n          \"cloud\": \"GCP\",\n          \"regions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"restoreSize\": 5668,\n  \"edition\": \"string\",\n  \"softwareImage\": \"string\",\n  \"softwareImageVersion\": \"string\",\n  \"softwareImageVersionFamily\": \"string\",\n  \"infrastructure\": {\n    \"cloud\": \"string\",\n    \"region\": \"string\",\n    \"availabilityZone\": \"string\",\n    \"cloudAvailability\": [\n      {\n        \"cloud\": \"GCP\",\n        \"regions\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      {\n        \"cloud\": \"AWS\",\n        \"regions\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      }\n    ],\n    \"vpc\": \"string\",\n    \"enableEncryption\": false,\n    \"encryptionKey\": \"string\",\n    \"computeType\": \"string\",\n    \"awsInfraConfig\": {\n      \"awsCpuOptions\": {\n        \"vcpus\": 5066\n      }\n    },\n    \"gcpInfraConfig\": {\n      \"gcpCpuOptions\": {\n        \"vcpus\": 1603,\n        \"memory\": 6020\n      }\n    },\n    \"enableComputeSharing\": false,\n    \"iops\": 5387,\n    \"throughput\": 9178,\n    \"storage\": 0,\n    \"additionalStorage\": 0,\n    \"timezone\": \"string\",\n    \"multiDisk\": false,\n    \"storageProvider\": \"string\",\n    \"storageConfig\": {\n      \"provider\": \"string\",\n      \"azureNetAppConfig\": {\n        \"serviceLevel\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"archiveStorageConfig\": {\n      \"provider\": \"string\",\n      \"azureNetAppConfig\": {\n        \"serviceLevel\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"computeProvider\": \"AWS_EC2\",\n    \"vcpus\": 7866,\n    \"memoryGB\": 3923.182222734359\n  },\n  \"engineConfiguration\": {\n    \"oracleConfig\": {\n      \"multiTenant\": false,\n      \"parameterProfileId\": \"e0f29e47-9289-aff6-7f72-e78bb73df778\",\n      \"optionsProfile\": \"string\",\n      \"optionProfileId\": \"5cb05fc2-e3ae-dcb1-915e-7990754938e1\",\n      \"sid\": \"string\",\n      \"characterSet\": \"string\",\n      \"nationalCharacterSet\": \"string\",\n      \"enableArchiveMode\": true,\n      \"pdbConfig\": [\n        {\n          \"id\": \"74785774-6c95-3cb7-bc27-387f706c8589\",\n          \"name\": \"string\",\n          \"username\": \"string\",\n          \"secretId\": \"e625d695-84a2-ac95-c9d7-6321ece63e82\",\n          \"postScriptInfo\": {\n            \"scriptId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"scriptName\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"scriptVersion\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"useActiveVersion\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"rpoPolicyConfig\": {\n            \"enableAutoSnapshot\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"includeTransactionLogs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"standardPolicy\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"customPolicy\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"fullBackupSchedule\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"enableAutoBackup\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"backupRpoConfig\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"id\": \"90208fa7-81a9-7cd7-e80e-f0f7cef2d51c\",\n          \"name\": \"string\",\n          \"username\": \"string\",\n          \"secretId\": \"acf3eba6-ba4e-657b-0a9e-c1fff6969a0c\",\n          \"postScriptInfo\": {\n            \"scriptId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"scriptName\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"scriptVersion\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"useActiveVersion\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"rpoPolicyConfig\": {\n            \"enableAutoSnapshot\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"includeTransactionLogs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"standardPolicy\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"customPolicy\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"fullBackupSchedule\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"enableAutoBackup\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"backupRpoConfig\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ]\n    },\n    \"postgresqlConfig\": {\n      \"parameterProfileId\": \"7b5b8c38-041d-8ce1-9e9b-fa128816ed27\",\n      \"adDomainId\": \"9e944cae-ca01-894b-5e90-d55469d3b659\",\n      \"proxyPort\": 6201,\n      \"optionProfileName\": \"string\",\n      \"optionProfileId\": \"f5eebac1-fd74-3718-0b4e-ac0563dbfbb9\"\n    },\n    \"mysqlConfig\": {\n      \"parameterProfileId\": \"3ee9f077-f1d7-eb32-a1b3-95a0e7679e4f\",\n      \"adDomainId\": \"540cae09-4813-ee35-c6b0-9a6a2b00a572\",\n      \"optionProfileId\": \"30dbf024-aabc-b860-3dc7-85e6b4e33863\"\n    },\n    \"sqlServerConfig\": {\n      \"parameterProfileId\": \"2777547b-0cf9-b36f-5e77-e3845cc2f1c4\",\n      \"adDomainId\": \"d2744584-d14c-c546-6650-0fd30ac2e827\",\n      \"serviceAccountUser\": \"string\",\n      \"agentServiceAccountUser\": \"string\",\n      \"instanceName\": \"string\"\n    },\n    \"apacheKafkaConfig\": {\n      \"parameterProfileId\": \"55d2b436-441d-b3cd-e6ff-7d0f876986aa\"\n    },\n    \"mongodbConfig\": {\n      \"clusterName\": \"string\",\n      \"parameterProfileId\": \"fdb99a1c-0386-a56f-039c-3f002b35dd4e\"\n    },\n    \"milvusConfig\": {\n      \"parameterProfileId\": \"0afe1df7-c4dc-5b5a-7d63-dce429374064\"\n    },\n    \"preScriptInfo\": {\n      \"scriptId\": \"f22d4f31-5cbc-415b-9455-53aed79b7a8f\",\n      \"scriptName\": \"string\",\n      \"scriptVersion\": \"string\",\n      \"useActiveVersion\": false\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"7c501f7f-2a81-20e3-acaf-7065c9e77a11\",\n      \"scriptName\": \"string\",\n      \"scriptVersion\": \"string\",\n      \"useActiveVersion\": false\n    },\n    \"collationConfig\": {\n      \"collationName\": \"string\"\n    },\n    \"backupUrl\": \"string\",\n    \"ignorePostScriptFailure\": true,\n    \"ignorePreScriptFailure\": false\n  },\n  \"databases\": [\n    {\n      \"id\": \"72158841-45f4-b11f-11f4-ac006e8fc5aa\",\n      \"name\": \"string\",\n      \"status\": \"string\",\n      \"sizeInMB\": 4086.818653640395,\n      \"dateCreated\": \"1970-04-17T18:58:42.763Z\"\n    },\n    {\n      \"id\": \"52a86b5e-b370-1e26-22d0-735542e46ddd\",\n      \"name\": \"string\",\n      \"status\": \"string\",\n      \"sizeInMB\": 7570.808394840368,\n      \"dateCreated\": \"1953-03-22T09:04:46.789Z\"\n    }\n  ],\n  \"info\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  },\n  \"numOfDisksNeeded\": 3719,\n  \"storageConfig\": {\n    \"provider\": \"string\",\n    \"fsxNetAppConfig\": {\n      \"fileSystemId\": \"9f26530c-f304-a1a9-6461-0ae08fc07bb5\",\n      \"svmId\": \"adffe5e4-9793-6858-0ed0-1261ad63e724\"\n    },\n    \"azureNetAppConfig\": {\n      \"azureNetAppId\": \"24fae9d1-6b65-b432-68e6-851cfd82cc6f\",\n      \"capacityPoolId\": \"105ea545-1ae3-7c2c-f613-e6da989c5762\",\n      \"configurations\": {\n        \"networkFeatures\": \"Basic\"\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d21ff565-36ba-48fd-8695-1a839d1320f3",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":id",
+                    "restore-info"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "backup-id",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "recovery-timestamp",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "time-zone",
+                      "value": "UTC"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2018-11-08T17:53:46.823Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ce8b08a4-9289-4643-9610-20682e65a4f5",
+          "name": "View a list of available Tessell Backups",
+          "request": {
+            "name": "View a list of available Tessell Backups",
+            "description": {},
+            "url": {
+              "path": [
+                "availability-machines",
+                ":availabilityMachineId",
+                "backups"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Name of the backup"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "status"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "status"
+                },
+                {
+                  "disabled": false,
+                  "key": "automated",
+                  "value": "true",
+                  "description": "Specify if automated backups info is to be fetched"
+                },
+                {
+                  "disabled": false,
+                  "key": "manual",
+                  "value": "true",
+                  "description": "Specify if manual backups info is to be fetched"
+                },
+                {
+                  "disabled": false,
+                  "key": "load-acls",
+                  "value": "false",
+                  "description": "Load ACL information"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-size",
+                  "value": "10",
+                  "description": "Page size for get query"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-offset",
+                  "value": "0",
+                  "description": "Page offset for get query"
+                },
+                {
+                  "disabled": false,
+                  "key": "time-zone",
+                  "value": "UTC",
+                  "description": "Timezone for return data"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "availabilityMachineId",
+                  "description": "(Required) Id of the Availability Machine"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5c17780e-1ddf-4ff5-b072-c47e477e2e5b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "backups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "automated",
+                      "value": "true"
+                    },
+                    {
+                      "key": "manual",
+                      "value": "true"
+                    },
+                    {
+                      "key": "load-acls",
+                      "value": "false"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "time-zone",
+                      "value": "UTC"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"availabilityMachineId\": \"252c363f-249e-751a-f655-25e3e51e59ee\",\n  \"tessellServiceId\": \"7b265c2e-36ba-6a79-54bf-d0a96b7dc90e\",\n  \"serviceName\": \"string\",\n  \"engineType\": \"APACHE_KAFKA\",\n  \"timeZone\": \"string\",\n  \"owner\": \"string\",\n  \"backups\": [\n    {\n      \"id\": \"278fb7b6-a1fd-15bb-4daf-5a7c15608462\",\n      \"name\": \"string\",\n      \"backupTime\": \"1966-09-04T10:23:45.448Z\",\n      \"status\": \"<string>\",\n      \"size\": 7229,\n      \"manual\": false,\n      \"isIncremental\": true,\n      \"cloudAvailability\": [\n        {\n          \"cloud\": \"GCP\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"availabilityZones\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"availabilityZones\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"cloud\": \"GCP\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"availabilityZones\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"availabilityZones\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ],\n      \"availabilityConfig\": [\n        {\n          \"availabilityConfiguredManually\": false,\n          \"dapId\": \"636a9425-55c7-ecad-1ffc-136ad6c8c7fc\",\n          \"cloudAvailabilityConfig\": [\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"availabilityConfiguredManually\": false,\n          \"dapId\": \"62001397-664a-0c97-ded7-de0f969cc9ef\",\n          \"cloudAvailabilityConfig\": [\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ],\n      \"databases\": [\n        {\n          \"id\": \"f0de24f4-33ba-fb7b-408c-616ebdba8687\",\n          \"name\": \"string\",\n          \"status\": \"string\",\n          \"sizeInMB\": 2127.0162576815364,\n          \"dateCreated\": \"1968-12-08T23:46:02.434Z\"\n        },\n        {\n          \"id\": \"0c69f7f0-211c-a552-5bee-7e1dfa982248\",\n          \"name\": \"string\",\n          \"status\": \"string\",\n          \"sizeInMB\": 4242.162898898362,\n          \"dateCreated\": \"1972-07-25T08:41:22.632Z\"\n        }\n      ],\n      \"backupSource\": \"SNAPSHOT\",\n      \"backupInfo\": {\n        \"sourceSnapshotId\": \"e14a3e47-30e9-c0f4-e0ec-ad3eefe2b97a\",\n        \"snapshotName\": \"string\",\n        \"snapshotTime\": \"2025-07-25T02:21:15.915Z\"\n      },\n      \"sharedWith\": {\n        \"users\": [\n          {\n            \"userEmail\": \"string\",\n            \"downloadUrlStatus\": \"AVAILABLE\",\n            \"expiryConfig\": {\n              \"expireAt\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"userEmail\": \"string\",\n            \"downloadUrlStatus\": \"AVAILABLE\",\n            \"expiryConfig\": {\n              \"expireAt\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      },\n      \"downloadUrlStatus\": \"NOT_REQUESTED\",\n      \"targetId\": \"a8b5b40c-7b66-a6b6-fa5f-97e6d987b301\",\n      \"targetType\": \"TABLESPACE\",\n      \"targetName\": \"string\"\n    },\n    {\n      \"id\": \"acc5af59-f24d-fd70-39ec-665100806f0d\",\n      \"name\": \"string\",\n      \"backupTime\": \"1966-03-12T18:03:05.638Z\",\n      \"status\": \"<string>\",\n      \"size\": 2985,\n      \"manual\": false,\n      \"isIncremental\": true,\n      \"cloudAvailability\": [\n        {\n          \"cloud\": \"OCI\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"availabilityZones\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"availabilityZones\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"cloud\": \"AWS\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"availabilityZones\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"availabilityZones\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ],\n      \"availabilityConfig\": [\n        {\n          \"availabilityConfiguredManually\": false,\n          \"dapId\": \"7184af9d-9258-9b78-0349-2bbb2219658a\",\n          \"cloudAvailabilityConfig\": [\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"availabilityConfiguredManually\": false,\n          \"dapId\": \"65727e68-1da7-ffe4-32ce-19512740e58c\",\n          \"cloudAvailabilityConfig\": [\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ],\n      \"databases\": [\n        {\n          \"id\": \"e1f60a2c-01c2-8252-61ab-19bda36136d2\",\n          \"name\": \"string\",\n          \"status\": \"string\",\n          \"sizeInMB\": 372.2328745582182,\n          \"dateCreated\": \"1967-02-20T04:11:00.682Z\"\n        },\n        {\n          \"id\": \"85e0fe78-1b5f-fc37-d56f-79e0d01a7443\",\n          \"name\": \"string\",\n          \"status\": \"string\",\n          \"sizeInMB\": 137.31605414968206,\n          \"dateCreated\": \"1982-09-04T07:45:38.486Z\"\n        }\n      ],\n      \"backupSource\": \"SNAPSHOT\",\n      \"backupInfo\": {\n        \"sourceSnapshotId\": \"af337ea8-42a1-7463-77bd-8a682394e1e0\",\n        \"snapshotName\": \"string\",\n        \"snapshotTime\": \"1994-02-08T13:37:36.890Z\"\n      },\n      \"sharedWith\": {\n        \"users\": [\n          {\n            \"userEmail\": \"string\",\n            \"downloadUrlStatus\": \"DELETING\",\n            \"expiryConfig\": {\n              \"expireAt\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"userEmail\": \"string\",\n            \"downloadUrlStatus\": \"NOT_REQUESTED\",\n            \"expiryConfig\": {\n              \"expireAt\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      },\n      \"downloadUrlStatus\": \"NOT_REQUESTED\",\n      \"targetId\": \"eef8309a-a9c4-1deb-84b7-220e3a86ed48\",\n      \"targetType\": \"SCHEMA\",\n      \"targetName\": \"string\"\n    }\n  ],\n  \"multiDisk\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "81dd928a-2c9e-4ba9-8205-c0e49b284db9",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "backups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "automated",
+                      "value": "true"
+                    },
+                    {
+                      "key": "manual",
+                      "value": "true"
+                    },
+                    {
+                      "key": "load-acls",
+                      "value": "false"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "time-zone",
+                      "value": "UTC"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2018-11-08T17:53:46.823Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e9cf068c-bb6a-43b3-9a2f-ba5a92742211",
+          "name": "Create backup for the snapshot",
+          "request": {
+            "name": "Create backup for the snapshot",
+            "description": {},
+            "url": {
+              "path": [
+                "availability-machines",
+                ":availabilityMachineId",
+                "backups"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "availabilityMachineId",
+                  "description": "(Required) Id of the Availability Machine"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"backupSource\": \"SNAPSHOT\",\n  \"snapshotId\": \"<uuid>\",\n  \"targetId\": \"<uuid>\",\n  \"targetType\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d0019ccc-b14d-4af7-ba07-2b5f3e2a20c3",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "backups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"backupSource\": \"SNAPSHOT\",\n  \"snapshotId\": \"<uuid>\",\n  \"targetId\": \"<uuid>\",\n  \"targetType\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"taskId\": \"3f70d596-30aa-0102-2a27-0d03cac337f4\",\n  \"taskType\": \"string\",\n  \"resourceId\": \"e0934e4e-bcbc-05d3-2eaf-01a39d4dfe07\",\n  \"associatedResourceIds\": [\n    \"8667b7b0-996a-d974-1e50-669757436955\",\n    \"c250f4b2-a733-d34f-fa53-e725e86562f0\"\n  ],\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "96973825-3dc0-4740-ba32-5f85b2b743b4",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "backups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"backupSource\": \"SNAPSHOT\",\n  \"snapshotId\": \"<uuid>\",\n  \"targetId\": \"<uuid>\",\n  \"targetType\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "18782c6c-9969-4171-8436-f120dae95d5f",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "backups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"backupSource\": \"SNAPSHOT\",\n  \"snapshotId\": \"<uuid>\",\n  \"targetId\": \"<uuid>\",\n  \"targetType\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2018-11-08T17:53:46.823Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1c88d3d0-77ea-4fab-9541-757aa14c19f0",
+          "name": "get backup",
+          "request": {
+            "name": "get backup",
+            "description": {},
+            "url": {
+              "path": [
+                "availability-machines",
+                ":availabilityMachineId",
+                "backups",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "availabilityMachineId",
+                  "description": "(Required) Id of the Availability Machine"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Id of the database backup"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "93bf81d6-84b6-4e00-a569-b8727aea92ea",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "backups",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the database backup"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"d3cea64d-2a57-bf6e-136f-a9fadd9b5f97\",\n  \"name\": \"string\",\n  \"backupTime\": \"2026-07-29T12:18:25.393Z\",\n  \"status\": \"<string>\",\n  \"size\": 7649,\n  \"manual\": true,\n  \"isIncremental\": false,\n  \"cloudAvailability\": [\n    {\n      \"cloud\": \"AZURE\",\n      \"regions\": [\n        {\n          \"region\": \"string\",\n          \"availabilityZones\": [\n            \"string\"\n          ]\n        },\n        {\n          \"region\": \"string\",\n          \"availabilityZones\": [\n            \"string\"\n          ]\n        }\n      ]\n    },\n    {\n      \"cloud\": \"AWS\",\n      \"regions\": [\n        {\n          \"region\": \"string\",\n          \"availabilityZones\": [\n            \"string\"\n          ]\n        },\n        {\n          \"region\": \"string\",\n          \"availabilityZones\": [\n            \"string\"\n          ]\n        }\n      ]\n    }\n  ],\n  \"availabilityConfig\": [\n    {\n      \"availabilityConfiguredManually\": false,\n      \"dapId\": \"06f9b062-9457-5674-b752-4c391539ac78\",\n      \"cloudAvailabilityConfig\": [\n        {\n          \"cloud\": \"AWS\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"cloud\": \"OCI\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"availabilityConfiguredManually\": false,\n      \"dapId\": \"a30611cf-471b-89cd-8911-6fbda3a72725\",\n      \"cloudAvailabilityConfig\": [\n        {\n          \"cloud\": \"AZURE\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"cloud\": \"AWS\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"databases\": [\n    {\n      \"id\": \"49c7a079-a4e0-3c3a-ef3d-857e729aa3d1\",\n      \"name\": \"string\",\n      \"status\": \"string\",\n      \"sizeInMB\": 3007.3009034701304,\n      \"dateCreated\": \"1972-07-30T03:48:24.571Z\"\n    },\n    {\n      \"id\": \"57324f06-8947-8fee-8399-8ea5941d5293\",\n      \"name\": \"string\",\n      \"status\": \"string\",\n      \"sizeInMB\": 803.2680296269234,\n      \"dateCreated\": \"1953-01-19T11:45:23.426Z\"\n    }\n  ],\n  \"backupSource\": \"SNAPSHOT\",\n  \"backupInfo\": {\n    \"sourceSnapshotId\": \"e8fd4977-957d-2ce2-fdf8-106df945ffd6\",\n    \"snapshotName\": \"string\",\n    \"snapshotTime\": \"2000-06-28T01:25:04.337Z\"\n  },\n  \"sharedWith\": {\n    \"users\": [\n      {\n        \"userEmail\": \"string\",\n        \"downloadUrlStatus\": \"NOT_REQUESTED\",\n        \"expiryConfig\": {\n          \"expireAt\": \"<dateTime>\"\n        }\n      },\n      {\n        \"userEmail\": \"string\",\n        \"downloadUrlStatus\": \"EXPIRED\",\n        \"expiryConfig\": {\n          \"expireAt\": \"<dateTime>\"\n        }\n      }\n    ]\n  },\n  \"downloadUrlStatus\": \"AVAILABLE\",\n  \"targetId\": \"d6b8ce89-9584-ae65-5fff-61790f7050dd\",\n  \"targetType\": \"<string>\",\n  \"targetName\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "35f004ee-31f0-40cc-957b-20a38b8ea521",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "backups",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the database backup"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2b990acc-c65b-4753-84a1-371d9885474c",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "backups",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) Id of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Id of the database backup"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2018-11-08T17:53:46.823Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "628c26a1-160a-4a3e-90fd-ee4296571d4a",
+          "name": "Submit a request to delete the backup",
+          "request": {
+            "name": "Submit a request to delete the backup",
+            "description": {},
+            "url": {
+              "path": [
+                "availability-machines",
+                ":availabilityMachineId",
+                "backups",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "availabilityMachineId",
+                  "description": "(Required) ID of the Availability Machine"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) ID of the database backup"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a4e1434b-1830-4a4a-9ff3-002bdf020686",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "backups",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of the database backup"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f273232f-dfea-4a31-ada3-63882e2be93e",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "backups",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of the database backup"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ebd74b99-65d5-4714-8ded-027c69bfe7b3",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "backups",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of the database backup"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2018-11-08T17:53:46.823Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b64a66d3-65d9-4058-a2ac-e6dc832e5b63",
+          "name": "Get list of sanitized snapshots for an Availability Machine",
+          "request": {
+            "name": "Get list of sanitized snapshots for an Availability Machine",
+            "description": {},
+            "url": {
+              "path": [
+                "availability-machines",
+                ":availabilityMachineId",
+                "sanitized-snapshots"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Filter the result based on Sanitized Snapshot name"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter the result based on Sanitized Snapshot status"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter the result based on Sanitized Snapshot status"
+                },
+                {
+                  "disabled": false,
+                  "key": "automated",
+                  "value": "true",
+                  "description": "Filter the result based on if the Sanitized Snapshot is automated"
+                },
+                {
+                  "disabled": false,
+                  "key": "manual",
+                  "value": "true",
+                  "description": "Filter the result based on if the Sanitized Snapshot is manual"
+                },
+                {
+                  "disabled": false,
+                  "key": "load-acls",
+                  "value": "false",
+                  "description": "Load ACL information"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-size",
+                  "value": "10",
+                  "description": "Page size for get query"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-offset",
+                  "value": "0",
+                  "description": "Page offset for get query"
+                },
+                {
+                  "disabled": false,
+                  "key": "time-zone",
+                  "value": "UTC",
+                  "description": "Timezone for return data"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "availabilityMachineId",
+                  "description": "(Required) ID of the Availability Machine"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e75d13f1-f4a6-44a8-bf49-926930b6b6dc",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "sanitized-snapshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "automated",
+                      "value": "true"
+                    },
+                    {
+                      "key": "manual",
+                      "value": "true"
+                    },
+                    {
+                      "key": "load-acls",
+                      "value": "false"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "time-zone",
+                      "value": "UTC"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"availabilityMachineId\": \"bc903a47-b029-f1b8-51ff-d9f6343d6150\",\n  \"tessellServiceId\": \"6c154184-6a2d-0c95-882a-1672def9f8b7\",\n  \"serviceName\": \"string\",\n  \"engineType\": \"SQLSERVER\",\n  \"timeZone\": \"string\",\n  \"owner\": \"string\",\n  \"snapshots\": [\n    {\n      \"id\": \"a0dcf2ee-ead0-e805-2319-2da215343cc8\",\n      \"name\": \"string\",\n      \"snapshotTime\": \"2025-06-06T23:10:41.296Z\",\n      \"status\": \"<string>\",\n      \"size\": 472,\n      \"manual\": false,\n      \"cloudAvailability\": [\n        {\n          \"cloud\": \"OCI\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"cloud\": \"AZURE\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ],\n      \"availabilityConfig\": [\n        {\n          \"availabilityConfiguredManually\": false,\n          \"dapId\": \"4bbd834d-2d8e-9083-8ed3-48ff4e065ef1\",\n          \"cloudAvailabilityConfig\": [\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"availabilityConfiguredManually\": false,\n          \"dapId\": \"9d460e5f-e876-9723-dce3-a5775853a7b1\",\n          \"cloudAvailabilityConfig\": [\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ],\n      \"sanitizationInfo\": {\n        \"sourceSnapshotId\": \"dfc8eb0c-4c95-3eb1-3192-d88e33cd8632\",\n        \"sanitizationScheduleId\": \"a3e585ed-dc5f-64e8-3f58-317a651df1ad\",\n        \"sanitizationSchedule\": \"string\",\n        \"sanitizationScriptId\": \"2b2a3551-b464-703d-f7dc-d93c9125d78c\",\n        \"sanitizationScript\": \"string\",\n        \"scriptVersion\": \"string\"\n      },\n      \"databases\": [\n        {\n          \"id\": \"69eb7836-b5f6-61fb-eb90-8c7be068f6ef\",\n          \"name\": \"string\",\n          \"status\": \"string\",\n          \"sizeInMB\": 5133.294607028444,\n          \"dateCreated\": \"1979-11-09T16:56:59.185Z\"\n        },\n        {\n          \"id\": \"bddc5231-0ef7-fbe2-efcb-7571d5aef4e2\",\n          \"name\": \"string\",\n          \"status\": \"string\",\n          \"sizeInMB\": 6995.177519167155,\n          \"dateCreated\": \"1976-01-17T17:08:30.708Z\"\n        }\n      ],\n      \"sharedWith\": {\n        \"users\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"backupStatus\": \"AVAILABLE\"\n    },\n    {\n      \"id\": \"923b761b-c7b3-0c7f-d2e0-05e4130079fc\",\n      \"name\": \"string\",\n      \"snapshotTime\": \"1955-08-31T01:48:26.916Z\",\n      \"status\": \"<string>\",\n      \"size\": 2503,\n      \"manual\": true,\n      \"cloudAvailability\": [\n        {\n          \"cloud\": \"AWS\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"cloud\": \"AWS\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ],\n      \"availabilityConfig\": [\n        {\n          \"availabilityConfiguredManually\": false,\n          \"dapId\": \"4eb749d0-911b-42c5-267e-15bf381cd231\",\n          \"cloudAvailabilityConfig\": [\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"availabilityConfiguredManually\": false,\n          \"dapId\": \"6d533006-928d-8a08-4b37-0bd601410b76\",\n          \"cloudAvailabilityConfig\": [\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"cloud\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"regions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ],\n      \"sanitizationInfo\": {\n        \"sourceSnapshotId\": \"afb0125d-a1da-b1fc-1eb6-4b26c1b4bc03\",\n        \"sanitizationScheduleId\": \"c30a0b18-e57a-40a4-8730-b7b4417c2f57\",\n        \"sanitizationSchedule\": \"string\",\n        \"sanitizationScriptId\": \"a9d240a6-3482-7da1-9692-d70ef2ea87dd\",\n        \"sanitizationScript\": \"string\",\n        \"scriptVersion\": \"string\"\n      },\n      \"databases\": [\n        {\n          \"id\": \"f82d88d6-dfaa-e6d0-8a64-6c040af1d716\",\n          \"name\": \"string\",\n          \"status\": \"string\",\n          \"sizeInMB\": 3468.2604621043424,\n          \"dateCreated\": \"1970-11-20T12:43:49.209Z\"\n        },\n        {\n          \"id\": \"d6b3b455-1c96-a307-197b-7c4bc2e5c312\",\n          \"name\": \"string\",\n          \"status\": \"string\",\n          \"sizeInMB\": 9792.801833111895,\n          \"dateCreated\": \"1977-05-09T11:19:42.013Z\"\n        }\n      ],\n      \"sharedWith\": {\n        \"users\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"backupStatus\": \"DELETING\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5c9863dd-2e40-44c3-85ec-735dc3c8a983",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "sanitized-snapshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "automated",
+                      "value": "true"
+                    },
+                    {
+                      "key": "manual",
+                      "value": "true"
+                    },
+                    {
+                      "key": "load-acls",
+                      "value": "false"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "time-zone",
+                      "value": "UTC"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2018-11-08T17:53:46.823Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bc4fcdd6-ac55-49bd-8c96-322a77969783",
+          "name": "Submit a request to sanitize the specified snapshot",
+          "request": {
+            "name": "Submit a request to sanitize the specified snapshot",
+            "description": {},
+            "url": {
+              "path": [
+                "availability-machines",
+                ":availabilityMachineId",
+                "sanitized-snapshots"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "availabilityMachineId",
+                  "description": "(Required) ID of the Availability Machine"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"snapshotId\": \"<uuid>\",\n  \"scriptId\": \"<uuid>\",\n  \"description\": \"<string>\",\n  \"scriptVersion\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4e25de36-1fa0-4f1a-8b80-b57a8f38f04c",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "sanitized-snapshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"snapshotId\": \"<uuid>\",\n  \"scriptId\": \"<uuid>\",\n  \"description\": \"<string>\",\n  \"scriptVersion\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"taskId\": \"3f70d596-30aa-0102-2a27-0d03cac337f4\",\n  \"taskType\": \"string\",\n  \"resourceId\": \"e0934e4e-bcbc-05d3-2eaf-01a39d4dfe07\",\n  \"associatedResourceIds\": [\n    \"8667b7b0-996a-d974-1e50-669757436955\",\n    \"c250f4b2-a733-d34f-fa53-e725e86562f0\"\n  ],\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "366a7242-6e62-4a74-87b8-0d8aff51699c",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "sanitized-snapshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"snapshotId\": \"<uuid>\",\n  \"scriptId\": \"<uuid>\",\n  \"description\": \"<string>\",\n  \"scriptVersion\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6c08ae0e-1d84-4dd4-be40-7e43354be461",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "sanitized-snapshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"snapshotId\": \"<uuid>\",\n  \"scriptId\": \"<uuid>\",\n  \"description\": \"<string>\",\n  \"scriptVersion\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2018-11-08T17:53:46.823Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fa9ee780-bd64-4fa0-bb67-a52ec1b7e1ba",
+          "name": "Get details about the specified Sanitized Snapshot",
+          "request": {
+            "name": "Get details about the specified Sanitized Snapshot",
+            "description": {},
+            "url": {
+              "path": [
+                "availability-machines",
+                ":availabilityMachineId",
+                "sanitized-snapshots",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "availabilityMachineId",
+                  "description": "(Required) ID of the Availability Machine"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) ID of the Sanitized Snapshot"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "15de00ef-5650-4a29-a266-6b117cf0ea6d",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "sanitized-snapshots",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of the Sanitized Snapshot"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"166463ee-cb36-30a3-46fe-f0a508ac5215\",\n  \"name\": \"string\",\n  \"snapshotTime\": \"1994-12-17T02:45:04.394Z\",\n  \"status\": \"<string>\",\n  \"size\": 4141,\n  \"manual\": true,\n  \"cloudAvailability\": [\n    {\n      \"cloud\": \"GCP\",\n      \"regions\": [\n        {\n          \"region\": \"string\",\n          \"status\": \"NOT_AVAILABLE\"\n        },\n        {\n          \"region\": \"string\",\n          \"status\": \"AVAILABLE\"\n        }\n      ]\n    },\n    {\n      \"cloud\": \"GCP\",\n      \"regions\": [\n        {\n          \"region\": \"string\",\n          \"status\": \"COPYING\"\n        },\n        {\n          \"region\": \"string\",\n          \"status\": \"COPYING\"\n        }\n      ]\n    }\n  ],\n  \"availabilityConfig\": [\n    {\n      \"availabilityConfiguredManually\": false,\n      \"dapId\": \"475cd025-819a-2f03-453e-2145e551791f\",\n      \"cloudAvailabilityConfig\": [\n        {\n          \"cloud\": \"AWS\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"cloud\": \"OCI\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"availabilityConfiguredManually\": false,\n      \"dapId\": \"44629001-5a83-bf0c-8644-4d5a530729b6\",\n      \"cloudAvailabilityConfig\": [\n        {\n          \"cloud\": \"OCI\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"cloud\": \"GCP\",\n          \"regions\": [\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"region\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"sanitizationInfo\": {\n    \"sourceSnapshotId\": \"b517abdb-7f45-9fb7-659c-51c7feaac8e2\",\n    \"sanitizationScheduleId\": \"4d928362-db53-a26f-d842-9627cae2cb8f\",\n    \"sanitizationSchedule\": \"string\",\n    \"sanitizationScriptId\": \"85038c9a-ac67-106a-56a7-a1da79a6a4b1\",\n    \"sanitizationScript\": \"string\",\n    \"scriptVersion\": \"string\"\n  },\n  \"databases\": [\n    {\n      \"id\": \"483aa95f-9ef2-9868-5dd0-ac1dcad97959\",\n      \"name\": \"string\",\n      \"status\": \"string\",\n      \"sizeInMB\": 2106.8130921902716,\n      \"dateCreated\": \"1951-04-09T15:44:15.738Z\"\n    },\n    {\n      \"id\": \"8d9d8c2c-9db1-a0d2-f2cc-bcbbe7f5916e\",\n      \"name\": \"string\",\n      \"status\": \"string\",\n      \"sizeInMB\": 6868.12941285842,\n      \"dateCreated\": \"2023-03-29T08:56:54.798Z\"\n    }\n  ],\n  \"sharedWith\": {\n    \"users\": [\n      \"string\",\n      \"string\"\n    ]\n  },\n  \"backupStatus\": \"DELETING\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "72268349-d999-4b83-ad79-8643f21c98d6",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "sanitized-snapshots",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of the Sanitized Snapshot"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2018-11-08T17:53:46.823Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "86b78c75-eef9-477f-b9ec-70938815609d",
+          "name": "Submit a request to delete the Sanitized Snapshot",
+          "request": {
+            "name": "Submit a request to delete the Sanitized Snapshot",
+            "description": {},
+            "url": {
+              "path": [
+                "availability-machines",
+                ":availabilityMachineId",
+                "sanitized-snapshots",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "availabilityMachineId",
+                  "description": "(Required) ID of the Availability Machine"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) ID of the Sanitized Snapshot"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9ef4e568-fc30-415e-9765-59959bd36fa9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "sanitized-snapshots",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of the Sanitized Snapshot"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e464bc6f-f7ae-47a6-9002-0d7c97f61caa",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "sanitized-snapshots",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of the Sanitized Snapshot"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a7a79e6b-b317-4d41-8cdb-b8d035c372cf",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "availability-machines",
+                    ":availabilityMachineId",
+                    "sanitized-snapshots",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "availabilityMachineId",
+                      "description": "(Required) ID of the Availability Machine"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) ID of the Sanitized Snapshot"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2018-11-08T17:53:46.823Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "console.tessell.com",
+      "key": "server"
+    },
+    {
+      "type": "string",
+      "value": "{{server}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "870bb406-f00f-490b-b492-dae9cd44c1ff",
+    "name": "Tessell APIs activity-center Snapshot and Backup API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tessell API Documentation\n\nContact Support:\n Name: Tessell Inc\n Email: support@tessell.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center tessell-service-precheck-controller API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "tessell-service-precheck-controller",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Run prechecks for provisioning a DB service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/services/prechecks",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates cloud validation checks before provisioning a DB service. Returns a precheck ID that can be used to poll for status and retrieve the report."
+        },
+        {
+          "info": {
+            "name": "Get precheck status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/services/prechecks/:id/status",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ]
+          },
+          "docs": "Returns the current status of a precheck request"
+        },
+        {
+          "info": {
+            "name": "Get precheck report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/services/prechecks/:id/report",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ]
+          },
+          "docs": "Returns the detailed precheck report with individual check results"
+        },
+        {
+          "info": {
+            "name": "Run prechecks for adding service instances to a DB service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/services/:service-id/service-instances/prechecks",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates cloud validation checks before adding service instances to a DB service. Returns a precheck ID that can be used to poll for status and retrieve the report."
+        },
+        {
+          "info": {
+            "name": "Run prechecks for resizing a DB service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/services/:service-id/resize/prechecks",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates cloud validation checks before resizing a DB service. Returns a precheck ID that can be used to poll for status and retrieve the report."
+        },
+        {
+          "info": {
+            "name": "Run prechecks for cloning a DB service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/availability-machines/:availability-machine-id/clones/prechecks",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availability-machine-id",
+                "value": "",
+                "type": "path",
+                "description": "The Id of the Availability Machine"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates cloud validation checks before cloning a DB service. Returns a precheck ID that can be used to poll for status and retrieve the report."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

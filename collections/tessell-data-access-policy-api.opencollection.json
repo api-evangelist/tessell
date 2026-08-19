@@ -1,0 +1,319 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Data Access Policy API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data Access Policy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get list of Access Policies (DAP) that are associated with an Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:id/access-policies",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter the result based on Access Policy name"
+              },
+              {
+                "name": "types",
+                "value": "",
+                "type": "query",
+                "description": "Filter the result based on Access Policy type"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "DAP status to filter upon"
+              },
+              {
+                "name": "load-acls",
+                "value": "",
+                "type": "query",
+                "description": "Load ACL information"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get list of Access Policies (DAP) that are associated with an Availability Machine"
+        },
+        {
+          "info": {
+            "name": "Create a new Access Policy for an Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/availability-machines/:id/access-policies",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new Access Policy for an Availability Machine"
+        },
+        {
+          "info": {
+            "name": "Get details about an Access Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:availabilityMachineId/access-policies/:accessPolicyId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              },
+              {
+                "name": "accessPolicyId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Access Policy"
+              },
+              {
+                "name": "load-acls",
+                "value": "",
+                "type": "query",
+                "description": "Load ACL information"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get details about an Access Policy"
+        },
+        {
+          "info": {
+            "name": "Update an Access Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/availability-machines/:availabilityMachineId/access-policies/:accessPolicyId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              },
+              {
+                "name": "accessPolicyId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Access Policy"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an Access Policy"
+        },
+        {
+          "info": {
+            "name": "Delete an Access Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/availability-machines/:availabilityMachineId/access-policies/:accessPolicyId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              },
+              {
+                "name": "accessPolicyId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Data Access Policy"
+              }
+            ]
+          },
+          "docs": "Delete an Access Policy"
+        },
+        {
+          "info": {
+            "name": "View details about a Tessell Dap Catalog",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:availabilityMachineId/access-policies/:accessPolicyId/catalog",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              },
+              {
+                "name": "accessPolicyId",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Data Access Policy"
+              },
+              {
+                "name": "continuous",
+                "value": "",
+                "type": "query",
+                "description": "continuous"
+              },
+              {
+                "name": "discrete",
+                "value": "",
+                "type": "query",
+                "description": "discrete"
+              },
+              {
+                "name": "manual",
+                "value": "",
+                "type": "query",
+                "description": "manual"
+              },
+              {
+                "name": "automated",
+                "value": "",
+                "type": "query",
+                "description": "automated"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "View details about a Tessell Dap Catalog"
+        },
+        {
+          "info": {
+            "name": "Update users of an Access Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/availability-machines/:availabilityMachineId/access-policies/:accessPolicyId/manage-users",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "availabilityMachineId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Availability Machine"
+              },
+              {
+                "name": "accessPolicyId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Access Policy"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update users of an Access Policy"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,140 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Ad Domain Governance API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Ad Domain Governance",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get List of Active Directory Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/ad-domains/governance",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get List of Active Directory Domain"
+        },
+        {
+          "info": {
+            "name": "Register an Active Directory Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/ad-domains/governance/register",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register an Active Directory Domain"
+        },
+        {
+          "info": {
+            "name": "Reconfigure an Active Directory Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/ad-domains/governance/id/:id/reconfigure",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Ad Domain Identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reconfigure an Active Directory Domain"
+        },
+        {
+          "info": {
+            "name": "Deregister an Active Directory Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/ad-domains/governance/id/:id/deregister",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Ad Domain Identifier"
+              }
+            ]
+          },
+          "docs": "Deregister an Active Directory Domain"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,210 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center DB Service Instance API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "DB Service Instance",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "View a list of available DB Service instances",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/services/:id/service-instances",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "service id"
+              },
+              {
+                "name": "instance-group-id",
+                "value": "",
+                "type": "query",
+                "description": "Filter all instances belonging to specified instance-group-id"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "View a list of available DB Service instances"
+        },
+        {
+          "info": {
+            "name": "Create private link for instance",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/services/:service-id/service-instances/:instance-id/private-link",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "instance-id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create private link for instance"
+        },
+        {
+          "info": {
+            "name": "Update private link for instance",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:service-id/service-instances/:instance-id/private-link/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "instance-id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update private link for instance"
+        },
+        {
+          "info": {
+            "name": "Delete private link for instance",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/services/:service-id/service-instances/:instance-id/private-link/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "instance-id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ]
+          },
+          "docs": "Delete private link for instance"
+        },
+        {
+          "info": {
+            "name": "Get a DB Service instance by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/services/:service-id/service-instances/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get a DB Service instance by Id"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

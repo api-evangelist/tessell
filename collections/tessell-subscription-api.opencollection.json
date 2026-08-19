@@ -1,0 +1,856 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Subscription API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Subscription",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns details about the Tessell Subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/subscriptions",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "List of subscription statuses"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "It returns the details about the Tessell Subscriptions"
+        },
+        {
+          "info": {
+            "name": "Returns details about the Tessell Subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/subscription-service/governance/subscriptions",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "List of subscription statuses"
+              },
+              {
+                "name": "entity-owner",
+                "value": "",
+                "type": "query",
+                "description": "Filter based on subscription owners"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Returns details about the Tessell Subscriptions"
+        },
+        {
+          "info": {
+            "name": "Create a new Tessell subscription.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/subscription-service/governance/subscriptions",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new Tessell subscription based on deployment type(shared/byoa) and cloud configurations."
+        },
+        {
+          "info": {
+            "name": "Submits request to get the subscription details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/subscription-service/governance/subscriptions/:name",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Submits request to get the subscription details"
+        },
+        {
+          "info": {
+            "name": "Submits request to update a Tessell Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/subscription-service/governance/subscriptions/:name",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submits request to update a Tessell Subscription"
+        },
+        {
+          "info": {
+            "name": "Submits request to delete a Tessell Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/subscription-service/governance/subscriptions/:name",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              },
+              {
+                "name": "soft-delete",
+                "value": "",
+                "type": "query",
+                "description": "Specifies whether to retain the subscription metadata"
+              }
+            ]
+          },
+          "docs": "Submits request to delete a Tessell Subscription"
+        },
+        {
+          "info": {
+            "name": "Submits request to enable or disable a Tessell Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/:action",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "path",
+                "description": "Action on the subscription. Eg. enable/disable"
+              }
+            ]
+          },
+          "docs": "Submits request to enable or disable a Tessell Subscription"
+        },
+        {
+          "info": {
+            "name": "Adds cloud type to a new Tessell subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/cloud-type",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds cloud type to a new Tessell subscription"
+        },
+        {
+          "info": {
+            "name": "Enables or disables a cloud type in a Tessell Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/cloud-type/:cloud-type/:action",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              },
+              {
+                "name": "cloud-type",
+                "value": "",
+                "type": "path",
+                "description": "Cloud type"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "path",
+                "description": "Action on the subscription. Eg. enable/disable"
+              }
+            ]
+          },
+          "docs": "Enables or disables a cloud type in a Tessell Subscription"
+        },
+        {
+          "info": {
+            "name": "Update regions for a cloud type in a Tessell Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/cloud-type/:cloud-type/regions",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              },
+              {
+                "name": "cloud-type",
+                "value": "",
+                "type": "path",
+                "description": "Cloud type"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update regions for a cloud type in a Tessell Subscription"
+        },
+        {
+          "info": {
+            "name": "Add regions for a cloud type in a Tessell Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/add-regions",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add regions for a cloud type in a Tessell Subscription"
+        },
+        {
+          "info": {
+            "name": "Adds users to a Tessell subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/acls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds users to a Tessell subscription"
+        },
+        {
+          "info": {
+            "name": "Removes users from a Tessell subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/acls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes users from a Tessell subscription"
+        },
+        {
+          "info": {
+            "name": "Get subscription's users' details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/users",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get the details of subscription's users"
+        },
+        {
+          "info": {
+            "name": "Get users which can be added to the subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/acls/eligible-users",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              },
+              {
+                "name": "role",
+                "value": "",
+                "type": "query",
+                "description": "User role"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Returns a list of users which can be added to the subscription"
+        },
+        {
+          "info": {
+            "name": "getSubscriptionByoaStaticMetadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/subscription-service/governance/subscription-metadata/byoa",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Get subscription related metadata"
+        },
+        {
+          "info": {
+            "name": "Track the progress of the ongoing subscription creation operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/track",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              }
+            ]
+          },
+          "docs": "Track the progress of the ongoing subscription creation operation"
+        },
+        {
+          "info": {
+            "name": "Track the progress of the ongoing region onboarding operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/regions/track",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Region name to track region onboarding"
+              },
+              {
+                "name": "cloud-type",
+                "value": "",
+                "type": "query",
+                "description": "Cloud type for region onboarding tracking"
+              }
+            ]
+          },
+          "docs": "Track the progress of the ongoing region onboarding operation"
+        },
+        {
+          "info": {
+            "name": "Resubmits failed Tessell Subscription creation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/resubmit",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              }
+            ]
+          },
+          "docs": "Resubmits failed Tessell Subscription creation"
+        },
+        {
+          "info": {
+            "name": "Resubmits failed region onboarding",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/regions/resubmit",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Region name to resubmit region onboarding"
+              },
+              {
+                "name": "cloud-type",
+                "value": "",
+                "type": "query",
+                "description": "Cloud type for region onboarding resubmit"
+              }
+            ]
+          },
+          "docs": "Resubmits failed region onboarding"
+        },
+        {
+          "info": {
+            "name": "Skip a particular step in the subscription creation flow",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/steps/:step-id/skip",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              },
+              {
+                "name": "step-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the step"
+              }
+            ]
+          },
+          "docs": "Skip a particular step in the subscription creation flow"
+        },
+        {
+          "info": {
+            "name": "Skip a particular step in the region onboarding flow",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/regions/steps/:step-id/skip",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              },
+              {
+                "name": "step-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the step"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Region name to skip a step in region onboarding"
+              },
+              {
+                "name": "cloud-type",
+                "value": "",
+                "type": "query",
+                "description": "Cloud type for region onboarding step skip"
+              }
+            ]
+          },
+          "docs": "Skip a particular step in the region onboarding flow"
+        },
+        {
+          "info": {
+            "name": "Generate a script to register any compute resource with tessell",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/subscription-service/generate-register-vm-script",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "compute-resource-name",
+                "value": "",
+                "type": "query",
+                "description": "Compute resource id of the instance to be registered"
+              },
+              {
+                "name": "tenant-id",
+                "value": "",
+                "type": "query",
+                "description": "Id of the tenant where the compute resource is created"
+              },
+              {
+                "name": "subscription-name",
+                "value": "",
+                "type": "query",
+                "description": "Name of the subscription where the compute resource is created"
+              }
+            ]
+          },
+          "docs": "Generate a script to register any compute resource with tessell"
+        },
+        {
+          "info": {
+            "name": "Register a compute resource after executing the script",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/subscription-service/register-vm",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register a compute resource after executing the script"
+        },
+        {
+          "info": {
+            "name": "Returns the list of user resources under a Tessell Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/resources",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              }
+            ]
+          },
+          "docs": "Returns the list of user resources under a Tessell Subscription"
+        },
+        {
+          "info": {
+            "name": "Track the progress of the ongoing subscription deletion operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/subscription-service/governance/subscriptions/:name/progress",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Subscription Name"
+              }
+            ]
+          },
+          "docs": "Track the progress of the ongoing subscription deletion operation"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

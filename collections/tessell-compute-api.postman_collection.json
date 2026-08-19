@@ -1,0 +1,561 @@
+{
+  "item": [
+    {
+      "id": "c0e89c3c-34c7-4c9e-b283-1607bf763499",
+      "name": "Compute",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f11fb2e3-8a0f-4277-a814-d761da66d95c",
+          "name": "Get a list of Compute Profiles.",
+          "request": {
+            "name": "Get a list of Compute Profiles.",
+            "description": {
+              "content": "Get a list of Compute Profiles",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "compute-service",
+                "computes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include-availability",
+                  "value": "false",
+                  "description": "Whether to include availability info"
+                },
+                {
+                  "disabled": false,
+                  "key": "subscription-name",
+                  "value": "<string>",
+                  "description": "Subscription Name"
+                },
+                {
+                  "disabled": false,
+                  "key": "region",
+                  "value": "<string>",
+                  "description": "Cloud Region"
+                },
+                {
+                  "disabled": false,
+                  "key": "cloud-type",
+                  "value": "<string>",
+                  "description": "Cloud type of the compute"
+                },
+                {
+                  "disabled": false,
+                  "key": "use-cases",
+                  "value": "<string>",
+                  "description": "Use Case of the compute"
+                },
+                {
+                  "disabled": false,
+                  "key": "use-cases",
+                  "value": "<string>",
+                  "description": "Use Case of the compute"
+                },
+                {
+                  "disabled": false,
+                  "key": "include-internal",
+                  "value": "false",
+                  "description": "Includes Internal Computes"
+                },
+                {
+                  "disabled": false,
+                  "key": "all-computes",
+                  "value": "false",
+                  "description": "Returns All Computes"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-size",
+                  "value": "10",
+                  "description": "Page size for get query"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-offset",
+                  "value": "0",
+                  "description": "Page offset for get query"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cf587846-7c71-4ae4-a64d-8e547db4d25b",
+              "name": "List of compute profiles",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "compute-service",
+                    "computes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include-availability",
+                      "value": "false"
+                    },
+                    {
+                      "key": "subscription-name",
+                      "value": "default"
+                    },
+                    {
+                      "key": "region",
+                      "value": "us-east-1"
+                    },
+                    {
+                      "key": "cloud-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "use-cases",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "use-cases",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include-internal",
+                      "value": "false"
+                    },
+                    {
+                      "key": "all-computes",
+                      "value": "false"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"description\": \"string\",\n    \"name\": \"string\",\n    \"family\": \"string\",\n    \"cloudType\": \"<string>\",\n    \"availability\": [\n      {\n        \"subscriptionName\": \"default\",\n        \"status\": \"DELETED\",\n        \"regions\": [\n          \"us-east-1\",\n          \"eu-west-2\"\n        ]\n      },\n      {\n        \"subscriptionName\": \"default\",\n        \"status\": \"ENABLED\",\n        \"regions\": [\n          \"us-east-1\",\n          \"eu-west-2\"\n        ]\n      }\n    ],\n    \"tsm\": false,\n    \"profileInfo\": {\n      \"readIops\": 4695,\n      \"writeIops\": 3852,\n      \"memoryGB\": 7919.274295670841,\n      \"maxNoOfDisks\": 5139,\n      \"minStorageGB\": 251,\n      \"maxStorageGB\": 3404,\n      \"storageGB\": 7416,\n      \"vcpus\": 9420,\n      \"allowedVcpuValues\": [\n        3971,\n        2148\n      ],\n      \"io2BlockExpressEnabled\": false,\n      \"workloadType\": \"string\",\n      \"architecture\": \"x86\",\n      \"maxThroughputMBps\": 681,\n      \"maxBurstThroughputMBps\": 2124,\n      \"maxIops\": 581,\n      \"maxBurstIops\": 4959\n    },\n    \"useCases\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"isInternal\": true,\n    \"metadata\": {\n      \"storageUtilizations\": [\n        {\n          \"engineType\": \"MYSQL\",\n          \"tsmMetaSize\": 3439,\n          \"tsmUsableStorageGB\": 5505\n        },\n        {\n          \"engineType\": \"MILVUS\",\n          \"tsmMetaSize\": 6494,\n          \"tsmUsableStorageGB\": 3078\n        }\n      ]\n    },\n    \"vmCompatibility\": {\n      \"diskControllerTypes\": [\n        \"NVME\",\n        \"NVME\"\n      ]\n    }\n  },\n  {\n    \"description\": \"string\",\n    \"name\": \"string\",\n    \"family\": \"string\",\n    \"cloudType\": \"<string>\",\n    \"availability\": [\n      {\n        \"subscriptionName\": \"default\",\n        \"status\": \"DISABLED\",\n        \"regions\": [\n          \"us-east-1\",\n          \"eu-west-2\"\n        ]\n      },\n      {\n        \"subscriptionName\": \"default\",\n        \"status\": \"ENABLED\",\n        \"regions\": [\n          \"us-east-1\",\n          \"eu-west-2\"\n        ]\n      }\n    ],\n    \"tsm\": false,\n    \"profileInfo\": {\n      \"readIops\": 5596,\n      \"writeIops\": 5033,\n      \"memoryGB\": 8087.098061226099,\n      \"maxNoOfDisks\": 483,\n      \"minStorageGB\": 5195,\n      \"maxStorageGB\": 4080,\n      \"storageGB\": 5551,\n      \"vcpus\": 5267,\n      \"allowedVcpuValues\": [\n        4039,\n        3823\n      ],\n      \"io2BlockExpressEnabled\": false,\n      \"workloadType\": \"string\",\n      \"architecture\": \"x86\",\n      \"maxThroughputMBps\": 9483,\n      \"maxBurstThroughputMBps\": 6209,\n      \"maxIops\": 7662,\n      \"maxBurstIops\": 8431\n    },\n    \"useCases\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"isInternal\": true,\n    \"metadata\": {\n      \"storageUtilizations\": [\n        {\n          \"engineType\": \"MONGODB\",\n          \"tsmMetaSize\": 5604,\n          \"tsmUsableStorageGB\": 5765\n        },\n        {\n          \"engineType\": \"POSTGRESQL\",\n          \"tsmMetaSize\": 9963,\n          \"tsmUsableStorageGB\": 4080\n        }\n      ]\n    },\n    \"vmCompatibility\": {\n      \"diskControllerTypes\": [\n        \"SCSI\",\n        \"NVME\"\n      ]\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "22822ee3-93d7-4410-a440-a3bc07cb38ff",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "compute-service",
+                    "computes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include-availability",
+                      "value": "false"
+                    },
+                    {
+                      "key": "subscription-name",
+                      "value": "default"
+                    },
+                    {
+                      "key": "region",
+                      "value": "us-east-1"
+                    },
+                    {
+                      "key": "cloud-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "use-cases",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "use-cases",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include-internal",
+                      "value": "false"
+                    },
+                    {
+                      "key": "all-computes",
+                      "value": "false"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2007-10-08T15:11:30.876Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "050c0d3e-6a05-4a9d-a1c3-f0846b165e7d",
+          "name": "Get all available vcpus, even if some are disabled for an user",
+          "request": {
+            "name": "Get all available vcpus, even if some are disabled for an user",
+            "description": {
+              "content": "Get all available vcpus, even if some are disabled for an user",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "compute-service",
+                "all-available-vcpus"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page-size",
+                  "value": "10",
+                  "description": "Page size for get query"
+                },
+                {
+                  "disabled": false,
+                  "key": "page-offset",
+                  "value": "0",
+                  "description": "Page offset for get query"
+                },
+                {
+                  "disabled": false,
+                  "key": "time-zone",
+                  "value": "UTC",
+                  "description": "Timezone for return data"
+                },
+                {
+                  "disabled": false,
+                  "key": "cloud-type",
+                  "value": "<string>",
+                  "description": "Cloud type of the compute"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8880c67a-d2d1-40dc-a3be-20676e93455c",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "compute-service",
+                    "all-available-vcpus"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "time-zone",
+                      "value": "UTC"
+                    },
+                    {
+                      "key": "cloud-type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"vcpus\": [\n    3702,\n    9213\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8ddc64e4-f4d5-44c4-a183-4b87dba8d8af",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "compute-service",
+                    "all-available-vcpus"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page-size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page-offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "time-zone",
+                      "value": "UTC"
+                    },
+                    {
+                      "key": "cloud-type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2007-10-08T15:11:30.876Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "console.tessell.com",
+      "key": "server"
+    },
+    {
+      "type": "string",
+      "value": "{{server}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "ea8ac858-b7d7-4257-afe7-cfc0157e814a",
+    "name": "Tessell APIs activity-center Compute API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tessell API Documentation\n\nContact Support:\n Name: Tessell Inc\n Email: support@tessell.com",
+      "type": "text/plain"
+    }
+  }
+}

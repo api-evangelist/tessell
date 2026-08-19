@@ -1,0 +1,275 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center dataflix-controller API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "dataflix-controller",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a list of accessible Dataflix",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/dataflix",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter the result based on Db-Service/Availability Machine name"
+              },
+              {
+                "name": "load-acls",
+                "value": "",
+                "type": "query",
+                "description": "Load ACL information"
+              },
+              {
+                "name": "owners",
+                "value": "",
+                "type": "query",
+                "description": "List of Email Addresses for entity or resource owners"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get a list of accessible Dataflix"
+        },
+        {
+          "info": {
+            "name": "Get Dataflix by AM id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/dataflix/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Availability Machine id of the Service"
+              },
+              {
+                "name": "load-acls",
+                "value": "",
+                "type": "query",
+                "description": "Load ACL information"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get Dataflix by AM id"
+        },
+        {
+          "info": {
+            "name": "Get snapshots and pitr catalog of the Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/dataflix/:id/catalog",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Availability Machine id of the Service"
+              },
+              {
+                "name": "pitr",
+                "value": "",
+                "type": "query",
+                "description": "Specify if PITR info is to be fetched"
+              },
+              {
+                "name": "automated",
+                "value": "",
+                "type": "query",
+                "description": "Specify if automated snapshots info is to be fetched"
+              },
+              {
+                "name": "manual",
+                "value": "",
+                "type": "query",
+                "description": "Specify if manual snapshots info is to be fetched"
+              },
+              {
+                "name": "refresh-service-id",
+                "value": "",
+                "type": "query",
+                "description": "Fetch refresh eligible parent dataflix catalog for the child service id"
+              },
+              {
+                "name": "load-acls",
+                "value": "",
+                "type": "query",
+                "description": "Load ACL information"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get snapshots and pitr catalog of the Availability Machine"
+        },
+        {
+          "info": {
+            "name": "Get sanitised snapshots catalog for the Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/dataflix/:id/catalog/sanitized",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Availability Machine id of the Service"
+              },
+              {
+                "name": "automated",
+                "value": "",
+                "type": "query",
+                "description": "Specify if automated sanitised snapshots info is to be fetched"
+              },
+              {
+                "name": "manual",
+                "value": "",
+                "type": "query",
+                "description": "Specify if manual sanitised snapshots info is to be fetched"
+              },
+              {
+                "name": "refresh-service-id",
+                "value": "",
+                "type": "query",
+                "description": "Fetch refresh eligible parent dataflix catalog for the child service id"
+              },
+              {
+                "name": "load-acls",
+                "value": "",
+                "type": "query",
+                "description": "Load ACL information"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get sanitised snapshots catalog for the Availability Machine"
+        },
+        {
+          "info": {
+            "name": "Get native backups catalog for the Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/dataflix/:id/catalog/backups",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Availability Machine id of the Service"
+              },
+              {
+                "name": "automated",
+                "value": "",
+                "type": "query",
+                "description": "Specify if automated backups info is to be fetched"
+              },
+              {
+                "name": "manual",
+                "value": "",
+                "type": "query",
+                "description": "Specify if manual backups info is to be fetched"
+              },
+              {
+                "name": "load-acls",
+                "value": "",
+                "type": "query",
+                "description": "Load ACL information"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get native backups catalog for the Availability Machine"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

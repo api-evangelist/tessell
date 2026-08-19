@@ -1,0 +1,3034 @@
+{
+  "item": [
+    {
+      "id": "f71e9184-ec58-4833-8d2e-166c0567f960",
+      "name": "tessell-maintenance-center-controller",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1ce11796-8979-48e3-9941-008d2aa2da2a",
+          "name": "Get maintenance details for services",
+          "request": {
+            "name": "Get maintenance details for services",
+            "description": {},
+            "url": {
+              "path": [
+                "maintenance-center",
+                "maintenance-windows",
+                "services"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "maintenanceState",
+                  "value": "<string>",
+                  "description": "(Required) Filter by maintenance state"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "acc59134-eebc-44dd-a6e2-82b17f448f79",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "services"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "maintenanceState",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"services\": [\n    {\n      \"restartRequired\": true,\n      \"serviceId\": \"6195e8fa-37bd-9a9e-6ac7-c19dcccc5edf\",\n      \"serviceName\": \"string\",\n      \"engineType\": \"APACHE_KAFKA\",\n      \"topology\": \"high_availability\",\n      \"serverName\": \"string\",\n      \"serverType\": \"string\",\n      \"subscription\": \"string\",\n      \"maintenanceStatus\": \"NOT_SCHEDULED\",\n      \"maintenanceWindow\": {\n        \"cadence\": \"WEEKLY\",\n        \"time\": \"02:00\",\n        \"duration\": 2864\n      },\n      \"upcomingMaintenanceWindow\": [\n        {\n          \"maintenanceWindowId\": \"e77e84bf-98e8-f6d6-9733-54b5781aa172\",\n          \"cadence\": \"DAILY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 8520,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"SYSTEM\",\n          \"resourceType\": \"LICENSE\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"maintenanceWindowId\": \"d4181b41-5ad6-6278-03f1-6ff6d35ae149\",\n          \"cadence\": \"DAILY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 6770,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"CUSTOM\",\n          \"resourceType\": \"DB_LOG\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ],\n      \"availableUpdates\": {\n        \"osPatch\": {\n          \"versions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"dbPatch\": {\n          \"versions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"lastRunMaintenanceWindows\": [\n        {\n          \"maintenanceWindowId\": \"437f2809-284c-8930-934c-7a496e4c65cf\",\n          \"cadence\": \"WEEKLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 4469,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"CUSTOM\",\n          \"resourceType\": \"DB_SNAPSHOT\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"maintenanceWindowId\": \"b4dff5c5-f1b4-79fc-2487-f867eabe64a0\",\n          \"cadence\": \"MONTHLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 6190,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"CUSTOM\",\n          \"resourceType\": \"NETWORK\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ],\n      \"inProgressMaintenanceWindows\": [\n        {\n          \"maintenanceWindowId\": \"c66d322c-6d3c-44b3-e01f-1ff1a0031a0d\",\n          \"cadence\": \"DAILY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 8065,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"CUSTOM\",\n          \"resourceType\": \"SUBSCRIPTION\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"maintenanceWindowId\": \"6c1544b8-9882-368d-4486-dc837456b445\",\n          \"cadence\": \"DAILY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 8413,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"CUSTOM\",\n          \"resourceType\": \"DB_BACKUP\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ],\n      \"serverPatchingConfig\": {\n        \"enableAutoOSPatching\": true,\n        \"preScriptInfo\": {\n          \"scriptId\": \"123e4567-e89b-12d3-a456-426614174000\",\n          \"scriptVersion\": \"v1.0\"\n        },\n        \"postScriptInfo\": {\n          \"scriptId\": \"123e4567-e89b-12d3-a456-426614174001\",\n          \"scriptVersion\": \"v1.0\"\n        }\n      }\n    },\n    {\n      \"restartRequired\": true,\n      \"serviceId\": \"69339cba-e194-830c-8fa5-4f0ebb4a0caa\",\n      \"serviceName\": \"string\",\n      \"engineType\": \"SQLSERVER\",\n      \"topology\": \"single_instance\",\n      \"serverName\": \"string\",\n      \"serverType\": \"string\",\n      \"subscription\": \"string\",\n      \"maintenanceStatus\": \"SCHEDULED\",\n      \"maintenanceWindow\": {\n        \"cadence\": \"WEEKLY\",\n        \"time\": \"02:00\",\n        \"duration\": 7567\n      },\n      \"upcomingMaintenanceWindow\": [\n        {\n          \"maintenanceWindowId\": \"a7a5e509-5828-7122-156e-5b023617635b\",\n          \"cadence\": \"WEEKLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 8654,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"CUSTOM\",\n          \"resourceType\": \"TERRAFORM\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"maintenanceWindowId\": \"dad2e8e4-0e4b-0731-2481-436c5db3ac2b\",\n          \"cadence\": \"MONTHLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 3144,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"SYSTEM\",\n          \"resourceType\": \"PERSONA\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ],\n      \"availableUpdates\": {\n        \"osPatch\": {\n          \"versions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"dbPatch\": {\n          \"versions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"lastRunMaintenanceWindows\": [\n        {\n          \"maintenanceWindowId\": \"fa806250-f091-57a2-99d0-045f7f97b763\",\n          \"cadence\": \"MONTHLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 9372,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"CUSTOM\",\n          \"resourceType\": \"ACL\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"maintenanceWindowId\": \"c658539d-cbe5-c72d-ed1c-a0a780982540\",\n          \"cadence\": \"WEEKLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 8904,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"SYSTEM\",\n          \"resourceType\": \"DMM_AVAILABILITY\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ],\n      \"inProgressMaintenanceWindows\": [\n        {\n          \"maintenanceWindowId\": \"1b2a60a6-a26f-67ca-ad52-057945ebe755\",\n          \"cadence\": \"WEEKLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 6325,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"SYSTEM\",\n          \"resourceType\": \"VPC_PEERING\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"maintenanceWindowId\": \"1632672f-ef0e-164c-e90c-d9278b0cc810\",\n          \"cadence\": \"DAILY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 6152,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"CUSTOM\",\n          \"resourceType\": \"CUSTOM_SCRIPT\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ],\n      \"serverPatchingConfig\": {\n        \"enableAutoOSPatching\": true,\n        \"preScriptInfo\": {\n          \"scriptId\": \"123e4567-e89b-12d3-a456-426614174000\",\n          \"scriptVersion\": \"v1.0\"\n        },\n        \"postScriptInfo\": {\n          \"scriptId\": \"123e4567-e89b-12d3-a456-426614174001\",\n          \"scriptVersion\": \"v1.0\"\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ebdf013b-0f99-4045-9db3-43facc2c74b0",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "services"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "maintenanceState",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2017-08-06T08:09:09.880Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d6cbcf28-1044-4c4d-9530-749acd303466",
+          "name": "Start maintenance for selected entities (services or servers)",
+          "request": {
+            "name": "Start maintenance for selected entities (services or servers)",
+            "description": {
+              "content": "Unified endpoint to start maintenance windows for both services and servers",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "maintenance-center",
+                "maintenance-windows",
+                "start"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"windows\": [\n    {\n      \"entityId\": \"<uuid>\",\n      \"maintenanceWindowId\": \"<uuid>\"\n    },\n    {\n      \"entityId\": \"<uuid>\",\n      \"maintenanceWindowId\": \"<uuid>\"\n    }\n  ],\n  \"date\": \"<string>\",\n  \"time\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7585609f-f8a5-47bc-8f65-3fe6f03dbe7c",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "start"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"windows\": [\n    {\n      \"entityId\": \"<uuid>\",\n      \"maintenanceWindowId\": \"<uuid>\"\n    },\n    {\n      \"entityId\": \"<uuid>\",\n      \"maintenanceWindowId\": \"<uuid>\"\n    }\n  ],\n  \"date\": \"2026-02-27\",\n  \"time\": \"20:00\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"startedEntityIds\": [\n    \"4605961b-f0e1-a26a-7020-5d1de965678c\",\n    \"9ca1dfb5-e02c-a373-e189-dfad53de02c2\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a7199d1a-bec0-4eba-9521-07cc98eaa8f6",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "start"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"windows\": [\n    {\n      \"entityId\": \"<uuid>\",\n      \"maintenanceWindowId\": \"<uuid>\"\n    },\n    {\n      \"entityId\": \"<uuid>\",\n      \"maintenanceWindowId\": \"<uuid>\"\n    }\n  ],\n  \"date\": \"2026-02-27\",\n  \"time\": \"20:00\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2017-08-06T08:09:09.880Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "93ec198c-7c92-47c4-81c1-4cfb25e6cb77",
+          "name": "Schedule maintenance windows for services (supports existing MW, custom date/time, or start now)",
+          "request": {
+            "name": "Schedule maintenance windows for services (supports existing MW, custom date/time, or start now)",
+            "description": {},
+            "url": {
+              "path": [
+                "maintenance-center",
+                "maintenance-windows",
+                "services",
+                "scheduleMaintenanceWindows"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"services\": [\n    {\n      \"serviceId\": \"<uuid>\",\n      \"taskIds\": [\n        \"<uuid>\",\n        \"<uuid>\"\n      ],\n      \"maintenanceWindowId\": \"<uuid>\",\n      \"date\": \"<string>\",\n      \"time\": \"<string>\"\n    },\n    {\n      \"serviceId\": \"<uuid>\",\n      \"taskIds\": [\n        \"<uuid>\",\n        \"<uuid>\"\n      ],\n      \"maintenanceWindowId\": \"<uuid>\",\n      \"date\": \"<string>\",\n      \"time\": \"<string>\"\n    }\n  ],\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": false,\n    \"preScriptInfo\": {\n      \"scriptId\": \"<uuid>\",\n      \"scriptName\": \"<string>\",\n      \"scriptVersion\": \"<string>\",\n      \"useActiveVersion\": false\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"<uuid>\",\n      \"scriptName\": \"<string>\",\n      \"scriptVersion\": \"<string>\",\n      \"useActiveVersion\": false\n    },\n    \"ignorePreScriptFailure\": false,\n    \"ignorePostScriptFailure\": false\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "94f31a48-8aa0-4da7-a4eb-0e80af4aba32",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "services",
+                    "scheduleMaintenanceWindows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"services\": [\n    {\n      \"serviceId\": \"<uuid>\",\n      \"taskIds\": [\n        \"<uuid>\",\n        \"<uuid>\"\n      ],\n      \"maintenanceWindowId\": \"<uuid>\",\n      \"date\": \"<string>\",\n      \"time\": \"<string>\"\n    },\n    {\n      \"serviceId\": \"<uuid>\",\n      \"taskIds\": [\n        \"<uuid>\",\n        \"<uuid>\"\n      ],\n      \"maintenanceWindowId\": \"<uuid>\",\n      \"date\": \"<string>\",\n      \"time\": \"<string>\"\n    }\n  ],\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": true,\n    \"preScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"scriptVersion\": \"v1.0\"\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174001\",\n      \"scriptVersion\": \"v1.0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"requestId\": \"128ad558-238b-ca88-d3b3-7a765e56e76e\",\n  \"scheduledServiceIds\": [\n    \"6902cb7c-3398-845f-fd3c-b7fcdfa19928\",\n    \"46d4f8f0-e14d-391c-01cd-b231d83272c0\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7f77c7bc-9105-4636-a310-8d719320a416",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "services",
+                    "scheduleMaintenanceWindows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"services\": [\n    {\n      \"serviceId\": \"<uuid>\",\n      \"taskIds\": [\n        \"<uuid>\",\n        \"<uuid>\"\n      ],\n      \"maintenanceWindowId\": \"<uuid>\",\n      \"date\": \"<string>\",\n      \"time\": \"<string>\"\n    },\n    {\n      \"serviceId\": \"<uuid>\",\n      \"taskIds\": [\n        \"<uuid>\",\n        \"<uuid>\"\n      ],\n      \"maintenanceWindowId\": \"<uuid>\",\n      \"date\": \"<string>\",\n      \"time\": \"<string>\"\n    }\n  ],\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": true,\n    \"preScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"scriptVersion\": \"v1.0\"\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174001\",\n      \"scriptVersion\": \"v1.0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2017-08-06T08:09:09.880Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b5acca59-276c-4725-a50e-ca75709ccd65",
+          "name": "Edit maintenance windows for services",
+          "request": {
+            "name": "Edit maintenance windows for services",
+            "description": {},
+            "url": {
+              "path": [
+                "maintenance-center",
+                "maintenance-windows",
+                "services",
+                "updateMaintenanceWindows"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"maintenanceWindow\": {\n    \"cadence\": \"WEEKLY\",\n    \"time\": \"<string>\",\n    \"duration\": \"<integer>\"\n  },\n  \"services\": [\n    {\n      \"serviceId\": \"<uuid>\",\n      \"serviceName\": \"<string>\"\n    },\n    {\n      \"serviceId\": \"<uuid>\",\n      \"serviceName\": \"<string>\"\n    }\n  ],\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": false,\n    \"preScriptInfo\": {\n      \"scriptId\": \"<uuid>\",\n      \"scriptName\": \"<string>\",\n      \"scriptVersion\": \"<string>\",\n      \"useActiveVersion\": false\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"<uuid>\",\n      \"scriptName\": \"<string>\",\n      \"scriptVersion\": \"<string>\",\n      \"useActiveVersion\": false\n    },\n    \"ignorePreScriptFailure\": false,\n    \"ignorePostScriptFailure\": false\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "97fb1b3a-db26-47e5-b12e-14aebae0ad80",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "services",
+                    "updateMaintenanceWindows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"maintenanceWindow\": {\n    \"cadence\": \"WEEKLY\",\n    \"time\": \"02:00\",\n    \"duration\": \"<integer>\"\n  },\n  \"services\": [\n    {\n      \"serviceId\": \"<uuid>\",\n      \"serviceName\": \"<string>\"\n    },\n    {\n      \"serviceId\": \"<uuid>\",\n      \"serviceName\": \"<string>\"\n    }\n  ],\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": true,\n    \"preScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"scriptVersion\": \"v1.0\"\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174001\",\n      \"scriptVersion\": \"v1.0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"scheduledServiceIds\": [\n    \"05c57570-e6b4-9d06-cb71-67ed34cd84db\",\n    \"eeb7ee68-a12b-104f-7fdf-1e916b0ff998\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f4dd7d9-c644-4fe8-bf73-d488005a753e",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "services",
+                    "updateMaintenanceWindows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"maintenanceWindow\": {\n    \"cadence\": \"WEEKLY\",\n    \"time\": \"02:00\",\n    \"duration\": \"<integer>\"\n  },\n  \"services\": [\n    {\n      \"serviceId\": \"<uuid>\",\n      \"serviceName\": \"<string>\"\n    },\n    {\n      \"serviceId\": \"<uuid>\",\n      \"serviceName\": \"<string>\"\n    }\n  ],\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": true,\n    \"preScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"scriptVersion\": \"v1.0\"\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174001\",\n      \"scriptVersion\": \"v1.0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2017-08-06T08:09:09.880Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "390e9e73-b69a-4df8-a29d-dad45f0962d2",
+          "name": "Get maintenance details for servers",
+          "request": {
+            "name": "Get maintenance details for servers",
+            "description": {},
+            "url": {
+              "path": [
+                "maintenance-center",
+                "maintenance-windows",
+                "servers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "maintenanceState",
+                  "value": "<string>",
+                  "description": "(Required) Filter by maintenance state"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7e9ec678-fa27-48bd-a141-e4d113821c9b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "servers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "maintenanceState",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"servers\": [\n    {\n      \"computeResourceId\": \"112171d7-c937-f91e-1a70-dc0bda7e2262\",\n      \"serverName\": \"string\",\n      \"serverType\": \"SHARED\",\n      \"engineType\": \"ORACLE\",\n      \"impact\": \"string\",\n      \"typeOfPatch\": \"NON_CRITICAL\",\n      \"subscription\": \"string\",\n      \"numberOfInstances\": 4769,\n      \"maintenanceStatus\": \"SCHEDULED\",\n      \"maintenanceWindow\": {\n        \"cadence\": \"WEEKLY\",\n        \"time\": \"02:00\",\n        \"duration\": \"<integer>\"\n      },\n      \"upcomingMaintenanceWindow\": [\n        {\n          \"maintenanceWindowId\": \"aa05b68c-b9c8-9e57-64c5-fdaf7d8ee0d8\",\n          \"cadence\": \"WEEKLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 5164,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"CUSTOM\",\n          \"resourceType\": \"DEPLOYMENT\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"maintenanceWindowId\": \"94aacfe7-e8d0-921b-d33e-67764bcf9be9\",\n          \"cadence\": \"WEEKLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 9828,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"SYSTEM\",\n          \"resourceType\": \"SOFTWARE_IMAGE_VERSION\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ],\n      \"availableUpdates\": {\n        \"osPatch\": {\n          \"versions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"dbPatch\": {\n          \"versions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"lastRunMaintenanceWindows\": [\n        {\n          \"maintenanceWindowId\": \"12357911-0d65-d6cf-28bc-1c6acc2893a2\",\n          \"cadence\": \"WEEKLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 5850,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"CUSTOM\",\n          \"resourceType\": \"STORAGE\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"maintenanceWindowId\": \"9be5bfc0-b0e7-fb9c-47e3-c845edcd61c1\",\n          \"cadence\": \"MONTHLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 8863,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"CUSTOM\",\n          \"resourceType\": \"SOFTWARE_IMAGE\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ],\n      \"inProgressMaintenanceWindows\": [\n        {\n          \"maintenanceWindowId\": \"603cf05b-3baf-442d-2349-96abddd13655\",\n          \"cadence\": \"MONTHLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 9483,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"CUSTOM\",\n          \"resourceType\": \"FSX_NETAPP\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"maintenanceWindowId\": \"4a19acbd-6db1-a6f0-1da5-2dce207b57c1\",\n          \"cadence\": \"MONTHLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 615,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"SYSTEM\",\n          \"resourceType\": \"NETWORK\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ]\n    },\n    {\n      \"computeResourceId\": \"2233bcf2-38fa-3fc0-967f-dbd4bbf5161f\",\n      \"serverName\": \"string\",\n      \"serverType\": \"SHARED\",\n      \"engineType\": \"MONGODB\",\n      \"impact\": \"string\",\n      \"typeOfPatch\": \"NON_CRITICAL\",\n      \"subscription\": \"string\",\n      \"numberOfInstances\": 8093,\n      \"maintenanceStatus\": \"NOT_SCHEDULED\",\n      \"maintenanceWindow\": {\n        \"cadence\": \"WEEKLY\",\n        \"time\": \"02:00\",\n        \"duration\": \"<integer>\"\n      },\n      \"upcomingMaintenanceWindow\": [\n        {\n          \"maintenanceWindowId\": \"62de0bf3-3c40-b378-2bc7-13e8b4c3f377\",\n          \"cadence\": \"MONTHLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 3704,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"SYSTEM\",\n          \"resourceType\": \"PRIVATE_LINK\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"maintenanceWindowId\": \"1e125330-9e8d-dbcf-da7a-803ddec18632\",\n          \"cadence\": \"MONTHLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 9235,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"SYSTEM\",\n          \"resourceType\": \"LICENSE\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ],\n      \"availableUpdates\": {\n        \"osPatch\": {\n          \"versions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"dbPatch\": {\n          \"versions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"lastRunMaintenanceWindows\": [\n        {\n          \"maintenanceWindowId\": \"0bb86154-98bb-d802-19f6-fa77b8528034\",\n          \"cadence\": \"WEEKLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 3101,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"SYSTEM\",\n          \"resourceType\": \"COMPUTE_TYPE\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"maintenanceWindowId\": \"7f930aa1-e56d-ff66-b2fe-9328ee654349\",\n          \"cadence\": \"DAILY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 8320,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"SYSTEM\",\n          \"resourceType\": \"STORAGE\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ],\n      \"inProgressMaintenanceWindows\": [\n        {\n          \"maintenanceWindowId\": \"b4f1180c-a205-5ff8-6140-c263506db712\",\n          \"cadence\": \"WEEKLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 6079,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"CUSTOM\",\n          \"resourceType\": \"ALERT_POLICY_ASSOCIATION\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"maintenanceWindowId\": \"570abb13-f9d4-d0ed-7494-3ed10549f159\",\n          \"cadence\": \"WEEKLY\",\n          \"date\": \"2026-03-15\",\n          \"time\": \"02:00\",\n          \"duration\": 8346,\n          \"downtime\": \"string\",\n          \"maintenanceWindowType\": \"SYSTEM\",\n          \"resourceType\": \"ACL\",\n          \"associatedActivities\": {\n            \"dbPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"osPatch\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"parameterProfileUpdate\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e054ae96-1935-44c3-8a94-957bfd0194b6",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "servers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "maintenanceState",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2017-08-06T08:09:09.880Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9eb1dea5-b8d2-431d-aa6c-465b3e25424f",
+          "name": "Schedule maintenance windows for servers (supports existing MW, custom date/time, or start now)",
+          "request": {
+            "name": "Schedule maintenance windows for servers (supports existing MW, custom date/time, or start now)",
+            "description": {},
+            "url": {
+              "path": [
+                "maintenance-center",
+                "maintenance-windows",
+                "servers",
+                "scheduleMaintenanceWindows"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"servers\": [\n    {\n      \"serverId\": \"<uuid>\",\n      \"taskIds\": [\n        \"<uuid>\",\n        \"<uuid>\"\n      ],\n      \"maintenanceWindowId\": \"<uuid>\",\n      \"date\": \"<string>\",\n      \"time\": \"<string>\"\n    },\n    {\n      \"serverId\": \"<uuid>\",\n      \"taskIds\": [\n        \"<uuid>\",\n        \"<uuid>\"\n      ],\n      \"maintenanceWindowId\": \"<uuid>\",\n      \"date\": \"<string>\",\n      \"time\": \"<string>\"\n    }\n  ],\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": false,\n    \"preScriptInfo\": {\n      \"scriptId\": \"<uuid>\",\n      \"scriptName\": \"<string>\",\n      \"scriptVersion\": \"<string>\",\n      \"useActiveVersion\": false\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"<uuid>\",\n      \"scriptName\": \"<string>\",\n      \"scriptVersion\": \"<string>\",\n      \"useActiveVersion\": false\n    },\n    \"ignorePreScriptFailure\": false,\n    \"ignorePostScriptFailure\": false\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "beba96b3-df12-49e7-8f4f-c84e0e38ea42",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "servers",
+                    "scheduleMaintenanceWindows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"servers\": [\n    {\n      \"serverId\": \"<uuid>\",\n      \"taskIds\": [\n        \"<uuid>\",\n        \"<uuid>\"\n      ],\n      \"maintenanceWindowId\": \"<uuid>\",\n      \"date\": \"<string>\",\n      \"time\": \"<string>\"\n    },\n    {\n      \"serverId\": \"<uuid>\",\n      \"taskIds\": [\n        \"<uuid>\",\n        \"<uuid>\"\n      ],\n      \"maintenanceWindowId\": \"<uuid>\",\n      \"date\": \"<string>\",\n      \"time\": \"<string>\"\n    }\n  ],\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": true,\n    \"preScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"scriptVersion\": \"v1.0\"\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174001\",\n      \"scriptVersion\": \"v1.0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"requestId\": \"82c95353-710a-de5b-f5bd-6461f03669f6\",\n  \"scheduledServerIds\": [\n    \"47b4f24f-0f24-6429-5e03-a4f5b7351a71\",\n    \"ae0d026e-3129-ebfe-0489-38fe857e62c3\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "beea60ca-66e5-46f2-becf-19df0b7b4a8e",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "servers",
+                    "scheduleMaintenanceWindows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"servers\": [\n    {\n      \"serverId\": \"<uuid>\",\n      \"taskIds\": [\n        \"<uuid>\",\n        \"<uuid>\"\n      ],\n      \"maintenanceWindowId\": \"<uuid>\",\n      \"date\": \"<string>\",\n      \"time\": \"<string>\"\n    },\n    {\n      \"serverId\": \"<uuid>\",\n      \"taskIds\": [\n        \"<uuid>\",\n        \"<uuid>\"\n      ],\n      \"maintenanceWindowId\": \"<uuid>\",\n      \"date\": \"<string>\",\n      \"time\": \"<string>\"\n    }\n  ],\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": true,\n    \"preScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"scriptVersion\": \"v1.0\"\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174001\",\n      \"scriptVersion\": \"v1.0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2017-08-06T08:09:09.880Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ce58d3fa-8409-481a-8f5c-7bdc1b0836ff",
+          "name": "Edit maintenance windows for servers",
+          "request": {
+            "name": "Edit maintenance windows for servers",
+            "description": {},
+            "url": {
+              "path": [
+                "maintenance-center",
+                "maintenance-windows",
+                "servers",
+                "updateMaintenanceWindows"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"maintenanceWindow\": {\n    \"preference\": \"<string>\",\n    \"time\": \"<string>\",\n    \"duration\": \"<integer>\",\n    \"autoMinorVersionUpgrade\": \"<boolean>\",\n    \"preScriptInfo\": {\n      \"scriptId\": \"<uuid>\",\n      \"scriptName\": \"<string>\",\n      \"scriptVersion\": \"<string>\",\n      \"useActiveVersion\": false\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"<uuid>\",\n      \"scriptName\": \"<string>\",\n      \"scriptVersion\": \"<string>\",\n      \"useActiveVersion\": false\n    },\n    \"ignorePreScriptFailure\": false,\n    \"ignorePostScriptFailure\": false\n  },\n  \"servers\": [\n    {\n      \"serverId\": \"<uuid>\",\n      \"serverName\": \"<string>\"\n    },\n    {\n      \"serverId\": \"<uuid>\",\n      \"serverName\": \"<string>\"\n    }\n  ],\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": false,\n    \"preScriptInfo\": {\n      \"scriptId\": \"<uuid>\",\n      \"scriptName\": \"<string>\",\n      \"scriptVersion\": \"<string>\",\n      \"useActiveVersion\": false\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"<uuid>\",\n      \"scriptName\": \"<string>\",\n      \"scriptVersion\": \"<string>\",\n      \"useActiveVersion\": false\n    },\n    \"ignorePreScriptFailure\": false,\n    \"ignorePostScriptFailure\": false\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dfba01d0-8fa9-4bad-bf82-29a939b8af5a",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "servers",
+                    "updateMaintenanceWindows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"maintenanceWindow\": {\n    \"preference\": \"<string>\",\n    \"time\": \"02:00\",\n    \"duration\": \"<integer>\",\n    \"autoMinorVersionUpgrade\": \"<boolean>\",\n    \"preScriptInfo\": {\n      \"scriptId\": \"<uuid>\",\n      \"scriptName\": \"<string>\",\n      \"scriptVersion\": \"<string>\",\n      \"useActiveVersion\": false\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"<uuid>\",\n      \"scriptName\": \"<string>\",\n      \"scriptVersion\": \"<string>\",\n      \"useActiveVersion\": false\n    },\n    \"ignorePreScriptFailure\": false,\n    \"ignorePostScriptFailure\": false\n  },\n  \"servers\": [\n    {\n      \"serverId\": \"<uuid>\",\n      \"serverName\": \"<string>\"\n    },\n    {\n      \"serverId\": \"<uuid>\",\n      \"serverName\": \"<string>\"\n    }\n  ],\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": true,\n    \"preScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"scriptVersion\": \"v1.0\"\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174001\",\n      \"scriptVersion\": \"v1.0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"scheduledServerIds\": [\n    \"67ec2452-8116-405e-7cf8-acd02dbd7a5e\",\n    \"99b84a46-5a51-0d44-572f-89c724729303\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f51f1668-d199-4075-9102-d1385dcab3c6",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "servers",
+                    "updateMaintenanceWindows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"maintenanceWindow\": {\n    \"preference\": \"<string>\",\n    \"time\": \"02:00\",\n    \"duration\": \"<integer>\",\n    \"autoMinorVersionUpgrade\": \"<boolean>\",\n    \"preScriptInfo\": {\n      \"scriptId\": \"<uuid>\",\n      \"scriptName\": \"<string>\",\n      \"scriptVersion\": \"<string>\",\n      \"useActiveVersion\": false\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"<uuid>\",\n      \"scriptName\": \"<string>\",\n      \"scriptVersion\": \"<string>\",\n      \"useActiveVersion\": false\n    },\n    \"ignorePreScriptFailure\": false,\n    \"ignorePostScriptFailure\": false\n  },\n  \"servers\": [\n    {\n      \"serverId\": \"<uuid>\",\n      \"serverName\": \"<string>\"\n    },\n    {\n      \"serverId\": \"<uuid>\",\n      \"serverName\": \"<string>\"\n    }\n  ],\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": true,\n    \"preScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"scriptVersion\": \"v1.0\"\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174001\",\n      \"scriptVersion\": \"v1.0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2017-08-06T08:09:09.880Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "03038b23-acc8-4f03-a29a-2b48083fdca4",
+          "name": "Delete maintenance window for a specific service",
+          "request": {
+            "name": "Delete maintenance window for a specific service",
+            "description": {},
+            "url": {
+              "path": [
+                "maintenance-center",
+                "maintenance-windows",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "83f2b44c-1bb5-44f1-81fe-a1a5411354da",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fa50bc5c-4774-47dc-9c3a-f2567899b0d0",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2017-08-06T08:09:09.880Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dce8b024-2583-4d42-b623-1561ad68c538",
+          "name": "Get detailed maintenance information for a specific service",
+          "request": {
+            "name": "Get detailed maintenance information for a specific service",
+            "description": {},
+            "url": {
+              "path": [
+                "maintenance-center",
+                "maintenance-windows",
+                "services",
+                ":serviceId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "serviceId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "42078958-a5dd-4d29-813e-0634a3eefb9f",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "services",
+                    ":serviceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "serviceId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"serviceId\": \"bf95e437-3585-69c4-56a4-46d0dcf5367a\",\n  \"serviceName\": \"string\",\n  \"engineType\": \"APACHE_KAFKA\",\n  \"topology\": \"high_availability\",\n  \"serverName\": \"string\",\n  \"serverType\": \"SHARED\",\n  \"dbVersion\": \"string\",\n  \"osVersion\": \"string\",\n  \"subscription\": \"string\",\n  \"maintenanceWindow\": {\n    \"cadence\": \"WEEKLY\",\n    \"time\": \"02:00\",\n    \"duration\": \"<integer>\"\n  },\n  \"upcomingMaintenanceWindows\": [\n    {\n      \"maintenanceWindowId\": \"0cfdc3d8-28a2-c5d1-121f-110b3391a592\",\n      \"cadence\": \"MONTHLY\",\n      \"date\": \"2026-03-15\",\n      \"time\": \"02:00\",\n      \"duration\": 7880,\n      \"downtime\": \"string\",\n      \"maintenanceWindowType\": \"SYSTEM\",\n      \"resourceType\": \"SECRET\",\n      \"associatedActivities\": {\n        \"dbPatch\": {\n          \"taskId\": \"fc06e6d3-5cea-2fa7-5c73-3d5d6147753c\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"IN_PROGRESS\"\n        },\n        \"osPatch\": {\n          \"taskId\": \"b9196772-2c15-268d-3b81-0ba216180682\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"OVERRIDDEN\"\n        },\n        \"parameterProfileUpdate\": {\n          \"taskId\": \"d5881b53-3294-4780-9659-1239e28aa634\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"QUEUED\"\n        }\n      }\n    },\n    {\n      \"maintenanceWindowId\": \"d08f36c4-3a8a-123a-2afe-45ba5921b30d\",\n      \"cadence\": \"WEEKLY\",\n      \"date\": \"2026-03-15\",\n      \"time\": \"02:00\",\n      \"duration\": 3853,\n      \"downtime\": \"string\",\n      \"maintenanceWindowType\": \"CUSTOM\",\n      \"resourceType\": \"AZURE_NETAPP_CAPACITY_POOL\",\n      \"associatedActivities\": {\n        \"dbPatch\": {\n          \"taskId\": \"10959c7d-192d-02a5-4b5d-19a01d494289\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"SUCCESS\"\n        },\n        \"osPatch\": {\n          \"taskId\": \"4e77d65c-e0f4-9206-a2cc-c3d5e095874d\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"FAILED\"\n        },\n        \"parameterProfileUpdate\": {\n          \"taskId\": \"f97a73b4-ee6f-fd71-8c6f-de8cbb87a2e3\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"QUEUED\"\n        }\n      }\n    }\n  ],\n  \"inProgressMaintenanceWindow\": [\n    {\n      \"maintenanceWindowId\": \"dac535f7-c88e-e649-f4d3-55e478f7b835\",\n      \"cadence\": \"WEEKLY\",\n      \"date\": \"2026-03-15\",\n      \"time\": \"02:00\",\n      \"duration\": 5843,\n      \"downtime\": \"string\",\n      \"maintenanceWindowType\": \"CUSTOM\",\n      \"resourceType\": \"TESSELL_SERVICE\",\n      \"associatedActivities\": {\n        \"dbPatch\": {\n          \"taskId\": \"f92e0acc-c4aa-fb72-5d67-0ccc2f613a12\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"IN_PROGRESS\"\n        },\n        \"osPatch\": {\n          \"taskId\": \"eecc1a0c-0578-5bb1-94f8-b3d8cc24ed3b\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"OVERRIDDEN\"\n        },\n        \"parameterProfileUpdate\": {\n          \"taskId\": \"5266a252-4369-7af1-6e16-814610343b18\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"SUCCESS\"\n        }\n      }\n    },\n    {\n      \"maintenanceWindowId\": \"913ebca7-0d7c-84c3-7b7b-ed210a4f0e82\",\n      \"cadence\": \"DAILY\",\n      \"date\": \"2026-03-15\",\n      \"time\": \"02:00\",\n      \"duration\": 2520,\n      \"downtime\": \"string\",\n      \"maintenanceWindowType\": \"SYSTEM\",\n      \"resourceType\": \"SECRET\",\n      \"associatedActivities\": {\n        \"dbPatch\": {\n          \"taskId\": \"535f0dba-6996-0288-1b52-6d4624c9c84f\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"FAILED\"\n        },\n        \"osPatch\": {\n          \"taskId\": \"ea5eb8d9-313e-f9c1-d7fd-2f2ed8c4eb0b\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"FAILED\"\n        },\n        \"parameterProfileUpdate\": {\n          \"taskId\": \"a70dedd1-0aac-9592-af9c-9026214b3ffb\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"CANCELLED\"\n        }\n      }\n    }\n  ],\n  \"availableUpdates\": {\n    \"osPatch\": {\n      \"versions\": [\n        {\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"taskId\": \"6d9c8e15-e2b4-2b03-31af-0971f41d72dc\"\n        },\n        {\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"taskId\": \"6699974d-9086-da13-2cda-355b9ba84bbc\"\n        }\n      ]\n    },\n    \"dbPatch\": {\n      \"versions\": [\n        {\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"taskId\": \"99fb79ce-f9e5-273d-03c7-a3e68258710b\"\n        },\n        {\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"taskId\": \"777a2d2f-d521-0fe7-8388-5772a0230644\"\n        }\n      ]\n    }\n  },\n  \"lastRunMaintenanceWindows\": [\n    {\n      \"maintenanceWindowId\": \"9bb5e2a2-4438-7216-39cc-8ef9b0554835\",\n      \"cadence\": \"DAILY\",\n      \"date\": \"2026-03-15\",\n      \"time\": \"02:00\",\n      \"duration\": 3772,\n      \"downtime\": \"string\",\n      \"maintenanceWindowType\": \"SYSTEM\",\n      \"resourceType\": \"DBSERVER_SUB_SYETEM\",\n      \"associatedActivities\": {\n        \"dbPatch\": {\n          \"taskId\": \"19999826-e3c0-7490-8eec-84bb4670d302\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"AVAILABLE\"\n        },\n        \"osPatch\": {\n          \"taskId\": \"c06360d5-8bd0-77c5-fdce-da40f252e0f3\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"SUCCESS\"\n        },\n        \"parameterProfileUpdate\": {\n          \"taskId\": \"ba46bd3e-c2db-cde7-9fce-a039ae51bbbd\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"FAILED\"\n        }\n      }\n    },\n    {\n      \"maintenanceWindowId\": \"9ee2edf2-ab4d-6314-f464-4dd7433eb11b\",\n      \"cadence\": \"WEEKLY\",\n      \"date\": \"2026-03-15\",\n      \"time\": \"02:00\",\n      \"duration\": 4649,\n      \"downtime\": \"string\",\n      \"maintenanceWindowType\": \"CUSTOM\",\n      \"resourceType\": \"SECRET\",\n      \"associatedActivities\": {\n        \"dbPatch\": {\n          \"taskId\": \"21446d4f-5836-1a1e-cf90-88212e5899a4\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"AVAILABLE\"\n        },\n        \"osPatch\": {\n          \"taskId\": \"96e6dbdd-79ce-0f56-8e68-945f79b42981\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"QUEUED\"\n        },\n        \"parameterProfileUpdate\": {\n          \"taskId\": \"c8ed1048-4363-d34e-f0da-2cba932d3a2c\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"FAILED\"\n        }\n      }\n    }\n  ],\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": true,\n    \"preScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"scriptVersion\": \"v1.0\"\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174001\",\n      \"scriptVersion\": \"v1.0\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8feb1be1-3af7-4a9b-9a10-83a8e5d9d977",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "services",
+                    ":serviceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "serviceId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2017-08-06T08:09:09.880Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3601a688-eade-476e-bcf8-11b160813c8f",
+          "name": "Edit maintenance window for a single service",
+          "request": {
+            "name": "Edit maintenance window for a single service",
+            "description": {},
+            "url": {
+              "path": [
+                "maintenance-center",
+                "maintenance-windows",
+                "services",
+                ":serviceId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "serviceId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"maintenanceWindow\": {\n    \"cadence\": \"WEEKLY\",\n    \"time\": \"<string>\",\n    \"duration\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0631bb4c-7b87-4c23-ac9e-35d5d886da2b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "services",
+                    ":serviceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "serviceId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"maintenanceWindow\": {\n    \"cadence\": \"WEEKLY\",\n    \"time\": \"02:00\",\n    \"duration\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"serviceId\": \"a319b384-2d2c-f926-eefb-cd372469a52f\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d0c5e90d-ecb4-4ebe-8540-426951295191",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "services",
+                    ":serviceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "serviceId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"maintenanceWindow\": {\n    \"cadence\": \"WEEKLY\",\n    \"time\": \"02:00\",\n    \"duration\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2017-08-06T08:09:09.880Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "23ea1aef-690a-41bb-a40d-dd433bff9617",
+          "name": "Start maintenance for a single service",
+          "request": {
+            "name": "Start maintenance for a single service",
+            "description": {},
+            "url": {
+              "path": [
+                "maintenance-center",
+                "maintenance-windows",
+                "services",
+                ":serviceId",
+                "start"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "serviceId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"maintenanceWindowId\": \"<uuid>\",\n  \"taskId\": \"<uuid>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "99d27f97-47c8-425c-a5b1-f51c0e564f9f",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "services",
+                    ":serviceId",
+                    "start"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "serviceId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"maintenanceWindowId\": \"<uuid>\",\n  \"taskId\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"serviceId\": \"a319b384-2d2c-f926-eefb-cd372469a52f\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7c51fa22-1ed6-435e-817b-44a4376744b9",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "services",
+                    ":serviceId",
+                    "start"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "serviceId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"maintenanceWindowId\": \"<uuid>\",\n  \"taskId\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2017-08-06T08:09:09.880Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "edeb0e3c-283e-4b10-9a36-ec656edfe096",
+          "name": "Get detailed maintenance information for a specific server",
+          "request": {
+            "name": "Get detailed maintenance information for a specific server",
+            "description": {},
+            "url": {
+              "path": [
+                "maintenance-center",
+                "maintenance-windows",
+                "servers",
+                ":serverId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "serverId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b9ba7b3b-3be6-4801-a23b-cda7cbb236e4",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "servers",
+                    ":serverId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "serverId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"serverId\": \"12eacf98-2fb6-7851-23d8-a386d35e2db4\",\n  \"serverName\": \"string\",\n  \"serverType\": \"SHARED\",\n  \"engineType\": \"APACHE_KAFKA\",\n  \"subscription\": \"string\",\n  \"numberOfHostedDbServices\": 3512,\n  \"osVersion\": \"string\",\n  \"dbVersion\": \"string\",\n  \"dbInstances\": [\n    \"5ad6b8f5-45f1-a68a-03ea-c31421014f28\",\n    \"d8853aca-1582-7b57-06ca-cc49cdb72805\"\n  ],\n  \"maintenanceWindow\": {\n    \"cadence\": \"WEEKLY\",\n    \"time\": \"02:00\",\n    \"duration\": \"<integer>\"\n  },\n  \"upcomingMaintenanceWindows\": [\n    {\n      \"maintenanceWindowId\": \"abf09f5a-c675-4ef6-1bec-164885a7e115\",\n      \"cadence\": \"WEEKLY\",\n      \"date\": \"2026-03-15\",\n      \"time\": \"02:00\",\n      \"duration\": 3768,\n      \"downtime\": \"string\",\n      \"maintenanceWindowType\": \"CUSTOM\",\n      \"resourceType\": \"ACL\",\n      \"associatedActivities\": {\n        \"dbPatch\": {\n          \"taskId\": \"221c388f-40d5-5ec6-4426-8bedfd27d50e\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"IN_PROGRESS\"\n        },\n        \"osPatch\": {\n          \"taskId\": \"370c6cb8-ee73-cf4f-bf82-f1e0ce228436\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"QUEUED\"\n        },\n        \"parameterProfileUpdate\": {\n          \"taskId\": \"febafe88-955d-da0d-0ef9-0672b42874ee\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"CANCELLED\"\n        }\n      }\n    },\n    {\n      \"maintenanceWindowId\": \"d6d3902b-7626-6dc0-2096-118612288300\",\n      \"cadence\": \"WEEKLY\",\n      \"date\": \"2026-03-15\",\n      \"time\": \"02:00\",\n      \"duration\": 4035,\n      \"downtime\": \"string\",\n      \"maintenanceWindowType\": \"SYSTEM\",\n      \"resourceType\": \"EXADATA_VM_CLUSTER\",\n      \"associatedActivities\": {\n        \"dbPatch\": {\n          \"taskId\": \"24141c84-d295-48c7-5c72-3f6ac9a63148\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"OVERRIDDEN\"\n        },\n        \"osPatch\": {\n          \"taskId\": \"44d705a9-44cc-d779-8b03-61866eafe0c3\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"CANCELLED\"\n        },\n        \"parameterProfileUpdate\": {\n          \"taskId\": \"64a90e36-03d0-1dec-ff6c-52c167ed3a8b\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"CANCELLED\"\n        }\n      }\n    }\n  ],\n  \"availableUpdates\": {\n    \"osPatch\": {\n      \"versions\": [\n        {\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"taskId\": \"251990ae-cdac-e0f5-d5cd-246f2e6a90ab\"\n        },\n        {\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"taskId\": \"932a8e02-ddbe-deed-c2cd-b313728ca503\"\n        }\n      ]\n    },\n    \"dbPatch\": {\n      \"versions\": [\n        {\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"taskId\": \"f1a293a2-83aa-b60e-97ef-057f03e5a180\"\n        },\n        {\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"taskId\": \"c29210d4-b53d-4d01-3140-a1df460e66ed\"\n        }\n      ]\n    }\n  },\n  \"lastRunMaintenanceWindows\": [\n    {\n      \"maintenanceWindowId\": \"c0ac0687-96c3-dbf4-0b20-7574f493b263\",\n      \"cadence\": \"WEEKLY\",\n      \"date\": \"2026-03-15\",\n      \"time\": \"02:00\",\n      \"duration\": 7603,\n      \"downtime\": \"string\",\n      \"maintenanceWindowType\": \"SYSTEM\",\n      \"resourceType\": \"DATABASE_SYETEM\",\n      \"associatedActivities\": {\n        \"dbPatch\": {\n          \"taskId\": \"1158632e-f07e-349a-5509-b7f5720853d6\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"FAILED\"\n        },\n        \"osPatch\": {\n          \"taskId\": \"6640eb40-79b2-a54f-c787-20f2747cdc82\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"CANCELLED\"\n        },\n        \"parameterProfileUpdate\": {\n          \"taskId\": \"abc39df2-d1cb-2203-f79f-d7a636d53b94\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"SUCCESS\"\n        }\n      }\n    },\n    {\n      \"maintenanceWindowId\": \"e241e79f-cebd-40a4-2f59-55e52ac9f8e1\",\n      \"cadence\": \"DAILY\",\n      \"date\": \"2026-03-15\",\n      \"time\": \"02:00\",\n      \"duration\": 4511,\n      \"downtime\": \"string\",\n      \"maintenanceWindowType\": \"CUSTOM\",\n      \"resourceType\": \"TASK\",\n      \"associatedActivities\": {\n        \"dbPatch\": {\n          \"taskId\": \"a505fe75-9848-77a2-2dc3-d746695f288f\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"OVERRIDDEN\"\n        },\n        \"osPatch\": {\n          \"taskId\": \"3bcf5364-e48b-ceae-e40f-f17014f1d36a\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"CANCELLED\"\n        },\n        \"parameterProfileUpdate\": {\n          \"taskId\": \"7bd04c22-28f7-ec83-abe6-cd73def14a2e\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"IN_PROGRESS\"\n        }\n      }\n    }\n  ],\n  \"inProgressMaintenanceWindow\": [\n    {\n      \"maintenanceWindowId\": \"131b0010-508d-968c-f2f5-6a424136e4b8\",\n      \"cadence\": \"DAILY\",\n      \"date\": \"2026-03-15\",\n      \"time\": \"02:00\",\n      \"duration\": 2235,\n      \"downtime\": \"string\",\n      \"maintenanceWindowType\": \"SYSTEM\",\n      \"resourceType\": \"CUSTOM_SCRIPT\",\n      \"associatedActivities\": {\n        \"dbPatch\": {\n          \"taskId\": \"9444ba1b-8d37-768e-96c5-108435e8f4ad\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"QUEUED\"\n        },\n        \"osPatch\": {\n          \"taskId\": \"e0442949-a57d-1295-5e74-0b41bce61034\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"CANCELLED\"\n        },\n        \"parameterProfileUpdate\": {\n          \"taskId\": \"4fdb35dd-7fcc-704d-5f69-cf7e0ff67743\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"QUEUED\"\n        }\n      }\n    },\n    {\n      \"maintenanceWindowId\": \"990cd179-d8f0-ed01-ff9d-e4454aa6a195\",\n      \"cadence\": \"MONTHLY\",\n      \"date\": \"2026-03-15\",\n      \"time\": \"02:00\",\n      \"duration\": 7174,\n      \"downtime\": \"string\",\n      \"maintenanceWindowType\": \"CUSTOM\",\n      \"resourceType\": \"RPO_POLICY\",\n      \"associatedActivities\": {\n        \"dbPatch\": {\n          \"taskId\": \"0c351780-ab05-df09-1645-0f6a14722a60\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"QUEUED\"\n        },\n        \"osPatch\": {\n          \"taskId\": \"7a456cf8-e2d7-0647-7d13-80deb4b95636\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"AVAILABLE\"\n        },\n        \"parameterProfileUpdate\": {\n          \"taskId\": \"30363780-e444-7e37-1274-0f6a15fb8c04\",\n          \"versionNo\": \"string\",\n          \"typeOfPatch\": \"NON_CRITICAL\",\n          \"impact\": \"string\",\n          \"scheduledBy\": \"string\",\n          \"status\": \"FAILED\"\n        }\n      }\n    }\n  ],\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": true,\n    \"preScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"scriptVersion\": \"v1.0\"\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174001\",\n      \"scriptVersion\": \"v1.0\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0a3b432f-2ca0-4ae1-92a9-69497c9267fe",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "servers",
+                    ":serverId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "serverId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2017-08-06T08:09:09.880Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1ce5cdab-dc82-470f-af62-4177082a53b1",
+          "name": "Edit maintenance window for a single server",
+          "request": {
+            "name": "Edit maintenance window for a single server",
+            "description": {},
+            "url": {
+              "path": [
+                "maintenance-center",
+                "maintenance-windows",
+                "servers",
+                ":serverId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "serverId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"maintenanceWindow\": {\n    \"cadence\": \"WEEKLY\",\n    \"time\": \"<string>\",\n    \"duration\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "324e7ce3-a374-4ba5-92ed-1027a56fb581",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "servers",
+                    ":serverId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "serverId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"maintenanceWindow\": {\n    \"cadence\": \"WEEKLY\",\n    \"time\": \"02:00\",\n    \"duration\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"serverId\": \"3a7fcee6-7ec3-08d6-6d70-d0bd4f8eb416\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b6d4835b-dd97-452b-874d-bae07eed5304",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "servers",
+                    ":serverId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "serverId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"maintenanceWindow\": {\n    \"cadence\": \"WEEKLY\",\n    \"time\": \"02:00\",\n    \"duration\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2017-08-06T08:09:09.880Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4e75f657-f69a-4888-a24e-1095f5d1bed5",
+          "name": "Start maintenance for a single server",
+          "request": {
+            "name": "Start maintenance for a single server",
+            "description": {},
+            "url": {
+              "path": [
+                "maintenance-center",
+                "maintenance-windows",
+                "servers",
+                ":serverId",
+                "start"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "serverId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"maintenanceWindowId\": \"<uuid>\",\n  \"taskId\": \"<uuid>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "006f08be-dd94-4384-9de3-780d8595b325",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "servers",
+                    ":serverId",
+                    "start"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "serverId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"maintenanceWindowId\": \"<uuid>\",\n  \"taskId\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"serverId\": \"3a7fcee6-7ec3-08d6-6d70-d0bd4f8eb416\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "215d1619-6b40-4284-9aba-a45b962e6169",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "servers",
+                    ":serverId",
+                    "start"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "serverId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"maintenanceWindowId\": \"<uuid>\",\n  \"taskId\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2017-08-06T08:09:09.880Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7ae1ca2b-21ee-430b-b93e-3591f949e08c",
+          "name": "Schedule maintenance for a single server (supports existing MW, custom date/time, or start now)",
+          "request": {
+            "name": "Schedule maintenance for a single server (supports existing MW, custom date/time, or start now)",
+            "description": {},
+            "url": {
+              "path": [
+                "maintenance-center",
+                "maintenance-windows",
+                "servers",
+                ":serverId",
+                "scheduleMaintenance"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "serverId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patchInfo\": {\n    \"osPatchVersion\": \"<string>\"\n  },\n  \"maintenanceWindowId\": \"<uuid>\",\n  \"date\": \"<string>\",\n  \"time\": \"<string>\",\n  \"taskId\": \"<uuid>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dc5b0a1d-6e40-4505-8ada-ea5a1c344114",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "servers",
+                    ":serverId",
+                    "scheduleMaintenance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "serverId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"patchInfo\": {\n    \"osPatchVersion\": \"<string>\"\n  },\n  \"maintenanceWindowId\": \"<uuid>\",\n  \"date\": \"<string>\",\n  \"time\": \"<string>\",\n  \"taskId\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"requestId\": \"de3a903f-abf0-6f38-99f0-b647285a056b\",\n  \"serverId\": \"034ae345-2410-e796-2090-ab16b2c51339\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dbcab33d-9f56-4c62-8d53-b5340ebc05f5",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "servers",
+                    ":serverId",
+                    "scheduleMaintenance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "serverId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"patchInfo\": {\n    \"osPatchVersion\": \"<string>\"\n  },\n  \"maintenanceWindowId\": \"<uuid>\",\n  \"date\": \"<string>\",\n  \"time\": \"<string>\",\n  \"taskId\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2017-08-06T08:09:09.880Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "be246bb2-4d68-41d3-841c-de35fa3f01cf",
+          "name": "Configure maintenance window for a single server",
+          "request": {
+            "name": "Configure maintenance window for a single server",
+            "description": {},
+            "url": {
+              "path": [
+                "maintenance-center",
+                "maintenance-windows",
+                "servers",
+                ":serverId",
+                "schedule"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "serverId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"maintenanceWindow\": {\n    \"cadence\": \"WEEKLY\",\n    \"time\": \"<string>\",\n    \"duration\": \"<integer>\"\n  },\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": false,\n    \"preScriptInfo\": {\n      \"scriptId\": \"<uuid>\",\n      \"scriptName\": \"<string>\",\n      \"scriptVersion\": \"<string>\",\n      \"useActiveVersion\": false\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"<uuid>\",\n      \"scriptName\": \"<string>\",\n      \"scriptVersion\": \"<string>\",\n      \"useActiveVersion\": false\n    },\n    \"ignorePreScriptFailure\": false,\n    \"ignorePostScriptFailure\": false\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dddb4f27-e7b9-4e4c-9812-d51c3f9b3d64",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "servers",
+                    ":serverId",
+                    "schedule"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "serverId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"maintenanceWindow\": {\n    \"cadence\": \"WEEKLY\",\n    \"time\": \"02:00\",\n    \"duration\": \"<integer>\"\n  },\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": true,\n    \"preScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"scriptVersion\": \"v1.0\"\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174001\",\n      \"scriptVersion\": \"v1.0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"serverId\": \"3a7fcee6-7ec3-08d6-6d70-d0bd4f8eb416\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b049cf58-72e3-4822-bac3-158f3e1a8daa",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maintenance-center",
+                    "maintenance-windows",
+                    "servers",
+                    ":serverId",
+                    "schedule"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "serverId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"maintenanceWindow\": {\n    \"cadence\": \"WEEKLY\",\n    \"time\": \"02:00\",\n    \"duration\": \"<integer>\"\n  },\n  \"serverPatchingConfig\": {\n    \"enableAutoOSPatching\": true,\n    \"preScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"scriptVersion\": \"v1.0\"\n    },\n    \"postScriptInfo\": {\n      \"scriptId\": \"123e4567-e89b-12d3-a456-426614174001\",\n      \"scriptVersion\": \"v1.0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2017-08-06T08:09:09.880Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "console.tessell.com",
+      "key": "server"
+    },
+    {
+      "type": "string",
+      "value": "{{server}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "555ef70f-4135-4009-b9f3-c44f9c17a992",
+    "name": "Tessell APIs activity-center tessell-maintenance-center-controller API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tessell API Documentation\n\nContact Support:\n Name: Tessell Inc\n Email: support@tessell.com",
+      "type": "text/plain"
+    }
+  }
+}

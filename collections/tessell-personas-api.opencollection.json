@@ -1,0 +1,173 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Personas API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Personas",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a list of Personas",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/iam/personas",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "load-apps",
+                "value": "",
+                "type": "query",
+                "description": "Flag to include/exclude Application details in response"
+              },
+              {
+                "name": "load-privileges",
+                "value": "",
+                "type": "query",
+                "description": "Flag to include/exclude Privilege details in response (only applicable when consumer-type is OPS)"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by status"
+              },
+              {
+                "name": "consumer-type",
+                "value": "",
+                "type": "query",
+                "description": "consumer-type"
+              }
+            ]
+          },
+          "docs": "Get a list of Personas"
+        },
+        {
+          "info": {
+            "name": "Create a new Persona",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/personas",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new Persona"
+        },
+        {
+          "info": {
+            "name": "Get upgradable list of Personas for all the Personas",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/iam/personas/upgradable-personas",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Get upgradable list of Personas for all the Personas"
+        },
+        {
+          "info": {
+            "name": "Update a Persona",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/iam/personas/:name",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a Persona"
+        },
+        {
+          "info": {
+            "name": "Delete a Persona",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/iam/personas/:name",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "name"
+              }
+            ]
+          },
+          "docs": "Delete a Persona"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

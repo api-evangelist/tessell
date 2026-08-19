@@ -1,0 +1,813 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center VPC Governance API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "VPC Governance",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a list of VPCs as an administrator",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/network/governance/vpcs",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "subscriptionName",
+                "value": "default",
+                "type": "query",
+                "description": "Name of the Subscription"
+              },
+              {
+                "name": "cloudType",
+                "value": "",
+                "type": "query",
+                "description": "Name of the Cloud"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              },
+              {
+                "name": "include-subnets",
+                "value": "",
+                "type": "query",
+                "description": "Boolean flag to specify if Subnet details are required in response"
+              },
+              {
+                "name": "includeSharedWith",
+                "value": "",
+                "type": "query",
+                "description": "Include Shared with Info"
+              },
+              {
+                "name": "owners",
+                "value": "",
+                "type": "query",
+                "description": "List of Email Addresses for entity or resource owners"
+              },
+              {
+                "name": "usageType",
+                "value": "",
+                "type": "query",
+                "description": "Filter VPCs by usage type (GENERAL or EXADATA). If not specified, returns VPCs of all usage types."
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get a list of VPCs as an administrator"
+        },
+        {
+          "info": {
+            "name": "Create a VPC",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/network/governance/vpcs",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a VPC"
+        },
+        {
+          "info": {
+            "name": "Get VPC as an administrator by Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/network/governance/vpcs/:name",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "entity-123",
+                "type": "path",
+                "description": "Name of the Entity"
+              },
+              {
+                "name": "subscriptionName",
+                "value": "default",
+                "type": "query",
+                "description": "Name of the Subscription"
+              },
+              {
+                "name": "cloudType",
+                "value": "",
+                "type": "query",
+                "description": "Name of the Cloud"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              },
+              {
+                "name": "includeSharedWith",
+                "value": "",
+                "type": "query",
+                "description": "Include Shared with Info"
+              }
+            ]
+          },
+          "docs": "Get VPC as an administrator by Name"
+        },
+        {
+          "info": {
+            "name": "Delete a VPC",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/network/governance/vpcs/:name",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "entity-123",
+                "type": "path",
+                "description": "Name of the Entity"
+              },
+              {
+                "name": "subscriptionName",
+                "value": "default",
+                "type": "query",
+                "description": "Name of the Subscription"
+              },
+              {
+                "name": "cloudType",
+                "value": "",
+                "type": "query",
+                "description": "Name of the Cloud"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              }
+            ]
+          },
+          "docs": "Delete a VPC"
+        },
+        {
+          "info": {
+            "name": "Register VPC from a BYOA subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/network/governance/vpcs/register",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register VPC from a BYOA subscription"
+        },
+        {
+          "info": {
+            "name": "Get ACL (Access Control List) of a VPC",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/network/governance/vpcs/:name/acls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "entity-123",
+                "type": "path",
+                "description": "Name of the Entity"
+              },
+              {
+                "name": "subscriptionName",
+                "value": "default",
+                "type": "query",
+                "description": "Name of the Subscription"
+              },
+              {
+                "name": "cloudType",
+                "value": "",
+                "type": "query",
+                "description": "Name of the Cloud"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              }
+            ]
+          },
+          "docs": "Get ACL (Access Control List) of a VPC"
+        },
+        {
+          "info": {
+            "name": "Modify ACL (Access Control List) of a VPC",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/network/governance/vpcs/:name/acls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "entity-123",
+                "type": "path",
+                "description": "Name of the Entity"
+              },
+              {
+                "name": "subscriptionName",
+                "value": "default",
+                "type": "query",
+                "description": "Name of the Subscription"
+              },
+              {
+                "name": "cloudType",
+                "value": "",
+                "type": "query",
+                "description": "Name of the Cloud"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Modify ACL (Access Control List) of a VPC"
+        },
+        {
+          "info": {
+            "name": "Delete ACL (Access Control List) of a VPC",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/network/governance/vpcs/:name/acls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "entity-123",
+                "type": "path",
+                "description": "Name of the Entity"
+              },
+              {
+                "name": "subscriptionName",
+                "value": "default",
+                "type": "query",
+                "description": "Name of the Subscription"
+              },
+              {
+                "name": "cloudType",
+                "value": "",
+                "type": "query",
+                "description": "Name of the Cloud"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete ACL (Access Control List) of a VPC"
+        },
+        {
+          "info": {
+            "name": "Get a list of Users with allowed accesses for a VPC",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/network/governance/vpcs/:name/acls/eligible-users",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "entity-123",
+                "type": "path",
+                "description": "Name of the Entity"
+              },
+              {
+                "name": "subscriptionName",
+                "value": "default",
+                "type": "query",
+                "description": "Name of the Subscription"
+              },
+              {
+                "name": "cloudType",
+                "value": "",
+                "type": "query",
+                "description": "Name of the Cloud"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              },
+              {
+                "name": "roles",
+                "value": "",
+                "type": "query",
+                "description": "Roles for the entity"
+              }
+            ]
+          },
+          "docs": "Get a list of Users with allowed accesses for a VPC"
+        },
+        {
+          "info": {
+            "name": "Apply action on a VPC",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/network/governance/vpcs/:name/:action",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "entity-123",
+                "type": "path",
+                "description": "Name of the Entity"
+              },
+              {
+                "name": "subscriptionName",
+                "value": "default",
+                "type": "query",
+                "description": "Name of the Subscription"
+              },
+              {
+                "name": "cloudType",
+                "value": "",
+                "type": "query",
+                "description": "Name of the Cloud"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "path",
+                "description": "Action to be performed"
+              }
+            ]
+          },
+          "docs": "Apply action on a VPC"
+        },
+        {
+          "info": {
+            "name": "Get a list of Subnets of a VPC",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/network/governance/vpc/:vpcName/subnets",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "vpcName",
+                "value": "",
+                "type": "path",
+                "description": "VPC Name"
+              },
+              {
+                "name": "subscriptionName",
+                "value": "default",
+                "type": "query",
+                "description": "Name of the Subscription"
+              },
+              {
+                "name": "cloudType",
+                "value": "",
+                "type": "query",
+                "description": "Name of the Cloud"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get a list of Subnets of a VPC"
+        },
+        {
+          "info": {
+            "name": "List VPCs from a BYOA Subscription to register in Tessell",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/network/governance/vpcs/discovery",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "List VPCs from a BYOA Subscription to register in Tessell"
+        },
+        {
+          "info": {
+            "name": "Get VPC and it's Subnets from a BYOA Subscription registered in Tessell",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/network/governance/vpcs/:name/discovery",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "entity-123",
+                "type": "path",
+                "description": "Name of the Entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get VPC and it's Subnets from a BYOA Subscription registered in Tessell"
+        },
+        {
+          "info": {
+            "name": "Track the progress of the ongoing VPC registration operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/network/governance/vpcs/:name/track",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "entity-123",
+                "type": "path",
+                "description": "Name of the Entity"
+              },
+              {
+                "name": "subscriptionName",
+                "value": "default",
+                "type": "query",
+                "description": "Name of the Subscription"
+              },
+              {
+                "name": "cloudType",
+                "value": "",
+                "type": "query",
+                "description": "Name of the Cloud"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              }
+            ]
+          },
+          "docs": "Track the progress of the ongoing VPC registration operation"
+        },
+        {
+          "info": {
+            "name": "Skip a particular step in the VPC registration flow",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/network/governance/vpcs/:name/steps/:step-id/skip",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "entity-123",
+                "type": "path",
+                "description": "Name of the Entity"
+              },
+              {
+                "name": "subscriptionName",
+                "value": "default",
+                "type": "query",
+                "description": "Name of the Subscription"
+              },
+              {
+                "name": "cloudType",
+                "value": "",
+                "type": "query",
+                "description": "Name of the Cloud"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              },
+              {
+                "name": "step-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the step"
+              }
+            ]
+          },
+          "docs": "Skip a particular step in the VPC registration flow"
+        },
+        {
+          "info": {
+            "name": "Resubmit failed VPC registration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/network/governance/vpcs/:name/resubmit",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "entity-123",
+                "type": "path",
+                "description": "Name of the Entity"
+              },
+              {
+                "name": "subscriptionName",
+                "value": "default",
+                "type": "query",
+                "description": "Name of the Subscription"
+              },
+              {
+                "name": "cloudType",
+                "value": "",
+                "type": "query",
+                "description": "Name of the Cloud"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              }
+            ]
+          },
+          "docs": "Resubmit failed VPC registration"
+        },
+        {
+          "info": {
+            "name": "Edit registered subnets of a VPC from a BYOA subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/network/governance/vpcs/:name/subnets/register",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "entity-123",
+                "type": "path",
+                "description": "Name of the Entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Edit registered subnets of a VPC from a BYOA subscription"
+        },
+        {
+          "info": {
+            "name": "List VPC Endpoints from a BYOA Subscription to register in Tessell",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/network/governance/vpc-endpoints/discovery",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "List VPC Endpoints from a BYOA Subscription to register in Tessell"
+        },
+        {
+          "info": {
+            "name": "List Security Groups from a BYOA Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/network/governance/security-groups/discovery",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "List Security Groups from a BYOA Subscription"
+        },
+        {
+          "info": {
+            "name": "List Route Tables from a BYOA Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/network/governance/route-tables/discovery",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "List Route Tables from a BYOA Subscription"
+        },
+        {
+          "info": {
+            "name": "List Private Link Scopes from a BYOA Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/network/governance/private-link-scopes/discovery",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "List Private Link Scopes from a BYOA Subscription"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

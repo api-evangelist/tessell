@@ -1,0 +1,861 @@
+{
+  "item": [
+    {
+      "id": "9db52db7-f4a5-4c8a-97c0-4949036cf657",
+      "name": "EncryptionKeysAdminView",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d442ef11-375d-4bbf-ad52-64c2fe697bca",
+          "name": "Validate encryption key permissions for a key",
+          "request": {
+            "name": "Validate encryption key permissions for a key",
+            "description": {},
+            "url": {
+              "path": [
+                "encryption-keys",
+                "governance",
+                "validate-key-permissions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subscriptionName\": \"<string>\",\n  \"cloud\": \"<string>\",\n  \"awsEncryptionKeyInfo\": {\n    \"crossCloudAccountKey\": false,\n    \"arn\": \"<string>\",\n    \"regions\": [\n      \"<string>\"\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6b6b042b-8972-4605-8f55-7a2620ee4c57",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "encryption-keys",
+                    "governance",
+                    "validate-key-permissions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"subscriptionName\": \"BYOA-134329\",\n  \"cloud\": \"<string>\",\n  \"awsEncryptionKeyInfo\": {\n    \"crossCloudAccountKey\": false,\n    \"arn\": \"arn:aws:kms:ap-south-1:37857132:key/mrk-54931763438\",\n    \"regions\": [\n      \"ap-south-1\",\n      \"us-east-1\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"status\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c14cf7a1-5541-4548-bf58-b1eadf0b9678",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "encryption-keys",
+                    "governance",
+                    "validate-key-permissions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"subscriptionName\": \"BYOA-134329\",\n  \"cloud\": \"<string>\",\n  \"awsEncryptionKeyInfo\": {\n    \"crossCloudAccountKey\": false,\n    \"arn\": \"arn:aws:kms:ap-south-1:37857132:key/mrk-54931763438\",\n    \"regions\": [\n      \"ap-south-1\",\n      \"us-east-1\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2014-11-19T10:14:50.780Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "870971a1-30d3-41dd-a52d-592a1ca4e4c8",
+          "name": "Get the encryption key policy",
+          "request": {
+            "name": "Get the encryption key policy",
+            "description": {},
+            "url": {
+              "path": [
+                "encryption-keys",
+                "governance",
+                "key-policy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "subscription-name",
+                  "value": "<string>",
+                  "description": "(Required) Subscription name"
+                },
+                {
+                  "disabled": false,
+                  "key": "cloud-type",
+                  "value": "<string>",
+                  "description": "(Required) Cloud Type"
+                },
+                {
+                  "disabled": false,
+                  "key": "region",
+                  "value": "<string>",
+                  "description": "(Required) Region"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bdbda341-58fb-47e8-8965-c5027b0c8059",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "encryption-keys",
+                    "governance",
+                    "key-policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subscription-name",
+                      "value": "Sub-Experiments-2"
+                    },
+                    {
+                      "key": "cloud-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "region",
+                      "value": "ap-south-1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"cloud\": \"<string>\",\n  \"awsKeyRequirements\": {\n    \"awsKeyPolicy\": {\n      \"Sid\": \"string\",\n      \"Effect\": \"Deny\",\n      \"Principal\": {\n        \"key_0\": [\n          \"string\",\n          \"string\"\n        ],\n        \"key_1\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"Action\": [\n        \"string\",\n        \"string\"\n      ],\n      \"Resource\": \"string\"\n    },\n    \"awsKeyTags\": [\n      {\n        \"TagKey\": \"string\",\n        \"TagValue\": \"string\"\n      },\n      {\n        \"TagKey\": \"string\",\n        \"TagValue\": \"string\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a24ea1a0-aead-4df5-bbb8-2e6f47293e6d",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "encryption-keys",
+                    "governance",
+                    "key-policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subscription-name",
+                      "value": "Sub-Experiments-2"
+                    },
+                    {
+                      "key": "cloud-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "region",
+                      "value": "ap-south-1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2014-11-19T10:14:50.780Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fa5d2f6e-4aa7-4c29-80d5-bc5eac1176db",
+          "name": "List Encryption Keys from a BYOA Subscription to register in Tessell",
+          "request": {
+            "name": "List Encryption Keys from a BYOA Subscription to register in Tessell",
+            "description": {},
+            "url": {
+              "path": [
+                "encryption-keys",
+                "governance",
+                "register"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "subscription-name",
+                  "value": "<string>",
+                  "description": "(Required) Subscription name"
+                },
+                {
+                  "disabled": false,
+                  "key": "cloud-type",
+                  "value": "<string>",
+                  "description": "(Required) Cloud Type"
+                },
+                {
+                  "disabled": false,
+                  "key": "region",
+                  "value": "<string>",
+                  "description": "(Required) Region"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1c6bb81b-ce32-4d00-887b-585a4180a8d6",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "encryption-keys",
+                    "governance",
+                    "register"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subscription-name",
+                      "value": "Sub-Experiments-2"
+                    },
+                    {
+                      "key": "cloud-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "region",
+                      "value": "ap-south-1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"metadata\": {\n    \"timeZone\": \"string\",\n    \"records\": 7427,\n    \"pagination\": {\n      \"pageSize\": 6145,\n      \"pageOffset\": 7959\n    }\n  },\n  \"response\": [\n    {\n      \"name\": \"string\",\n      \"cloudResourceId\": \"string\",\n      \"registrable\": false,\n      \"reason\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"cloudResourceId\": \"string\",\n      \"registrable\": true,\n      \"reason\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "45f2c22b-3a29-4401-a304-6fced91f4bfc",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "encryption-keys",
+                    "governance",
+                    "register"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subscription-name",
+                      "value": "Sub-Experiments-2"
+                    },
+                    {
+                      "key": "cloud-type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "region",
+                      "value": "ap-south-1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2014-11-19T10:14:50.780Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6fcc1774-5453-4a66-95a0-829f23ad0b71",
+          "name": "Register Encryption Key from a BYOA Subscription",
+          "request": {
+            "name": "Register Encryption Key from a BYOA Subscription",
+            "description": {},
+            "url": {
+              "path": [
+                "encryption-keys",
+                "governance",
+                "register"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{server}}",
+                  "key": "server"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Id of the Tenant",
+                "key": "tenant-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"subscriptionName\": \"<string>\",\n  \"cloud\": \"<string>\",\n  \"description\": \"<string>\",\n  \"owner\": \"<string>\",\n  \"awsEncryptionKeyInfo\": {\n    \"crossCloudAccountKey\": false,\n    \"arn\": \"<string>\",\n    \"regions\": [\n      \"<string>\"\n    ]\n  },\n  \"gcpEncryptionKeyInfo\": {\n    \"keyRingName\": \"<string>\",\n    \"keyName\": \"<string>\",\n    \"region\": \"<string>\",\n    \"subscriptionRegion\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6ed89588-6f07-45d4-827b-0f32d98ef23b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "encryption-keys",
+                    "governance",
+                    "register"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Key-153\",\n  \"subscriptionName\": \"BYOA-134329\",\n  \"cloud\": \"<string>\",\n  \"description\": \"<string>\",\n  \"owner\": \"<string>\",\n  \"awsEncryptionKeyInfo\": {\n    \"crossCloudAccountKey\": false,\n    \"arn\": \"arn:aws:kms:ap-south-1:37857132:key/mrk-54931763438\",\n    \"regions\": [\n      \"ap-south-1\",\n      \"us-east-1\"\n    ]\n  },\n  \"gcpEncryptionKeyInfo\": {\n    \"keyRingName\": \"key-ring-global\",\n    \"keyName\": \"disk-enc-01\",\n    \"region\": \"global\",\n    \"subscriptionRegion\": \"asia-south1\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"dateCreated\": \"2014-05-02T04:12:34.573Z\",\n  \"dateModified\": \"1996-09-03T05:30:16.599Z\",\n  \"id\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"owner\": \"string\",\n  \"status\": \"REPLICATING\",\n  \"cloud\": \"<string>\",\n  \"sharedWith\": {\n    \"users\": [\n      {\n        \"emailId\": \"string\",\n        \"role\": \"string\",\n        \"sharedBy\": \"string\",\n        \"sharedOn\": \"1947-11-24T08:59:34.467Z\"\n      },\n      {\n        \"emailId\": \"string\",\n        \"role\": \"string\",\n        \"sharedBy\": \"string\",\n        \"sharedOn\": \"1966-12-02T04:42:39.412Z\"\n      }\n    ]\n  },\n  \"maturityStatus\": \"PUBLISHED\",\n  \"isKeyMaterialProvidedByCustomer\": false,\n  \"isDefault\": true,\n  \"oob\": false,\n  \"firstKey\": true,\n  \"dateLastUsed\": \"1972-04-24T18:50:20.873Z\",\n  \"registeredKey\": true,\n  \"crossCloudAccountKey\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "058db79b-5de5-4515-9c8c-061e22631482",
+              "name": "API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "encryption-keys",
+                    "governance",
+                    "register"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{server}}",
+                      "key": "server"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Id of the Tenant",
+                    "key": "tenant-id",
+                    "value": "12345678-abcd-1234-abcd-1234abcd5678"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Authorization Token",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Key-153\",\n  \"subscriptionName\": \"BYOA-134329\",\n  \"cloud\": \"<string>\",\n  \"description\": \"<string>\",\n  \"owner\": \"<string>\",\n  \"awsEncryptionKeyInfo\": {\n    \"crossCloudAccountKey\": false,\n    \"arn\": \"arn:aws:kms:ap-south-1:37857132:key/mrk-54931763438\",\n    \"regions\": [\n      \"ap-south-1\",\n      \"us-east-1\"\n    ]\n  },\n  \"gcpEncryptionKeyInfo\": {\n    \"keyRingName\": \"key-ring-global\",\n    \"keyName\": \"disk-enc-01\",\n    \"region\": \"global\",\n    \"subscriptionRegion\": \"asia-south1\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"resolution\": \"string\",\n  \"timestamp\": \"2014-11-19T10:14:50.780Z\",\n  \"contextId\": \"string\",\n  \"sessionId\": \"string\",\n  \"tessellErrorCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "console.tessell.com",
+      "key": "server"
+    },
+    {
+      "type": "string",
+      "value": "{{server}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "7ec5c41b-44f2-4f60-ae17-b34ac2580d0b",
+    "name": "Tessell APIs activity-center EncryptionKeysAdminView API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tessell API Documentation\n\nContact Support:\n Name: Tessell Inc\n Email: support@tessell.com",
+      "type": "text/plain"
+    }
+  }
+}

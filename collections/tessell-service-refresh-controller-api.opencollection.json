@@ -1,0 +1,207 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center service-refresh-controller API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "service-refresh-controller",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Refresh service with parent service's snapshot or pitr.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:id/refresh",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Refresh service with parent service's snapshot or pitr."
+        },
+        {
+          "info": {
+            "name": "Fetch all the refresh schedules for a service",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/services/:id/schedules/refresh",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Refresh Schedule Status"
+              }
+            ]
+          },
+          "docs": "Fetch all the refresh schedules for a service"
+        },
+        {
+          "info": {
+            "name": "Create refresh schedule for a service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/services/:id/schedules/refresh",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create refresh schedule for a service"
+        },
+        {
+          "info": {
+            "name": "Update the refresh schedule",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:service-id/schedules/refresh/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the refresh schedule"
+        },
+        {
+          "info": {
+            "name": "Delete the refresh schedule",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/services/:service-id/schedules/refresh/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ]
+          },
+          "docs": "Delete the refresh schedule"
+        },
+        {
+          "info": {
+            "name": "Update the refresh schedule status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/services/:service-id/schedules/refresh/:id/:action",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "path",
+                "description": "Update schedule status to RESUME or PAUSE."
+              }
+            ]
+          },
+          "docs": "Update the refresh schedule status"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

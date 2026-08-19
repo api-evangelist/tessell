@@ -1,0 +1,111 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center cloud-resource API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "cloud-resource",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get details of outbound access requests from the vpc / vnet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/tenant-infra/dp-network-rules",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cloud-type",
+                "value": "",
+                "type": "query",
+                "description": "Cloud type"
+              },
+              {
+                "name": "private-communication-enabled",
+                "value": "",
+                "type": "query",
+                "description": "Whether private communication is enabled between cp and dp"
+              },
+              {
+                "name": "subscription-id",
+                "value": "",
+                "type": "query",
+                "description": "Subscription id for the cloud account"
+              }
+            ]
+          },
+          "docs": "Get details of outbound access requests from the vpc / vnet"
+        },
+        {
+          "info": {
+            "name": "Allow private cp dp endpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/tenant-infra/allow-private-endpoint",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allow private cp dp endpoints"
+        },
+        {
+          "info": {
+            "name": "Get details of control plane endpoint services",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/tenant-infra/dp-cp-communication-resources",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Region of the cloud account"
+              },
+              {
+                "name": "cloud-type",
+                "value": "",
+                "type": "query",
+                "description": "Cloud type"
+              }
+            ]
+          },
+          "docs": "Get details of control plane endpoint services"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

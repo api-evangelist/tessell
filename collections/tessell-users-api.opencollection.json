@@ -1,0 +1,486 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Users API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get list of all the users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/iam/users",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "personas",
+                "value": "DBAdmins,Data Owner",
+                "type": "query",
+                "description": "Personas that users are belonging to"
+              },
+              {
+                "name": "load-apps",
+                "value": "",
+                "type": "query",
+                "description": "Flag to include/exclude Application details in response"
+              },
+              {
+                "name": "load-personas",
+                "value": "",
+                "type": "query",
+                "description": "Flag to include/exclude Persona details in response"
+              },
+              {
+                "name": "load-subscriptions",
+                "value": "",
+                "type": "query",
+                "description": "Flag to include/exclude Subscriptions details in response."
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              },
+              {
+                "name": "consumer-type",
+                "value": "",
+                "type": "query",
+                "description": "consumer-type ( Deprecated )"
+              }
+            ]
+          },
+          "docs": "Get list of all the users"
+        },
+        {
+          "info": {
+            "name": "Create for a new user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/users/invite-user",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create for a new user"
+        },
+        {
+          "info": {
+            "name": "Accept invite",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/users/accept-invite",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Accept invite"
+        },
+        {
+          "info": {
+            "name": "Change current user's password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/users/change-password",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Change current user's password"
+        },
+        {
+          "info": {
+            "name": "Forcefully reset password for a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/users/force-reset-password",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Forcefully reset password for a user"
+        },
+        {
+          "info": {
+            "name": "Login a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/users/login",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Login a user"
+        },
+        {
+          "info": {
+            "name": "Acquire new access-token using refresh-token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/users/refresh-token",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Acquire new access-token using refresh-token"
+        },
+        {
+          "info": {
+            "name": "Logout a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/users/logout",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Logout a user"
+        },
+        {
+          "info": {
+            "name": "Forgot Password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/users/forgot-password/:email-id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "email-id",
+                "value": "",
+                "type": "path",
+                "description": "email-id"
+              }
+            ]
+          },
+          "docs": "Forgot Password"
+        },
+        {
+          "info": {
+            "name": "Reset password for a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/users/reset-password",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reset password for a user"
+        },
+        {
+          "info": {
+            "name": "Reset password for a user when password has been expired",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/users/reset-password-on-expiry",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reset password for a user when password has been expired"
+        },
+        {
+          "info": {
+            "name": "Get details of a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/iam/users/whoami",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get details of a user"
+        },
+        {
+          "info": {
+            "name": "Update a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/iam/users/:email-id",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "email-id",
+                "value": "",
+                "type": "path",
+                "description": "emailId"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a user"
+        },
+        {
+          "info": {
+            "name": "Delete a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/iam/users/:email-id",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "email-id",
+                "value": "",
+                "type": "path",
+                "description": "email-id"
+              }
+            ]
+          },
+          "docs": "Delete a user"
+        },
+        {
+          "info": {
+            "name": "Update self profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/iam/users/profile",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update self profile"
+        },
+        {
+          "info": {
+            "name": "Change status of a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/users/:email-id/change-status",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "email-id",
+                "value": "",
+                "type": "path",
+                "description": "email-id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Change status of a user"
+        },
+        {
+          "info": {
+            "name": "verifyMfa",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/users/session/mfa/verify",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Verifies the multi factor authentication based otp"
+        },
+        {
+          "info": {
+            "name": "resendMfaOtp",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/users/session/mfa/resend",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Resend the totp for mfa verification"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

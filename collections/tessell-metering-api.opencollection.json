@@ -1,0 +1,424 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Metering API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Metering",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "getMeteringData",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/billing/meters",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "subscription-name",
+                "value": "",
+                "type": "query",
+                "description": "The subscription name in the tenant"
+              },
+              {
+                "name": "cloud-type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "engine",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "user-name",
+                "value": "",
+                "type": "query",
+                "description": "The User Name"
+              },
+              {
+                "name": "start-date",
+                "value": "",
+                "type": "query",
+                "description": "The timestamp of the start date of the meter"
+              },
+              {
+                "name": "end-date",
+                "value": "",
+                "type": "query",
+                "description": "The timestamp of the end date of the meter"
+              },
+              {
+                "name": "entity-type",
+                "value": "",
+                "type": "query",
+                "description": "The Entity Type"
+              },
+              {
+                "name": "entity-name",
+                "value": "",
+                "type": "query",
+                "description": "The name of the entity. Entity name will be compute resource name when entity type is COMPUTE_RESOURCE, backup name in case of BACKUP and am name in case of LOGS."
+              },
+              {
+                "name": "compute-shape",
+                "value": "",
+                "type": "query",
+                "description": "The compute shape of a database"
+              },
+              {
+                "name": "service-name",
+                "value": "",
+                "type": "query",
+                "description": "The name of the service"
+              },
+              {
+                "name": "availability-machine-name",
+                "value": "",
+                "type": "query",
+                "description": "The name of the availability machine"
+              },
+              {
+                "name": "duration",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "am-details",
+                "value": "",
+                "type": "query",
+                "description": "Whether or not to include backup and logs information along with AM."
+              },
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "query",
+                "description": "The id of the service"
+              },
+              {
+                "name": "availability-machine-id",
+                "value": "",
+                "type": "query",
+                "description": "The id of the availability machine"
+              }
+            ]
+          },
+          "docs": "Get all hourly/daily/weekly/monthly Meters that include all usage and cost related details till date."
+        },
+        {
+          "info": {
+            "name": "getBills",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/billing/bills",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "The Name of the Bill"
+              },
+              {
+                "name": "start-date",
+                "value": "",
+                "type": "query",
+                "description": "The timestamp of the start date of the meter"
+              },
+              {
+                "name": "end-date",
+                "value": "",
+                "type": "query",
+                "description": "The timestamp of the end date of the meter"
+              },
+              {
+                "name": "system-generated",
+                "value": "",
+                "type": "query",
+                "description": "Whether the bill is system generated."
+              }
+            ]
+          },
+          "docs": "Get all the Bills"
+        },
+        {
+          "info": {
+            "name": "generateBill",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/billing/bills",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "start-date",
+                "value": "",
+                "type": "query",
+                "description": "The timestamp of the start date of the meter"
+              },
+              {
+                "name": "end-date",
+                "value": "",
+                "type": "query",
+                "description": "The timestamp of the end date of the meter"
+              },
+              {
+                "name": "system-generated",
+                "value": "",
+                "type": "query",
+                "description": "system-generated"
+              }
+            ]
+          },
+          "docs": "Generate a bill based on the meters present for a provided start-date and end-date,"
+        },
+        {
+          "info": {
+            "name": "getRates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/billing/rates",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cloud-type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "entity-type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "entity-name",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get Tessell's billing rates for all computes and storage"
+        },
+        {
+          "info": {
+            "name": "getCredits",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/billing/credits",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Credit name"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Credit status"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Credit type"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get all the tenant's credits provided by the tessell"
+        },
+        {
+          "info": {
+            "name": "getCredit",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/billing/credits/:id",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Credit Id"
+              }
+            ]
+          },
+          "docs": "Get credit by credit's Id that you want to fetch"
+        },
+        {
+          "info": {
+            "name": "getBillingSummary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/billing/summary",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Get billing summary for a tenant"
+        },
+        {
+          "info": {
+            "name": "getBillingProfile",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/billing/profile",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Returns the details of the Billing profile that include billing address and payment details"
+        },
+        {
+          "info": {
+            "name": "updateBillingProfile",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/billing/profile",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Billing profile that include billing address and payment details"
+        },
+        {
+          "info": {
+            "name": "getCostTillDate",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/billing/cost-till-date",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Returns the meter cost for this month."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

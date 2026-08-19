@@ -1,0 +1,201 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center DB Service Benchmark API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "DB Service Benchmark",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch list of supported benchmarks (catalog)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/benchmark-catalog",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "engineType",
+                "value": "",
+                "type": "query",
+                "description": "Engine type for the benchmark"
+              },
+              {
+                "name": "pageOffset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Page Size"
+              }
+            ]
+          },
+          "docs": "Fetch list of supported benchmarks (catalog)"
+        },
+        {
+          "info": {
+            "name": "Fetch benchmark catalog entry by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/benchmarks-catalog/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID"
+              }
+            ]
+          },
+          "docs": "Fetch benchmark catalog entry by id"
+        },
+        {
+          "info": {
+            "name": "Fetch list of current benchmarks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/benchmarks",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "Benchmark id"
+              },
+              {
+                "name": "service",
+                "value": "",
+                "type": "query",
+                "description": "Service id"
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "query",
+                "description": "Username of the benchmark submitter"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "status"
+              },
+              {
+                "name": "timeRangeStart",
+                "value": "",
+                "type": "query",
+                "description": "Start time of time range to compare against benchmark update timestamp"
+              },
+              {
+                "name": "timeRangeEnd",
+                "value": "",
+                "type": "query",
+                "description": "End time of time range to compare against benchmark update timestamp"
+              },
+              {
+                "name": "pageOffset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Page Size"
+              }
+            ]
+          },
+          "docs": "Fetch list of current benchmarks"
+        },
+        {
+          "info": {
+            "name": "Create new benchmark request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/benchmarks",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create new benchmark request"
+        },
+        {
+          "info": {
+            "name": "Fetch benchmark by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/benchmarks/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID"
+              }
+            ]
+          },
+          "docs": "Fetch benchmark by id"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

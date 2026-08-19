@@ -1,0 +1,439 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center security-profiles API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "security-profiles",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a list of Security Profiles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/security-config/security-profiles",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "view",
+                "value": "",
+                "type": "query",
+                "description": "If SUMMARY, returns all profiles in a limited view. Defaults to accessible profiles with full details."
+              },
+              {
+                "name": "owner",
+                "value": "",
+                "type": "query",
+                "description": "Email Id of the Owner of the security profile"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Status of the security profile"
+              },
+              {
+                "name": "load-rules",
+                "value": "",
+                "type": "query",
+                "description": "Whether to load rules for the security profiles"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Region"
+              },
+              {
+                "name": "cloud-type",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Type"
+              },
+              {
+                "name": "subscription-name",
+                "value": "",
+                "type": "query",
+                "description": "Subscription name"
+              },
+              {
+                "name": "include-shared-with",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include users with whom the entity is shared"
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              }
+            ]
+          },
+          "docs": "Get a list of Security Profiles"
+        },
+        {
+          "info": {
+            "name": "Create a Security Profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/security-config/security-profiles",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Security Profile"
+        },
+        {
+          "info": {
+            "name": "Get a Security Profile by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/security-config/security-profiles/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "include-shared-with",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include users with whom the entity is shared"
+              }
+            ]
+          },
+          "docs": "Get a Security Profile by Id"
+        },
+        {
+          "info": {
+            "name": "Update Security Profile metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/security-config/security-profiles/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the basic information of an existing Security Profile (for example name, description, subscription, and regions)."
+        },
+        {
+          "info": {
+            "name": "Delete a Security Profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/security-config/security-profiles/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ]
+          },
+          "docs": "Delete a Security Profile"
+        },
+        {
+          "info": {
+            "name": "Update Security Profile status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/security-config/security-profiles/:id/status",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the status of a Security Profile"
+        },
+        {
+          "info": {
+            "name": "Provide Servers and Databases that are using the Security Profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/security-config/security-profiles/:id/usages",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ]
+          },
+          "docs": "Provide Servers and Databases that are using the Security Profile"
+        },
+        {
+          "info": {
+            "name": "Check if Security Profile is deletable or not",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/security-config/security-profiles/:id/deletable",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ]
+          },
+          "docs": "Check if Security Profile is deletable or not"
+        },
+        {
+          "info": {
+            "name": "Add rule to a Security Profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/security-config/security-profiles/:id/rules",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add rule to a Security Profile"
+        },
+        {
+          "info": {
+            "name": "Update a Security Profile rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/security-config/security-profiles/:id/rules/:ruleId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "ruleId",
+                "value": "",
+                "type": "path",
+                "description": "Id of the rule"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a Security Profile rule"
+        },
+        {
+          "info": {
+            "name": "Delete a Security Profile rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/security-config/security-profiles/:id/rules/:ruleId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "ruleId",
+                "value": "",
+                "type": "path",
+                "description": "Id of the rule"
+              }
+            ]
+          },
+          "docs": "Delete a Security Profile rule"
+        },
+        {
+          "info": {
+            "name": "Get a Security Profile version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/security-config/security-profiles/:id/versions/:versionId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of entity"
+              },
+              {
+                "name": "versionId",
+                "value": "",
+                "type": "path",
+                "description": "Id of the version of Security Profile"
+              },
+              {
+                "name": "include-shared-with",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include users with whom the entity is shared"
+              }
+            ]
+          },
+          "docs": "Get a Security Profile version"
+        },
+        {
+          "info": {
+            "name": "Get a list of Security Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/security-config/security-profiles/security-tags",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cloud-type",
+                "value": "",
+                "type": "query",
+                "description": "Cloud Type"
+              }
+            ]
+          },
+          "docs": "Get a list of Security Tags"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,194 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center SLA Policy API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SLA Policy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the RPO policy configuration associated with an Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:id/rpo-policy",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              }
+            ]
+          },
+          "docs": "**DEPRECATED**: This endpoint returns only the service-level RPO policy.\nUse `/availability-machines/{id}/rpo-policies` instead to get both service-level\nand database-level (PDB) RPO policies.\n"
+        },
+        {
+          "info": {
+            "name": "Update RPO policy configuration for an Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/availability-machines/:id/rpo-policy",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update RPO policy configuration for an Availability Machine"
+        },
+        {
+          "info": {
+            "name": "Get all RPO policies for an Availability Machine including service-level and database-level policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:id/rpo-policies",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              }
+            ]
+          },
+          "docs": "Returns comprehensive RPO policy information for an Availability Machine, including:\n- Service-level RPO policy (applies to the entire service/CDB)\n- Database-level RPO policies (applies to individual databases like Oracle PDBs)\n\nThis endpoint should be used instead of the deprecated `/availability-machines/{id}/rpo-policy`\nwhich only returns service-level RPO policy.\n"
+        },
+        {
+          "info": {
+            "name": "Get RPO policy for a specific database within an Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/availability-machines/:id/databases/:database-id/rpo-policy",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              },
+              {
+                "name": "database-id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the database (e.g., PDB ID)"
+              }
+            ]
+          },
+          "docs": "Retrieves the RPO policy configuration for a specific database (e.g., Oracle PDB) within an Availability Machine.\nReturns the full policy summary including database name for display purposes.\n"
+        },
+        {
+          "info": {
+            "name": "Create or update RPO policy for a specific database within an Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/availability-machines/:id/databases/:database-id/rpo-policy",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              },
+              {
+                "name": "database-id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the database (e.g., PDB ID)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Configures automated backup schedules and retention policies for a specific database (e.g., Oracle PDB) within an Availability Machine.\nIf PITR is enabled in the policy, the parent service must also have PITR enabled.\n"
+        },
+        {
+          "info": {
+            "name": "Delete RPO policy for a specific database within an Availability Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/availability-machines/:id/databases/:database-id/rpo-policy",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the Availability Machine"
+              },
+              {
+                "name": "database-id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the database (e.g., PDB ID)"
+              }
+            ]
+          },
+          "docs": "Removes the RPO policy configuration for a specific database (e.g., Oracle PDB) within an Availability Machine.\nThis will stop automatic backups for the database and remove associated schedules.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

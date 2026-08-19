@@ -1,0 +1,413 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center tessell-maintenance-center-controller API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "tessell-maintenance-center-controller",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get maintenance details for services",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/maintenance-center/maintenance-windows/services",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "maintenanceState",
+                "value": "",
+                "type": "query",
+                "description": "Filter by maintenance state"
+              }
+            ]
+          },
+          "docs": "Get maintenance details for services"
+        },
+        {
+          "info": {
+            "name": "Start maintenance for selected entities (services or servers)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/maintenance-center/maintenance-windows/start",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Unified endpoint to start maintenance windows for both services and servers"
+        },
+        {
+          "info": {
+            "name": "Schedule maintenance windows for services (supports existing MW, custom date/time, or start now)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/maintenance-center/maintenance-windows/services/scheduleMaintenanceWindows",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Schedule maintenance windows for services (supports existing MW, custom date/time, or start now)"
+        },
+        {
+          "info": {
+            "name": "Edit maintenance windows for services",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/maintenance-center/maintenance-windows/services/updateMaintenanceWindows",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Edit maintenance windows for services"
+        },
+        {
+          "info": {
+            "name": "Get maintenance details for servers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/maintenance-center/maintenance-windows/servers",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "maintenanceState",
+                "value": "",
+                "type": "query",
+                "description": "Filter by maintenance state"
+              }
+            ]
+          },
+          "docs": "Get maintenance details for servers"
+        },
+        {
+          "info": {
+            "name": "Schedule maintenance windows for servers (supports existing MW, custom date/time, or start now)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/maintenance-center/maintenance-windows/servers/scheduleMaintenanceWindows",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Schedule maintenance windows for servers (supports existing MW, custom date/time, or start now)"
+        },
+        {
+          "info": {
+            "name": "Edit maintenance windows for servers",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{server}/maintenance-center/maintenance-windows/servers/updateMaintenanceWindows",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Edit maintenance windows for servers"
+        },
+        {
+          "info": {
+            "name": "Delete maintenance window for a specific service",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/maintenance-center/maintenance-windows/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete maintenance window for a specific service"
+        },
+        {
+          "info": {
+            "name": "Get detailed maintenance information for a specific service",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/maintenance-center/maintenance-windows/services/:serviceId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "serviceId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get detailed maintenance information for a specific service"
+        },
+        {
+          "info": {
+            "name": "Edit maintenance window for a single service",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/maintenance-center/maintenance-windows/services/:serviceId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "serviceId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Edit maintenance window for a single service"
+        },
+        {
+          "info": {
+            "name": "Start maintenance for a single service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/maintenance-center/maintenance-windows/services/:serviceId/start",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "serviceId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Start maintenance for a single service"
+        },
+        {
+          "info": {
+            "name": "Get detailed maintenance information for a specific server",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/maintenance-center/maintenance-windows/servers/:serverId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "serverId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get detailed maintenance information for a specific server"
+        },
+        {
+          "info": {
+            "name": "Edit maintenance window for a single server",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/maintenance-center/maintenance-windows/servers/:serverId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "serverId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Edit maintenance window for a single server"
+        },
+        {
+          "info": {
+            "name": "Start maintenance for a single server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/maintenance-center/maintenance-windows/servers/:serverId/start",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "serverId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Start maintenance for a single server"
+        },
+        {
+          "info": {
+            "name": "Schedule maintenance for a single server (supports existing MW, custom date/time, or start now)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/maintenance-center/maintenance-windows/servers/:serverId/scheduleMaintenance",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "serverId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Schedule maintenance for a single server (supports existing MW, custom date/time, or start now)"
+        },
+        {
+          "info": {
+            "name": "Configure maintenance window for a single server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/maintenance-center/maintenance-windows/servers/:serverId/schedule",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "serverId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Configure maintenance window for a single server"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

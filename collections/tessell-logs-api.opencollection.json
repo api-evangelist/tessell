@@ -1,0 +1,440 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Logs API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Logs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "getLogsOnDB",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/logs/download",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "entity-id",
+                "value": "",
+                "type": "query",
+                "description": "The Id of the service"
+              },
+              {
+                "name": "service-instance-id",
+                "value": "",
+                "type": "query",
+                "description": "The Id of the service instance"
+              },
+              {
+                "name": "file-name",
+                "value": "",
+                "type": "query",
+                "description": "The path of the file"
+              },
+              {
+                "name": "start-time",
+                "value": "",
+                "type": "query",
+                "description": "The start time of the logs."
+              },
+              {
+                "name": "end-time",
+                "value": "",
+                "type": "query",
+                "description": "The end time of the logs."
+              }
+            ]
+          },
+          "docs": "Downloads the Logs on the Database Machine"
+        },
+        {
+          "info": {
+            "name": "streamDBLogs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/logs/stream",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "entity-id",
+                "value": "",
+                "type": "query",
+                "description": "The Id of the service"
+              },
+              {
+                "name": "service-instance-id",
+                "value": "",
+                "type": "query",
+                "description": "The Id of the service instance"
+              },
+              {
+                "name": "file-name",
+                "value": "",
+                "type": "query",
+                "description": "The path of the file"
+              },
+              {
+                "name": "start-time",
+                "value": "",
+                "type": "query",
+                "description": "The start time of the logs."
+              },
+              {
+                "name": "end-time",
+                "value": "",
+                "type": "query",
+                "description": "The end time of the logs."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of logs that will be returned."
+              },
+              {
+                "name": "forward",
+                "value": "",
+                "type": "query",
+                "description": "Whether to return live logs or older logs."
+              }
+            ]
+          },
+          "docs": "Stream database logs"
+        },
+        {
+          "info": {
+            "name": "getLogsForTask",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/logs/task/:taskId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path",
+                "description": "The Id of the task"
+              },
+              {
+                "name": "entity-id",
+                "value": "",
+                "type": "query",
+                "description": "The Id of the service"
+              },
+              {
+                "name": "service-instance-id",
+                "value": "",
+                "type": "query",
+                "description": "The Id of the service instance"
+              },
+              {
+                "name": "workflow-id",
+                "value": "",
+                "type": "query",
+                "description": "The workflow id"
+              },
+              {
+                "name": "start-time",
+                "value": "",
+                "type": "query",
+                "description": "The start time of the logs."
+              },
+              {
+                "name": "end-time",
+                "value": "",
+                "type": "query",
+                "description": "The end time of the logs."
+              }
+            ]
+          },
+          "docs": "Returns the Logs corresponding to a task"
+        },
+        {
+          "info": {
+            "name": "getLogsForWorkflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/logs/workflow/:workflowId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workflowId",
+                "value": "",
+                "type": "path",
+                "description": "The Id of the workflow"
+              },
+              {
+                "name": "entity-id",
+                "value": "",
+                "type": "query",
+                "description": "The Id of the service"
+              },
+              {
+                "name": "service-instance-id",
+                "value": "",
+                "type": "query",
+                "description": "The Id of the service instance"
+              },
+              {
+                "name": "start-time",
+                "value": "",
+                "type": "query",
+                "description": "The start time of the logs."
+              },
+              {
+                "name": "end-time",
+                "value": "",
+                "type": "query",
+                "description": "The end time of the logs."
+              },
+              {
+                "name": "db-logs",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include the database logs in the downloaded bundle"
+              },
+              {
+                "name": "service-logs",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include the service logs in the downloaded bundle"
+              }
+            ]
+          },
+          "docs": "Downloads the Logs corresponding to a workflow"
+        },
+        {
+          "info": {
+            "name": "getDBLogFiles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/logs/resources/logfiles",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "entity-name",
+                "value": "",
+                "type": "query",
+                "description": "The name of the database"
+              },
+              {
+                "name": "entity-id",
+                "value": "",
+                "type": "query",
+                "description": "The Id of the service"
+              },
+              {
+                "name": "service-instance-id",
+                "value": "",
+                "type": "query",
+                "description": "The Id of the service instance"
+              }
+            ]
+          },
+          "docs": "Get the log files available for a database"
+        },
+        {
+          "info": {
+            "name": "getDBLogFilesOps",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/logs/resources/i/logfiles",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "entity-name",
+                "value": "",
+                "type": "query",
+                "description": "The name of the database"
+              },
+              {
+                "name": "entity-id",
+                "value": "",
+                "type": "query",
+                "description": "The entity id"
+              }
+            ]
+          },
+          "docs": "Get all the log files available for a database including host logs"
+        },
+        {
+          "info": {
+            "name": "createLogGroup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/logs/resources/i/loggroup",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a log group"
+        },
+        {
+          "info": {
+            "name": "downloadScriptLogs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/logs/service/:service-id/script/download",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "service-id",
+                "value": "",
+                "type": "path",
+                "description": "Service Id"
+              },
+              {
+                "name": "compute-resource-id\"",
+                "value": "",
+                "type": "query",
+                "description": "Compute resource Id where script was executed"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type of script we want to download logs"
+              }
+            ]
+          },
+          "docs": "Downloads the Script logs for Service"
+        },
+        {
+          "info": {
+            "name": "logFilesCloudInfo",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/logs/resources/logfiles/cloud-info",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "entity-id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get the logs storage cloud info"
+        },
+        {
+          "info": {
+            "name": "getServiceInstanceInfo",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/logs/resources/i/loggroups/:logGroupName/service-instance-info",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "logGroupName",
+                "value": "",
+                "type": "path",
+                "description": "Log group name"
+              }
+            ]
+          },
+          "docs": "Fetch Service Instance info using CloudWatch's Log Group name"
+        },
+        {
+          "info": {
+            "name": "updateLogGroupRetention",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{server}/logs/resources/aws/loggroup/i/update-retention",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update AWS Cloudwatch log group rentention policy"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

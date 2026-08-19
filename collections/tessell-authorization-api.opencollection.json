@@ -1,0 +1,132 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tessell APIs activity-center Authorization API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authorization",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "authorizeApiKey",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/authorize",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "Get a list of Tessell Permission",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{server}/iam/api-keys",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for get query"
+              },
+              {
+                "name": "page-offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset for get query"
+              },
+              {
+                "name": "time-zone",
+                "value": "",
+                "type": "query",
+                "description": "Timezone for return data"
+              }
+            ]
+          },
+          "docs": "Get a list of Tessell Permission"
+        },
+        {
+          "info": {
+            "name": "createApiKey",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{server}/iam/api-keys",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "Delete a Tessell api key",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{server}/iam/api-keys/:label",
+            "headers": [
+              {
+                "name": "tenant-id",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "label",
+                "value": "",
+                "type": "path",
+                "description": "label"
+              }
+            ]
+          },
+          "docs": "Delete a Tessell api key"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
