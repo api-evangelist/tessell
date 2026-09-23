@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center Data Script API
+  title: Tessell Data Script API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -717,197 +717,51 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
-  schemas:
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    AclRevokePayload:
-      title: AclRevokePayload
-      description: Payload to revoke Tessell ACLs
-      required:
-      - users
-      properties:
-        users:
-          description: List of users to be deleted
-          type: array
-          items:
-            type: string
-            minLength: 1
-            maxLength: 256
-          minItems: 1
-          maxItems: 100
-    ScriptType:
-      type: string
-      description: Purpose of the script
-      enum:
-      - MASKING
-      - PRE
-      - POST
-    EntityAclSharingInfo:
-      title: EntityAclSharingInfo
-      description: Tessell Entity ACL Sharing Info
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/EntityUserAclSharingInfo'
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    CreateScriptVersionPayload:
-      title: CreateScriptVersionPayload
-      description: Payload to create a Script Version
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 128
-          description: Name of version
-    AclPayload:
-      title: AclPayload
-      description: Payload to create an entity ACL
-      required:
-      - users
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/AclUserPayload'
-          minItems: 1
-          maxItems: 100
-    GetScriptsServiceApiResponse:
-      title: GetScriptsServiceApiResponse
-      allOf:
-      - $ref: '#/components/schemas/TessellApiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/TessellScriptServiceViewDTO'
-    UpdateTessellScriptServicePayload:
-      title: UpdateTessellScriptServicePayload
-      description: Tessell Update Script Service payload
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 128
-          description: Name of the script.
-        description:
-          type: string
-          maxLength: 512
-          description: Description for the script.
-        activeVersion:
-          type: string
-          description: version of the script
-        subscriptions:
-          $ref: '#/components/schemas/ScriptSubscriptionsPayload'
-          description: List of subscription names to be present in the script
-    GetScriptVersionsServiceApiResponse:
-      title: GetScriptVersionsServiceApiResponse
-      allOf:
-      - $ref: '#/components/schemas/TessellApiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/TessellScriptVersionServiceView'
-    CreateTessellScriptVersionServicePayloadDTO:
-      description: Create Script Version payload
-      type: object
-      properties:
-        blob:
-          type: string
-          format: binary
-          description: File content
-    ScriptSubscriptionsPayload:
-      description: A collection of unique subscription names
-      type: array
-      uniqueItems: true
-      items:
+  parameters:
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
         type: string
-    TessellScriptVersionServiceView:
-      type: object
-      description: Information about a Script Version
-      properties:
-        scriptId:
+        default: UTC
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    owners:
+      name: owners
+      in: query
+      description: List of Email Addresses for entity or resource owners
+      required: false
+      schema:
+        type: array
+        items:
           type: string
-          format: uuid
-          description: ID of the associated script
-        name:
-          type: string
-          maxLength: 128
-          description: Version (identifier or name) of the script-version.
-        version:
-          type: integer
-          format: int32
-          description: System assigned version of the script.
-        status:
-          $ref: '#/components/schemas/ScriptStatus'
-          description: Status of the version
-        fileName:
-          type: string
-          description: Name of the associated version file
-        fileType:
-          $ref: '#/components/schemas/ScriptFileType'
-          description: Type of the associated version file
-        dateCreated:
-          type: string
-          format: date-time
-          description: Timestamp when the version was created at
-    EntityUserAclSharingInfo:
-      title: EntityUserAclSharingInfo
-      description: Tessell Entity ACL Sharing Info for a user
-      properties:
-        emailId:
-          type: string
-        role:
-          type: string
-        sharedBy:
-          type: string
-          description: Email of the user who shared the entity
-        sharedOn:
-          type: string
-          format: date-time
-          description: Date when the entity was shared
+    loadAcls:
+      name: load-acls
+      in: query
+      description: Load ACL information
+      required: false
+      schema:
+        type: boolean
+        default: false
+  schemas:
     TessellScriptServiceViewDTO:
       type: object
       description: Information about a Script
@@ -967,30 +821,86 @@ components:
         subscriptionsInUse:
           $ref: '#/components/schemas/ScriptSubscriptionsPayload'
           description: List of subscription names associated with the script that are currently in use by other entities.
-    ScriptStatus:
-      type: string
-      description: Status of the script
-      enum:
-      - ENABLED
-      - PENDING
-      - DELETED
-    AclUserPayload:
-      title: AclUserPayload
-      description: Payload to create an user's entity ACL
-      required:
-      - emailId
-      - role
+    AclEligibleUser:
+      title: AclEligibleUser
+      description: Eligible user for sharing the entity
       properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
         emailId:
-          description: Email id of the user
           type: string
-          minLength: 1
-          maxLength: 256
-        role:
-          description: Role Info
+        eligibleRoles:
+          type: array
+          items:
+            type: string
+        accessibleSubscriptions:
+          type: array
+          items:
+            type: string
+          description: List of subscriptions user has access to
+    CreateScriptVersionPayload:
+      title: CreateScriptVersionPayload
+      description: Payload to create a Script Version
+      type: object
+      properties:
+        name:
           type: string
-          minLength: 1
-          maxLength: 64
+          maxLength: 128
+          description: Name of version
+    CreateTessellScriptVersionServicePayloadDTO:
+      description: Create Script Version payload
+      type: object
+      properties:
+        blob:
+          type: string
+          format: binary
+          description: File content
+    TessellApiResponse:
+      title: TessellApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    AclPayload:
+      title: AclPayload
+      description: Payload to create an entity ACL
+      required:
+      - users
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/AclUserPayload'
+          minItems: 1
+          maxItems: 100
     apiMetadata:
       title: apiMetadata
       type: object
@@ -1002,6 +912,98 @@ components:
           format: int32
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
+    UpdateTessellScriptServicePayload:
+      title: UpdateTessellScriptServicePayload
+      description: Tessell Update Script Service payload
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 128
+          description: Name of the script.
+        description:
+          type: string
+          maxLength: 512
+          description: Description for the script.
+        activeVersion:
+          type: string
+          description: version of the script
+        subscriptions:
+          $ref: '#/components/schemas/ScriptSubscriptionsPayload'
+          description: List of subscription names to be present in the script
+    GetScriptVersionsServiceApiResponse:
+      title: GetScriptVersionsServiceApiResponse
+      allOf:
+      - $ref: '#/components/schemas/TessellApiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/TessellScriptVersionServiceView'
+    TessellScriptVersionServiceView:
+      type: object
+      description: Information about a Script Version
+      properties:
+        scriptId:
+          type: string
+          format: uuid
+          description: ID of the associated script
+        name:
+          type: string
+          maxLength: 128
+          description: Version (identifier or name) of the script-version.
+        version:
+          type: integer
+          format: int32
+          description: System assigned version of the script.
+        status:
+          $ref: '#/components/schemas/ScriptStatus'
+          description: Status of the version
+        fileName:
+          type: string
+          description: Name of the associated version file
+        fileType:
+          $ref: '#/components/schemas/ScriptFileType'
+          description: Type of the associated version file
+        dateCreated:
+          type: string
+          format: date-time
+          description: Timestamp when the version was created at
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    EntityAclSharingInfo:
+      title: EntityAclSharingInfo
+      description: Tessell Entity ACL Sharing Info
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityUserAclSharingInfo'
+    ScriptStatus:
+      type: string
+      description: Status of the script
+      enum:
+      - ENABLED
+      - PENDING
+      - DELETED
+    ScriptFileType:
+      type: string
+      description: File type of script e.g. shell, python, sql
+      enum:
+      - BASH_SHELL
+      - PYTHON3
+      - SQL
+      - POWERSHELL
     CreateScriptPayload:
       title: CreateScriptPayload
       type: object
@@ -1031,96 +1033,94 @@ components:
         subscriptions:
           $ref: '#/components/schemas/ScriptSubscriptionsPayload'
           description: List of subscription names present in the script
-    TessellApiResponse:
-      title: TessellApiResponse
+    ScriptType:
+      type: string
+      description: Purpose of the script
+      enum:
+      - MASKING
+      - PRE
+      - POST
+    ScriptSubscriptionsPayload:
+      description: A collection of unique subscription names
+      type: array
+      uniqueItems: true
+      items:
+        type: string
+    apiPaginationInfo:
+      title: apiPaginationInfo
       type: object
       properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-    ScriptFileType:
-      type: string
-      description: File type of script e.g. shell, python, sql
-      enum:
-      - BASH_SHELL
-      - PYTHON3
-      - SQL
-      - POWERSHELL
-    databaseEngineType:
-      description: Database Engine Type
-      type: string
-      enum:
-      - ORACLE
-      - POSTGRESQL
-      - SQLSERVER
-      - MYSQL
-      - APACHE_KAFKA
-      - MONGODB
-      - MILVUS
-    AclEligibleUser:
-      title: AclEligibleUser
-      description: Eligible user for sharing the entity
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    GetScriptsServiceApiResponse:
+      title: GetScriptsServiceApiResponse
+      allOf:
+      - $ref: '#/components/schemas/TessellApiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/TessellScriptServiceViewDTO'
+    AclUserPayload:
+      title: AclUserPayload
+      description: Payload to create an user's entity ACL
+      required:
+      - emailId
+      - role
       properties:
-        firstName:
+        emailId:
+          description: Email id of the user
           type: string
-        lastName:
+          minLength: 1
+          maxLength: 256
+        role:
+          description: Role Info
           type: string
+          minLength: 1
+          maxLength: 64
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    AclRevokePayload:
+      title: AclRevokePayload
+      description: Payload to revoke Tessell ACLs
+      required:
+      - users
+      properties:
+        users:
+          description: List of users to be deleted
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          minItems: 1
+          maxItems: 100
+    EntityUserAclSharingInfo:
+      title: EntityUserAclSharingInfo
+      description: Tessell Entity ACL Sharing Info for a user
+      properties:
         emailId:
           type: string
-        eligibleRoles:
-          type: array
-          items:
-            type: string
-        accessibleSubscriptions:
-          type: array
-          items:
-            type: string
-          description: List of subscriptions user has access to
-  parameters:
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    loadAcls:
-      name: load-acls
-      in: query
-      description: Load ACL information
-      required: false
-      schema:
-        type: boolean
-        default: false
-    owners:
-      name: owners
-      in: query
-      description: List of Email Addresses for entity or resource owners
-      required: false
-      schema:
-        type: array
-        items:
+        role:
           type: string
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
+        sharedBy:
+          type: string
+          description: Email of the user who shared the entity
+        sharedOn:
+          type: string
+          format: date-time
+          description: Date when the entity was shared
   securitySchemes:
     BearerAuth:
       type: http

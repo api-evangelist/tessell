@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center Event API
+  title: Tessell Event API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -19,7 +19,7 @@ paths:
   /event-service/events:
     parameters: []
     get:
-      summary: Reads event for the current user.
+      summary: Reads event for the current user
       tags:
       - Event
       operationId: getEvents
@@ -120,7 +120,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
-      description: Suppress an event type
       requestBody:
         content:
           application/json:
@@ -151,7 +150,7 @@ paths:
     patch:
       tags:
       - Event
-      summary: Unsuppress a previous suppressed event.
+      summary: Unsuppress a previous suppressed event
       operationId: unsuppressEvent
       responses:
         '200':
@@ -189,49 +188,6 @@ paths:
           type: string
 components:
   schemas:
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    ApiMetadata:
-      properties:
-        pagination:
-          $ref: '#/components/schemas/ApiPaginationInfo'
-        records:
-          format: int32
-          type: integer
-        timeZone:
-          type: string
-      title: ApiMetadata
-      type: object
-    EventApiResponse:
-      title: EventApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/ApiMetadata'
-        response:
-          $ref: '#/components/schemas/GetEventResponse'
     ApiPaginationInfo:
       title: ApiPaginationInfo
       type: object
@@ -245,14 +201,11 @@ components:
         pageSize:
           format: int32
           type: integer
-    Severity:
-      type: string
-      description: Severity of a CVE or issue
-      enum:
-      - CRITICAL
-      - HIGH
-      - MEDIUM
-      - LOW
+    GetEventResponse:
+      title: Get Events Response
+      type: array
+      items:
+        $ref: '#/components/schemas/Event'
     Event:
       title: Event
       type: object
@@ -342,6 +295,30 @@ components:
           description: Is system generated event
         visibility:
           $ref: '#/components/schemas/Visibility'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
     SeverityEvents:
       title: Severity
       type: string
@@ -350,11 +327,6 @@ components:
       - WARNING
       - CRITICAL
       description: Enumeration for severity level
-    GetEventResponse:
-      title: Get Events Response
-      type: array
-      items:
-        $ref: '#/components/schemas/Event'
     Visibility:
       title: Visibility
       type: string
@@ -362,6 +334,33 @@ components:
       enum:
       - USER
       - SYSTEM
+    EventApiResponse:
+      title: EventApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/ApiMetadata'
+        response:
+          $ref: '#/components/schemas/GetEventResponse'
+    ApiMetadata:
+      properties:
+        pagination:
+          $ref: '#/components/schemas/ApiPaginationInfo'
+        records:
+          format: int32
+          type: integer
+        timeZone:
+          type: string
+      title: ApiMetadata
+      type: object
+    Severity:
+      type: string
+      description: Severity of a CVE or issue
+      enum:
+      - CRITICAL
+      - HIGH
+      - MEDIUM
+      - LOW
   securitySchemes:
     BearerAuth:
       type: http

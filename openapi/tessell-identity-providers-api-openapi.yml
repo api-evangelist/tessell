@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center Identity Providers API
+  title: Tessell Identity Providers API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -160,38 +160,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
     ConfiguredIdpsApiResponse:
       title: ConfiguredIdpsApiResponse
       description: Array of currently configured IDP types
@@ -263,6 +231,14 @@ components:
           minLength: 1
           maxLength: 10000
           example: '-----BEGIN CERTIFICATE-----\nMIIF0jCCA ... tg3g\n-----END CERTIFICATE-----'
+    IdentityProviderStatus:
+      title: IdentityProviderStatus
+      type: string
+      description: Status of Identity Provider for SSO
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
     apiPaginationInfo:
       title: apiPaginationInfo
       type: object
@@ -273,14 +249,38 @@ components:
         pageOffset:
           type: integer
           format: int32
-    IdentityProviderStatus:
-      title: IdentityProviderStatus
-      type: string
-      description: Status of Identity Provider for SSO
-      enum:
-      - ENABLED
-      - DISABLED
-      - DELETED
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
     IdentityProviderType:
       title: IdentityProviderType
       type: string

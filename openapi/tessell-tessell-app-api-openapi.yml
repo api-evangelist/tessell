@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center Tessell App API
+  title: Tessell App API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -64,120 +64,6 @@ paths:
       - Tessell App
 components:
   schemas:
-    FeatureStatus:
-      title: FeatureStatus
-      type: string
-      description: This is a definition for Tessell feature status object
-      enum:
-      - DELETED
-      - ENABLED
-      - DISABLED
-      - NOT_SUPPORTED
-    Privilege:
-      description: This is a definition for Tessell internal privilege DTO object
-      example:
-        dateCreated: '2000-01-23T04:56:07'
-        name: name
-        description: description
-        dateModified: '2000-01-23T04:56:07'
-        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        status: DELETED
-      properties:
-        dateCreated:
-          description: Date when the privilege is created in Tessell metadata
-          format: date-time
-          type: string
-        dateModified:
-          description: Date when privilege is last modified in Tessell metadata
-          format: date-time
-          type: string
-        description:
-          description: Description of the privilege
-          type: string
-        id:
-          description: generated UUID for the privilege object
-          format: uuid
-          type: string
-        name:
-          description: Name of the privilege
-          type: string
-        status:
-          enum:
-          - DELETED
-          - ENABLED
-          type: string
-      title: Privilege
-      type: object
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    AppStatus:
-      x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n"
-      description: App Status
-      enum:
-      - ENABLED
-      - DISABLED
-      - DELETED
-      type: string
-    AppFeature:
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - properties:
-          description:
-            x-dao-annotations: '@NotNull
-
-              '
-            description: Description of the app family
-            type: string
-          name:
-            x-dao-query: true
-            x-dao-annotations: '@NotNull
-
-              '
-            description: Name of the app family
-            type: string
-          displayName:
-            x-dao-query: true
-            x-dao-annotations: '@NotNull
-
-              '
-            description: Name of the app family
-            type: string
-          status:
-            $ref: '#/components/schemas/FeatureStatus'
-        title: AppFeature
-        type: object
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
     BaseEntity:
       type: object
       properties:
@@ -198,16 +84,6 @@ components:
           example: 123e4567-e89b-12d3-a456-426614174000
           format: uuid
           type: string
-    AppApiResponse:
-      title: AppApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/App'
     App:
       x-dao-entity: true
       x-dao-table-name: TESSELL_APPS
@@ -265,6 +141,130 @@ components:
           format: int32
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
+    AppFeature:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          description:
+            x-dao-annotations: '@NotNull
+
+              '
+            description: Description of the app family
+            type: string
+          name:
+            x-dao-query: true
+            x-dao-annotations: '@NotNull
+
+              '
+            description: Name of the app family
+            type: string
+          displayName:
+            x-dao-query: true
+            x-dao-annotations: '@NotNull
+
+              '
+            description: Name of the app family
+            type: string
+          status:
+            $ref: '#/components/schemas/FeatureStatus'
+        title: AppFeature
+        type: object
+    AppApiResponse:
+      title: AppApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/App'
+    FeatureStatus:
+      title: FeatureStatus
+      type: string
+      description: This is a definition for Tessell feature status object
+      enum:
+      - DELETED
+      - ENABLED
+      - DISABLED
+      - NOT_SUPPORTED
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    Privilege:
+      description: This is a definition for Tessell internal privilege DTO object
+      example:
+        dateCreated: '2000-01-23T04:56:07'
+        name: name
+        description: description
+        dateModified: '2000-01-23T04:56:07'
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: DELETED
+      properties:
+        dateCreated:
+          description: Date when the privilege is created in Tessell metadata
+          format: date-time
+          type: string
+        dateModified:
+          description: Date when privilege is last modified in Tessell metadata
+          format: date-time
+          type: string
+        description:
+          description: Description of the privilege
+          type: string
+        id:
+          description: generated UUID for the privilege object
+          format: uuid
+          type: string
+        name:
+          description: Name of the privilege
+          type: string
+        status:
+          enum:
+          - DELETED
+          - ENABLED
+          type: string
+      title: Privilege
+      type: object
+    AppStatus:
+      x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n"
+      description: App Status
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+      type: string
   parameters:
     consumerType:
       name: consumer-type
@@ -274,14 +274,6 @@ components:
       schema:
         type: string
         default: OPS
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
     pageSize:
       name: page-size
       in: query
@@ -291,6 +283,14 @@ components:
         type: integer
         format: int32
         default: 10
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
     pageOffset:
       name: page-offset
       in: query

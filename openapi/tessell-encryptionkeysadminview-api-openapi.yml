@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center EncryptionKeysAdminView API
+  title: Tessell Encryption Keys Admin View API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -146,6 +146,48 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    BaseEntity:
+      type: object
+      properties:
+        dateCreated:
+          x-dao-annotations: "@Column(name = \"DATE_CREATED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @CreationTimestamp\n"
+          description: Timestamp when the entity was created
+          format: date-time
+          type: string
+        dateModified:
+          x-dao-annotations: "@Column(name = \"DATE_MODIFIED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @UpdateTimestamp\n"
+          description: Timestamp when the entity was last modified
+          format: date-time
+          type: string
+        id:
+          x-dao-query: true
+          x-dao-annotations: "@Id\n  @GeneratedValue(generator = \"UUID\")\n  @GenericGenerator(name = \"UUID\", strategy = \"org.hibernate.id.UUIDGenerator\")\n  @Column(name = \"id\", updatable = false, nullable = false)\n"
+          description: generated UUID for the entity
+          example: 123e4567-e89b-12d3-a456-426614174000
+          format: uuid
+          type: string
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    EncryptionKeyPolicy:
+      type: object
+      description: Definition for a policy or metadata labels for a cloud resource
+      properties:
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+        awsKeyRequirements:
+          type: object
+          description: Representation of the key policy requirements for the cloud resource AWS.
+          properties:
+            awsKeyPolicy:
+              $ref: '#/components/schemas/AwsKeyPolicy'
+            awsKeyTags:
+              $ref: '#/components/schemas/AwsKeyTags'
     AwsKeyPolicy:
       title: AwsKeyPolicy
       type: object
@@ -184,99 +226,6 @@ components:
           description: Identifies the KMS key to which the key policy is attached.
           minLength: 1
           maxLength: 1024
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    RegisterEncryptionKeyPayloadV2:
-      type: object
-      description: Payload for Registering encryption Key
-      required:
-      - name
-      - subscriptionName
-      - cloud
-      properties:
-        name:
-          type: string
-          description: Name of Encryption Key
-          minLength: 1
-          maxLength: 256
-          example: Key-153
-        description:
-          type: string
-          description: Description of Encryption Key
-          minLength: 0
-          maxLength: 512
-        subscriptionName:
-          type: string
-          description: Name of the Subscription
-          minLength: 1
-          maxLength: 64
-          example: BYOA-134329
-        owner:
-          description: email id of the owner of the encryption key
-          type: string
-          minLength: 0
-          maxLength: 256
-        cloud:
-          $ref: '#/components/schemas/cloudType'
-        awsEncryptionKeyInfo:
-          $ref: '#/components/schemas/awsEncryptionKeyInfo'
-        gcpEncryptionKeyInfo:
-          $ref: '#/components/schemas/gcpEncryptionKeyInfo'
-    EntityAclSharingInfo:
-      title: EntityAclSharingInfo
-      description: Tessell Entity ACL Sharing Info
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/EntityUserAclSharingInfo'
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    ClientEncryptionKey:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of Encryption Key
-        cloudResourceId:
-          type: string
-          description: Cloud Id of Encryption Key
-        registrable:
-          type: boolean
-          description: Whether the Encryption Key is registrable or not
-        reason:
-          type: string
-          description: Reason for not able to register Encryption Key
     MaturityStatus:
       description: Maturity Status
       type: string
@@ -284,28 +233,6 @@ components:
       - DRAFT
       - PUBLISHED
       - UNPUBLISHED
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
-    EncryptionKeyPolicy:
-      type: object
-      description: Definition for a policy or metadata labels for a cloud resource
-      properties:
-        cloud:
-          $ref: '#/components/schemas/cloudType'
-        awsKeyRequirements:
-          type: object
-          description: Representation of the key policy requirements for the cloud resource AWS.
-          properties:
-            awsKeyPolicy:
-              $ref: '#/components/schemas/AwsKeyPolicy'
-            awsKeyTags:
-              $ref: '#/components/schemas/AwsKeyTags'
     SecurityStatus:
       title: Status
       type: object
@@ -314,74 +241,6 @@ components:
           type: string
         status:
           type: string
-    EntityUserAclSharingInfo:
-      title: EntityUserAclSharingInfo
-      description: Tessell Entity ACL Sharing Info for a user
-      properties:
-        emailId:
-          type: string
-        role:
-          type: string
-        sharedBy:
-          type: string
-          description: Email of the user who shared the entity
-        sharedOn:
-          type: string
-          format: date-time
-          description: Date when the entity was shared
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    EncryptionKeysToRegisterApiResponse:
-      title: EncryptionKeysToRegisterApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClientEncryptionKey'
-    gcpEncryptionKeyInfo:
-      type: object
-      required:
-      - keyRingName
-      - keyName
-      - region
-      - subscriptionRegion
-      properties:
-        keyRingName:
-          type: string
-          description: Name of the Key Ring, where Key belongs to
-          example: key-ring-global
-          minLength: 1
-          maxLength: 200
-        keyName:
-          type: string
-          description: Name of the Key
-          example: disk-enc-01
-          minLength: 1
-          maxLength: 200
-        region:
-          type: string
-          description: Region where KeyRing is present
-          example: global
-          minLength: 1
-          maxLength: 200
-        subscriptionRegion:
-          type: string
-          description: Region where Key needs to be registered in Tessell
-          example: asia-south1
-          minLength: 1
-          maxLength: 200
     ValidateEncryptionKeyPermissionPayload:
       title: ValidateEncryptionKeyPermissionPayload
       type: object
@@ -400,65 +259,6 @@ components:
           $ref: '#/components/schemas/cloudType'
         awsEncryptionKeyInfo:
           $ref: '#/components/schemas/awsEncryptionKeyInfo'
-    awsEncryptionKeyInfo:
-      type: object
-      required:
-      - crossCloudAccountKey
-      - arn
-      - regions
-      properties:
-        crossCloudAccountKey:
-          type: boolean
-          description: Represents if it is customer managed cross cloud account key registered in Tessell
-          default: false
-        arn:
-          type: string
-          example: arn:aws:kms:ap-south-1:37857132:key/mrk-54931763438
-          minLength: 1
-          maxLength: 200
-        regions:
-          type: array
-          items:
-            type: string
-          uniqueItems: true
-          minItems: 1
-          maxItems: 1
-          example:
-          - ap-south-1
-          - us-east-1
-    EncryptionKeyStatus:
-      title: EncryptionKeyStatus
-      type: string
-      description: State of an Encryption Key
-      enum:
-      - CREATING
-      - REPLICATING
-      - WAITING
-      - PROCESSING
-      - AVAILABLE
-      - DISABLED
-      - DISABLING
-      - ENABLING
-      - DELETED
-      - DELETING
-      - DELETION_FAILED
-      - FAILED
-      - VALIDATION_PENDING
-      - VALIDATION_FAILED
-    AwsKeyTags:
-      title: AwsKeyTags
-      type: array
-      description: Array of AWS encryption key tags
-      items:
-        properties:
-          TagKey:
-            type: string
-            minLength: 1
-            maxLength: 2048
-          TagValue:
-            type: string
-            minLength: 1
-            maxLength: 2048
     EncryptionKeyDTO:
       type: object
       description: This is a definition for Tessell encryption key DTO object
@@ -506,37 +306,234 @@ components:
           crossCloudAccountKey:
             type: boolean
             description: Represents if it is cross cloud account key if it is a registered key in Tessell
-    BaseEntity:
+    RegisterEncryptionKeyPayloadV2:
+      type: object
+      description: Payload for Registering encryption Key
+      required:
+      - name
+      - subscriptionName
+      - cloud
+      properties:
+        name:
+          type: string
+          description: Name of Encryption Key
+          minLength: 1
+          maxLength: 256
+          example: Key-153
+        description:
+          type: string
+          description: Description of Encryption Key
+          minLength: 0
+          maxLength: 512
+        subscriptionName:
+          type: string
+          description: Name of the Subscription
+          minLength: 1
+          maxLength: 64
+          example: BYOA-134329
+        owner:
+          description: email id of the owner of the encryption key
+          type: string
+          minLength: 0
+          maxLength: 256
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+        awsEncryptionKeyInfo:
+          $ref: '#/components/schemas/awsEncryptionKeyInfo'
+        gcpEncryptionKeyInfo:
+          $ref: '#/components/schemas/gcpEncryptionKeyInfo'
+    EncryptionKeysToRegisterApiResponse:
+      title: EncryptionKeysToRegisterApiResponse
       type: object
       properties:
-        dateCreated:
-          x-dao-annotations: "@Column(name = \"DATE_CREATED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @CreationTimestamp\n"
-          description: Timestamp when the entity was created
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClientEncryptionKey'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
           format: date-time
+        contextId:
           type: string
-        dateModified:
-          x-dao-annotations: "@Column(name = \"DATE_MODIFIED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @UpdateTimestamp\n"
-          description: Timestamp when the entity was last modified
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    gcpEncryptionKeyInfo:
+      type: object
+      required:
+      - keyRingName
+      - keyName
+      - region
+      - subscriptionRegion
+      properties:
+        keyRingName:
+          type: string
+          description: Name of the Key Ring, where Key belongs to
+          example: key-ring-global
+          minLength: 1
+          maxLength: 200
+        keyName:
+          type: string
+          description: Name of the Key
+          example: disk-enc-01
+          minLength: 1
+          maxLength: 200
+        region:
+          type: string
+          description: Region where KeyRing is present
+          example: global
+          minLength: 1
+          maxLength: 200
+        subscriptionRegion:
+          type: string
+          description: Region where Key needs to be registered in Tessell
+          example: asia-south1
+          minLength: 1
+          maxLength: 200
+    AwsKeyTags:
+      title: AwsKeyTags
+      type: array
+      description: Array of AWS encryption key tags
+      items:
+        properties:
+          TagKey:
+            type: string
+            minLength: 1
+            maxLength: 2048
+          TagValue:
+            type: string
+            minLength: 1
+            maxLength: 2048
+    EntityAclSharingInfo:
+      title: EntityAclSharingInfo
+      description: Tessell Entity ACL Sharing Info
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityUserAclSharingInfo'
+    awsEncryptionKeyInfo:
+      type: object
+      required:
+      - crossCloudAccountKey
+      - arn
+      - regions
+      properties:
+        crossCloudAccountKey:
+          type: boolean
+          description: Represents if it is customer managed cross cloud account key registered in Tessell
+          default: false
+        arn:
+          type: string
+          example: arn:aws:kms:ap-south-1:37857132:key/mrk-54931763438
+          minLength: 1
+          maxLength: 200
+        regions:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+          minItems: 1
+          maxItems: 1
+          example:
+          - ap-south-1
+          - us-east-1
+    EncryptionKeyStatus:
+      title: EncryptionKeyStatus
+      type: string
+      description: State of an Encryption Key
+      enum:
+      - CREATING
+      - REPLICATING
+      - WAITING
+      - PROCESSING
+      - AVAILABLE
+      - DISABLED
+      - DISABLING
+      - ENABLING
+      - DELETED
+      - DELETING
+      - DELETION_FAILED
+      - FAILED
+      - VALIDATION_PENDING
+      - VALIDATION_FAILED
+    ClientEncryptionKey:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of Encryption Key
+        cloudResourceId:
+          type: string
+          description: Cloud Id of Encryption Key
+        registrable:
+          type: boolean
+          description: Whether the Encryption Key is registrable or not
+        reason:
+          type: string
+          description: Reason for not able to register Encryption Key
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    EntityUserAclSharingInfo:
+      title: EntityUserAclSharingInfo
+      description: Tessell Entity ACL Sharing Info for a user
+      properties:
+        emailId:
+          type: string
+        role:
+          type: string
+        sharedBy:
+          type: string
+          description: Email of the user who shared the entity
+        sharedOn:
+          type: string
           format: date-time
-          type: string
-        id:
-          x-dao-query: true
-          x-dao-annotations: "@Id\n  @GeneratedValue(generator = \"UUID\")\n  @GenericGenerator(name = \"UUID\", strategy = \"org.hibernate.id.UUIDGenerator\")\n  @Column(name = \"id\", updatable = false, nullable = false)\n"
-          description: generated UUID for the entity
-          example: 123e4567-e89b-12d3-a456-426614174000
-          format: uuid
-          type: string
+          description: Date when the entity was shared
   parameters:
-    subscriptionNameMandatory:
-      name: subscription-name
+    cloudTypeMandatory:
+      name: cloud-type
       in: query
-      description: Subscription name
+      description: Cloud Type
       required: true
       schema:
-        type: string
-        minLength: 1
-        maxLength: 64
-        example: Sub-Experiments-2
+        $ref: '#/components/schemas/cloudType'
     tenantIdMandatory:
       name: tenant-id
       in: header
@@ -547,13 +544,16 @@ components:
         minLength: 1
         maxLength: 128
         example: 12345678-abcd-1234-abcd-1234abcd5678
-    cloudTypeMandatory:
-      name: cloud-type
+    subscriptionNameMandatory:
+      name: subscription-name
       in: query
-      description: Cloud Type
+      description: Subscription name
       required: true
       schema:
-        $ref: '#/components/schemas/cloudType'
+        type: string
+        minLength: 1
+        maxLength: 64
+        example: Sub-Experiments-2
     regionMandatory:
       name: region
       in: query

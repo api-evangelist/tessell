@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center DB Collection API
+  title: Tessell DB Collection API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -416,6 +416,136 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    taskSummary:
+      title: taskSummary
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        taskType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        associatedResourceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        details:
+          type: object
+          additionalProperties:
+            type: string
+    MilvusIndexType:
+      type: string
+      enum:
+      - BIN_FLAT
+      - BIN_IVF_FLAT
+      - FLAT
+      - IVF_FLAT
+      - IVF_SQ8
+      - IVF_PQ
+      - HNSW
+      - IVF_HNSW
+      - RHNSW_FLAT
+      - RHNSW_SQ
+      - RHNSW_PQ
+      - ANNOY
+    DbCollectionConfig:
+      type: object
+      properties:
+        milvusCollectionConfig:
+          $ref: '#/components/schemas/MilvusCollectionConfig'
+    MilvusIndexParameters:
+      type: object
+      properties:
+        m:
+          type:
+          - integer
+          - 'null'
+        nlist:
+          type:
+          - integer
+          - 'null'
+        efconstructions:
+          type:
+          - integer
+          - 'null'
+        ntrees:
+          type:
+          - integer
+          - 'null'
+    IndexSpecification:
+      type: object
+      properties:
+        indexType:
+          $ref: '#/components/schemas/MilvusIndexType'
+        metricType:
+          $ref: '#/components/schemas/MilvusIndexMetricType'
+        parameters:
+          $ref: '#/components/schemas/MilvusIndexParameters'
+    MilvusIndexConfig:
+      type: object
+      properties:
+        indexSpecifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndexSpecification'
+    LoadCollectionPayload:
+      title: LoadCollectionPayload
+      type: object
+      properties:
+        comment:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: Comment for the action
+    MilvusCollectionConfig:
+      title: MilvusCollectionConfig
+      type:
+      - object
+      - 'null'
+      properties:
+        shardNums:
+          type:
+          - integer
+          - 'null'
+          minimum: 1
+          maximum: 16
+        numPartitions:
+          type:
+          - integer
+          - 'null'
+          minimum: 1
+          maximum: 4096
+        schema:
+          type: object
+          properties:
+            description:
+              type:
+              - string
+              - 'null'
+            enableDynamicField:
+              type: boolean
+            fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/MilvusCollectionField'
+    MilvusDatatype:
+      type: string
+      enum:
+      - VARCHAR
+      - INT64
+      - BOOL
+      - INT8
+      - INT16
+      - INT32
+      - FLOAT
+      - DOUBLE
+      - JSON
+      - BINARY_VECTOR
+      - FLOAT_VECTOR
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -440,76 +570,6 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    MilvusIndexMetricType:
-      type: string
-      enum:
-      - L2
-      - IP
-      - JACCARD
-      - TANIMOTO
-      - HAMMING
-      - SUPERSTRUCTURE
-      - SUBSTRUCTURE
-    apiResponse:
-      example:
-        metadata:
-          pagination:
-            pageOffset: 0
-            pageSize: 6
-          records: 1
-          timeZone: timeZone
-        response: '{}'
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-      title: ApiResponse
-      type: object
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    IndexSpecification:
-      type: object
-      properties:
-        indexType:
-          $ref: '#/components/schemas/MilvusIndexType'
-        metricType:
-          $ref: '#/components/schemas/MilvusIndexMetricType'
-        parameters:
-          $ref: '#/components/schemas/MilvusIndexParameters'
-    DbCollectionStatus:
-      type: string
-      enum:
-      - CREATING
-      - READY
-      - LOADING
-      - LOADED
-      - UNLOADED
-      - RELEASING
-      - DELETED
-      - DELETING
-      - FAILED
-      - CREATION_FAILED
-      - DELETION_FAILED
-    DbCollectionIndexStatus:
-      type: string
-      description: The status of the DB collection index
-      enum:
-      - CREATING
-      - READY
-      - DELETED
-      - DELETING
-      - FAILED
-      - CREATION_FAILED
-      - DELETION_FAILED
     DbCollectionsResponse:
       title: TessellServicesResponse
       allOf:
@@ -520,165 +580,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/DbCollectionDTO'
-    MilvusIndexConfig:
-      type: object
-      properties:
-        indexSpecifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/IndexSpecification'
-    DeleteDbCollectionIndexPayload:
-      title: DeleteCollectionPayload
-      type: object
-      properties:
-        comment:
-          type: string
-          description: Comment for the action
-    taskSummary:
-      title: taskSummary
-      type: object
-      properties:
-        taskId:
-          type: string
-          format: uuid
-        taskType:
-          type: string
-        resourceId:
-          type: string
-          format: uuid
-        associatedResourceIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        details:
-          type: object
-          additionalProperties:
-            type: string
-    MilvusIndexParameters:
-      type: object
-      properties:
-        m:
-          type: integer
-          nullable: true
-        nlist:
-          type: integer
-          nullable: true
-        efconstructions:
-          type: integer
-          nullable: true
-        ntrees:
-          type: integer
-          nullable: true
-    MilvusCreateCollectionConfig:
-      title: MilvusCreateCollectionConfig
-      type: object
-      nullable: true
-      properties:
-        name:
-          type: string
-          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
-          minLength: 1
-          maxLength: 255
-        shardNums:
-          type: integer
-          nullable: true
-          minimum: 1
-          maximum: 16
-        numPartitions:
-          type: integer
-          nullable: true
-          minimum: 1
-          maximum: 4096
-        schema:
-          type: object
-          properties:
-            description:
-              type: string
-              nullable: true
-            enableDynamicField:
-              type: boolean
-            fields:
-              type: array
-              items:
-                $ref: '#/components/schemas/MilvusCreateCollectionField'
-    MilvusCollectionConfig:
-      title: MilvusCollectionConfig
-      type: object
-      nullable: true
-      properties:
-        shardNums:
-          type: integer
-          nullable: true
-          minimum: 1
-          maximum: 16
-        numPartitions:
-          type: integer
-          nullable: true
-          minimum: 1
-          maximum: 4096
-        schema:
-          type: object
-          properties:
-            description:
-              type: string
-              nullable: true
-            enableDynamicField:
-              type: boolean
-            fields:
-              type: array
-              items:
-                $ref: '#/components/schemas/MilvusCollectionField'
-    DbCollectionDTO:
-      type: object
-      description: Db collection
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Tessell generated UUID for the collection
-        name:
-          type: string
-          nullable: false
-          description: The name of the collection
-        databaseId:
-          type: string
-          format: uuid
-          description: The ID of the database which the collection falls under
-        serviceId:
-          type: string
-          format: uuid
-          description: The ID of the service which the database falls under
-        createdByUser:
-          type: string
-          minLength: 0
-          maxLength: 512
-          description: The user who created the collection
-        engineType:
-          $ref: '#/components/schemas/databaseEngineType'
-        status:
-          $ref: '#/components/schemas/DbCollectionStatus'
-        collectionConfig:
-          $ref: '#/components/schemas/DbCollectionConfig'
-        dateModified:
-          type: string
-          format: date-time
-          description: Timestamp when the entity was last modified by user
-    MilvusIndexType:
-      type: string
-      enum:
-      - BIN_FLAT
-      - BIN_IVF_FLAT
-      - FLAT
-      - IVF_FLAT
-      - IVF_SQ8
-      - IVF_PQ
-      - HNSW
-      - IVF_HNSW
-      - RHNSW_FLAT
-      - RHNSW_SQ
-      - RHNSW_PQ
-      - ANNOY
     apiMetadata:
       title: apiMetadata
       type: object
@@ -690,45 +591,25 @@ components:
           format: int32
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
-    DbCollectionCreatePayload:
-      type: object
-      properties:
-        name:
-          type: string
-          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
-          minLength: 1
-          maxLength: 255
-        milvusCollectionConfig:
-          $ref: '#/components/schemas/MilvusCreateCollectionConfig'
-    DbCollectionIndexPayload:
-      type: object
-      properties:
-        fieldName:
-          type: string
-        indexName:
-          type: string
-        milvusIndexConfig:
-          $ref: '#/components/schemas/MilvusIndexConfig'
     MilvusCollectionField:
       type: object
       properties:
         name:
           type: string
-          nullable: false
         description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         dtype:
           $ref: '#/components/schemas/MilvusDatatype'
         isPrimary:
           type: boolean
-          nullable: false
         autoId:
           type: boolean
-          nullable: false
         defaultValue:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         isPartitionKey:
           type: boolean
           default: false
@@ -745,15 +626,6 @@ components:
         dateModified:
           type: string
           format: date
-    LoadCollectionPayload:
-      title: LoadCollectionPayload
-      type: object
-      properties:
-        comment:
-          type: string
-          minLength: 0
-          maxLength: 512
-          description: Comment for the action
     DeleteDbCollectionPayload:
       title: DeleteCollectionPayload
       type: object
@@ -763,6 +635,51 @@ components:
           description: Comment for the action
           minLength: 0
           maxLength: 512
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    DeleteDbCollectionIndexPayload:
+      title: DeleteCollectionPayload
+      type: object
+      properties:
+        comment:
+          type: string
+          description: Comment for the action
+    DbCollectionIndexStatus:
+      type: string
+      description: The status of the DB collection index
+      enum:
+      - CREATING
+      - READY
+      - DELETED
+      - DELETING
+      - FAILED
+      - CREATION_FAILED
+      - DELETION_FAILED
     DbCollectionIndexDTO:
       type: object
       properties:
@@ -797,17 +714,39 @@ components:
           type: string
           format: date-time
           description: Timestamp when the entity was last modified, either by system or by user
-    databaseEngineType:
-      description: Database Engine Type
-      type: string
-      enum:
-      - ORACLE
-      - POSTGRESQL
-      - SQLSERVER
-      - MYSQL
-      - APACHE_KAFKA
-      - MONGODB
-      - MILVUS
+    MilvusCreateCollectionField:
+      type: object
+      properties:
+        name:
+          type: string
+          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
+          minLength: 1
+          maxLength: 255
+        description:
+          type:
+          - string
+          - 'null'
+        dtype:
+          $ref: '#/components/schemas/MilvusDatatype'
+        isPrimary:
+          type: boolean
+          default: false
+        autoId:
+          type: boolean
+          default: false
+        defaultValue:
+          type:
+          - string
+          - 'null'
+        isPartitionKey:
+          type: boolean
+          default: false
+        maxLength:
+          type: integer
+        dim:
+          type: integer
+        indexCreatePayload:
+          $ref: '#/components/schemas/DbCollectionIndexPayload'
     DbCollectionsIndexResponse:
       title: TessellServicesResponse
       allOf:
@@ -818,12 +757,17 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/DbCollectionIndexDTO'
-    DbCollectionConfig:
+    apiPaginationInfo:
+      title: apiPaginationInfo
       type: object
       properties:
-        milvusCollectionConfig:
-          $ref: '#/components/schemas/MilvusCollectionConfig'
-    MilvusCreateCollectionField:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    DbCollectionCreatePayload:
       type: object
       properties:
         name:
@@ -831,85 +775,112 @@ components:
           pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
           minLength: 1
           maxLength: 255
-        description:
+        milvusCollectionConfig:
+          $ref: '#/components/schemas/MilvusCreateCollectionConfig'
+    DbCollectionIndexPayload:
+      type: object
+      properties:
+        fieldName:
           type: string
-          nullable: true
-        dtype:
-          $ref: '#/components/schemas/MilvusDatatype'
-        isPrimary:
-          type: boolean
-          default: false
-        autoId:
-          type: boolean
-          default: false
-        defaultValue:
+        indexName:
           type: string
-          nullable: true
-        isPartitionKey:
-          type: boolean
-          default: false
-        maxLength:
-          type: integer
-        dim:
-          type: integer
-        indexCreatePayload:
-          $ref: '#/components/schemas/DbCollectionIndexPayload'
-    MilvusDatatype:
+        milvusIndexConfig:
+          $ref: '#/components/schemas/MilvusIndexConfig'
+    MilvusIndexMetricType:
       type: string
       enum:
-      - VARCHAR
-      - INT64
-      - BOOL
-      - INT8
-      - INT16
-      - INT32
-      - FLOAT
-      - DOUBLE
-      - JSON
-      - BINARY_VECTOR
-      - FLOAT_VECTOR
+      - L2
+      - IP
+      - JACCARD
+      - TANIMOTO
+      - HAMMING
+      - SUPERSTRUCTURE
+      - SUBSTRUCTURE
+    DbCollectionDTO:
+      type: object
+      description: Db collection
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the collection
+        name:
+          type: string
+          description: The name of the collection
+        databaseId:
+          type: string
+          format: uuid
+          description: The ID of the database which the collection falls under
+        serviceId:
+          type: string
+          format: uuid
+          description: The ID of the service which the database falls under
+        createdByUser:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: The user who created the collection
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        status:
+          $ref: '#/components/schemas/DbCollectionStatus'
+        collectionConfig:
+          $ref: '#/components/schemas/DbCollectionConfig'
+        dateModified:
+          type: string
+          format: date-time
+          description: Timestamp when the entity was last modified by user
+    MilvusCreateCollectionConfig:
+      title: MilvusCreateCollectionConfig
+      type:
+      - object
+      - 'null'
+      properties:
+        name:
+          type: string
+          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
+          minLength: 1
+          maxLength: 255
+        shardNums:
+          type:
+          - integer
+          - 'null'
+          minimum: 1
+          maximum: 16
+        numPartitions:
+          type:
+          - integer
+          - 'null'
+          minimum: 1
+          maximum: 4096
+        schema:
+          type: object
+          properties:
+            description:
+              type:
+              - string
+              - 'null'
+            enableDynamicField:
+              type: boolean
+            fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/MilvusCreateCollectionField'
+    DbCollectionStatus:
+      type: string
+      enum:
+      - CREATING
+      - READY
+      - LOADING
+      - LOADED
+      - UNLOADED
+      - RELEASING
+      - DELETED
+      - DELETING
+      - FAILED
+      - CREATION_FAILED
+      - DELETION_FAILED
   parameters:
-    collection-id:
-      name: collection-id
-      in: path
-      required: true
-      style: simple
-      schema:
-        type: string
-        format: uuid
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    service-id:
-      name: service-id
-      in: path
-      required: true
-      style: simple
-      schema:
-        type: string
-        format: uuid
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
-    database-id:
-      name: database-id
-      in: path
-      required: true
-      style: simple
-      schema:
-        type: string
-        format: uuid
     pageSize:
       name: page-size
       in: query
@@ -919,6 +890,47 @@ components:
         type: integer
         format: int32
         default: 10
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    collection-id:
+      name: collection-id
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
+    service-id:
+      name: service-id
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
+    database-id:
+      name: database-id
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     BearerAuth:
       type: http

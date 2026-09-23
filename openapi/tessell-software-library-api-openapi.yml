@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center Software Library API
+  title: Tessell Software Library API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -20,8 +20,7 @@ paths:
     get:
       tags:
       - Software Library
-      description: Get a list of all software images.
-      summary: Get a list of all software images. Using the name filter, a software image can be found using name.
+      summary: Get a list of all software images.
       operationId: getSoftwareImages
       parameters:
       - $ref: '#/components/parameters/tenantIdMandatory'
@@ -102,7 +101,143 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
+  parameters:
+    imageName:
+      name: name
+      in: query
+      required: false
+      explode: true
+      description: Name of a Software Image
+      schema:
+        type: string
+      style: form
+      example:
+        name: postgresql-rhel6
+    allImages:
+      in: query
+      name: allImages
+      description: Returns All Software Images
+      required: false
+      schema:
+        type: boolean
+        default: false
+    cloudRegion:
+      name: region
+      description: Cloud Region
+      in: query
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+      examples:
+        aws:
+          value: us-east-1
+          summary: aws region example
+        azure:
+          value: eastUS
+          summary: azure region example
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
+    cloudTypeOldConventionMandatory:
+      name: cloudType
+      in: query
+      description: Name of the Cloud
+      required: true
+      schema:
+        $ref: '#/components/schemas/cloudType'
+    timeZoneOldConvention:
+      in: query
+      name: timeZone
+      description: Time Zone
+      schema:
+        type: string
+      required: false
+    software-image-provider-type-in-query:
+      name: softwareImageProviderType
+      in: query
+      description: softwareImageProviderType
+      required: false
+      schema:
+        type: array
+        uniqueItems: true
+        items:
+          $ref: '#/components/schemas/SoftwareImageProviderType'
+    cloudTypeOldConvention:
+      name: cloudType
+      description: Name of the Cloud
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/cloudType'
+    personas:
+      in: query
+      name: personas
+      description: Personas list
+      required: false
+      explode: true
+      schema:
+        type: string
+        format: list
+      style: form
+      example:
+        personas:
+        - CloudAdmin
+        - TessellAdmin
   schemas:
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    getSoftwareImageByNameResponse:
+      allOf:
+      - $ref: '#/components/schemas/SoftwareImage'
+    SoftwareImageMetadata:
+      description: Software image metadata
+      type: object
+      properties:
+        engine:
+          type: string
+        edition:
+          type: string
+        version:
+          type: string
+        createContainer:
+          type: boolean
+        tessellLibBucketPath:
+          type: string
+        licenseModel:
+          $ref: '#/components/schemas/LicenseModel'
+    SoftwareImageProviderType:
+      type: string
+      enum:
+      - TESSELL
+      - OCI_EXADATA
+    SoftwareImageStatus:
+      description: Software Image Status
+      x-dao-query: true
+      x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n  @Type(type = \"pgsql_enum\")\n"
+      x-dto-annotations: '@ToString.Exclude
+
+        '
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+      - DEPRECATED
+      type: string
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -127,49 +262,6 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    SoftwareImageVersion:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Version name
-        version:
-          type: string
-          description: DB version string
-        osVersion:
-          type: string
-          description: OS Version string
-        cloudAndAvailability:
-          type: array
-          items:
-            type: string
-          description: Cloud and Location detail
-        status:
-          $ref: '#/components/schemas/SoftwareImageStatus'
-    SoftwareImageMetadata:
-      description: Software image metadata
-      type: object
-      properties:
-        engine:
-          type: string
-        edition:
-          type: string
-        version:
-          type: string
-        createContainer:
-          type: boolean
-        tessellLibBucketPath:
-          type: string
-        licenseModel:
-          $ref: '#/components/schemas/LicenseModel'
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
     SoftwareImage:
       description: Software Image Response Object
       type: object
@@ -192,27 +284,25 @@ components:
           $ref: '#/components/schemas/SoftwareImageMetadata'
         provider:
           $ref: '#/components/schemas/SoftwareImageProviderType'
-    getSoftwareImageByNameResponse:
-      allOf:
-      - $ref: '#/components/schemas/SoftwareImage'
-    SoftwareImageProviderType:
-      type: string
-      enum:
-      - TESSELL
-      - OCI_EXADATA
-    SoftwareImageStatus:
-      description: Software Image Status
-      x-dao-query: true
-      x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n  @Type(type = \"pgsql_enum\")\n"
-      x-dto-annotations: '@ToString.Exclude
-
-        '
-      enum:
-      - ENABLED
-      - DISABLED
-      - DELETED
-      - DEPRECATED
-      type: string
+    SoftwareImageVersion:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Version name
+        version:
+          type: string
+          description: DB version string
+        osVersion:
+          type: string
+          description: OS Version string
+        cloudAndAvailability:
+          type: array
+          items:
+            type: string
+          description: Cloud and Location detail
+        status:
+          $ref: '#/components/schemas/SoftwareImageStatus'
     getSoftwareImagesResponse:
       description: Response returned by APIs.
       type: object
@@ -228,97 +318,6 @@ components:
       enum:
       - PAYG
       - BYOL
-  parameters:
-    cloudRegion:
-      name: region
-      description: Cloud Region
-      in: query
-      required: false
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-      examples:
-        aws:
-          value: us-east-1
-          summary: aws region example
-        azure:
-          value: eastUS
-          summary: azure region example
-    personas:
-      in: query
-      name: personas
-      description: Personas list
-      required: false
-      explode: true
-      schema:
-        type: string
-        format: list
-      style: form
-      example:
-        personas:
-        - CloudAdmin
-        - TessellAdmin
-    cloudTypeOldConventionMandatory:
-      name: cloudType
-      in: query
-      description: Name of the Cloud
-      required: true
-      schema:
-        $ref: '#/components/schemas/cloudType'
-    cloudTypeOldConvention:
-      name: cloudType
-      description: Name of the Cloud
-      in: query
-      required: false
-      schema:
-        $ref: '#/components/schemas/cloudType'
-    tenantIdMandatory:
-      name: tenant-id
-      in: header
-      description: Id of the Tenant
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-        example: 12345678-abcd-1234-abcd-1234abcd5678
-    software-image-provider-type-in-query:
-      name: softwareImageProviderType
-      in: query
-      description: softwareImageProviderType
-      required: false
-      schema:
-        type: array
-        uniqueItems: true
-        items:
-          $ref: '#/components/schemas/SoftwareImageProviderType'
-    timeZoneOldConvention:
-      in: query
-      name: timeZone
-      description: Time Zone
-      schema:
-        type: string
-      required: false
-    imageName:
-      name: name
-      in: query
-      required: false
-      explode: true
-      description: Name of a Software Image
-      schema:
-        type: string
-      style: form
-      example:
-        name: postgresql-rhel6
-    allImages:
-      in: query
-      name: allImages
-      description: Returns All Software Images
-      required: false
-      schema:
-        type: boolean
-        default: false
   securitySchemes:
     BearerAuth:
       type: http

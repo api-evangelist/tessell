@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center infra-deployment API
+  title: Tessell Infra Deployment API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -72,15 +72,6 @@ components:
           type: array
           items:
             type: string
-    TessellHTTPErrorCode:
-      type: object
-      properties:
-        httpCode:
-          type: integer
-          description: HTTP code
-        code:
-          type: string
-          description: Tessell's specific code with more context on error
     ApiErrorOps:
       type: object
       description: Common error response object for non 2xx responses of internal or ops APIs
@@ -107,6 +98,14 @@ components:
           description: Unique error code specific to Tessell
         userView:
           $ref: '#/components/schemas/TessellExceptionUserView'
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
     TessellExceptionUserView:
       title: TessellExceptionUserView
       type: object
@@ -120,14 +119,15 @@ components:
         errorCode:
           $ref: '#/components/schemas/TessellHTTPErrorCode'
           description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
+    TessellHTTPErrorCode:
+      type: object
+      properties:
+        httpCode:
+          type: integer
+          description: HTTP code
+        code:
+          type: string
+          description: Tessell's specific code with more context on error
   securitySchemes:
     BearerAuth:
       type: http

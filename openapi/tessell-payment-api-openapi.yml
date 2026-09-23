@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center Payment API
+  title: Tessell Payment API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -247,64 +247,23 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    TessellPaymentDTO:
+    TessellInvoicePaymentDTO:
       title: TessellPaymentDTO
       type: object
-      description: Details required for changing payment option of tenant
+      description: Details about the payment of an invoice
       properties:
-        setupIntentId:
+        paymentOutcome:
           type: string
-          description: Id of the intent to change payment option
-        clientSecret:
+          description: Outcome of the payment attempt for the invoice
+        receiptUrl:
           type: string
-          description: Client secret for updating payment method in Tessell
-    TessellCustomerAddress:
-      title: TessellCustomerAddress
-      type: object
-      description: Address of customer
-      properties:
-        line1:
+          description: Receipt URL if payment was successful
+        paymentErrorCode:
           type: string
-          description: Address line 1
-        line2:
+          description: Payment error code if payment failed for invoice
+        paymentErrorMessage:
           type: string
-          description: Address line 2
-        city:
-          type: string
-          description: City
-        state:
-          type: string
-          description: State
-        postalCode:
-          type: string
-          description: Postal code (zip code)
-        country:
-          type: string
-          description: Country
+          description: Payment error code if payment failed for invoice
     TessellInvoiceDTO:
       title: TessellInvoiceDTO
       type: object
@@ -371,6 +330,53 @@ components:
         metadata:
           type: object
           description: Metadata for the invoice
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    TessellCustomerAddress:
+      title: TessellCustomerAddress
+      type: object
+      description: Address of customer
+      properties:
+        line1:
+          type: string
+          description: Address line 1
+        line2:
+          type: string
+          description: Address line 2
+        city:
+          type: string
+          description: City
+        state:
+          type: string
+          description: State
+        postalCode:
+          type: string
+          description: Postal code (zip code)
+        country:
+          type: string
+          description: Country
     TessellCardDTO:
       title: TessellCardDTO
       type: object
@@ -398,23 +404,17 @@ components:
           description: Last four digits of the card
         address:
           $ref: '#/components/schemas/TessellCustomerAddress'
-    TessellInvoicePaymentDTO:
+    TessellPaymentDTO:
       title: TessellPaymentDTO
       type: object
-      description: Details about the payment of an invoice
+      description: Details required for changing payment option of tenant
       properties:
-        paymentOutcome:
+        setupIntentId:
           type: string
-          description: Outcome of the payment attempt for the invoice
-        receiptUrl:
+          description: Id of the intent to change payment option
+        clientSecret:
           type: string
-          description: Receipt URL if payment was successful
-        paymentErrorCode:
-          type: string
-          description: Payment error code if payment failed for invoice
-        paymentErrorMessage:
-          type: string
-          description: Payment error code if payment failed for invoice
+          description: Client secret for updating payment method in Tessell
   securitySchemes:
     BearerAuth:
       type: http

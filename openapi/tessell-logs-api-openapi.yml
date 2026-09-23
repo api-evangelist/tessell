@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center Logs API
+  title: Tessell Logs API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -80,6 +80,8 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       tags:
       - Logs
+      summary: Get logs on DB
+      x-summary-source: derived
   /logs/stream:
     get:
       description: Stream database logs
@@ -156,6 +158,8 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       tags:
       - Logs
+      summary: Stream DB logs
+      x-summary-source: derived
   /logs/task/{taskId}:
     get:
       description: Returns the Logs corresponding to a task
@@ -228,6 +232,8 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       tags:
       - Logs
+      summary: Get logs for task
+      x-summary-source: derived
   /logs/workflow/{workflowId}:
     get:
       description: Downloads the Logs corresponding to a workflow
@@ -305,6 +311,8 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       tags:
       - Logs
+      summary: Get logs for workflow
+      x-summary-source: derived
   /logs/resources/logfiles:
     get:
       description: Get the log files available for a database
@@ -354,6 +362,8 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       tags:
       - Logs
+      summary: Get DB log files
+      x-summary-source: derived
   /logs/resources/i/logfiles:
     get:
       description: Get all the log files available for a database including host logs
@@ -395,6 +405,8 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       tags:
       - Logs
+      summary: Get DB log files ops
+      x-summary-source: derived
   /logs/resources/i/loggroup:
     post:
       description: Create a log group
@@ -429,6 +441,8 @@ paths:
         style: simple
         schema:
           type: string
+      summary: Create log group
+      x-summary-source: derived
   /logs/service/{service-id}/script/download:
     get:
       description: Downloads the Script logs for Service
@@ -477,6 +491,8 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       tags:
       - Logs
+      summary: Download script logs
+      x-summary-source: derived
   /logs/resources/logfiles/cloud-info:
     get:
       description: Get the logs storage cloud info
@@ -506,6 +522,8 @@ paths:
                   $ref: '#/components/schemas/TessellLogFilesCloudInfo'
       tags:
       - Logs
+      summary: Log files cloud info
+      x-summary-source: derived
   /logs/resources/i/loggroups/{logGroupName}/service-instance-info:
     get:
       description: Fetch Service Instance info using CloudWatch's Log Group name
@@ -539,6 +557,8 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       tags:
       - Logs
+      summary: Get service instance info
+      x-summary-source: derived
   /logs/resources/aws/loggroup/i/update-retention:
     patch:
       description: Update AWS Cloudwatch log group rentention policy
@@ -572,8 +592,113 @@ paths:
         style: simple
         schema:
           type: string
+      summary: Update log group retention
+      x-summary-source: derived
 components:
   schemas:
+    DBLogFilesInfoDTO:
+      title: DB Files Info
+      description: This is a definition for DB log file object
+      type: object
+      properties:
+        fileName:
+          type: string
+          description: The name of the log file
+        firstEventTimestamp:
+          type: number
+          format: long
+          description: The time of the first event in the log file in Epoch timestamp(in milliseconds). This will be 0 in case of Azure.
+        lastEventTimestamp:
+          type: number
+          format: long
+          description: The time of the last event in the log file in Epoch timestamp(in milliseconds). This will be 0 in case of Azure.
+    TessellLogFilesCloudInfo:
+      title: TessellLogFilesCloudInfo
+      description: Info of where the logs are stored in cloud
+      type: object
+      properties:
+        serviceInstanceId:
+          type: string
+          format: uuid
+        serviceInstanceName:
+          type: string
+        logfiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellLogsCloudInfo'
+    TessellAWSLogGroupDTO:
+      title: Log Group
+      description: This is a definition for Log Group Object
+      type: object
+      properties:
+        logGroupName:
+          type: string
+          description: The name of the log group
+        region:
+          type: string
+          description: The region of the log group
+        cloudAccountId:
+          type: string
+          format: uuid
+          description: The cloud account id of the account corresponding to the log group
+        retentionDays:
+          type: number
+          format: integer
+          description: The number of days the logs will be retained in the log group
+    TessellLogEventsDTO:
+      title: Log Events
+      description: This is a definition for the list of log events
+      type: object
+      properties:
+        logs:
+          type: array
+          items:
+            type: string
+          description: The list of log events
+        metadata:
+          $ref: '#/components/schemas/TessellLogEventsMetadata'
+    TessellLogsBaseStorageCloudInfo:
+      type: object
+      properties:
+        fileId:
+          type: string
+    TessellLogEventsMetadata:
+      title: Log Events Metadata
+      description: This is a definition for the metadata of log events
+      type: object
+      properties:
+        fileName:
+          type: string
+          description: The name of the log file
+        count:
+          type: number
+          description: The number of log events in the returned list
+        firstEventTimestamp:
+          type: string
+          format: date-time
+          description: The timestamp of the first log event in the list
+        lastEventTimestamp:
+          type: string
+          format: date-time
+          description: The timestamp of the last log event in the list
+    TessellDbServiceInstanceInfo:
+      description: Tessell's DB Service and DB Service Instance info
+      type: object
+      properties:
+        serviceId:
+          type: string
+          description: Service ID
+          format: uuid
+        serviceName:
+          type: string
+          description: Service Name
+        serviceInstanceId:
+          type: string
+          description: Service Instance Id
+          format: uuid
+        serviceInstanceName:
+          type: string
+          description: Service Instance Name
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -598,24 +723,9 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    TessellDbServiceInstanceInfo:
-      description: Tessell's DB Service and DB Service Instance info
-      type: object
-      properties:
-        serviceId:
-          type: string
-          description: Service ID
-          format: uuid
-        serviceName:
-          type: string
-          description: Service Name
-        serviceInstanceId:
-          type: string
-          description: Service Instance Id
-          format: uuid
-        serviceInstanceName:
-          type: string
-          description: Service Instance Name
+    TessellLogsCloudInfo:
+      oneOf:
+      - $ref: '#/components/schemas/TessellLogsAWSStorageCloudInfo'
     TessellLogsAWSStorageCloudInfo:
       title: TessellLogsAWSStorageCloudInfo
       description: Info of log groups and stream of the logs
@@ -629,94 +739,6 @@ components:
             type: string
           region:
             type: string
-    TessellLogFilesCloudInfo:
-      title: TessellLogFilesCloudInfo
-      description: Info of where the logs are stored in cloud
-      type: object
-      properties:
-        serviceInstanceId:
-          type: string
-          format: uuid
-        serviceInstanceName:
-          type: string
-        logfiles:
-          type: array
-          items:
-            $ref: '#/components/schemas/TessellLogsCloudInfo'
-    TessellLogsCloudInfo:
-      oneOf:
-      - $ref: '#/components/schemas/TessellLogsAWSStorageCloudInfo'
-    TessellAWSLogGroupDTO:
-      title: Log Group
-      description: This is a definition for Log Group Object
-      type: object
-      properties:
-        logGroupName:
-          type: string
-          description: The name of the log group
-        region:
-          type: string
-          description: The region of the log group
-        cloudAccountId:
-          type: string
-          format: uuid
-          description: The cloud account id of the account corresponding to the log group
-        retentionDays:
-          type: number
-          format: integer
-          description: The number of days the logs will be retained in the log group
-    TessellLogsBaseStorageCloudInfo:
-      type: object
-      properties:
-        fileId:
-          type: string
-    DBLogFilesInfoDTO:
-      title: DB Files Info
-      description: This is a definition for DB log file object
-      type: object
-      properties:
-        fileName:
-          type: string
-          description: The name of the log file
-        firstEventTimestamp:
-          type: number
-          format: long
-          description: The time of the first event in the log file in Epoch timestamp(in milliseconds). This will be 0 in case of Azure.
-        lastEventTimestamp:
-          type: number
-          format: long
-          description: The time of the last event in the log file in Epoch timestamp(in milliseconds). This will be 0 in case of Azure.
-    TessellLogEventsMetadata:
-      title: Log Events Metadata
-      description: This is a definition for the metadata of log events
-      type: object
-      properties:
-        fileName:
-          type: string
-          description: The name of the log file
-        count:
-          type: number
-          description: The number of log events in the returned list
-        firstEventTimestamp:
-          type: string
-          format: date-time
-          description: The timestamp of the first log event in the list
-        lastEventTimestamp:
-          type: string
-          format: date-time
-          description: The timestamp of the last log event in the list
-    TessellLogEventsDTO:
-      title: Log Events
-      description: This is a definition for the list of log events
-      type: object
-      properties:
-        logs:
-          type: array
-          items:
-            type: string
-          description: The list of log events
-        metadata:
-          $ref: '#/components/schemas/TessellLogEventsMetadata'
   securitySchemes:
     BearerAuth:
       type: http

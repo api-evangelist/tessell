@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center Genie API
+  title: Tessell Genie API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -47,7 +47,6 @@ paths:
     post:
       operationId: disableGenie
       summary: Disable Genie for a specific database system
-      description: Disable Genie for a specific database system
       tags:
       - Genie
       requestBody:
@@ -73,7 +72,6 @@ paths:
     get:
       operationId: getAllRequests
       summary: Request access to VMs of a specific ÐB_SERVICE
-      description: Request access to VMs of a specific ÐB_SERVICE
       tags:
       - Genie
       parameters:
@@ -98,7 +96,6 @@ paths:
     post:
       operationId: requestAccess
       summary: Request access to VMs of a specific ÐB_SERVICE
-      description: Request access to VMs of a specific ÐB_SERVICE
       tags:
       - Genie
       parameters:
@@ -222,154 +219,51 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
-  requestBodies:
-    GenieRequestPayload:
+  responses:
+    GenieConfig:
+      description: OK
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/GenieRequestPayload'
-    GenieRequestPatch:
+            $ref: '#/components/schemas/GenieConfig'
+    GenieResponse:
+      description: OK
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/GenieRequestPatch'
-    GenieEnablePayload:
+            $ref: '#/components/schemas/GenieResponse'
+    GenieConfigResponseDownload:
+      description: OK
+      content:
+        application/zip:
+          schema:
+            type: string
+            format: binary
+        application/octet-stream:
+          schema:
+            type: string
+            format: binary
+    GenieResponseList:
+      description: OK
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/GenieEnablePayload'
-    GenieDisablePayload:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GenieDisablePayload'
+            type: array
+            items:
+              $ref: '#/components/schemas/GenieResponse'
   schemas:
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    GenieRequestEntityMetadata:
-      description: Genie Request Entity Metadata
+    GenieAddComputes:
+      title: GenieAddComputes
       type: object
       properties:
-        computeResourceMetadata:
-          type: array
-          description: List of computes associated with the Genie request
-          items:
-            type: string
-        requestedBy:
+        serviceId:
+          description: All computes
           type: string
-          description: username
-          x-gorm-column-attrs: not null
-        description:
-          type: string
-          description: Genie request description
-        ticketId:
-          type: string
-          description: Jira or freshdesk ticket filed to request Genie
-        initialisationMethod:
-          x-gorm-column-attrs: not null
-          description: Initialisation method of the Genie, Ops portal or for customer
-          allOf:
-          - $ref: '#/components/schemas/InitialisationMethod'
-        authenticationMethod:
-          x-gorm-column-attrs: not null
-          description: Authentication method of the Genie, Ops portal or for customer
-          allOf:
-          - $ref: '#/components/schemas/AuthenticationMethod'
-        dateCreated:
-          type: string
-          format: date-time
-          description: entry creation timestamp
-        expiryInMinutes:
-          type: integer
-          description: Time in minutes for which Genie access is valid
-        dateModified:
-          type: string
-          format: date-time
-          description: entry modification timestamp
-    GenieType:
-      title: GenieType
-      description: Enumeration for genie type
-      type: string
-      enum:
-      - CUSTOMER
-      - INTERNAL
-      - ANSIBLE
-    GenieEnablePayload:
-      title: GenieEnablePayload
-      type: object
-      description: Payload for genie
-      properties:
-        requestID:
-          description: Request ID for which Genie is to be enabled
-          type: string
-        otp:
-          description: OTP to enable the genie
-          type: string
-        retry:
-          allOf:
-          - $ref: '#/components/schemas/GenieRetryPayload'
-    GenieRequestPatch:
-      title: GenieRequestPatch
-      type: object
-      description: Patch for genie request
-      properties:
-        requestID:
-          description: Request ID for which Genie has to be extended
-          type: string
-        expiryInMinutes:
-          type: integer
-          format: int32
-          default: 60
-          minimum: 60
-        addComputes:
-          allOf:
-          - $ref: '#/components/schemas/GenieAddComputes'
-    GenieRetryPayload:
-      title: GenieRetryPayload
-      type: object
-      properties:
-        allowedIpAddresses:
-          description: cidr block of the virtual network
-          example: 10.0.0.4/24
+        computeResourceIds:
+          description: Computes for which Genie is to be enabled
           type: array
           items:
             type: string
-    GenieDisablePayload:
-      title: GenieDisablePayload
-      type: object
-      properties:
-        requestID:
-          description: Request ID for which Genie is to be disabled
-          type: string
-        isDeclined:
-          description: is genie request declined
-          type: boolean
-          default: false
-        forceRevoke:
-          allOf:
-          - $ref: '#/components/schemas/GenieForceRevokePayload'
     GenieConfig:
       title: GenieConfig
       type: object
@@ -396,6 +290,65 @@ components:
         maxExpiryTime:
           description: Maximum Expiry time customer can set for a Genie request
           type: string
+    GenieDisablePayload:
+      title: GenieDisablePayload
+      type: object
+      properties:
+        requestID:
+          description: Request ID for which Genie is to be disabled
+          type: string
+        isDeclined:
+          description: is genie request declined
+          type: boolean
+          default: false
+        forceRevoke:
+          allOf:
+          - $ref: '#/components/schemas/GenieForceRevokePayload'
+    InitialisationMethod:
+      title: InitialisationMethod
+      description: Enumeration for genie initialisation
+      type: string
+      enum:
+      - OPS_PORTAL
+      - CUSTOMER_PORTAL
+    GenieStatus:
+      title: GenieStatus
+      description: Enumeration for genie status
+      type: string
+      enum:
+      - ENABLED
+      - DISABLED
+      - REQUESTED
+      - REQUEST_DECLINED
+      - ENABLING
+      - PARTIAL_ENABLED
+      - DISABLING
+      - FAILED_ENABLE
+      - FAILED_DISABLE
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
     GenieEntity:
       description: Genie Entity to track status of individual compute
       x-gorm: true
@@ -431,32 +384,59 @@ components:
           description: Current status of the genie on this entity
           allOf:
           - $ref: '#/components/schemas/GenieStatus'
-    GenieStatus:
-      title: GenieStatus
-      description: Enumeration for genie status
-      type: string
-      enum:
-      - ENABLED
-      - DISABLED
-      - REQUESTED
-      - REQUEST_DECLINED
-      - ENABLING
-      - PARTIAL_ENABLED
-      - DISABLING
-      - FAILED_ENABLE
-      - FAILED_DISABLE
-    GenieForceRevokePayload:
-      title: GenieForceRevokePayload
+    GenieInstanceMetadata:
+      title: GenieInstanceMetadata
       type: object
       properties:
-        allComputes:
-          description: Force revoke Genie for all computes in the request
-          type: boolean
-        computeResourceIds:
-          description: Computes for which Genie is to be forced revoked
+        allowedIpAddresses:
           type: array
           items:
             type: string
+        activeRequests:
+          type: array
+          items:
+            type: string
+        role:
+          type: string
+          description: role of the instance associated with the compute
+        clientID:
+          type: string
+          x-gorm-column-attrs: not null
+          description: FRPC client ID to authenticate with frps
+        name:
+          type: string
+          description: name of the instance associated with the compute
+        error:
+          type: string
+          description: Error while enabling Genie
+        statusModifiedAt:
+          type: string
+          format: date-time
+          description: Last time at which the status of the genie entity was modified
+        useFrpClient:
+          type: string
+          description: Stringified boolean, if FRP client process should be used to perform genie operation. If set to false then Agent integrated FRPC will be used
+    GenieEnablePayload:
+      title: GenieEnablePayload
+      type: object
+      description: Payload for genie
+      properties:
+        requestID:
+          description: Request ID for which Genie is to be enabled
+          type: string
+        otp:
+          description: OTP to enable the genie
+          type: string
+        retry:
+          allOf:
+          - $ref: '#/components/schemas/GenieRetryPayload'
+    OsType:
+      title: OsType
+      description: Enumeration for os type
+      type: string
+      enum:
+      - Linux
+      - Windows
     GenieRequestEntity:
       description: Genie request entity to track status of individual requests
       x-gorm: true
@@ -489,6 +469,26 @@ components:
           description: Genie Request Metadata
           allOf:
           - $ref: '#/components/schemas/GenieRequestEntityMetadata'
+    GenieType:
+      title: GenieType
+      description: Enumeration for genie type
+      type: string
+      enum:
+      - CUSTOMER
+      - INTERNAL
+      - ANSIBLE
+    GenieForceRevokePayload:
+      title: GenieForceRevokePayload
+      type: object
+      properties:
+        allComputes:
+          description: Force revoke Genie for all computes in the request
+          type: boolean
+        computeResourceIds:
+          description: Computes for which Genie is to be forced revoked
+          type: array
+          items:
+            type: string
     GenieRequestPayload:
       title: GenieRequestPayload
       type: object
@@ -542,13 +542,85 @@ components:
       enum:
       - OTP
       - CUSTOMER_APPROVAL
-    OsType:
-      title: OsType
-      description: Enumeration for os type
-      type: string
-      enum:
-      - Linux
-      - Windows
+    GenieRequestPatch:
+      title: GenieRequestPatch
+      type: object
+      description: Patch for genie request
+      properties:
+        requestID:
+          description: Request ID for which Genie has to be extended
+          type: string
+        expiryInMinutes:
+          type: integer
+          format: int32
+          default: 60
+          minimum: 60
+        addComputes:
+          allOf:
+          - $ref: '#/components/schemas/GenieAddComputes'
+    GenieRequestEntityMetadata:
+      description: Genie Request Entity Metadata
+      type: object
+      properties:
+        computeResourceMetadata:
+          type: array
+          description: List of computes associated with the Genie request
+          items:
+            type: string
+        requestedBy:
+          type: string
+          description: username
+          x-gorm-column-attrs: not null
+        description:
+          type: string
+          description: Genie request description
+        ticketId:
+          type: string
+          description: Jira or freshdesk ticket filed to request Genie
+        initialisationMethod:
+          x-gorm-column-attrs: not null
+          description: Initialisation method of the Genie, Ops portal or for customer
+          allOf:
+          - $ref: '#/components/schemas/InitialisationMethod'
+        authenticationMethod:
+          x-gorm-column-attrs: not null
+          description: Authentication method of the Genie, Ops portal or for customer
+          allOf:
+          - $ref: '#/components/schemas/AuthenticationMethod'
+        dateCreated:
+          type: string
+          format: date-time
+          description: entry creation timestamp
+        expiryInMinutes:
+          type: integer
+          description: Time in minutes for which Genie access is valid
+        dateModified:
+          type: string
+          format: date-time
+          description: entry modification timestamp
+    GenieRetryPayload:
+      title: GenieRetryPayload
+      type: object
+      properties:
+        allowedIpAddresses:
+          description: cidr block of the virtual network
+          example: 10.0.0.4/24
+          type: array
+          items:
+            type: string
+    GenieResponse:
+      title: GenieResponse
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/GenieRequestEntity'
+      - $ref: '#/components/schemas/GenieRequestEntityMetadata'
+      - type: object
+        properties:
+          entities:
+            type: array
+            description: List of computes associated with the Genie request
+            items:
+              $ref: '#/components/schemas/GenieEntity'
     GenieConfigurationInstance:
       title: Genie Configuration for a instance
       type: object
@@ -578,92 +650,7 @@ components:
         os:
           allOf:
           - $ref: '#/components/schemas/OsType'
-    GenieAddComputes:
-      title: GenieAddComputes
-      type: object
-      properties:
-        serviceId:
-          description: All computes
-          type: string
-        computeResourceIds:
-          description: Computes for which Genie is to be enabled
-          type: array
-          items:
-            type: string
-    GenieInstanceMetadata:
-      title: GenieInstanceMetadata
-      type: object
-      properties:
-        allowedIpAddresses:
-          type: array
-          items:
-            type: string
-        activeRequests:
-          type: array
-          items:
-            type: string
-        role:
-          type: string
-          description: role of the instance associated with the compute
-        clientID:
-          type: string
-          x-gorm-column-attrs: not null
-          description: FRPC client ID to authenticate with frps
-        name:
-          type: string
-          description: name of the instance associated with the compute
-        error:
-          type: string
-          description: Error while enabling Genie
-        statusModifiedAt:
-          type: string
-          format: date-time
-          description: Last time at which the status of the genie entity was modified
-        useFrpClient:
-          type: string
-          description: Stringified boolean, if FRP client process should be used to perform genie operation. If set to false then Agent integrated FRPC will be used
-    InitialisationMethod:
-      title: InitialisationMethod
-      description: Enumeration for genie initialisation
-      type: string
-      enum:
-      - OPS_PORTAL
-      - CUSTOMER_PORTAL
-    GenieResponse:
-      title: GenieResponse
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/GenieRequestEntity'
-      - $ref: '#/components/schemas/GenieRequestEntityMetadata'
-      - type: object
-        properties:
-          entities:
-            type: array
-            description: List of computes associated with the Genie request
-            items:
-              $ref: '#/components/schemas/GenieEntity'
   parameters:
-    serviceId:
-      description: DB Service Id for which the Genie Access request is in context
-      in: query
-      name: serviceId
-      required: false
-      schema:
-        type: string
-    computeResourceId:
-      description: Compute Resource Id for which the Genie Access request is in context
-      in: query
-      name: computeResourceId
-      required: false
-      schema:
-        type: string
-    requestId:
-      description: Request ID of the Genie request
-      in: query
-      name: requestId
-      required: false
-      schema:
-        type: string
     tenantIdPath:
       in: path
       name: tenantId
@@ -681,38 +668,48 @@ components:
         minLength: 1
         maxLength: 128
         example: 12345678-abcd-1234-abcd-1234abcd5678
-  responses:
-    GenieResponseList:
-      description: OK
+    computeResourceId:
+      description: Compute Resource Id for which the Genie Access request is in context
+      in: query
+      name: computeResourceId
+      required: false
+      schema:
+        type: string
+    serviceId:
+      description: DB Service Id for which the Genie Access request is in context
+      in: query
+      name: serviceId
+      required: false
+      schema:
+        type: string
+    requestId:
+      description: Request ID of the Genie request
+      in: query
+      name: requestId
+      required: false
+      schema:
+        type: string
+  requestBodies:
+    GenieEnablePayload:
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/GenieResponse'
-    GenieConfig:
-      description: OK
+            $ref: '#/components/schemas/GenieEnablePayload'
+    GenieRequestPatch:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/GenieConfig'
-    GenieConfigResponseDownload:
-      description: OK
-      content:
-        application/zip:
-          schema:
-            type: string
-            format: binary
-        application/octet-stream:
-          schema:
-            type: string
-            format: binary
-    GenieResponse:
-      description: OK
+            $ref: '#/components/schemas/GenieRequestPatch'
+    GenieDisablePayload:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/GenieResponse'
+            $ref: '#/components/schemas/GenieDisablePayload'
+    GenieRequestPayload:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenieRequestPayload'
   securitySchemes:
     BearerAuth:
       type: http

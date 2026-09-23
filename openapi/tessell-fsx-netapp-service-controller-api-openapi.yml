@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center fsx-netapp-service-controller API
+  title: Tessell Fsx Netapp Service Controller API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -51,145 +51,51 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    FsxNetAppSvmStatus:
-      enum:
-      - AVAILABLE
-      - DOWN
-      - DELETING
-    FsxNetAppConsumerResponse:
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
+    FsxNetAppEndpointInfo:
       type: object
       properties:
-        response:
+        dns:
+          type: string
+          description: The dns name of entity
+        ipAddresses:
           type: array
+          description: The ip address of the entity
           items:
-            $ref: '#/components/schemas/FsxNetAppConsumerDTO'
-    FsxNetAppConfigurationInfo:
+            type: string
+            format: ip4
+    FsxNetAppSvmConsumerDTO:
       type: object
-      description: This is the configuration of FSx NetApp File System
-      allOf:
-      - $ref: '#/components/schemas/FsxNetAppConfigurationInfoOps'
-      properties:
-        availableStorage:
-          type: integer
-          description: Available storage in bytes
-          format: int64
-          minimum: 0
-          default: 0
-    apiResponse:
-      example:
-        metadata:
-          pagination:
-            pageOffset: 0
-            pageSize: 6
-          records: 1
-          timeZone: timeZone
-        response: '{}'
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-      title: ApiResponse
-      type: object
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    FsxNetAppConnectivityInfo:
-      type: object
-      description: This is a definition for Tessell FSx-NetApp connectivity
-      properties:
-        endpoints:
-          description: FSx NetApp endpoints
-          type: object
-          properties:
-            interCluster:
-              $ref: '#/components/schemas/FsxNetAppEndpointInfo'
-            management:
-              $ref: '#/components/schemas/FsxNetAppEndpointInfo'
-        secretId:
-          type: string
-          format: uuid
-          description: Secret id
-        subnets:
-          description: FSx NetApp subnets
-          type: object
-          properties:
-            preferred:
-              $ref: '#/components/schemas/FsxNetAppSubnetInfo'
-            standby:
-              $ref: '#/components/schemas/FsxNetAppSubnetInfo'
-    FsxNetAppStatus:
-      enum:
-      - AVAILABLE
-      - DOWN
-      - DELETING
-    FsxNetAppConsumerDTO:
-      type: object
-      description: This is a definition of FSx-NetApp(s) available for Provisioning DB services in Tessell.
+      description: This is a definition of FSx-NetApp SVM(s) available for Provisioning DB services in Tessell.
       properties:
         id:
           type: string
           format: uuid
         name:
           type: string
-          description: The name of the FSx NetApp
-        vpc:
-          type: string
-          description: The name of the vpc
-        subscription:
-          type: string
-          description: The name of the subscription
           minLength: 1
           maxLength: 128
-        configurations:
-          $ref: '#/components/schemas/FsxNetAppConfigurationInfo'
-        infrastructureInfo:
-          $ref: '#/components/schemas/FsxNetAppInfrastructureInfo'
-        connectivityInfo:
-          $ref: '#/components/schemas/FsxNetAppConnectivityInfo'
-        svmInfo:
-          type: array
-          items:
-            $ref: '#/components/schemas/FsxNetAppSvmConsumerDTO'
+          description: The name of the FSx NetApp SVM
         status:
-          $ref: '#/components/schemas/FsxNetAppStatus'
+          $ref: '#/components/schemas/FsxNetAppSvmStatus'
+        connectivityInfo:
+          $ref: '#/components/schemas/FsxNetAppSvmConnectivityInfo'
         dateCreated:
           type: string
           description: Timestamp when the entity was created
           format: date-time
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    FsxNetAppStatus:
+      enum:
+      - AVAILABLE
+      - DOWN
+      - DELETING
     FsxNetAppConfigurationInfoOps:
       type: object
       description: This is the configuration of FSx NetApp File System
@@ -218,88 +124,6 @@ components:
           format: int64
           minimum: 0
           default: 0
-    FsxNetAppSvmConnectivityInfo:
-      type: object
-      description: This is a definition for Tessell FSx-NetApp SVM connectivity
-      properties:
-        endpoints:
-          description: FSx NetApp SVM endpoints
-          type: object
-          properties:
-            iscsi:
-              $ref: '#/components/schemas/FsxNetAppEndpointInfo'
-            management:
-              $ref: '#/components/schemas/FsxNetAppEndpointInfo'
-            nfs:
-              $ref: '#/components/schemas/FsxNetAppEndpointInfo'
-            sbm:
-              $ref: '#/components/schemas/FsxNetAppEndpointInfo'
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
-    FsxNetAppEndpointInfo:
-      type: object
-      properties:
-        dns:
-          type: string
-          description: The dns name of entity
-        ipAddresses:
-          type: array
-          description: The ip address of the entity
-          items:
-            type: string
-            format: ip4
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    FsxNetAppSubnetInfo:
-      type: object
-      description: This is a definition for Tessell FSx subnet
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          minLength: 1
-          maxLength: 128
-          description: The name of the subnet
-        availabilityZone:
-          type: string
-          description: az of the subnet
-    FsxNetAppSvmConsumerDTO:
-      type: object
-      description: This is a definition of FSx-NetApp SVM(s) available for Provisioning DB services in Tessell.
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          minLength: 1
-          maxLength: 128
-          description: The name of the FSx NetApp SVM
-        status:
-          $ref: '#/components/schemas/FsxNetAppSvmStatus'
-        connectivityInfo:
-          $ref: '#/components/schemas/FsxNetAppSvmConnectivityInfo'
-        dateCreated:
-          type: string
-          description: Timestamp when the entity was created
-          format: date-time
     FsxNetAppInfrastructureInfo:
       type: object
       description: This is definition for FSx NetApp's infrastructure info
@@ -337,6 +161,167 @@ components:
             name:
               type: string
               description: name of the encryption key
+    FsxNetAppConsumerDTO:
+      type: object
+      description: This is a definition of FSx-NetApp(s) available for Provisioning DB services in Tessell.
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: The name of the FSx NetApp
+        vpc:
+          type: string
+          description: The name of the vpc
+        subscription:
+          type: string
+          description: The name of the subscription
+          minLength: 1
+          maxLength: 128
+        configurations:
+          $ref: '#/components/schemas/FsxNetAppConfigurationInfo'
+        infrastructureInfo:
+          $ref: '#/components/schemas/FsxNetAppInfrastructureInfo'
+        connectivityInfo:
+          $ref: '#/components/schemas/FsxNetAppConnectivityInfo'
+        svmInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/FsxNetAppSvmConsumerDTO'
+        status:
+          $ref: '#/components/schemas/FsxNetAppStatus'
+        dateCreated:
+          type: string
+          description: Timestamp when the entity was created
+          format: date-time
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    FsxNetAppConfigurationInfo:
+      type: object
+      description: This is the configuration of FSx NetApp File System
+      allOf:
+      - $ref: '#/components/schemas/FsxNetAppConfigurationInfoOps'
+      properties:
+        availableStorage:
+          type: integer
+          description: Available storage in bytes
+          format: int64
+          minimum: 0
+          default: 0
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    FsxNetAppSubnetInfo:
+      type: object
+      description: This is a definition for Tessell FSx subnet
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The name of the subnet
+        availabilityZone:
+          type: string
+          description: az of the subnet
+    FsxNetAppSvmConnectivityInfo:
+      type: object
+      description: This is a definition for Tessell FSx-NetApp SVM connectivity
+      properties:
+        endpoints:
+          description: FSx NetApp SVM endpoints
+          type: object
+          properties:
+            iscsi:
+              $ref: '#/components/schemas/FsxNetAppEndpointInfo'
+            management:
+              $ref: '#/components/schemas/FsxNetAppEndpointInfo'
+            nfs:
+              $ref: '#/components/schemas/FsxNetAppEndpointInfo'
+            sbm:
+              $ref: '#/components/schemas/FsxNetAppEndpointInfo'
+    FsxNetAppConnectivityInfo:
+      type: object
+      description: This is a definition for Tessell FSx-NetApp connectivity
+      properties:
+        endpoints:
+          description: FSx NetApp endpoints
+          type: object
+          properties:
+            interCluster:
+              $ref: '#/components/schemas/FsxNetAppEndpointInfo'
+            management:
+              $ref: '#/components/schemas/FsxNetAppEndpointInfo'
+        secretId:
+          type: string
+          format: uuid
+          description: Secret id
+        subnets:
+          description: FSx NetApp subnets
+          type: object
+          properties:
+            preferred:
+              $ref: '#/components/schemas/FsxNetAppSubnetInfo'
+            standby:
+              $ref: '#/components/schemas/FsxNetAppSubnetInfo'
+    FsxNetAppConsumerResponse:
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/FsxNetAppConsumerDTO'
     FsxNetAppDeploymentType:
       type: string
       enum:
@@ -349,32 +334,22 @@ components:
       - SINGLE_AZ_2
       - MULTI_AZ_1
       - MULTI_AZ_2
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    FsxNetAppSvmStatus:
+      enum:
+      - AVAILABLE
+      - DOWN
+      - DELETING
   parameters:
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    fsx-statuses:
-      name: statuses
-      description: Statuses of FSx file system to be included
-      in: query
-      required: false
-      schema:
-        type: array
-        items:
-          $ref: '#/components/schemas/FsxNetAppStatus'
-    subscription-query:
-      name: subscription
-      description: Filter the entities based on cloud-subscription
-      in: query
-      required: false
-      schema:
-        type: string
     fsx-skip-statuses:
       name: skip-statuses
       description: Statuses of FSx file system to be skipped
@@ -400,6 +375,31 @@ components:
       required: false
       schema:
         type: string
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    subscription-query:
+      name: subscription
+      description: Filter the entities based on cloud-subscription
+      in: query
+      required: false
+      schema:
+        type: string
+    fsx-statuses:
+      name: statuses
+      description: Statuses of FSx file system to be included
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/FsxNetAppStatus'
   securitySchemes:
     BearerAuth:
       type: http

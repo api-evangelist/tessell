@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center rpo-policy API
+  title: Tessell Rpo Policy API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -29,8 +29,9 @@ paths:
         style: form
         required: false
         schema:
-          type: boolean
-          nullable: true
+          type:
+          - boolean
+          - 'null'
       - $ref: '#/components/parameters/pageSize'
       - $ref: '#/components/parameters/pageOffset'
       - $ref: '#/components/parameters/timeZone'
@@ -342,41 +343,60 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    RpoPolicyUsage:
+    SlaMaturityStatus:
+      description: Maturity status for the RPO Policy
+      type: string
+      enum:
+      - DRAFT
+      - PUBLISHED
+      - UNPUBLISHED
+    RpoPolicyConsumptionView:
       type: object
       properties:
-        amName:
-          type: string
-          description: Name of the availability machine
-        amId:
-          type: string
-          format: uuid
-        engineType:
-          $ref: '#/components/schemas/databaseEngineType'
-        owner:
-          type: string
-          description: Email id of the AM owner
-        status:
-          $ref: '#/components/schemas/DmmStatus'
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    RpoPolicyCreateUpdatePayload:
-      type: object
-      properties:
-        description:
-          type: string
         name:
           type: string
-          minLength: 2
-          maxLength: 50
+          description: RPO policy name
+        description:
+          type: string
+        maturityStatus:
+          $ref: '#/components/schemas/SlaMaturityStatus'
         retentionInfo:
           $ref: '#/components/schemas/SlaRetentionInfo'
+    TessellApiResponse:
+      title: TessellApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+    GetRpoPolicyUsage:
+      allOf:
+      - $ref: '#/components/schemas/TessellApiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/RpoPolicyUsage'
+    GetRpoPoliciesServiceView:
+      allOf:
+      - $ref: '#/components/schemas/TessellApiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/RpoPolicyServiceView'
+    GetRpoPoliciesConsumptionView:
+      allOf:
+      - $ref: '#/components/schemas/TessellApiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/RpoPolicyConsumptionView'
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -401,59 +421,33 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    apiPaginationInfo:
-      title: apiPaginationInfo
+    RpoPolicyUsage:
       type: object
       properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    GetRpoPolicyUsage:
-      allOf:
-      - $ref: '#/components/schemas/TessellApiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/RpoPolicyUsage'
-    RpoPolicyConsumptionView:
+        amName:
+          type: string
+          description: Name of the availability machine
+        amId:
+          type: string
+          format: uuid
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        owner:
+          type: string
+          description: Email id of the AM owner
+        status:
+          $ref: '#/components/schemas/DmmStatus'
+    apiMetadata:
+      title: apiMetadata
       type: object
       properties:
-        name:
+        timeZone:
           type: string
-          description: RPO policy name
-        description:
-          type: string
-        maturityStatus:
-          $ref: '#/components/schemas/SlaMaturityStatus'
-        retentionInfo:
-          $ref: '#/components/schemas/SlaRetentionInfo'
-    DmmStatus:
-      description: DMM Status
-      type: string
-      enum:
-      - CREATING
-      - DELETED
-      - DELETING
-      - TO_BE_DELETED
-      - DELETION_FAILED
-      - DISABLED
-      - PAUSED
-      - RUNNING
-      - FROZEN
-    GetRpoPoliciesConsumptionView:
-      allOf:
-      - $ref: '#/components/schemas/TessellApiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/RpoPolicyConsumptionView'
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
     RpoPolicyServiceView:
       type: object
       description: Information about the Availability Machine's RPO Policy
@@ -485,41 +479,6 @@ components:
           type: string
           description: Timestamp when the entity was last modified
           format: date-time
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    GetRpoPoliciesServiceView:
-      allOf:
-      - $ref: '#/components/schemas/TessellApiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/RpoPolicyServiceView'
-    TessellApiResponse:
-      title: TessellApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-    SlaMaturityStatus:
-      description: Maturity status for the RPO Policy
-      type: string
-      enum:
-      - DRAFT
-      - PUBLISHED
-      - UNPUBLISHED
     databaseEngineType:
       description: Database Engine Type
       type: string
@@ -531,6 +490,48 @@ components:
       - APACHE_KAFKA
       - MONGODB
       - MILVUS
+    RpoPolicyCreateUpdatePayload:
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+          minLength: 2
+          maxLength: 50
+        retentionInfo:
+          $ref: '#/components/schemas/SlaRetentionInfo'
+    DmmStatus:
+      description: DMM Status
+      type: string
+      enum:
+      - CREATING
+      - DELETED
+      - DELETING
+      - TO_BE_DELETED
+      - DELETION_FAILED
+      - DISABLED
+      - PAUSED
+      - RUNNING
+      - FROZEN
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
     SlaRetentionInfo:
       description: Retention details of the data that is being governed by the RPO policy
       type: object
@@ -571,23 +572,6 @@ components:
           minimum: 0
           maximum: 30
   parameters:
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
     pageSize:
       name: page-size
       in: query
@@ -597,6 +581,23 @@ components:
         type: integer
         format: int32
         default: 10
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
   securitySchemes:
     BearerAuth:
       type: http

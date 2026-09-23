@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center tessell-database-security-config API
+  title: Tessell Database Security Config API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -114,6 +114,68 @@ components:
           type: object
           additionalProperties:
             type: string
+    DBServerSecurityConfigUpdateRequest:
+      type: object
+      required:
+      - securityProfile
+      properties:
+        securityProfile:
+          $ref: '#/components/schemas/SecurityProfileUpdateConfig'
+        applyConfig:
+          $ref: '#/components/schemas/ApplyConfig'
+    DBServiceInstanceSecurityConfigUpdateRequest:
+      type: object
+      required:
+      - instanceId
+      - securityProfile
+      properties:
+        instanceId:
+          type: string
+          format: uuid
+          description: The instance Id for which security configuration update needs to be triggered
+        securityProfile:
+          $ref: '#/components/schemas/SecurityProfileUpdateConfig'
+    ApplyStrategy:
+      type: string
+      enum:
+      - IMMEDIATELY
+      - MAINTENANCE_WINDOW
+      - CUSTOM_DATE_TIME
+      - DO_NOT_APPLY
+    ApplyConfig:
+      title: ApplyConfig
+      type: object
+      description: Application Details for any operation
+      properties:
+        overriddenTaskIds:
+          type: array
+          description: Task ids that this request will override
+          items:
+            type: string
+            format: uuid
+            uniqueItems: true
+        strategy:
+          $ref: '#/components/schemas/ApplyStrategy'
+        maintenanceWindowId:
+          type: string
+          format: uuid
+          description: Needed when strategy is MAINTENANCE_WINDOW
+        time:
+          type: string
+          format: date-time
+          description: Needed when strategy is CUSTOM_DATE_TIME
+    DBServiceSecurityConfigUpdateRequest:
+      type: object
+      description: Object to capture the security configuration update request for a DB Service
+      required:
+      - instanceSecurityUpdateConfig
+      properties:
+        instanceSecurityUpdateConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/DBServiceInstanceSecurityConfigUpdateRequest'
+        applyConfig:
+          $ref: '#/components/schemas/ApplyConfig'
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -138,37 +200,6 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    ApplyConfig:
-      title: ApplyConfig
-      type: object
-      description: Application Details for any operation
-      properties:
-        overriddenTaskIds:
-          type: array
-          description: Task ids that this request will override
-          items:
-            type: string
-            format: uuid
-            uniqueItems: true
-        strategy:
-          $ref: '#/components/schemas/ApplyStrategy'
-        maintenanceWindowId:
-          type: string
-          format: uuid
-          description: Needed when strategy is MAINTENANCE_WINDOW
-        time:
-          type: string
-          format: date-time
-          description: Needed when strategy is CUSTOM_DATE_TIME
-    DBServerSecurityConfigUpdateRequest:
-      type: object
-      required:
-      - securityProfile
-      properties:
-        securityProfile:
-          $ref: '#/components/schemas/SecurityProfileUpdateConfig'
-        applyConfig:
-          $ref: '#/components/schemas/ApplyConfig'
     SecurityProfileUpdateConfig:
       type: object
       properties:
@@ -180,37 +211,6 @@ components:
           type: string
           format: uuid
           description: Security Profile Version Id to which instance needs to be update
-    DBServiceInstanceSecurityConfigUpdateRequest:
-      type: object
-      required:
-      - instanceId
-      - securityProfile
-      properties:
-        instanceId:
-          type: string
-          format: uuid
-          description: The instance Id for which security configuration update needs to be triggered
-        securityProfile:
-          $ref: '#/components/schemas/SecurityProfileUpdateConfig'
-    ApplyStrategy:
-      type: string
-      enum:
-      - IMMEDIATELY
-      - MAINTENANCE_WINDOW
-      - CUSTOM_DATE_TIME
-      - DO_NOT_APPLY
-    DBServiceSecurityConfigUpdateRequest:
-      type: object
-      description: Object to capture the security configuration update request for a DB Service
-      required:
-      - instanceSecurityUpdateConfig
-      properties:
-        instanceSecurityUpdateConfig:
-          type: array
-          items:
-            $ref: '#/components/schemas/DBServiceInstanceSecurityConfigUpdateRequest'
-        applyConfig:
-          $ref: '#/components/schemas/ApplyConfig'
   parameters:
     id:
       name: id

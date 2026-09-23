@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center tessellGatewayServiceController API
+  title: Tessell Gateway Service Controller API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -66,12 +66,6 @@ components:
         jwt:
           type: string
           description: JWT of the user
-    AgentStatus:
-      type: string
-      description: Agent Status
-      enum:
-      - CONNECTED
-      - DISCONNECTED
     asyncStatusResponse:
       type: object
       description: Information for getting status asynchronously
@@ -86,6 +80,12 @@ components:
           description: NATS Subject to subscribe to
         commandCredentials:
           $ref: '#/components/schemas/JWTCredentials'
+    AgentStatus:
+      type: string
+      description: Agent Status
+      enum:
+      - CONNECTED
+      - DISCONNECTED
     ApiError:
       type: object
       description: Common error response object for non 2xx responses

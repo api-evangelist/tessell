@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center agentController API
+  title: Tessell Agent Controller API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -14,14 +14,14 @@ servers:
     server:
       default: console.tessell.com
 tags:
-- name: agentController
+- name: Agent Controller
 paths:
   /tickets/agents:
     get:
       summary: Get agent list
       description: returns a list of all agents
       tags:
-      - agentController
+      - Agent Controller
       operationId: getAgents
       responses:
         '200':
@@ -49,7 +49,7 @@ paths:
       summary: Get agent by id
       description: returns an agent with the given id
       tags:
-      - agentController
+      - Agent Controller
       operationId: getAgentById
       parameters:
       - name: id
@@ -80,36 +80,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    AgentsResponse:
-      title: Get Agents Response
-      description: array of agents
-      type: array
-      items:
-        $ref: '#/components/schemas/AgentDTO'
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
     ContactDTO:
       title: Contact
       type: object
@@ -222,6 +192,30 @@ components:
           type: string
           format: date-time
           description: ticket last updated
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
     AgentDTO:
       title: Agent
       type: object
@@ -279,6 +273,12 @@ components:
           description: Agent updated timestamp
         contact:
           $ref: '#/components/schemas/ContactDTO'
+    AgentsResponse:
+      title: Get Agents Response
+      description: array of agents
+      type: array
+      items:
+        $ref: '#/components/schemas/AgentDTO'
   securitySchemes:
     BearerAuth:
       type: http

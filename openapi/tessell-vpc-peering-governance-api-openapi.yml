@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center VPC Peering Governance API
+  title: Tessell VPC Peering Governance API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -259,107 +259,88 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
+  parameters:
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    cloudRegionMandatory:
+      name: region
+      in: query
+      description: Cloud Region
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+      examples:
+        aws:
+          value: us-east-1
+          summary: aws region example
+        azure:
+          value: eastUS
+          summary: azure region example
+    cloudTypeOldConventionMandatory:
+      name: cloudType
+      in: query
+      description: Name of the Cloud
+      required: true
+      schema:
+        $ref: '#/components/schemas/cloudType'
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    subscriptionNameMandatoryOldConvention:
+      name: subscriptionName
+      in: query
+      description: Name of the Subscription
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 255
+      example: default
+    nameInPath:
+      name: name
+      in: path
+      required: true
+      description: Name of the Entity
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 512
+      example: entity-123
   schemas:
-    apiStatus:
-      title: apiStatus
+    VpcPeeringServiceConsumer:
+      description: VPC Peering details for Service Consumer
       type: object
       properties:
+        name:
+          type: string
+        cloudId:
+          type: string
+          description: CloudId of Peering Connection
+        metadata:
+          $ref: '#/components/schemas/VpcPeeringMetadata'
         status:
-          type: string
-        message:
-          type: string
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    VpcPeeringMetadata:
-      description: Metadata about Vpc Peering
-      type: object
-      properties:
-        azurePendingPeerMetadata:
-          $ref: '#/components/schemas/AzurePendingPeerVpcPeeringMetadata'
-    CreateVpcPeeringAwsCloudformationPayload:
-      description: Create VPC Peering Payload using AWS Cloudformation Payload for Service Consumer
-      type: object
-      required:
-      - subscriptionName
-      - cloudType
-      - region
-      - clientAccountId
-      - clientVpcId
-      - clientVpcRegion
-      - clientAcceptRoleArn
-      properties:
-        subscriptionName:
-          type: string
-          description: Name of the subscription
-          minLength: 1
-          maxLength: 255
-          example: default
-        cloudType:
-          $ref: '#/components/schemas/cloudType'
-        region:
-          type: string
-          description: Region of the Tessell VPC
-          minLength: 1
-          maxLength: 128
-          example: us-east-1
-        clientAccountId:
-          type: string
-          description: Account Id of the Client VPC
-          minLength: 1
-          maxLength: 64
-          example: 123456789
-        clientVpcId:
-          type: string
-          description: Id of the Client VPC
-          minLength: 1
-          maxLength: 255
-          example: vpc-1a2b3c4d
-        clientVpcRegion:
-          type: string
-          description: Region of the Client VPC
-          minLength: 1
-          maxLength: 128
-          example: us-east-2
-        clientAcceptRoleArn:
-          type: string
-          description: ARN of the client AWS Role to accept Peering
-          minLength: 1
-          maxLength: 255
-    AwsClientInfoServiceConsumer:
-      description: AWS VPC Peering Client Info for Service Consumer
-      type: object
-      properties:
-        clientVpcId:
-          type: string
-          description: Id of the client VPC
-        clientVpcRegion:
-          type: string
-          description: Region of the client VPC
-        clientAccountId:
-          type: string
-          description: Account Id of the client VPC
+          $ref: '#/components/schemas/VpcPeeringStatus'
+        awsClientInfo:
+          $ref: '#/components/schemas/AwsClientInfoServiceConsumer'
+        azureClientInfo:
+          $ref: '#/components/schemas/AzureClientInfoServiceConsumer'
+        clientVpcInfo:
+          $ref: '#/components/schemas/ClientVpcInfo'
     cloudType:
       description: Tessell supported cloud types
       type: string
@@ -368,13 +349,6 @@ components:
       - AZURE
       - GCP
       - OCI
-    VpcPeeringAwsCloudformationLink:
-      description: Tessell VPC Peering Status
-      type: object
-      properties:
-        link:
-          type: string
-          description: URL for VPC Peering
     AzureClientInfoServiceConsumer:
       description: Azure VPC Peering Client Info
       type: object
@@ -388,70 +362,6 @@ components:
         clientVpcName:
           type: string
           description: Name of the client VPC
-    CreateAwsClientVpcInfoPayload:
-      description: AWS VPC Peering Client Info
-      type: object
-      required:
-      - clientAccountId
-      - clientVpcId
-      - clientVpcRegion
-      properties:
-        clientAccountId:
-          type: string
-          description: AWS Account Id of the client VPC
-          minLength: 1
-          maxLength: 64
-          example: 123456789
-        clientVpcId:
-          type: string
-          description: Id of the client VPC
-          minLength: 1
-          maxLength: 255
-          example: vpc-1a2b3c4d
-        clientVpcRegion:
-          type: string
-          description: Region of the client VPC
-          minLength: 1
-          maxLength: 128
-          example: us-east-2
-    VpcPeeringStatus:
-      description: Tessell VPC Peering Status
-      type: string
-      enum:
-      - CREATING
-      - PENDING_PEER
-      - ACTIVE
-      - FAILED
-      - DELETING
-      - DELETION_FAILED
-    CreateVpcPeeringServiceConsumerPayload:
-      description: Create VPC Peering Payload for Service Consumer
-      type: object
-      required:
-      - subscriptionName
-      - cloudType
-      - region
-      properties:
-        subscriptionName:
-          type: string
-          description: Name of the subscription
-          minLength: 1
-          maxLength: 255
-          example: default
-        cloudType:
-          $ref: '#/components/schemas/cloudType'
-        region:
-          type: string
-          description: Region of the Tessell VPC
-          minLength: 1
-          maxLength: 128
-          example: us-east-1
-        awsClientVpcInfo:
-          $ref: '#/components/schemas/CreateAwsClientVpcInfoPayload'
-        azureClientVpcInfo:
-          $ref: '#/components/schemas/AzureClientVpcInfo'
-        clientVpcInfo:
-          $ref: '#/components/schemas/ClientVpcInfo'
     AzureClientVpcInfo:
       description: Azure VPC Peering Client Info
       type: object
@@ -524,25 +434,84 @@ components:
         owner:
           type: string
           description: Owner of the Tessell client VPC
-    VpcPeeringServiceConsumer:
-      description: VPC Peering details for Service Consumer
+    CreateVpcPeeringServiceConsumerPayload:
+      description: Create VPC Peering Payload for Service Consumer
       type: object
+      required:
+      - subscriptionName
+      - cloudType
+      - region
       properties:
-        name:
+        subscriptionName:
           type: string
-        cloudId:
+          description: Name of the subscription
+          minLength: 1
+          maxLength: 255
+          example: default
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        region:
           type: string
-          description: CloudId of Peering Connection
-        metadata:
-          $ref: '#/components/schemas/VpcPeeringMetadata'
-        status:
-          $ref: '#/components/schemas/VpcPeeringStatus'
-        awsClientInfo:
-          $ref: '#/components/schemas/AwsClientInfoServiceConsumer'
-        azureClientInfo:
-          $ref: '#/components/schemas/AzureClientInfoServiceConsumer'
+          description: Region of the Tessell VPC
+          minLength: 1
+          maxLength: 128
+          example: us-east-1
+        awsClientVpcInfo:
+          $ref: '#/components/schemas/CreateAwsClientVpcInfoPayload'
+        azureClientVpcInfo:
+          $ref: '#/components/schemas/AzureClientVpcInfo'
         clientVpcInfo:
           $ref: '#/components/schemas/ClientVpcInfo'
+    CreateAwsClientVpcInfoPayload:
+      description: AWS VPC Peering Client Info
+      type: object
+      required:
+      - clientAccountId
+      - clientVpcId
+      - clientVpcRegion
+      properties:
+        clientAccountId:
+          type: string
+          description: AWS Account Id of the client VPC
+          minLength: 1
+          maxLength: 64
+          example: 123456789
+        clientVpcId:
+          type: string
+          description: Id of the client VPC
+          minLength: 1
+          maxLength: 255
+          example: vpc-1a2b3c4d
+        clientVpcRegion:
+          type: string
+          description: Region of the client VPC
+          minLength: 1
+          maxLength: 128
+          example: us-east-2
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
     AzurePendingPeerVpcPeeringMetadata:
       description: Metadata about Azure VPC Peering in Pending Peer Status
       type: object
@@ -551,68 +520,99 @@ components:
           type: string
         vnetResourceId:
           type: string
-  parameters:
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    nameInPath:
-      name: name
-      in: path
-      required: true
-      description: Name of the Entity
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 512
-      example: entity-123
-    cloudRegionMandatory:
-      name: region
-      in: query
-      description: Cloud Region
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-      examples:
-        aws:
-          value: us-east-1
-          summary: aws region example
-        azure:
-          value: eastUS
-          summary: azure region example
-    cloudTypeOldConventionMandatory:
-      name: cloudType
-      in: query
-      description: Name of the Cloud
-      required: true
-      schema:
-        $ref: '#/components/schemas/cloudType'
-    subscriptionNameMandatoryOldConvention:
-      name: subscriptionName
-      in: query
-      description: Name of the Subscription
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 255
-      example: default
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
+    VpcPeeringAwsCloudformationLink:
+      description: Tessell VPC Peering Status
+      type: object
+      properties:
+        link:
+          type: string
+          description: URL for VPC Peering
+    AwsClientInfoServiceConsumer:
+      description: AWS VPC Peering Client Info for Service Consumer
+      type: object
+      properties:
+        clientVpcId:
+          type: string
+          description: Id of the client VPC
+        clientVpcRegion:
+          type: string
+          description: Region of the client VPC
+        clientAccountId:
+          type: string
+          description: Account Id of the client VPC
+    VpcPeeringMetadata:
+      description: Metadata about Vpc Peering
+      type: object
+      properties:
+        azurePendingPeerMetadata:
+          $ref: '#/components/schemas/AzurePendingPeerVpcPeeringMetadata'
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    CreateVpcPeeringAwsCloudformationPayload:
+      description: Create VPC Peering Payload using AWS Cloudformation Payload for Service Consumer
+      type: object
+      required:
+      - subscriptionName
+      - cloudType
+      - region
+      - clientAccountId
+      - clientVpcId
+      - clientVpcRegion
+      - clientAcceptRoleArn
+      properties:
+        subscriptionName:
+          type: string
+          description: Name of the subscription
+          minLength: 1
+          maxLength: 255
+          example: default
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        region:
+          type: string
+          description: Region of the Tessell VPC
+          minLength: 1
+          maxLength: 128
+          example: us-east-1
+        clientAccountId:
+          type: string
+          description: Account Id of the Client VPC
+          minLength: 1
+          maxLength: 64
+          example: 123456789
+        clientVpcId:
+          type: string
+          description: Id of the Client VPC
+          minLength: 1
+          maxLength: 255
+          example: vpc-1a2b3c4d
+        clientVpcRegion:
+          type: string
+          description: Region of the Client VPC
+          minLength: 1
+          maxLength: 128
+          example: us-east-2
+        clientAcceptRoleArn:
+          type: string
+          description: ARN of the client AWS Role to accept Peering
+          minLength: 1
+          maxLength: 255
+    VpcPeeringStatus:
+      description: Tessell VPC Peering Status
+      type: string
+      enum:
+      - CREATING
+      - PENDING_PEER
+      - ACTIVE
+      - FAILED
+      - DELETING
+      - DELETION_FAILED
   securitySchemes:
     BearerAuth:
       type: http

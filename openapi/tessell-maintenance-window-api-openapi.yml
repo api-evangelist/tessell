@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center maintenance-window API
+  title: Tessell Maintenance Window API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -252,122 +252,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    MaintenanceWindowTaskApplyAction:
-      type: string
-      enum:
-      - APPLY_NOW
-      - APPLY_IN_NEXT_MAINTENANCE_WINDOW
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    apiResponse:
-      example:
-        metadata:
-          pagination:
-            pageOffset: 0
-            pageSize: 6
-          records: 1
-          timeZone: timeZone
-        response: '{}'
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-      title: ApiResponse
-      type: object
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    TaskStatus:
-      type: string
-      description: The status of Task
-      enum:
-      - AVAILABLE
-      - QUEUED
-      - CANCELLED
-      - OVERRIDDEN
-      - IN_PROGRESS
-      - SUCCESS
-      - FAILED
-    ApplyStrategy:
-      type: string
-      enum:
-      - IMMEDIATELY
-      - MAINTENANCE_WINDOW
-      - CUSTOM_DATE_TIME
-      - DO_NOT_APPLY
-    TaskType:
-      type: string
-      description: The type of Task
-      enum:
-      - MAINTENANCE_WINDOW_OP
-    MaintenanceWindowUpdateRequest:
-      type: object
-      description: Update of a specific Maintenance Window
-      properties:
-        status:
-          $ref: '#/components/schemas/MaintenanceWindowStatus'
-        triggerTime:
-          type: string
-          format: date-time
-    TaskResponseStatus:
-      type: string
-      enum:
-      - TRIGGERED
-      - QUEUED
-      - CONFLICT
-      - FORCE_TRIGGERED
-      - FORCE_QUEUED
-      - FAILED
-    TaskResponse:
-      properties:
-        status:
-          $ref: '#/components/schemas/TaskResponseStatus'
-        applyConfig:
-          $ref: '#/components/schemas/ApplyConfig'
-        conflicts:
-          $ref: '#/components/schemas/TaskResponseConflicts'
-        taskSummary:
-          $ref: '#/components/schemas/taskSummary'
-        task:
-          $ref: '#/components/schemas/TaskDTO'
     taskSummary:
       title: taskSummary
       type: object
@@ -389,37 +273,6 @@ components:
           type: object
           additionalProperties:
             type: string
-    MaintenanceWindowType:
-      type: string
-      description: The type of maintenance window
-      enum:
-      - SYSTEM
-      - CUSTOM
-    TaskResponseConflicts:
-      type: object
-      properties:
-        maintenanceWindows:
-          type: array
-          items:
-            $ref: '#/components/schemas/MaintenanceWindowDTO'
-    TaskOperation:
-      type: string
-      description: The operation that the Task corresponds to
-      enum:
-      - UPDATE_PARAM_PROFILE
-      - OS_PATCH
-      - DB_PATCH
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
     entityType:
       description: Tessell Entity Type
       type: string
@@ -490,20 +343,197 @@ components:
       - DNS_RECORD
       - LICENSE
       - SECURITY_PROFILE
-    MaintenanceWindowSummary:
+    MaintenanceWindowTaskApplyAction:
+      type: string
+      enum:
+      - APPLY_NOW
+      - APPLY_IN_NEXT_MAINTENANCE_WINDOW
+    TaskResponseStatus:
+      type: string
+      enum:
+      - TRIGGERED
+      - QUEUED
+      - CONFLICT
+      - FORCE_TRIGGERED
+      - FORCE_QUEUED
+      - FAILED
+    ApplyStrategy:
+      type: string
+      enum:
+      - IMMEDIATELY
+      - MAINTENANCE_WINDOW
+      - CUSTOM_DATE_TIME
+      - DO_NOT_APPLY
+    ApiError:
       type: object
-      description: User view summary for Maintenance Window
+      description: Common error response object for non 2xx responses
       properties:
-        queuedTaskCount:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    MaintenanceWindowExecutionInfo:
+      type: object
+      description: Execution details for Maintenance Window
+      properties:
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        workflowId:
+          type: string
+          description: 'ID of the Argo workflow execution handling this maintenance window.
+
+            When multiple MWs are merged at runtime (e.g., service MW + server MWs),
+
+            they all share the same workflowId. This allows the callback handler to
+
+            find and update all merged MWs when the workflow completes.
+
+            '
+          example: maintenance-window-service-abc123-xyz789
+    TaskResponse:
+      properties:
+        status:
+          $ref: '#/components/schemas/TaskResponseStatus'
+        applyConfig:
+          $ref: '#/components/schemas/ApplyConfig'
+        conflicts:
+          $ref: '#/components/schemas/TaskResponseConflicts'
+        taskSummary:
+          $ref: '#/components/schemas/taskSummary'
+        task:
+          $ref: '#/components/schemas/TaskDTO'
+    TaskType:
+      type: string
+      description: The type of Task
+      enum:
+      - MAINTENANCE_WINDOW_OP
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
           type: integer
-        inProgressTaskCount:
-          type: integer
-        successTaskCount:
-          type: integer
-        failedTaskCount:
-          type: integer
-        mandatoryTaskCount:
-          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    MaintenanceWindowType:
+      type: string
+      description: The type of maintenance window
+      enum:
+      - SYSTEM
+      - CUSTOM
+    MaintenanceWindowListResponse:
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/MaintenanceWindowDTO'
+    TaskOperation:
+      type: string
+      description: The operation that the Task corresponds to
+      enum:
+      - UPDATE_PARAM_PROFILE
+      - OS_PATCH
+      - DB_PATCH
+    TaskStatus:
+      type: string
+      description: The status of Task
+      enum:
+      - AVAILABLE
+      - QUEUED
+      - CANCELLED
+      - OVERRIDDEN
+      - IN_PROGRESS
+      - SUCCESS
+      - FAILED
+    MaintenanceWindowUpdateRequest:
+      type: object
+      description: Update of a specific Maintenance Window
+      properties:
+        status:
+          $ref: '#/components/schemas/MaintenanceWindowStatus'
+        triggerTime:
+          type: string
+          format: date-time
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    ApplyConfig:
+      title: ApplyConfig
+      type: object
+      description: Application Details for any operation
+      properties:
+        overriddenTaskIds:
+          type: array
+          description: Task ids that this request will override
+          items:
+            type: string
+            format: uuid
+            uniqueItems: true
+        strategy:
+          $ref: '#/components/schemas/ApplyStrategy'
+        maintenanceWindowId:
+          type: string
+          format: uuid
+          description: Needed when strategy is MAINTENANCE_WINDOW
+        time:
+          type: string
+          format: date-time
+          description: Needed when strategy is CUSTOM_DATE_TIME
+    TaskResponseConflicts:
+      type: object
+      properties:
+        maintenanceWindows:
+          type: array
+          items:
+            $ref: '#/components/schemas/MaintenanceWindowDTO'
+    MaintenanceWindowTaskApplyRequest:
+      type: object
+      description: Request to APPLY Maintenance Window Task
+      properties:
+        action:
+          $ref: '#/components/schemas/MaintenanceWindowTaskApplyAction'
+        taskId:
+          type: string
+          format: uuid
     TessellServiceMaintenanceWindow:
       title: TessellServiceMaintenanceWindow
       type: object
@@ -541,91 +571,6 @@ components:
           WEEKLY: '#/components/schemas/WeeklyMaintenanceWindow'
           MONTHLY: '#/components/schemas/MonthlyMaintenanceWindow'
           QUARTERLY: '#/components/schemas/QuarterlyMaintenanceWindow'
-    MaintenanceWindowDTO:
-      type: object
-      description: User view for Maintenance Window
-      properties:
-        id:
-          type: string
-          format: uuid
-        entityId:
-          type: string
-          format: uuid
-        entityType:
-          $ref: '#/components/schemas/entityType'
-        type:
-          $ref: '#/components/schemas/MaintenanceWindowType'
-        status:
-          $ref: '#/components/schemas/MaintenanceWindowStatus'
-        triggerTime:
-          type: string
-          format: date-time
-        executionInfo:
-          $ref: '#/components/schemas/MaintenanceWindowExecutionInfo'
-        duration:
-          type: integer
-          description: Maintenance Window duration in minutes
-        createdBy:
-          type: string
-        tasks:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaskDTO'
-        summary:
-          $ref: '#/components/schemas/MaintenanceWindowSummary'
-    MaintenanceWindowExecutionInfo:
-      type: object
-      description: Execution details for Maintenance Window
-      properties:
-        startTime:
-          type: string
-          format: date-time
-        endTime:
-          type: string
-          format: date-time
-        workflowId:
-          type: string
-          description: 'ID of the Argo workflow execution handling this maintenance window.
-
-            When multiple MWs are merged at runtime (e.g., service MW + server MWs),
-
-            they all share the same workflowId. This allows the callback handler to
-
-            find and update all merged MWs when the workflow completes.
-
-            '
-          example: maintenance-window-service-abc123-xyz789
-    ApplyConfig:
-      title: ApplyConfig
-      type: object
-      description: Application Details for any operation
-      properties:
-        overriddenTaskIds:
-          type: array
-          description: Task ids that this request will override
-          items:
-            type: string
-            format: uuid
-            uniqueItems: true
-        strategy:
-          $ref: '#/components/schemas/ApplyStrategy'
-        maintenanceWindowId:
-          type: string
-          format: uuid
-          description: Needed when strategy is MAINTENANCE_WINDOW
-        time:
-          type: string
-          format: date-time
-          description: Needed when strategy is CUSTOM_DATE_TIME
-    MaintenanceWindowListResponse:
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/MaintenanceWindowDTO'
     TaskDTO:
       type: object
       description: User view for Task
@@ -676,6 +621,16 @@ components:
           items:
             type: string
             format: uuid
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
     MaintenanceWindowStatus:
       type: string
       description: The status of maintenance window
@@ -688,50 +643,61 @@ components:
       - SUCCESS
       - FAILED
       - DELETED
-    MaintenanceWindowTaskApplyRequest:
+    apiStatus:
+      title: apiStatus
       type: object
-      description: Request to APPLY Maintenance Window Task
       properties:
-        action:
-          $ref: '#/components/schemas/MaintenanceWindowTaskApplyAction'
-        taskId:
+        status:
+          type: string
+        message:
+          type: string
+    MaintenanceWindowDTO:
+      type: object
+      description: User view for Maintenance Window
+      properties:
+        id:
           type: string
           format: uuid
-  parameters:
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    maintenance-window-statuses-in-query:
-      name: statuses
-      in: query
-      required: false
-      schema:
-        type: array
-        items:
+        entityId:
+          type: string
+          format: uuid
+        entityType:
+          $ref: '#/components/schemas/entityType'
+        type:
+          $ref: '#/components/schemas/MaintenanceWindowType'
+        status:
           $ref: '#/components/schemas/MaintenanceWindowStatus'
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
-    id:
-      name: id
-      description: Id of entity
-      in: path
-      style: simple
-      required: true
-      schema:
-        type: string
-        format: uuid
+        triggerTime:
+          type: string
+          format: date-time
+        executionInfo:
+          $ref: '#/components/schemas/MaintenanceWindowExecutionInfo'
+        duration:
+          type: integer
+          description: Maintenance Window duration in minutes
+        createdBy:
+          type: string
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskDTO'
+        summary:
+          $ref: '#/components/schemas/MaintenanceWindowSummary'
+    MaintenanceWindowSummary:
+      type: object
+      description: User view summary for Maintenance Window
+      properties:
+        queuedTaskCount:
+          type: integer
+        inProgressTaskCount:
+          type: integer
+        successTaskCount:
+          type: integer
+        failedTaskCount:
+          type: integer
+        mandatoryTaskCount:
+          type: integer
+  parameters:
     pageSize:
       name: page-size
       in: query
@@ -741,6 +707,40 @@ components:
         type: integer
         format: int32
         default: 10
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    maintenance-window-statuses-in-query:
+      name: statuses
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/MaintenanceWindowStatus'
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
   securitySchemes:
     BearerAuth:
       type: http

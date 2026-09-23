@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center Userpool API
+  title: Tessell Userpool API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -194,82 +194,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    UserpoolPayload:
-      title: UserpoolPayload
-      type: object
-      properties:
-        clientId:
-          type: string
-          description: AWS userpool client id
-        name:
-          type: string
-          description: AWS userpool name
-        region:
-          type: string
-          description: AWS userpool region
-        type:
-          $ref: '#/components/schemas/UserpoolType'
-        userpoolId:
-          type: string
-          description: AWS userpool id
-      description: This is a definition for Tessell internal create userpool payload object
-    UserpoolStatus:
-      title: UserpoolStatus
-      type: string
-      description: This is a definition for Tessell userpool status object
-      enum:
-      - DELETED
-      - DISABLED
-      - ENABLED
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    IamApiResponse:
-      title: IamApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: array
-          items:
-            type: object
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    UserpoolType:
-      title: UserpoolType
-      type: string
-      description: This is a definition for Tessell userpool type object
-      enum:
-      - GLOBAL
-      - LOCAL
     UserpoolDTO:
       title: UserpoolDTO
       type: object
@@ -303,6 +227,32 @@ components:
           type: string
           description: AWS userpool id
       description: This is a definition for Tessell managed userpool payload object
+    UserpoolPayload:
+      title: UserpoolPayload
+      type: object
+      properties:
+        clientId:
+          type: string
+          description: AWS userpool client id
+        name:
+          type: string
+          description: AWS userpool name
+        region:
+          type: string
+          description: AWS userpool region
+        type:
+          $ref: '#/components/schemas/UserpoolType'
+        userpoolId:
+          type: string
+          description: AWS userpool id
+      description: This is a definition for Tessell internal create userpool payload object
+    UserpoolType:
+      title: UserpoolType
+      type: string
+      description: This is a definition for Tessell userpool type object
+      enum:
+      - GLOBAL
+      - LOCAL
     apiPaginationInfo:
       title: apiPaginationInfo
       type: object
@@ -313,6 +263,46 @@ components:
         pageOffset:
           type: integer
           format: int32
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    UserpoolStatus:
+      title: UserpoolStatus
+      type: string
+      description: This is a definition for Tessell userpool status object
+      enum:
+      - DELETED
+      - DISABLED
+      - ENABLED
     apiMetadata:
       title: apiMetadata
       type: object
@@ -324,6 +314,16 @@ components:
           format: int32
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
+    IamApiResponse:
+      title: IamApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            type: object
   securitySchemes:
     BearerAuth:
       type: http

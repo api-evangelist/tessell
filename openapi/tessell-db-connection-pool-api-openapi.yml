@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center DB Connection Pool API
+  title: Tessell DB Connection Pool API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -189,6 +189,124 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    UpdateConnectionPoolPayload:
+      title: UpdateConnectionPoolPayload
+      type: object
+      properties:
+        postgresqlConfig:
+          $ref: '#/components/schemas/UpdatePostgresqlConnectionPoolPayload'
+    taskSummary:
+      title: taskSummary
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        taskType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        associatedResourceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        details:
+          type: object
+          additionalProperties:
+            type: string
+    CreateConnectionPoolPayload:
+      title: CreateConnectionPoolPayload
+      type: object
+      properties:
+        postgresqlConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreatePostgresqlConnectionPoolPayload'
+    PostgresqlConnectionPoolMode:
+      description: Mode of postgresql connection pool.
+      type: string
+      enum:
+      - SESSION
+      - TRANSACTION
+      - STATEMENT
+    CreatePostgresqlConnectionPoolPayload:
+      type: object
+      description: Postgres engine specific configuration for creating a connection pool
+      required:
+      - connPoolName
+      - dbName
+      - connPoolMode
+      - connPoolSize
+      properties:
+        dbUsername:
+          type: string
+          description: Database user name
+        connPoolName:
+          type: string
+          description: Name of the connection pool
+        dbName:
+          type: string
+          description: Name of the database for current connection pool
+        connPoolMode:
+          $ref: '#/components/schemas/PostgresqlConnectionPoolMode'
+        connPoolSize:
+          type: integer
+          format: int32
+          description: Size of connection pool
+          minimum: 1
+          maximum: 100000
+        connMaxDbConnections:
+          type: integer
+          format: int32
+          description: Maximum database connection
+          minimum: 1
+          maximum: 100
+        connMinPoolSize:
+          type: integer
+          format: int32
+          description: Minimum connection pool size
+          minimum: 1
+          maximum: 100000
+    UpdatePostgresqlConnectionPoolPayload:
+      type: object
+      description: Postgres engine specific configuration for updating a connection pool
+      required:
+      - connPoolName
+      - dbName
+      - connPoolMode
+      - connPoolSize
+      properties:
+        dbUsername:
+          type: string
+          description: Database user name
+        connPoolName:
+          type: string
+          description: Name of the connection pool
+        dbName:
+          type: string
+          description: Name of the database for current connection pool
+        connPoolMode:
+          $ref: '#/components/schemas/PostgresqlConnectionPoolMode'
+        connPoolSize:
+          type: integer
+          format: int32
+          description: Size of connection pool
+          minimum: 1
+          maximum: 100000
+        connMaxDbConnections:
+          type: integer
+          format: int32
+          description: Maximum database connection
+          minimum: 1
+          maximum: 100
+        connMinPoolSize:
+          type: integer
+          format: int32
+          description: Minimum connection pool size
+          minimum: 1
+          maximum: 100000
     DeletePostgresqlConnectionPoolPayload:
       type: object
       description: Postgres specific configuration for deleting the connection pool
@@ -224,13 +342,20 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    PostgresqlConnectionPoolMode:
-      description: Mode of postgresql connection pool.
-      type: string
-      enum:
-      - SESSION
-      - TRANSACTION
-      - STATEMENT
+    ConnectionPoolListResponse:
+      title: ConnectionPoolListResponse
+      type: object
+      properties:
+        postgresqlConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/PostgresqlConnectionPoolInfo'
+    DeleteConnectionPoolPayload:
+      title: DeleteConnectionPoolPayload
+      type: object
+      properties:
+        postgresqlConfig:
+          $ref: '#/components/schemas/DeletePostgresqlConnectionPoolPayload'
     PostgresqlConnectionPoolInfo:
       type: object
       properties:
@@ -276,39 +401,6 @@ components:
             port:
               type: integer
               format: int32
-    taskSummary:
-      title: taskSummary
-      type: object
-      properties:
-        taskId:
-          type: string
-          format: uuid
-        taskType:
-          type: string
-        resourceId:
-          type: string
-          format: uuid
-        associatedResourceIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        details:
-          type: object
-          additionalProperties:
-            type: string
-    DeleteConnectionPoolPayload:
-      title: DeleteConnectionPoolPayload
-      type: object
-      properties:
-        postgresqlConfig:
-          $ref: '#/components/schemas/DeletePostgresqlConnectionPoolPayload'
-    UpdateConnectionPoolPayload:
-      title: UpdateConnectionPoolPayload
-      type: object
-      properties:
-        postgresqlConfig:
-          $ref: '#/components/schemas/UpdatePostgresqlConnectionPoolPayload'
     ConnectionPoolStatus:
       description: Status of connection pool visible to end user.
       type: string
@@ -318,98 +410,6 @@ components:
       - UPDATING
       - DELETING
       - DELETED
-    ConnectionPoolListResponse:
-      title: ConnectionPoolListResponse
-      type: object
-      properties:
-        postgresqlConfig:
-          type: array
-          items:
-            $ref: '#/components/schemas/PostgresqlConnectionPoolInfo'
-    UpdatePostgresqlConnectionPoolPayload:
-      type: object
-      description: Postgres engine specific configuration for updating a connection pool
-      required:
-      - connPoolName
-      - dbName
-      - connPoolMode
-      - connPoolSize
-      properties:
-        dbUsername:
-          type: string
-          description: Database user name
-        connPoolName:
-          type: string
-          description: Name of the connection pool
-        dbName:
-          type: string
-          description: Name of the database for current connection pool
-        connPoolMode:
-          $ref: '#/components/schemas/PostgresqlConnectionPoolMode'
-        connPoolSize:
-          type: integer
-          format: int32
-          description: Size of connection pool
-          minimum: 1
-          maximum: 100000
-        connMaxDbConnections:
-          type: integer
-          format: int32
-          description: Maximum database connection
-          minimum: 1
-          maximum: 100
-        connMinPoolSize:
-          type: integer
-          format: int32
-          description: Minimum connection pool size
-          minimum: 1
-          maximum: 100000
-    CreatePostgresqlConnectionPoolPayload:
-      type: object
-      description: Postgres engine specific configuration for creating a connection pool
-      required:
-      - connPoolName
-      - dbName
-      - connPoolMode
-      - connPoolSize
-      properties:
-        dbUsername:
-          type: string
-          description: Database user name
-        connPoolName:
-          type: string
-          description: Name of the connection pool
-        dbName:
-          type: string
-          description: Name of the database for current connection pool
-        connPoolMode:
-          $ref: '#/components/schemas/PostgresqlConnectionPoolMode'
-        connPoolSize:
-          type: integer
-          format: int32
-          description: Size of connection pool
-          minimum: 1
-          maximum: 100000
-        connMaxDbConnections:
-          type: integer
-          format: int32
-          description: Maximum database connection
-          minimum: 1
-          maximum: 100
-        connMinPoolSize:
-          type: integer
-          format: int32
-          description: Minimum connection pool size
-          minimum: 1
-          maximum: 100000
-    CreateConnectionPoolPayload:
-      title: CreateConnectionPoolPayload
-      type: object
-      properties:
-        postgresqlConfig:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreatePostgresqlConnectionPoolPayload'
   securitySchemes:
     BearerAuth:
       type: http

@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center service-refresh-controller API
+  title: Tessell Service Refresh Controller API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -20,7 +20,7 @@ paths:
     patch:
       tags:
       - service-refresh-controller
-      summary: Refresh service with parent service's snapshot or pitr.
+      summary: Refresh service with parent service's snapshot or pitr
       operationId: refreshService
       parameters:
       - $ref: '#/components/parameters/id'
@@ -223,269 +223,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    apiResponse:
-      example:
-        metadata:
-          pagination:
-            pageOffset: 0
-            pageSize: 6
-          records: 1
-          timeZone: timeZone
-        response: '{}'
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-      title: ApiResponse
-      type: object
-    WeekDay:
-      description: Week Days
-      type: string
-      enum:
-      - Sunday
-      - Monday
-      - Tuesday
-      - Wednesday
-      - Thursday
-      - Friday
-      - Saturday
-      x-enum-varnames:
-      - Sunday
-      - Monday
-      - Tuesday
-      - Wednesday
-      - Thursday
-      - Friday
-      - Saturday
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    taskSummary:
-      title: taskSummary
-      type: object
-      properties:
-        taskId:
-          type: string
-          format: uuid
-        taskType:
-          type: string
-        resourceId:
-          type: string
-          format: uuid
-        associatedResourceIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        details:
-          type: object
-          additionalProperties:
-            type: string
-    RefreshScheduleStatus:
-      enum:
-      - ACTIVE
-      - PAUSED
-      - SUSPENDED
-    RefreshScheduleRecurrenceInfo:
-      type: object
-      required:
-      - triggerTime
-      properties:
-        triggerTime:
-          $ref: '#/components/schemas/TimeFormat'
-        dailySchedule:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-        weeklySchedule:
-          type: object
-          properties:
-            weekDays:
-              type: array
-              uniqueItems: true
-              items:
-                $ref: '#/components/schemas/WeekDay'
-    RefreshScheduleMetadata:
-      type: object
-      properties:
-        scriptInfo:
-          $ref: '#/components/schemas/PrePostScriptInfo'
-        lastWorkflowDispatchTime:
-          description: Time at which refresh workflow is dispatched using schedule refresh.
-          type: string
-          format: date-time
-    GetRefreshSchedulesResponse:
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/RefreshScheduleDTO'
-    BackupType:
-      description: Backup Content Type
-      type: string
-      enum:
-      - AS_IS
-      - SANITIZED
-    PrePostScriptInfo:
-      type: object
-      properties:
-        preScriptInfo:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScriptInfo'
-        postScriptInfo:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScriptInfo'
-    CloneSourceType:
-      description: Source type for clone/refresh operation
-      type: string
-      enum:
-      - SNAPSHOT
-      - NATIVE_BACKUP
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    RefreshScheduleInfo:
-      type: object
-      properties:
-        recurring:
-          $ref: '#/components/schemas/RefreshScheduleRecurrenceInfo'
-    ScriptInfo:
-      title: ScriptInfo
-      type: object
-      nullable: true
-      properties:
-        scriptId:
-          type: string
-          format: uuid
-          description: The Tessell Script ID
-        scriptName:
-          type: string
-          description: The Tessell Script Name
-        scriptVersion:
-          type: string
-          description: The Tessell Script version
-        useActiveVersion:
-          type: boolean
-          default: false
-          description: 'When set to true, the scriptVersion field should be null and the system
-
-            will automatically use the active version of the script.
-
-            When set to false (default), the scriptVersion field specifies the
-
-            exact version to use.
-
-            '
-    TimeFormat:
-      title: TimeFormat
-      description: Clock time format value in hour and minute.
-      type: object
-      required:
-      - hour
-      - minute
-      properties:
-        hour:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 23
-          default: 1
-        minute:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 59
-          default: 0
-    RefreshServicePayload:
-      properties:
-        pitr:
-          type: string
-          description: Refresh till the parent availability machine pitr timestamp
-        snapshotId:
-          type: string
-          description: Parent Availability Machine snapshot id for the refresh
-          format: uuid
-        scriptInfo:
-          $ref: '#/components/schemas/PrePostScriptInfo'
-        ignorePreScriptFailure:
-          type: boolean
-          default: false
-          description: If true, continue refresh even if pre-script fails.
-        ignorePostScriptFailure:
-          type: boolean
-          default: true
-          description: If true, continue refresh even if post-script fails.
-        sourceType:
-          $ref: '#/components/schemas/CloneSourceType'
-          description: Source type for refresh operation (defaults to SNAPSHOT)
-    CreateUpdateRefreshSchedulePayload:
-      properties:
-        refreshMode:
-          $ref: '#/components/schemas/RefreshScheduleRefreshMode'
-        contentType:
-          $ref: '#/components/schemas/BackupType'
-        scriptInfo:
-          $ref: '#/components/schemas/PrePostScriptInfo'
-        scheduleInfo:
-          $ref: '#/components/schemas/RefreshScheduleInfo'
-    RefreshScheduleRefreshMode:
-      enum:
-      - SNAPSHOT
-      - PITR
     RefreshScheduleDTO:
       properties:
         id:
@@ -516,21 +253,285 @@ components:
         dateModified:
           type: string
           format: date-time
+    taskSummary:
+      title: taskSummary
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        taskType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        associatedResourceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        details:
+          type: object
+          additionalProperties:
+            type: string
+    CloneSourceType:
+      description: Source type for clone/refresh operation
+      type: string
+      enum:
+      - SNAPSHOT
+      - NATIVE_BACKUP
+    RefreshScheduleRefreshMode:
+      enum:
+      - SNAPSHOT
+      - PITR
+    WeekDay:
+      description: Week Days
+      type: string
+      enum:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+      x-enum-varnames:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+    RefreshScheduleInfo:
+      type: object
+      properties:
+        recurring:
+          $ref: '#/components/schemas/RefreshScheduleRecurrenceInfo'
+    GetRefreshSchedulesResponse:
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/RefreshScheduleDTO'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    RefreshScheduleMetadata:
+      type: object
+      properties:
+        scriptInfo:
+          $ref: '#/components/schemas/PrePostScriptInfo'
+        lastWorkflowDispatchTime:
+          description: Time at which refresh workflow is dispatched using schedule refresh.
+          type: string
+          format: date-time
+    CreateUpdateRefreshSchedulePayload:
+      properties:
+        refreshMode:
+          $ref: '#/components/schemas/RefreshScheduleRefreshMode'
+        contentType:
+          $ref: '#/components/schemas/BackupType'
+        scriptInfo:
+          $ref: '#/components/schemas/PrePostScriptInfo'
+        scheduleInfo:
+          $ref: '#/components/schemas/RefreshScheduleInfo'
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    ScriptInfo:
+      title: ScriptInfo
+      type:
+      - object
+      - 'null'
+      properties:
+        scriptId:
+          type: string
+          format: uuid
+          description: The Tessell Script ID
+        scriptName:
+          type: string
+          description: The Tessell Script Name
+        scriptVersion:
+          type: string
+          description: The Tessell Script version
+        useActiveVersion:
+          type: boolean
+          default: false
+          description: 'When set to true, the scriptVersion field should be null and the system
+
+            will automatically use the active version of the script.
+
+            When set to false (default), the scriptVersion field specifies the
+
+            exact version to use.
+
+            '
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    RefreshScheduleStatus:
+      enum:
+      - ACTIVE
+      - PAUSED
+      - SUSPENDED
+    RefreshScheduleRecurrenceInfo:
+      type: object
+      required:
+      - triggerTime
+      properties:
+        triggerTime:
+          $ref: '#/components/schemas/TimeFormat'
+        dailySchedule:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+        weeklySchedule:
+          type: object
+          properties:
+            weekDays:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/WeekDay'
+    PrePostScriptInfo:
+      type: object
+      properties:
+        preScriptInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScriptInfo'
+        postScriptInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScriptInfo'
+    RefreshServicePayload:
+      properties:
+        pitr:
+          type: string
+          description: Refresh till the parent availability machine pitr timestamp
+        snapshotId:
+          type: string
+          description: Parent Availability Machine snapshot id for the refresh
+          format: uuid
+        scriptInfo:
+          $ref: '#/components/schemas/PrePostScriptInfo'
+        ignorePreScriptFailure:
+          type: boolean
+          default: false
+          description: If true, continue refresh even if pre-script fails.
+        ignorePostScriptFailure:
+          type: boolean
+          default: true
+          description: If true, continue refresh even if post-script fails.
+        sourceType:
+          $ref: '#/components/schemas/CloneSourceType'
+          description: Source type for refresh operation (defaults to SNAPSHOT)
+    BackupType:
+      description: Backup Content Type
+      type: string
+      enum:
+      - AS_IS
+      - SANITIZED
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    TimeFormat:
+      title: TimeFormat
+      description: Clock time format value in hour and minute.
+      type: object
+      required:
+      - hour
+      - minute
+      properties:
+        hour:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 23
+          default: 1
+        minute:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 59
+          default: 0
   parameters:
-    service-id:
-      name: service-id
-      in: path
-      required: true
-      style: simple
-      schema:
-        type: string
-        format: uuid
     id:
       name: id
       description: Id of entity
       in: path
       style: simple
       required: true
+      schema:
+        type: string
+        format: uuid
+    service-id:
+      name: service-id
+      in: path
+      required: true
+      style: simple
       schema:
         type: string
         format: uuid

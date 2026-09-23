@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center tessell-compute-resource-acl-controller API
+  title: Tessell Compute Resource Acl Controller API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -179,7 +179,7 @@ paths:
     patch:
       tags:
       - tessell-compute-resource-acl-controller
-      summary: Bulk share multiple DB Servers with multiple users, does not override the existing ACL if present
+      summary: Bulk share multiple DB Servers with multiple users, does not override the…
       operationId: updateDbServersAcls
       description: Share multiple DB Servers with multiple users in a single operation. This is more efficient than individual ACL operations when sharing multiple resources.
       requestBody:
@@ -219,6 +219,25 @@ paths:
           type: string
 components:
   schemas:
+    AclEligibleUser:
+      title: AclEligibleUser
+      description: Eligible user for sharing the entity
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        emailId:
+          type: string
+        eligibleRoles:
+          type: array
+          items:
+            type: string
+        accessibleSubscriptions:
+          type: array
+          items:
+            type: string
+          description: List of subscriptions user has access to
     BulkAclPayload:
       description: Payload for bulk sharing / creating multiple ACL entities
       required:
@@ -240,6 +259,74 @@ components:
             $ref: '#/components/schemas/AclUserPayload'
           minItems: 1
           maxItems: 100
+    AclPayload:
+      title: AclPayload
+      description: Payload to create an entity ACL
+      required:
+      - users
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/AclUserPayload'
+          minItems: 1
+          maxItems: 100
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    BulkAclEligibleUsersPayload:
+      description: Payload for fetching eligible users for bulk ACL entities
+      required:
+      - ids
+      properties:
+        ids:
+          type: array
+          description: List of IDs to fetch eligible users for
+          items:
+            type: string
+            format: uuid
+          minItems: 1
+          maxItems: 100
+    BulkAclResponse:
+      description: Generic response for bulk ACL operations on any entity type
+      type: object
+      required:
+      - status
+      - message
+      - summary
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        status:
+          type: string
+          description: Overall operation status
+        message:
+          type: string
+          description: Summary of the operation
+    AclUserPayload:
+      title: AclUserPayload
+      description: Payload to create an user's entity ACL
+      required:
+      - emailId
+      - role
+      properties:
+        emailId:
+          description: Email id of the user
+          type: string
+          minLength: 1
+          maxLength: 256
+        role:
+          description: Role Info
+          type: string
+          minLength: 1
+          maxLength: 64
     apiStatus:
       title: apiStatus
       type: object
@@ -248,6 +335,21 @@ components:
           type: string
         message:
           type: string
+    AclRevokePayload:
+      title: AclRevokePayload
+      description: Payload to revoke Tessell ACLs
+      required:
+      - users
+      properties:
+        users:
+          description: List of users to be deleted
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          minItems: 1
+          maxItems: 100
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -272,108 +374,6 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    AclRevokePayload:
-      title: AclRevokePayload
-      description: Payload to revoke Tessell ACLs
-      required:
-      - users
-      properties:
-        users:
-          description: List of users to be deleted
-          type: array
-          items:
-            type: string
-            minLength: 1
-            maxLength: 256
-          minItems: 1
-          maxItems: 100
-    BulkAclResponse:
-      description: Generic response for bulk ACL operations on any entity type
-      type: object
-      required:
-      - status
-      - message
-      - summary
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        status:
-          type: string
-          description: Overall operation status
-        message:
-          type: string
-          description: Summary of the operation
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    BulkAclEligibleUsersPayload:
-      description: Payload for fetching eligible users for bulk ACL entities
-      required:
-      - ids
-      properties:
-        ids:
-          type: array
-          description: List of IDs to fetch eligible users for
-          items:
-            type: string
-            format: uuid
-          minItems: 1
-          maxItems: 100
-    AclPayload:
-      title: AclPayload
-      description: Payload to create an entity ACL
-      required:
-      - users
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/AclUserPayload'
-          minItems: 1
-          maxItems: 100
-    AclEligibleUser:
-      title: AclEligibleUser
-      description: Eligible user for sharing the entity
-      properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
-        emailId:
-          type: string
-        eligibleRoles:
-          type: array
-          items:
-            type: string
-        accessibleSubscriptions:
-          type: array
-          items:
-            type: string
-          description: List of subscriptions user has access to
-    AclUserPayload:
-      title: AclUserPayload
-      description: Payload to create an user's entity ACL
-      required:
-      - emailId
-      - role
-      properties:
-        emailId:
-          description: Email id of the user
-          type: string
-          minLength: 1
-          maxLength: 256
-        role:
-          description: Role Info
-          type: string
-          minLength: 1
-          maxLength: 64
     apiMetadata:
       title: apiMetadata
       type: object
@@ -386,17 +386,18 @@ components:
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
   examples:
-    BulkShareSingleServer:
-      summary: Single server with multiple users
-      description: Share 1 DB Server with 2 users
+    BulkShareBasic:
+      summary: Basic bulk sharing
+      description: Share 2 DB Servers with 2 users
       value:
         ids:
         - 123e4567-e89b-12d3-a456-426614174000
+        - 987fcdeb-51a2-43d1-b789-123456789abc
         users:
-        - emailId: team@example.com
-          role: Co-owner
-        - emailId: admin@example.com
-          role: Read Only
+        - emailId: john.doe@example.com
+          role: READ_ONLY
+        - emailId: jane.smith@example.com
+          role: CO_OWNER
     BulkShareSuccess:
       summary: Successful bulk sharing
       description: All operations completed successfully
@@ -410,18 +411,17 @@ components:
             pageSize: 100
             pageOffset: 0
             totalRecords: 4
-    BulkShareBasic:
-      summary: Basic bulk sharing
-      description: Share 2 DB Servers with 2 users
+    BulkShareSingleServer:
+      summary: Single server with multiple users
+      description: Share 1 DB Server with 2 users
       value:
         ids:
         - 123e4567-e89b-12d3-a456-426614174000
-        - 987fcdeb-51a2-43d1-b789-123456789abc
         users:
-        - emailId: john.doe@example.com
-          role: READ_ONLY
-        - emailId: jane.smith@example.com
-          role: CO_OWNER
+        - emailId: team@example.com
+          role: Co-owner
+        - emailId: admin@example.com
+          role: Read Only
   parameters:
     id:
       name: id

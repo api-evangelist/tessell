@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center DB Profile API
+  title: Tessell DB Profile API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -457,15 +457,179 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
+  parameters:
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
   schemas:
-    apiStatus:
-      title: apiStatus
+    DatabaseOptionTypeStatus:
+      type: string
+      enum:
+      - DISABLED
+      - ENABLED
+    DatabaseProfileOptionSettingType:
+      title: DatabaseProfileOptionSettingType
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          example: SQLNET.ENCRYPTION_TYPES_SERVER
+        value:
+          type: string
+          maxLength: 1000
+          example: AES256
+        isGlobal:
+          type: boolean
+    TessellDatabaseOptionProfileConsumptionDTO:
+      title: TessellDatabaseOptionProfileConsumptionDTO
+      required:
+      - name
       type: object
       properties:
+        description:
+          type: string
+        driverInfo:
+          description: Database Option Profile's metadata information for driver use
+          $ref: '#/components/schemas/DatabaseOptionProfileDriverInfo'
+        engineType:
+          description: Database Option Profile's database engine type
+          $ref: '#/components/schemas/databaseEngineType'
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the entity
+          example: 123e4567-e89b-12d3-a456-426614174000
+        optionTypeId:
+          type: string
+          format: uuid
+          description: Tessell option type UUID for the entity
+          example: 123e4567-e89b-12d3-a456-426614174001
+        metadata:
+          description: Database Option Profile's metadata information
+          $ref: '#/components/schemas/DatabaseOptionProfileMetadata'
+        name:
+          type: string
+          description: Name of the entity
+          example: sample_entity
+        maturityStatus:
+          $ref: '#/components/schemas/DatabaseOptionProfileMaturityStatus'
+        options:
+          type: array
+          description: Database Option Profile's associated options
+          items:
+            $ref: '#/components/schemas/DatabaseProfileOptionType'
+        owner:
+          type: string
+        tenantId:
+          type: string
+        version:
+          type: string
+          description: Database Option Profile's version
+    DatabaseOptionProfileMaturityStatus:
+      description: Database OptionsProfile Status
+      type: string
+      enum:
+      - DRAFT
+      - PUBLISHED
+      - UNPUBLISHED
+    TessellDatabaseOptionTypeDTO:
+      title: TessellDatabaseOptionTypeDTO
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        version:
+          type: string
         status:
+          $ref: '#/components/schemas/DatabaseOptionTypeStatus'
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseOptionType'
+        dateCreated:
           type: string
-        message:
+          description: Timestamp when the entity was created
+          format: date-time
+        dateModified:
           type: string
+          description: Timestamp when the entity was last modified
+          format: date-time
+    DatabaseProfileOptionType:
+      title: DatabaseProfileOptionType
+      type: object
+      required:
+      - applyNow
+      - name
+      - optionSettings
+      properties:
+        applyNow:
+          type: boolean
+        name:
+          type: string
+          description: Option name
+          minLength: 1
+          maxLength: 128
+          example: NATIVE_NETWORK_ENCRYPTION
+        optionSettings:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseProfileOptionSettingType'
+          minItems: 0
+          maxItems: 50
+    DatabaseOptionSettingType:
+      title: DatabaseOptionSettingType
+      type: object
+      properties:
+        defaultValue:
+          type: string
+        applyType:
+          $ref: '#/components/schemas/DatabaseOptionApplyType'
+        allowedValues:
+          type: string
+        dataType:
+          type: string
+        description:
+          type: string
+        name:
+          type: string
+        isGlobal:
+          type: boolean
+        overridden:
+          type: boolean
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -490,55 +654,17 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    TessellDatabaseOptionTypeListResponse:
-      title: TessellDatabaseOptionTypeListResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
+    apiMetadata:
+      title: apiMetadata
       type: object
       properties:
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/TessellDatabaseOptionTypeDTO'
-    DatabaseOptionProfileDriverInfo:
-      title: DatabaseOptionProfileDriverInfo
-      type: object
-      properties:
-        data:
-          type: object
-    DatabaseOptionProfileStatus:
-      description: Database OptionsProfile Status
-      type: string
-      enum:
-      - DELETED
-      - DELETING
-      - DRAFT
-      - PUBLISH
-      - UNPUBLISH
-    EntityAclSharingInfo:
-      title: EntityAclSharingInfo
-      description: Tessell Entity ACL Sharing Info
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/EntityUserAclSharingInfo'
-    apiResponse:
-      example:
-        metadata:
-          pagination:
-            pageOffset: 0
-            pageSize: 6
-          records: 1
-          timeZone: timeZone
-        response: '{}'
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-      title: ApiResponse
-      type: object
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
     DatabaseOptionType:
       title: DatabaseOptionType
       type: object
@@ -557,16 +683,67 @@ components:
           type: boolean
         persistent:
           type: boolean
-    apiPaginationInfo:
-      title: apiPaginationInfo
+    TessellDatabaseOptionProfileListResponse:
+      title: TessellDatabaseOptionProfileListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
       type: object
       properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellDatabaseOptionProfileDTO'
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    TessellDatabaseOptionProfileConsumptionListResponse:
+      title: TessellDatabaseOptionProfileConsumptionListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellDatabaseOptionProfileConsumptionDTO'
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    EntityAclSharingInfo:
+      title: EntityAclSharingInfo
+      description: Tessell Entity ACL Sharing Info
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityUserAclSharingInfo'
+    DatabaseOptionProfileDriverInfo:
+      title: DatabaseOptionProfileDriverInfo
+      type: object
+      properties:
+        data:
+          type: object
     TessellDatabaseOptionProfileDTO:
       title: TessellDatabaseOptionProfileDTO
       type: object
@@ -660,102 +837,35 @@ components:
           format: uuid
           description: Tessell generated UUID for the entity
       description: This is a definition for Tessell Database Option Profile Object
-    TessellDatabaseOptionTypeDTO:
-      title: TessellDatabaseOptionTypeDTO
+    DatabaseOptionProfileStatus:
+      description: Database OptionsProfile Status
+      type: string
+      enum:
+      - DELETED
+      - DELETING
+      - DRAFT
+      - PUBLISH
+      - UNPUBLISH
+    TessellDatabaseOptionTypeListResponse:
+      title: TessellDatabaseOptionTypeListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        description:
-          type: string
-        engineType:
-          $ref: '#/components/schemas/databaseEngineType'
-        version:
-          type: string
-        status:
-          $ref: '#/components/schemas/DatabaseOptionTypeStatus'
-        options:
+        response:
           type: array
           items:
-            $ref: '#/components/schemas/DatabaseOptionType'
-        dateCreated:
-          type: string
-          description: Timestamp when the entity was created
-          format: date-time
-        dateModified:
-          type: string
-          description: Timestamp when the entity was last modified
-          format: date-time
-    TessellDatabaseOptionProfileConsumptionDTO:
-      title: TessellDatabaseOptionProfileConsumptionDTO
-      required:
-      - name
+            $ref: '#/components/schemas/TessellDatabaseOptionTypeDTO'
+    apiPaginationInfo:
+      title: apiPaginationInfo
       type: object
       properties:
-        description:
-          type: string
-        driverInfo:
-          description: Database Option Profile's metadata information for driver use
-          $ref: '#/components/schemas/DatabaseOptionProfileDriverInfo'
-        engineType:
-          description: Database Option Profile's database engine type
-          $ref: '#/components/schemas/databaseEngineType'
-        id:
-          type: string
-          format: uuid
-          description: Tessell generated UUID for the entity
-          example: 123e4567-e89b-12d3-a456-426614174000
-        optionTypeId:
-          type: string
-          format: uuid
-          description: Tessell option type UUID for the entity
-          example: 123e4567-e89b-12d3-a456-426614174001
-        metadata:
-          description: Database Option Profile's metadata information
-          $ref: '#/components/schemas/DatabaseOptionProfileMetadata'
-        name:
-          type: string
-          description: Name of the entity
-          example: sample_entity
-        maturityStatus:
-          $ref: '#/components/schemas/DatabaseOptionProfileMaturityStatus'
-        options:
-          type: array
-          description: Database Option Profile's associated options
-          items:
-            $ref: '#/components/schemas/DatabaseProfileOptionType'
-        owner:
-          type: string
-        tenantId:
-          type: string
-        version:
-          type: string
-          description: Database Option Profile's version
-    DatabaseProfileOptionType:
-      title: DatabaseProfileOptionType
-      type: object
-      required:
-      - applyNow
-      - name
-      - optionSettings
-      properties:
-        applyNow:
-          type: boolean
-        name:
-          type: string
-          description: Option name
-          minLength: 1
-          maxLength: 128
-          example: NATIVE_NETWORK_ENCRYPTION
-        optionSettings:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseProfileOptionSettingType'
-          minItems: 0
-          maxItems: 50
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
     DatabaseOptionApplyType:
       description: Database Option Apply Type. DB requires reboot if a param of Dynamic type is changed.
       type: string
@@ -763,13 +873,20 @@ components:
       enum:
       - STATIC
       - DYNAMIC
-    DatabaseOptionProfileMaturityStatus:
-      description: Database OptionsProfile Status
-      type: string
-      enum:
-      - DRAFT
-      - PUBLISHED
-      - UNPUBLISHED
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    DatabaseOptionProfileMetadata:
+      title: DatabaseOptionProfileMetadata
+      type: object
+      properties:
+        data:
+          type: object
     EntityUserAclSharingInfo:
       title: EntityUserAclSharingInfo
       description: Tessell Entity ACL Sharing Info for a user
@@ -785,123 +902,6 @@ components:
           type: string
           format: date-time
           description: Date when the entity was shared
-    DatabaseProfileOptionSettingType:
-      title: DatabaseProfileOptionSettingType
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 128
-          example: SQLNET.ENCRYPTION_TYPES_SERVER
-        value:
-          type: string
-          maxLength: 1000
-          example: AES256
-        isGlobal:
-          type: boolean
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    TessellDatabaseOptionProfileListResponse:
-      title: TessellDatabaseOptionProfileListResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      type: object
-      properties:
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/TessellDatabaseOptionProfileDTO'
-    DatabaseOptionProfileMetadata:
-      title: DatabaseOptionProfileMetadata
-      type: object
-      properties:
-        data:
-          type: object
-    DatabaseOptionSettingType:
-      title: DatabaseOptionSettingType
-      type: object
-      properties:
-        defaultValue:
-          type: string
-        applyType:
-          $ref: '#/components/schemas/DatabaseOptionApplyType'
-        allowedValues:
-          type: string
-        dataType:
-          type: string
-        description:
-          type: string
-        name:
-          type: string
-        isGlobal:
-          type: boolean
-        overridden:
-          type: boolean
-    TessellDatabaseOptionProfileConsumptionListResponse:
-      title: TessellDatabaseOptionProfileConsumptionListResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      type: object
-      properties:
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/TessellDatabaseOptionProfileConsumptionDTO'
-    databaseEngineType:
-      description: Database Engine Type
-      type: string
-      enum:
-      - ORACLE
-      - POSTGRESQL
-      - SQLSERVER
-      - MYSQL
-      - APACHE_KAFKA
-      - MONGODB
-      - MILVUS
-    DatabaseOptionTypeStatus:
-      type: string
-      enum:
-      - DISABLED
-      - ENABLED
-  parameters:
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
   securitySchemes:
     BearerAuth:
       type: http

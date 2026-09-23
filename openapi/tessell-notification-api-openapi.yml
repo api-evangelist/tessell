@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center Notification API
+  title: Tessell Notification API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -221,6 +221,56 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    BatchAcknowledgeRequest:
+      title: Batch acknowledge request
+      type: object
+      description: Batch acknowledge request
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+        acknowledgeAll:
+          type: boolean
+          default: true
+          description: acknowledges all the notifications of the user
+    AcknowledgeNotificationResponse:
+      title: Acknowledge Notifications Summary Response
+      type: array
+      items:
+        type: string
+    ApiPaginationInfo:
+      title: ApiPaginationInfo
+      type: object
+      required:
+      - pageSize
+      - pageOffset
+      properties:
+        pageOffset:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+    UserEventList:
+      title: User events list
+      type: object
+      properties:
+        parentEventId:
+          type: string
+          description: Entity name
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserEvent'
+    NotificationApiResponse:
+      title: NotificationApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/ApiMetadata'
+        response:
+          $ref: '#/components/schemas/GetNotificationResponse'
     UserEvent:
       title: User Event
       type: object
@@ -259,6 +309,25 @@ components:
         notifyUser:
           type: boolean
           description: whether to notify the user
+    NotificationCount:
+      title: Notification Count
+      type: object
+      description: Notification count object
+      required:
+      - acknowledgedCount
+      - count
+      properties:
+        count:
+          type: integer
+          description: Total number of events in the provided time range that are not acknowledged
+    NotificationSummaryApiResponse:
+      title: NotificationSummaryApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/ApiMetadata'
+        response:
+          $ref: '#/components/schemas/NotificationSummaryResponse'
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -283,78 +352,11 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    NotificationApiResponse:
-      title: NotificationApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/ApiMetadata'
-        response:
-          $ref: '#/components/schemas/GetNotificationResponse'
-    NotificationSummaryApiResponse:
-      title: NotificationSummaryApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/ApiMetadata'
-        response:
-          $ref: '#/components/schemas/NotificationSummaryResponse'
-    ApiMetadata:
-      properties:
-        pagination:
-          $ref: '#/components/schemas/ApiPaginationInfo'
-        records:
-          format: int32
-          type: integer
-        timeZone:
-          type: string
-      title: ApiMetadata
-      type: object
-    ApiPaginationInfo:
-      title: ApiPaginationInfo
-      type: object
-      required:
-      - pageSize
-      - pageOffset
-      properties:
-        pageOffset:
-          format: int32
-          type: integer
-        pageSize:
-          format: int32
-          type: integer
-    UserEventList:
-      title: User events list
-      type: object
-      properties:
-        parentEventId:
-          type: string
-          description: Entity name
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserEvent'
-    Severity:
-      type: string
-      description: Severity of a CVE or issue
-      enum:
-      - CRITICAL
-      - HIGH
-      - MEDIUM
-      - LOW
-    BatchAcknowledgeRequest:
-      title: Batch acknowledge request
-      type: object
-      description: Batch acknowledge request
-      properties:
-        ids:
-          type: array
-          items:
-            type: string
-        acknowledgeAll:
-          type: boolean
-          default: true
-          description: acknowledges all the notifications of the user
+    NotificationSummaryResponse:
+      title: Get Notifications Summary Response
+      type: array
+      items:
+        $ref: '#/components/schemas/NotificationSummary'
     NotificationSummary:
       title: Notification Summary
       type: object
@@ -391,11 +393,6 @@ components:
         appName:
           type: string
           description: App that generated the event
-    GetNotificationResponse:
-      title: Get Notifications Response
-      type: array
-      items:
-        $ref: '#/components/schemas/UserEventList'
     Event:
       title: Event
       type: object
@@ -485,22 +482,6 @@ components:
           description: Is system generated event
         visibility:
           $ref: '#/components/schemas/Visibility'
-    NotificationCount:
-      title: Notification Count
-      type: object
-      description: Notification count object
-      required:
-      - acknowledgedCount
-      - count
-      properties:
-        count:
-          type: integer
-          description: Total number of events in the provided time range that are not acknowledged
-    AcknowledgeNotificationResponse:
-      title: Acknowledge Notifications Summary Response
-      type: array
-      items:
-        type: string
     Visibility:
       title: Visibility
       type: string
@@ -508,11 +489,30 @@ components:
       enum:
       - USER
       - SYSTEM
-    NotificationSummaryResponse:
-      title: Get Notifications Summary Response
+    GetNotificationResponse:
+      title: Get Notifications Response
       type: array
       items:
-        $ref: '#/components/schemas/NotificationSummary'
+        $ref: '#/components/schemas/UserEventList'
+    ApiMetadata:
+      properties:
+        pagination:
+          $ref: '#/components/schemas/ApiPaginationInfo'
+        records:
+          format: int32
+          type: integer
+        timeZone:
+          type: string
+      title: ApiMetadata
+      type: object
+    Severity:
+      type: string
+      description: Severity of a CVE or issue
+      enum:
+      - CRITICAL
+      - HIGH
+      - MEDIUM
+      - LOW
   securitySchemes:
     BearerAuth:
       type: http

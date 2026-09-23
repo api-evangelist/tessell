@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center Privileges API
+  title: Tessell Privileges API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -136,6 +136,24 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    PrivilegeCreatePayload:
+      title: PrivilegeCreatePayload
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the privilege
+        name:
+          type: string
+          description: Name of the privilege
+      description: This is a definition for Tessell internal create privilege payload object
+    PrivilegeStatus:
+      title: PrivilegeStatus
+      type: string
+      description: This is a definition for Tessell privilege status object
+      enum:
+      - DELETED
+      - ENABLED
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -168,13 +186,17 @@ components:
           type: string
         message:
           type: string
-    PrivilegeStatus:
-      title: PrivilegeStatus
-      type: string
-      description: This is a definition for Tessell privilege status object
-      enum:
-      - DELETED
-      - ENABLED
+    PrivilegeUpdatePayload:
+      title: PrivilegeUpdatePayload
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the privilege
+        name:
+          type: string
+          description: Name of the privilege
+      description: This is a definition for Tessell privilege update object
     PrivilegeDTO:
       title: PrivilegeDTO
       type: object
@@ -200,28 +222,6 @@ components:
         status:
           $ref: '#/components/schemas/PrivilegeStatus'
       description: This is a definition for Tessell
-    PrivilegeCreatePayload:
-      title: PrivilegeCreatePayload
-      type: object
-      properties:
-        description:
-          type: string
-          description: Description of the privilege
-        name:
-          type: string
-          description: Name of the privilege
-      description: This is a definition for Tessell internal create privilege payload object
-    PrivilegeUpdatePayload:
-      title: PrivilegeUpdatePayload
-      type: object
-      properties:
-        description:
-          type: string
-          description: Description of the privilege
-        name:
-          type: string
-          description: Name of the privilege
-      description: This is a definition for Tessell privilege update object
   securitySchemes:
     BearerAuth:
       type: http

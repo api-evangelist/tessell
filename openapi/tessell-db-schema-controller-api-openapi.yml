@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center db-schema-controller API
+  title: Tessell Db Schema Controller API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -56,21 +56,21 @@ paths:
           type: string
 components:
   schemas:
-    DatabaseSchemaDbSchema:
+    DatabaseSchemaDb:
       type: object
-      description: Represents a schema within a database instance.
+      description: Represents a database instance within the schema structure.
       properties:
-        schemaName:
+        databaseName:
           type: string
-          example: USER10
-        schemaId:
+          example: PDB52E
+        databaseId:
           type: string
           format: uuid
-          description: Unique identifier for the schema.
-        tables:
+          description: Unique identifier for the database instance.
+        schemas:
           type: array
           items:
-            $ref: '#/components/schemas/DatabaseSchemaDbSchemaTable'
+            $ref: '#/components/schemas/DatabaseSchemaDbSchema'
     DatabaseSchemaDbSchemaTableColumn:
       type: object
       description: Represents a column within a table.
@@ -92,45 +92,6 @@ components:
           example:
           - Primary Key
           - Not Null
-    DatabaseSchemaDb:
-      type: object
-      description: Represents a database instance within the schema structure.
-      properties:
-        databaseName:
-          type: string
-          example: PDB52E
-        databaseId:
-          type: string
-          format: uuid
-          description: Unique identifier for the database instance.
-        schemas:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseSchemaDbSchema'
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
     DatabaseSchemaDbSchemaTable:
       type: object
       description: Represents a table within a schema.
@@ -168,6 +129,45 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DatabaseSchemaDbSchemaTableColumn'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    DatabaseSchemaDbSchema:
+      type: object
+      description: Represents a schema within a database instance.
+      properties:
+        schemaName:
+          type: string
+          example: USER10
+        schemaId:
+          type: string
+          format: uuid
+          description: Unique identifier for the schema.
+        tables:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseSchemaDbSchemaTable'
     DatabaseSchema:
       type: object
       description: Represents the complete schema structure of a database, including databases, schemas within databases, tables, and columns.

@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tessell APIs activity-center DB Service Benchmark API
+  title: Tessell DB Service Benchmark API
   contact:
     email: support@tessell.com
     name: Tessell Inc
@@ -195,7 +195,6 @@ paths:
       tags:
       - DB Service Benchmark
       operationId: createBenchmark
-      description: Create new benchmark request
       requestBody:
         description: Create benchmark
         required: true
@@ -261,30 +260,17 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    ApiError:
+    BenchmarkCatalogMetadata:
+      title: Benchmark Metadata
       type: object
-      description: Common error response object for non 2xx responses
+      description: Benchmark catalog metadata object
       properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
+        compute:
+          description: compute details
+          x-gorm-column-attrs: not null
+          type: array
+          items:
+            $ref: '#/components/schemas/BenchmarkCatalogCompute'
     BenchmarkHostMetadata:
       title: Benchmark Host Metadata
       type: object
@@ -305,17 +291,23 @@ components:
         subscriptionName:
           type: string
           description: subscription name for bastion host (same as service subscription name)
-    BenchmarkStatus:
-      title: BenchmarkStatus
-      description: Enumeration for benchmark status
-      type: string
-      enum:
-      - PENDING
-      - RUNNING
-      - INITIALIZING
-      - DATA_SEEDING
-      - COMPLETE
-      - FAILED
+    BenchmarkCatalogCompute:
+      title: Benchmark Catalog Compute Entry
+      type: object
+      description: Benchmark Catalog Compute Entry
+      properties:
+        computeShape:
+          type: string
+          description: compute shape name
+        clientCount:
+          type: integer
+          description: client count
+        datasetSizeInGB:
+          type: integer
+          description: dataset size
+        durationInMin:
+          type: integer
+          description: benchmark duration in minutes
     Benchmark:
       x-gorm: true
       title: Benchmark Entity
@@ -383,6 +375,14 @@ components:
           description: benchmark metadata
           allOf:
           - $ref: '#/components/schemas/BenchmarkMetadata'
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
     databaseEngineType:
       description: Database Engine Type
       type: string
@@ -394,6 +394,48 @@ components:
       - APACHE_KAFKA
       - MONGODB
       - MILVUS
+    BenchmarkStatus:
+      title: BenchmarkStatus
+      description: Enumeration for benchmark status
+      type: string
+      enum:
+      - PENDING
+      - RUNNING
+      - INITIALIZING
+      - DATA_SEEDING
+      - COMPLETE
+      - FAILED
+    BenchmarkType:
+      title: BenchmarkType
+      description: Enumeration for type of benchmark run
+      type: string
+      enum:
+      - PGBENCH
+      - SYSBENCH
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
     BenchmarkInput:
       title: Benchmark Input
       type: object
@@ -411,65 +453,6 @@ components:
           type: integer
           x-gorm-column-attrs: not null
           description: run duration
-    BenchmarkType:
-      title: BenchmarkType
-      description: Enumeration for type of benchmark run
-      type: string
-      enum:
-      - PGBENCH
-      - SYSBENCH
-    BenchmarkCatalogCompute:
-      title: Benchmark Catalog Compute Entry
-      type: object
-      description: Benchmark Catalog Compute Entry
-      properties:
-        computeShape:
-          type: string
-          description: compute shape name
-        clientCount:
-          type: integer
-          description: client count
-        datasetSizeInGB:
-          type: integer
-          description: dataset size
-        durationInMin:
-          type: integer
-          description: benchmark duration in minutes
-    BenchmarkMetadata:
-      title: Benchmark Metadata
-      type: object
-      description: Benchmark metadata object
-      properties:
-        computeShape:
-          type: string
-          x-gorm-column-attrs: not null
-          description: compute shape name
-        serviceName:
-          type: string
-          x-gorm-column-attrs: not null
-          description: service name for the benchmark
-        servicePassword:
-          type: string
-          description: service password
-          x-exclude-from: service
-        tps:
-          type: integer
-          description: current tps counter
-        deploymentId:
-          type: string
-          description: bastion node deployment id
-        engineType:
-          x-gorm-column-attrs: not null
-          allOf:
-          - $ref: '#/components/schemas/databaseEngineType'
-        cloudType:
-          x-gorm-column-attrs: not null
-          allOf:
-          - $ref: '#/components/schemas/cloudType'
-        bmHost:
-          description: benchmark host metadata
-          allOf:
-          - $ref: '#/components/schemas/BenchmarkHostMetadata'
     BenchmarkCatalog:
       x-gorm: true
       title: Benchmark Catalog Entity
@@ -515,25 +498,41 @@ components:
           x-gorm-column-type: json
           allOf:
           - $ref: '#/components/schemas/BenchmarkCatalogMetadata'
-    BenchmarkCatalogMetadata:
+    BenchmarkMetadata:
       title: Benchmark Metadata
       type: object
-      description: Benchmark catalog metadata object
+      description: Benchmark metadata object
       properties:
-        compute:
-          description: compute details
+        computeShape:
+          type: string
           x-gorm-column-attrs: not null
-          type: array
-          items:
-            $ref: '#/components/schemas/BenchmarkCatalogCompute'
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
+          description: compute shape name
+        serviceName:
+          type: string
+          x-gorm-column-attrs: not null
+          description: service name for the benchmark
+        servicePassword:
+          type: string
+          description: service password
+          x-exclude-from: service
+        tps:
+          type: integer
+          description: current tps counter
+        deploymentId:
+          type: string
+          description: bastion node deployment id
+        engineType:
+          x-gorm-column-attrs: not null
+          allOf:
+          - $ref: '#/components/schemas/databaseEngineType'
+        cloudType:
+          x-gorm-column-attrs: not null
+          allOf:
+          - $ref: '#/components/schemas/cloudType'
+        bmHost:
+          description: benchmark host metadata
+          allOf:
+          - $ref: '#/components/schemas/BenchmarkHostMetadata'
   securitySchemes:
     BearerAuth:
       type: http
