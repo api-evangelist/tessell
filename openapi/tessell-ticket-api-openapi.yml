@@ -235,46 +235,47 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    TicketRequestBodyV2:
-      title: Create ticket request body
+    RequestFieldValues:
       type: object
-      description: Create ticket payload
+      description: Request fields values for jira ticket
       properties:
-        entityType:
+        summary:
           type: string
-          description: Associated entityType
-        entityId:
-          type: string
-          description: Associated entityId
-        ccEmails:
+          description: summary or subject for ticket
+        components:
           type: array
+          description: array of components, where component is the area where the issue occurred
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: name of component
+        description:
+          type: string
+          description: description for ticket
+        environment:
+          type: string
+          description: environment details from where the ticket is raised
+        priority:
+          type: object
+          description: priority or severity of ticket
+          properties:
+            name:
+              type: string
+              description: name of priority
+        labels:
+          type: array
+          description: array of labels
           items:
             type: string
-        jiraFields:
-          $ref: '#/components/schemas/RequestFieldValues'
-    TicketsResponseV2:
-      title: Get Tickets Response
-      description: array of tickets
-      type: array
-      items:
-        $ref: '#/components/schemas/TicketDTOV2'
-    TicketUpdateRequestBodyV2:
-      title: Update ticket request body
-      type: object
-      description: Update ticket request body
-      properties:
-        status:
-          type: string
-          enum:
-          - open
-          - closed
-          description: Status of the ticket
-        priority:
-          type: string
-          description: Priority of the ticket.
-        subject:
-          type: string
-          description: Subject of the ticket.
+            description: label
+        assignee:
+          type: object
+          properties:
+            id:
+              type: string
+              description: user id of assignee
     TicketDTOV2:
       title: Ticket
       type: object
@@ -318,6 +319,12 @@ components:
         name:
           type: string
           description: Name of owner
+    TicketsResponseV2:
+      title: Get Tickets Response
+      description: array of tickets
+      type: array
+      items:
+        $ref: '#/components/schemas/TicketDTOV2'
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -342,47 +349,40 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    RequestFieldValues:
+    TicketUpdateRequestBodyV2:
+      title: Update ticket request body
       type: object
-      description: Request fields values for jira ticket
+      description: Update ticket request body
       properties:
-        summary:
+        status:
           type: string
-          description: summary or subject for ticket
-        components:
-          type: array
-          description: array of components, where component is the area where the issue occurred
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: name of component
-        description:
-          type: string
-          description: description for ticket
-        environment:
-          type: string
-          description: environment details from where the ticket is raised
+          enum:
+          - open
+          - closed
+          description: Status of the ticket
         priority:
-          type: object
-          description: priority or severity of ticket
-          properties:
-            name:
-              type: string
-              description: name of priority
-        labels:
+          type: string
+          description: Priority of the ticket.
+        subject:
+          type: string
+          description: Subject of the ticket.
+    TicketRequestBodyV2:
+      title: Create ticket request body
+      type: object
+      description: Create ticket payload
+      properties:
+        entityType:
+          type: string
+          description: Associated entityType
+        entityId:
+          type: string
+          description: Associated entityId
+        ccEmails:
           type: array
-          description: array of labels
           items:
             type: string
-            description: label
-        assignee:
-          type: object
-          properties:
-            id:
-              type: string
-              description: user id of assignee
+        jiraFields:
+          $ref: '#/components/schemas/RequestFieldValues'
   securitySchemes:
     BearerAuth:
       type: http

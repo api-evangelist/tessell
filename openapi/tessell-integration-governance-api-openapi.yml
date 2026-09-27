@@ -478,6 +478,23 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   parameters:
+    integrationType:
+      name: integration-type
+      in: query
+      description: Type of an Integration
+      required: false
+      style: form
+      schema:
+        $ref: '#/components/schemas/TessellIntegrationType'
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
     pageSize:
       name: page-size
       in: query
@@ -487,6 +504,15 @@ components:
         type: integer
         format: int32
         default: 10
+    owners:
+      name: owners
+      in: query
+      description: List of Email Addresses for entity or resource owners
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
     tenantIdMandatory:
       name: tenant-id
       in: header
@@ -497,133 +523,37 @@ components:
         minLength: 1
         maxLength: 128
         example: 12345678-abcd-1234-abcd-1234abcd5678
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    integrationType:
-      name: integration-type
-      in: query
-      description: Type of an Integration
-      required: false
-      style: form
-      schema:
-        $ref: '#/components/schemas/TessellIntegrationType'
-    owners:
-      name: owners
-      in: query
-      description: List of Email Addresses for entity or resource owners
-      required: false
-      schema:
-        type: array
-        items:
-          type: string
   schemas:
-    TessellIntegrationCloudwatchMetrics:
-      title: TessellIntegrationCloudwatchMetrics
-      type: object
-      required:
-      - cloudwatchNamespace
-      - awsToken
-      - awsSecret
-      properties:
-        cloudwatchNamespace:
-          type: string
-          minLength: 1
-          maxLength: 256
-        awsToken:
-          type: string
-          minLength: 1
-          maxLength: 1000
-        awsSecret:
-          type: string
-          minLength: 1
-          maxLength: 1000
-    TessellIntegrationOEM:
-      title: TessellIntegrationOEM
-      type: object
-      required:
-      - serverName
-      - ip
-      - agentPassword
-      - sysmanPassword
-      - oemUploadPort
-      - agentPort
-      - oemConsolePort
-      properties:
-        serverName:
-          type: string
-          minLength: 1
-          maxLength: 128
-        ip:
-          type: string
-          format: ip4
-        agentPassword:
-          description: Agent registration password.
-          type: string
-          minLength: 1
-          maxLength: 256
-        sysmanPassword:
-          description: OEM sysman password.
-          type: string
-          minLength: 1
-          maxLength: 256
-        oemUploadPort:
-          description: Port for agent to upload the data.
-          type: integer
-          format: int32
-        agentPort:
-          description: Port for installation and other communication.
-          type: integer
-          format: int32
-        oemConsolePort:
-          description: OEM console port
-          type: integer
-          format: int32
-        inboundIPs:
-          description: OEM server inbound IPs
-          type: array
-          items:
-            type: string
-            format: ip4
-          maxItems: 100
-    AclEligibleUser:
-      title: AclEligibleUser
-      description: Eligible user for sharing the entity
-      properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
-        emailId:
-          type: string
-        eligibleRoles:
-          type: array
-          items:
-            type: string
-        accessibleSubscriptions:
-          type: array
-          items:
-            type: string
-          description: List of subscriptions user has access to
-    TessellIntegrationTypeMaturityStatus:
-      description: Tessell Integration type maturity statuses
+    TessellIntegrationType:
+      description: Tessell supported Integration types
       type: string
       enum:
-      - PUBLISHED
-      - UNPUBLISHED
-    TessellIntegrationStatus:
-      description: Tessell Integration statuses
-      type: string
-      enum:
-      - ACTIVE
-      - DELETING
-      - DELETED
+      - DATADOG
+      - SUMOLOGIC
+      - NEWRELIC
+      - QUALYS
+      - OEM
+      - SPLUNK
+    TessellIntegrationListResponse:
+      title: TessellIntegrationListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellIntegrationDTO'
+    TessellIntegrationTypeListResponse:
+      title: TessellIntegrationTypeListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellIntegrationTypeDTO'
     TessellIntegrationSumologic:
       title: TessellIntegrationSumologic
       type: object
@@ -639,111 +569,6 @@ components:
           type: string
           minLength: 1
           maxLength: 128
-    TessellIntegrationSplunk:
-      title: TessellIntegrationSplunk
-      type: object
-      required:
-      - hostname
-      - port
-      - serverType
-      properties:
-        hostname:
-          type: string
-          minLength: 1
-          maxLength: 128
-        port:
-          description: server port for splunk
-          type: integer
-          format: int32
-        apiToken:
-          type: string
-          minLength: 1
-          maxLength: 128
-        index:
-          type: string
-          minLength: 1
-          maxLength: 128
-        serverType:
-          $ref: '#/components/schemas/TessellIntegrationSplunkServerType'
-    IntegrationTypeMetadata:
-      title: IntegrationTypeMetadata
-      description: Metadata for integration type
-      type: object
-      properties:
-        supportedEngineTypes:
-          type: array
-          items:
-            type: object
-            properties:
-              engineType:
-                $ref: '#/components/schemas/databaseEngineType'
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    AclPayload:
-      title: AclPayload
-      description: Payload to create an entity ACL
-      required:
-      - users
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/AclUserPayload'
-          minItems: 1
-          maxItems: 100
-    TessellIntegrationType:
-      description: Tessell supported Integration types
-      type: string
-      enum:
-      - DATADOG
-      - SUMOLOGIC
-      - NEWRELIC
-      - QUALYS
-      - OEM
-      - SPLUNK
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    TessellIntegrationTypeListResponse:
-      title: TessellIntegrationTypeListResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      type: object
-      properties:
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/TessellIntegrationTypeDTO'
     TessellIntegrationTypeDTO:
       title: TessellIntegrationTypeDTO
       type: object
@@ -773,6 +598,19 @@ components:
           $ref: '#/components/schemas/TessellIntegrationTypeMaturityStatus'
         metadata:
           $ref: '#/components/schemas/IntegrationTypeMetadata'
+    TessellIntegrationSplunkServerType:
+      description: Server types for splunk
+      type: string
+      enum:
+      - SPLUNK_RECEIVER
+      - DEPLOYMENT_SERVER
+    TessellIntegrationStatus:
+      description: Tessell Integration statuses
+      type: string
+      enum:
+      - ACTIVE
+      - DELETING
+      - DELETED
     TessellIntegrationMetadata:
       title: IntegrationMetadata
       type: object
@@ -791,6 +629,82 @@ components:
           $ref: '#/components/schemas/TessellIntegrationOEM'
         splunk:
           $ref: '#/components/schemas/TessellIntegrationSplunk'
+    AclUserPayload:
+      title: AclUserPayload
+      description: Payload to create an user's entity ACL
+      required:
+      - emailId
+      - role
+      properties:
+        emailId:
+          description: Email id of the user
+          type: string
+          minLength: 1
+          maxLength: 256
+        role:
+          description: Role Info
+          type: string
+          minLength: 1
+          maxLength: 64
+    AclEligibleUser:
+      title: AclEligibleUser
+      description: Eligible user for sharing the entity
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        emailId:
+          type: string
+        eligibleRoles:
+          type: array
+          items:
+            type: string
+        accessibleSubscriptions:
+          type: array
+          items:
+            type: string
+          description: List of subscriptions user has access to
+    AclPayload:
+      title: AclPayload
+      description: Payload to create an entity ACL
+      required:
+      - users
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/AclUserPayload'
+          minItems: 1
+          maxItems: 100
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    TessellIntegrationCloudwatchMetrics:
+      title: TessellIntegrationCloudwatchMetrics
+      type: object
+      required:
+      - cloudwatchNamespace
+      - awsToken
+      - awsSecret
+      properties:
+        cloudwatchNamespace:
+          type: string
+          minLength: 1
+          maxLength: 256
+        awsToken:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        awsSecret:
+          type: string
+          minLength: 1
+          maxLength: 1000
     TessellIntegrationDTO:
       title: TessellIntegrationDTO
       type: object
@@ -847,16 +761,152 @@ components:
           $ref: '#/components/schemas/TessellIntegrationMetadata'
         integrationTypeMetadata:
           $ref: '#/components/schemas/IntegrationTypeMetadata'
-    TessellIntegrationListResponse:
-      title: TessellIntegrationListResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
+    apiMetadata:
+      title: apiMetadata
       type: object
       properties:
-        response:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    IntegrationTypeMetadata:
+      title: IntegrationTypeMetadata
+      description: Metadata for integration type
+      type: object
+      properties:
+        supportedEngineTypes:
           type: array
           items:
-            $ref: '#/components/schemas/TessellIntegrationDTO'
+            type: object
+            properties:
+              engineType:
+                $ref: '#/components/schemas/databaseEngineType'
+    TessellIntegrationOEM:
+      title: TessellIntegrationOEM
+      type: object
+      required:
+      - serverName
+      - ip
+      - agentPassword
+      - sysmanPassword
+      - oemUploadPort
+      - agentPort
+      - oemConsolePort
+      properties:
+        serverName:
+          type: string
+          minLength: 1
+          maxLength: 128
+        ip:
+          type: string
+          format: ip4
+        agentPassword:
+          description: Agent registration password.
+          type: string
+          minLength: 1
+          maxLength: 256
+        sysmanPassword:
+          description: OEM sysman password.
+          type: string
+          minLength: 1
+          maxLength: 256
+        oemUploadPort:
+          description: Port for agent to upload the data.
+          type: integer
+          format: int32
+        agentPort:
+          description: Port for installation and other communication.
+          type: integer
+          format: int32
+        oemConsolePort:
+          description: OEM console port
+          type: integer
+          format: int32
+        inboundIPs:
+          description: OEM server inbound IPs
+          type: array
+          items:
+            type: string
+            format: ip4
+          maxItems: 100
+    TessellIntegrationNewRelic:
+      title: TessellIntegrationNewRelic
+      type: object
+      required:
+      - apiKey
+      properties:
+        apiKey:
+          type: string
+          minLength: 1
+          maxLength: 128
+    AclRevokePayload:
+      title: AclRevokePayload
+      description: Payload to revoke Tessell ACLs
+      required:
+      - users
+      properties:
+        users:
+          description: List of users to be deleted
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          minItems: 1
+          maxItems: 100
+    TessellIntegrationSplunk:
+      title: TessellIntegrationSplunk
+      type: object
+      required:
+      - hostname
+      - port
+      - serverType
+      properties:
+        hostname:
+          type: string
+          minLength: 1
+          maxLength: 128
+        port:
+          description: server port for splunk
+          type: integer
+          format: int32
+        apiToken:
+          type: string
+          minLength: 1
+          maxLength: 128
+        index:
+          type: string
+          minLength: 1
+          maxLength: 128
+        serverType:
+          $ref: '#/components/schemas/TessellIntegrationSplunkServerType'
     TessellIntegrationMaturityStatus:
       description: Tessell Integration maturity statuses
       type: string
@@ -880,25 +930,6 @@ components:
           type: object
       title: ApiResponse
       type: object
-    databaseEngineType:
-      description: Database Engine Type
-      type: string
-      enum:
-      - ORACLE
-      - POSTGRESQL
-      - SQLSERVER
-      - MYSQL
-      - APACHE_KAFKA
-      - MONGODB
-      - MILVUS
-    EntityAclSharingInfo:
-      title: EntityAclSharingInfo
-      description: Tessell Entity ACL Sharing Info
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/EntityUserAclSharingInfo'
     TessellIntegrationQualys:
       title: TessellIntegrationQualys
       type: object
@@ -918,6 +949,17 @@ components:
         serverUri:
           type: string
           format: uri
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
     apiPaginationInfo:
       title: apiPaginationInfo
       type: object
@@ -943,62 +985,14 @@ components:
           type: string
           minLength: 1
           maxLength: 128
-    TessellIntegrationSplunkServerType:
-      description: Server types for splunk
-      type: string
-      enum:
-      - SPLUNK_RECEIVER
-      - DEPLOYMENT_SERVER
-    AclUserPayload:
-      title: AclUserPayload
-      description: Payload to create an user's entity ACL
-      required:
-      - emailId
-      - role
-      properties:
-        emailId:
-          description: Email id of the user
-          type: string
-          minLength: 1
-          maxLength: 256
-        role:
-          description: Role Info
-          type: string
-          minLength: 1
-          maxLength: 64
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    AclRevokePayload:
-      title: AclRevokePayload
-      description: Payload to revoke Tessell ACLs
-      required:
-      - users
+    EntityAclSharingInfo:
+      title: EntityAclSharingInfo
+      description: Tessell Entity ACL Sharing Info
       properties:
         users:
-          description: List of users to be deleted
           type: array
           items:
-            type: string
-            minLength: 1
-            maxLength: 256
-          minItems: 1
-          maxItems: 100
-    TessellIntegrationNewRelic:
-      title: TessellIntegrationNewRelic
-      type: object
-      required:
-      - apiKey
-      properties:
-        apiKey:
-          type: string
-          minLength: 1
-          maxLength: 128
+            $ref: '#/components/schemas/EntityUserAclSharingInfo'
     EntityUserAclSharingInfo:
       title: EntityUserAclSharingInfo
       description: Tessell Entity ACL Sharing Info for a user
@@ -1014,6 +1008,12 @@ components:
           type: string
           format: date-time
           description: Date when the entity was shared
+    TessellIntegrationTypeMaturityStatus:
+      description: Tessell Integration type maturity statuses
+      type: string
+      enum:
+      - PUBLISHED
+      - UNPUBLISHED
   securitySchemes:
     BearerAuth:
       type: http

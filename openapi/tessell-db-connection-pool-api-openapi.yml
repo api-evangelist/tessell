@@ -189,12 +189,113 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    CreateConnectionPoolPayload:
+      title: CreateConnectionPoolPayload
+      type: object
+      properties:
+        postgresqlConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreatePostgresqlConnectionPoolPayload'
     UpdateConnectionPoolPayload:
       title: UpdateConnectionPoolPayload
       type: object
       properties:
         postgresqlConfig:
           $ref: '#/components/schemas/UpdatePostgresqlConnectionPoolPayload'
+    PostgresqlConnectionPoolMode:
+      description: Mode of postgresql connection pool.
+      type: string
+      enum:
+      - SESSION
+      - TRANSACTION
+      - STATEMENT
+    DeleteConnectionPoolPayload:
+      title: DeleteConnectionPoolPayload
+      type: object
+      properties:
+        postgresqlConfig:
+          $ref: '#/components/schemas/DeletePostgresqlConnectionPoolPayload'
+    PostgresqlConnectionPoolInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique id for the connection pool
+        connPoolName:
+          type: string
+          description: Name of the connection pool
+        connPoolSize:
+          type: integer
+          description: Size of the connection pool
+        connMaxDbConnections:
+          type: integer
+          description: Maximum database connection
+        connMinPoolSize:
+          type: integer
+          description: Minimum connection pool size
+        connPoolMode:
+          $ref: '#/components/schemas/PostgresqlConnectionPoolMode'
+        dbName:
+          type: string
+          description: Database name on which this connection pool exist
+        dbUsername:
+          type: string
+          description: Username for the connection pool
+        serviceName:
+          type: string
+        status:
+          $ref: '#/components/schemas/ConnectionPoolStatus'
+        connectionDetails:
+          type: object
+          properties:
+            type:
+              type: string
+            connectDescriptor:
+              type: string
+            endpoint:
+              type: string
+            dbUsername:
+              type: string
+            port:
+              type: integer
+              format: int32
+    DeletePostgresqlConnectionPoolPayload:
+      type: object
+      description: Postgres specific configuration for deleting the connection pool
+      required:
+      - connectionPools
+      properties:
+        connectionPools:
+          type: array
+          description: Name of connection pools to delete
+          items:
+            type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
     taskSummary:
       title: taskSummary
       type: object
@@ -216,21 +317,6 @@ components:
           type: object
           additionalProperties:
             type: string
-    CreateConnectionPoolPayload:
-      title: CreateConnectionPoolPayload
-      type: object
-      properties:
-        postgresqlConfig:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreatePostgresqlConnectionPoolPayload'
-    PostgresqlConnectionPoolMode:
-      description: Mode of postgresql connection pool.
-      type: string
-      enum:
-      - SESSION
-      - TRANSACTION
-      - STATEMENT
     CreatePostgresqlConnectionPoolPayload:
       type: object
       description: Postgres engine specific configuration for creating a connection pool
@@ -307,41 +393,6 @@ components:
           description: Minimum connection pool size
           minimum: 1
           maximum: 100000
-    DeletePostgresqlConnectionPoolPayload:
-      type: object
-      description: Postgres specific configuration for deleting the connection pool
-      required:
-      - connectionPools
-      properties:
-        connectionPools:
-          type: array
-          description: Name of connection pools to delete
-          items:
-            type: string
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
     ConnectionPoolListResponse:
       title: ConnectionPoolListResponse
       type: object
@@ -350,57 +401,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PostgresqlConnectionPoolInfo'
-    DeleteConnectionPoolPayload:
-      title: DeleteConnectionPoolPayload
-      type: object
-      properties:
-        postgresqlConfig:
-          $ref: '#/components/schemas/DeletePostgresqlConnectionPoolPayload'
-    PostgresqlConnectionPoolInfo:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Unique id for the connection pool
-        connPoolName:
-          type: string
-          description: Name of the connection pool
-        connPoolSize:
-          type: integer
-          description: Size of the connection pool
-        connMaxDbConnections:
-          type: integer
-          description: Maximum database connection
-        connMinPoolSize:
-          type: integer
-          description: Minimum connection pool size
-        connPoolMode:
-          $ref: '#/components/schemas/PostgresqlConnectionPoolMode'
-        dbName:
-          type: string
-          description: Database name on which this connection pool exist
-        dbUsername:
-          type: string
-          description: Username for the connection pool
-        serviceName:
-          type: string
-        status:
-          $ref: '#/components/schemas/ConnectionPoolStatus'
-        connectionDetails:
-          type: object
-          properties:
-            type:
-              type: string
-            connectDescriptor:
-              type: string
-            endpoint:
-              type: string
-            dbUsername:
-              type: string
-            port:
-              type: integer
-              format: int32
     ConnectionPoolStatus:
       description: Status of connection pool visible to end user.
       type: string

@@ -60,65 +60,6 @@ components:
         maxLength: 128
         example: 12345678-abcd-1234-abcd-1234abcd5678
   schemas:
-    IdentityProviderDTO:
-      title: IdentityProviderDTO
-      type: object
-      description: Component to represent Identity Provider properties
-      properties:
-        id:
-          type: string
-          description: Unique ID of Identity Provider configuration
-          format: uuid
-        type:
-          $ref: '#/components/schemas/IdentityProviderType'
-        entityId:
-          type: string
-          description: Entity ID of Identity Provider
-        loginUrl:
-          type: string
-          description: Login URL of Identity Provider
-        certificate:
-          type: string
-          description: Certificate of Identity Provider
-        status:
-          $ref: '#/components/schemas/IdentityProviderStatus'
-        dateCreated:
-          type: string
-          description: Date when the IDP configuration was created
-          format: date-time
-        dateModified:
-          type: string
-          description: Date when the IDP configuration was last modified
-          format: date-time
-    IdentityProviderStatus:
-      title: IdentityProviderStatus
-      type: string
-      description: Status of Identity Provider for SSO
-      enum:
-      - ENABLED
-      - DISABLED
-      - DELETED
-    SsoConfigurationDTO:
-      title: SsoConfigurationDTO
-      description: Component to represent SSO Configuration
-      type: object
-      properties:
-        tessellEntityId:
-          type: string
-          description: Tessell's Entity ID for SSO
-        assertionConsumerServiceUrl:
-          type: string
-          description: Assertion Consumer Service URL
-        tessellLoginUrl:
-          type: string
-          description: Tessell Login URL
-        scimBaseUrl:
-          type: string
-          description: Base URL for SCIM protocol
-        idps:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdentityProviderDTO'
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -150,6 +91,65 @@ components:
       enum:
       - AZURE_AD
       - OKTA
+    IdentityProviderStatus:
+      title: IdentityProviderStatus
+      type: string
+      description: Status of Identity Provider for SSO
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+    IdentityProviderDTO:
+      title: IdentityProviderDTO
+      type: object
+      description: Component to represent Identity Provider properties
+      properties:
+        id:
+          type: string
+          description: Unique ID of Identity Provider configuration
+          format: uuid
+        type:
+          $ref: '#/components/schemas/IdentityProviderType'
+        entityId:
+          type: string
+          description: Entity ID of Identity Provider
+        loginUrl:
+          type: string
+          description: Login URL of Identity Provider
+        certificate:
+          type: string
+          description: Certificate of Identity Provider
+        status:
+          $ref: '#/components/schemas/IdentityProviderStatus'
+        dateCreated:
+          type: string
+          description: Date when the IDP configuration was created
+          format: date-time
+        dateModified:
+          type: string
+          description: Date when the IDP configuration was last modified
+          format: date-time
+    SsoConfigurationDTO:
+      title: SsoConfigurationDTO
+      description: Component to represent SSO Configuration
+      type: object
+      properties:
+        tessellEntityId:
+          type: string
+          description: Tessell's Entity ID for SSO
+        assertionConsumerServiceUrl:
+          type: string
+          description: Assertion Consumer Service URL
+        tessellLoginUrl:
+          type: string
+          description: Tessell Login URL
+        scimBaseUrl:
+          type: string
+          description: Base URL for SCIM protocol
+        idps:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityProviderDTO'
   securitySchemes:
     BearerAuth:
       type: http

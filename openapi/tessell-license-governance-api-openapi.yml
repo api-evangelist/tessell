@@ -189,30 +189,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    licenseAuditResponse:
-      type: object
-      properties:
-        licenseId:
-          description: license identifier
-          type: string
-          format: uuid
-        quantityImpacted:
-          description: quantity of license capacity to be registered
-          type: number
-          format: double
-        acquirerId:
-          type: string
-        status:
-          $ref: '#/components/schemas/licenseStatus'
-        quantityMetric:
-          type: string
-        metadata:
-          type: string
-        createdBy:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
     licenseRegisterResponse:
       type: object
       properties:
@@ -265,6 +241,184 @@ components:
           format: date-time
         metadata:
           type: string
+    maturityStatus:
+      description: maturity of license
+      type: string
+      enum:
+      - DRAFT
+      - PUBLISHED
+      - DELETED
+      - ALL
+    licenseAuditResponse:
+      type: object
+      properties:
+        licenseId:
+          description: license identifier
+          type: string
+          format: uuid
+        quantityImpacted:
+          description: quantity of license capacity to be registered
+          type: number
+          format: double
+        acquirerId:
+          type: string
+        status:
+          $ref: '#/components/schemas/licenseStatus'
+        quantityMetric:
+          type: string
+        metadata:
+          type: string
+        createdBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    vendor:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - MICROSOFT
+      - APACHE
+    licenseType:
+      description: Type of licenses
+      type: string
+      enum:
+      - EULA
+      - SUBSCRIPTION
+      - PERPETUAL
+      - OTHERS
+    licenseStatus:
+      description: status of license
+      type: string
+      enum:
+      - REGISTER
+      - TERMINATED
+      - LOCKED
+      - RELEASED
+      - FAILED
+      - DELETED
+    licenseDirectoriesResponse:
+      type: object
+      properties:
+        responses:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/licenseDirectoryResponse'
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    registerLicenseToDirectoryRequest:
+      type: object
+      required:
+      - licenseCategory
+      - licenseType
+      - vendor
+      - edition
+      - version
+      - subscriptionId
+      - quantity
+      - quantityMetric
+      - startDate
+      properties:
+        licenseCategory:
+          $ref: '#/components/schemas/licenseCategory'
+        licenseType:
+          $ref: '#/components/schemas/licenseType'
+        vendor:
+          $ref: '#/components/schemas/vendor'
+        description:
+          type: string
+          minLength: 1
+          maxLength: 128
+        edition:
+          description: Edition for the license ie Standard/enterprise
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: EVALUATION
+        version:
+          description: License version
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: 19
+        subscriptionId:
+          description: Subscription identifier
+          type: string
+          minLength: 1
+          maxLength: 128
+          example: all
+        licenseKey:
+          description: license key specific
+          type: string
+          minLength: 1
+          maxLength: 128
+        quantity:
+          description: quantity of license capacity to be registered
+          type: number
+          format: double
+          example: 100
+        status:
+          $ref: '#/components/schemas/licenseStatus'
+        maturityStatus:
+          $ref: '#/components/schemas/maturityStatus'
+        quantityMetric:
+          description: Capacity metric to determine quantity
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: vCPU
+        maxUsageAllowed:
+          description: Quantity that is permissible for provisioning
+          type: number
+          format: double
+          example: 90
+        startDate:
+          description: start-date of the license
+          type: string
+          format: date-time
+        endDate:
+          description: endDate of the license
+          type: string
+          format: date-time
+        metadata:
+          type: string
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
     apiPaginationInfo:
       title: apiPaginationInfo
       type: object
@@ -275,6 +429,14 @@ components:
         pageOffset:
           type: integer
           format: int32
+    licenseCategory:
+      description: Class to determine licenses
+      type: string
+      enum:
+      - DB
+      - INTEGRATION
+      - OS
+      - OTHERS
     deleteLicenseResponse:
       type: object
       description: License Repositories Chronicle Response
@@ -352,168 +514,6 @@ components:
           items:
             allOf:
             - $ref: '#/components/schemas/licenseAuditResponse'
-    registerLicenseToDirectoryRequest:
-      type: object
-      required:
-      - licenseCategory
-      - licenseType
-      - vendor
-      - edition
-      - version
-      - subscriptionId
-      - quantity
-      - quantityMetric
-      - startDate
-      properties:
-        licenseCategory:
-          $ref: '#/components/schemas/licenseCategory'
-        licenseType:
-          $ref: '#/components/schemas/licenseType'
-        vendor:
-          $ref: '#/components/schemas/vendor'
-        description:
-          type: string
-          minLength: 1
-          maxLength: 128
-        edition:
-          description: Edition for the license ie Standard/enterprise
-          type: string
-          minLength: 1
-          maxLength: 64
-          example: EVALUATION
-        version:
-          description: License version
-          type: string
-          minLength: 1
-          maxLength: 32
-          example: 19
-        subscriptionId:
-          description: Subscription identifier
-          type: string
-          minLength: 1
-          maxLength: 128
-          example: all
-        licenseKey:
-          description: license key specific
-          type: string
-          minLength: 1
-          maxLength: 128
-        quantity:
-          description: quantity of license capacity to be registered
-          type: number
-          format: double
-          example: 100
-        status:
-          $ref: '#/components/schemas/licenseStatus'
-        maturityStatus:
-          $ref: '#/components/schemas/maturityStatus'
-        quantityMetric:
-          description: Capacity metric to determine quantity
-          type: string
-          minLength: 1
-          maxLength: 64
-          example: vCPU
-        maxUsageAllowed:
-          description: Quantity that is permissible for provisioning
-          type: number
-          format: double
-          example: 90
-        startDate:
-          description: start-date of the license
-          type: string
-          format: date-time
-        endDate:
-          description: endDate of the license
-          type: string
-          format: date-time
-        metadata:
-          type: string
-    licenseDirectoriesResponse:
-      type: object
-      properties:
-        responses:
-          type: array
-          items:
-            allOf:
-            - $ref: '#/components/schemas/licenseDirectoryResponse'
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-    licenseType:
-      description: Type of licenses
-      type: string
-      enum:
-      - EULA
-      - SUBSCRIPTION
-      - PERPETUAL
-      - OTHERS
-    maturityStatus:
-      description: maturity of license
-      type: string
-      enum:
-      - DRAFT
-      - PUBLISHED
-      - DELETED
-      - ALL
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    vendor:
-      description: Database Engine Type
-      type: string
-      enum:
-      - ORACLE
-      - MICROSOFT
-      - APACHE
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    licenseCategory:
-      description: Class to determine licenses
-      type: string
-      enum:
-      - DB
-      - INTEGRATION
-      - OS
-      - OTHERS
-    licenseStatus:
-      description: status of license
-      type: string
-      enum:
-      - REGISTER
-      - TERMINATED
-      - LOCKED
-      - RELEASED
-      - FAILED
-      - DELETED
   parameters:
     timeZoneOldConvention:
       in: query

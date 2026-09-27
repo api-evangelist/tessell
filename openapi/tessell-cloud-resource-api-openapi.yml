@@ -131,18 +131,45 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorOps'
 components:
-  parameters:
-    tenantIdMandatory:
-      name: tenant-id
-      in: header
-      description: Id of the Tenant
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-        example: 12345678-abcd-1234-abcd-1234abcd5678
   schemas:
+    DPNetworkInboundRule:
+      title: DPNetworkInboundRule
+      type: object
+      properties:
+        sourceType:
+          type: string
+        source:
+          type: array
+          items:
+            type: string
+        ports:
+          type: array
+          items:
+            type: string
+        purpose:
+          type: string
+    TessellExceptionUserView:
+      title: TessellExceptionUserView
+      type: object
+      properties:
+        message:
+          type: string
+          description: End-user representation of the message
+        resolution:
+          type: string
+          description: End-user representation of resolution
+        errorCode:
+          $ref: '#/components/schemas/TessellHTTPErrorCode'
+          description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
+    TessellHTTPErrorCode:
+      type: object
+      properties:
+        httpCode:
+          type: integer
+          description: HTTP code
+        code:
+          type: string
+          description: Tessell's specific code with more context on error
     DPNetworkOutboundRule:
       title: DPNetworkOutboundRule
       type: object
@@ -169,6 +196,23 @@ components:
       - AZURE
       - GCP
       - OCI
+    DpCpCommunicationResources:
+      title: DpCpCommunicationResources
+      type: object
+      properties:
+        controlPlaneEndpointService:
+          type: string
+    AllowPrivateEndpointRequest:
+      title: AllowPrivateEndpointRequest
+      type: object
+      required:
+      - principalId
+      - region
+      properties:
+        principalId:
+          type: string
+        region:
+          type: string
     ApiErrorOps:
       type: object
       description: Common error response object for non 2xx responses of internal or ops APIs
@@ -195,69 +239,6 @@ components:
           description: Unique error code specific to Tessell
         userView:
           $ref: '#/components/schemas/TessellExceptionUserView'
-    DpCpCommunicationResources:
-      title: DpCpCommunicationResources
-      type: object
-      properties:
-        controlPlaneEndpointService:
-          type: string
-    TessellExceptionUserView:
-      title: TessellExceptionUserView
-      type: object
-      properties:
-        message:
-          type: string
-          description: End-user representation of the message
-        resolution:
-          type: string
-          description: End-user representation of resolution
-        errorCode:
-          $ref: '#/components/schemas/TessellHTTPErrorCode'
-          description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
-    TessellHTTPErrorCode:
-      type: object
-      properties:
-        httpCode:
-          type: integer
-          description: HTTP code
-        code:
-          type: string
-          description: Tessell's specific code with more context on error
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    DPNetworkInboundRule:
-      title: DPNetworkInboundRule
-      type: object
-      properties:
-        sourceType:
-          type: string
-        source:
-          type: array
-          items:
-            type: string
-        ports:
-          type: array
-          items:
-            type: string
-        purpose:
-          type: string
-    AllowPrivateEndpointRequest:
-      title: AllowPrivateEndpointRequest
-      type: object
-      required:
-      - principalId
-      - region
-      properties:
-        principalId:
-          type: string
-        region:
-          type: string
     DPNetworkAccessRules:
       title: DPNetworkAccessRules
       type: object
@@ -270,6 +251,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DPNetworkOutboundRule'
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+  parameters:
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
   securitySchemes:
     BearerAuth:
       type: http

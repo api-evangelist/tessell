@@ -528,28 +528,38 @@ paths:
       x-summary-source: derived
 components:
   parameters:
-    start-time-in-query:
+    region-in-query:
       in: query
-      name: start-time
+      name: region
       schema:
         type: string
-        pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{9}Z$
-      required: false
-      description: Start timestamp in prometheus date-time format yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'
-    compute-resource-id-in-query:
+      description: Region in the cloud, e.g ap-south-1
+    pageSize:
+      name: page-size
       in: query
-      name: compute-resource-id
-      schema:
-        type: string
-        format: uuid
+      description: Page size for get query
       required: false
-      description: The ID of the Compute Resource(NODE). This parameter is required when entity-type is NODE
+      schema:
+        type: integer
+        format: int32
+        default: 10
     cloud-in-query:
       in: query
       name: cloud
       schema:
         $ref: '#/components/schemas/cloudType'
       description: Cloud Type, e.g AWS, AZURE, etc,.
+    num-top-k-in-query:
+      name: num-top-k
+      in: query
+      description: Number of top entities
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+        minimum: 1
+        maximum: 100
     deployment-skip-statuses-in-query:
       in: query
       name: skip-statuses
@@ -566,15 +576,6 @@ components:
       schema:
         type: string
         format: uuid
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
     service-id-in-query:
       in: query
       name: service-id
@@ -583,50 +584,42 @@ components:
         format: uuid
       required: false
       description: The ID of the DB Service. This parameter is required when entity-type is one of DB Engines
-    num-top-k-in-query:
-      name: num-top-k
+    get-all-aggregations-in-query:
       in: query
-      description: Number of top entities
+      name: get-all-aggregations
+      description: If true, returns all available aggregation types for the metrics, overriding any specific aggregation-types provided in the query.
       required: false
       schema:
-        type: integer
-        format: int32
-        default: 10
-        minimum: 1
-        maximum: 100
-    compute-resource-ids-in-query:
+        type: boolean
+    entity-type-in-query:
       in: query
-      name: compute-resource-ids
+      name: entity-type
       schema:
-        type: array
-        items:
-          type: string
-          format: uuid
+        $ref: '#/components/schemas/MonitoringEntityType'
       required: true
-      description: Array of Compute Resource Ids
-    end-time-in-query:
-      in: query
-      name: end-time
+      description: Monitoring entity type
+    deployment-id-in-path:
+      in: path
+      name: deployment-id
       schema:
         type: string
-        pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{9}Z$
-      required: false
-      description: End timestamp in prometheus date-time format yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'
-    pageOffset:
-      name: page-offset
+        format: uuid
+      required: true
+    vpc-id-in-query:
       in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    region-in-query:
-      in: query
-      name: region
+      name: vpc-id
       schema:
         type: string
-      description: Region in the cloud, e.g ap-south-1
+        format: uuid
+      description: VPC ID
+    compute-resource-id-in-query:
+      in: query
+      name: compute-resource-id
+      schema:
+        type: string
+        format: uuid
+      required: false
+      description: The ID of the Compute Resource(NODE). This parameter is required when entity-type is NODE
     aggregation-types-in-query:
       in: query
       name: aggregation-types
@@ -638,36 +631,14 @@ components:
       style: form
       explode: true
       description: List of aggregation types to be performed on the metric
-    deployment-id-in-path:
-      in: path
-      name: deployment-id
-      schema:
-        type: string
-        format: uuid
-      required: true
-    service-instance-id-in-query:
+    granularity-in-query:
       in: query
-      name: service-instance-id
+      name: granularity
+      required: false
+      description: Specifies the time window for the aggregation functions. Use a string with a time unit, e.g., '1m', '5m', '1h'. Maximum valid unit of time - day (d). Minimum valid unit of time - min (m).
       schema:
         type: string
-        format: uuid
-      required: false
-      description: The ID of the service's instance. This parameter is required when entity-type is one of DB Engines
-    chart-title-in-query:
-      in: query
-      name: chart-title
-      required: false
-      description: Name of chart that contains metrics
-      schema:
-        type: string
-    subscription-id-in-query:
-      name: subscription-id
-      description: Subscription ID
-      in: query
-      required: false
-      schema:
-        type: string
-        format: uuid
+        pattern: ^([0-9]+d)?([0-9]+h)?([0-9]+m)?$
     tenant-id-in-header-required:
       name: tenant-id
       in: header
@@ -677,6 +648,21 @@ components:
       schema:
         type: string
         format: uuid
+    metric-source-in-query:
+      in: query
+      name: metric-source
+      schema:
+        $ref: '#/components/schemas/MetricSource'
+      required: false
+      description: Metric Source (Prometheus/Victoria metrics)
+    service-instance-id-in-query:
+      in: query
+      name: service-instance-id
+      schema:
+        type: string
+        format: uuid
+      required: false
+      description: The ID of the service's instance. This parameter is required when entity-type is one of DB Engines
     time-duration-for-aggregation-in-query:
       in: query
       name: time-duration-for-aggregation
@@ -688,40 +674,40 @@ components:
         default: 5
       required: false
       description: Time duration in minutes to aggregate the metrics, defaults to 5mins.
-    load-instances-in-query:
+    chart-title-in-query:
       in: query
-      name: load-instances
+      name: chart-title
+      required: false
+      description: Name of chart that contains metrics
       schema:
-        type: boolean
-      description: Boolean to indicate if instances to be fetched or not
-    entity-type-in-query:
+        type: string
+    end-time-in-query:
       in: query
-      name: entity-type
+      name: end-time
       schema:
-        $ref: '#/components/schemas/MonitoringEntityType'
+        type: string
+        pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{9}Z$
+      required: false
+      description: End timestamp in prometheus date-time format yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'
+    compute-resource-ids-in-query:
+      in: query
+      name: compute-resource-ids
+      schema:
+        type: array
+        items:
+          type: string
+          format: uuid
       required: true
-      description: Monitoring entity type
-    metric-source-in-query:
+      description: Array of Compute Resource Ids
+    pageOffset:
+      name: page-offset
       in: query
-      name: metric-source
-      schema:
-        $ref: '#/components/schemas/MetricSource'
+      description: Page offset for get query
       required: false
-      description: Metric Source (Prometheus/Victoria metrics)
-    vpc-id-in-query:
-      in: query
-      name: vpc-id
       schema:
-        type: string
-        format: uuid
-      description: VPC ID
-    step-in-query:
-      in: query
-      name: step
-      schema:
-        type: string
-      required: false
-      description: Specifies the frequency at which data points are sampled or aggregated within the specified time range
+        type: integer
+        format: int32
+        default: 0
     deployment-statuses-in-query:
       in: query
       name: statuses
@@ -729,39 +715,42 @@ components:
         type: array
         items:
           $ref: '#/components/schemas/MonitoringDeploymentStatusOps'
+    start-time-in-query:
+      in: query
+      name: start-time
+      schema:
+        type: string
+        pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{9}Z$
+      required: false
+      description: Start timestamp in prometheus date-time format yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'
+    step-in-query:
+      in: query
+      name: step
+      schema:
+        type: string
+      required: false
+      description: Specifies the frequency at which data points are sampled or aggregated within the specified time range
+    load-instances-in-query:
+      in: query
+      name: load-instances
+      schema:
+        type: boolean
+      description: Boolean to indicate if instances to be fetched or not
     aggregation-type-in-query:
       in: query
       name: aggregation-type
       schema:
         $ref: '#/components/schemas/AggregationType'
       description: Type of aggregation to be performed on the metric
-    get-all-aggregations-in-query:
+    subscription-id-in-query:
+      name: subscription-id
+      description: Subscription ID
       in: query
-      name: get-all-aggregations
-      description: If true, returns all available aggregation types for the metrics, overriding any specific aggregation-types provided in the query.
       required: false
-      schema:
-        type: boolean
-    granularity-in-query:
-      in: query
-      name: granularity
-      required: false
-      description: Specifies the time window for the aggregation functions. Use a string with a time unit, e.g., '1m', '5m', '1h'. Maximum valid unit of time - day (d). Minimum valid unit of time - min (m).
       schema:
         type: string
-        pattern: ^([0-9]+d)?([0-9]+h)?([0-9]+m)?$
+        format: uuid
   schemas:
-    TopDimensionsAdditionalMetricValue:
-      title: TopDimensionsAdditionalMetricValue
-      type: object
-      properties:
-        metricName:
-          type: string
-          description: Name of the additional metric
-        metricValue:
-          type: number
-          format: double
-          description: Value of the metric
     TopDimensionSlicedMetricValue:
       title: TopDimensionSlicedMetricValue
       type: object
@@ -773,34 +762,223 @@ components:
           type: number
           format: double
           description: Value of the sliced entity
-    ServiceInstanceId:
+    MonitoringInfraDTO:
+      title: MonitoringInfraDTO
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/MonitoringDeploymentCommon'
+      properties:
+        computeId:
+          type: string
+          format: uuid
+        activeDbServicesCount:
+          type: integer
+          format: int32
+          minimum: 0
+    TopDimensionsPayload:
+      title: TopDimensionsPayload
+      type: object
+      properties:
+        serviceId:
+          $ref: '#/components/schemas/ServiceId'
+        serviceInstanceId:
+          $ref: '#/components/schemas/ServiceInstanceId'
+        startTime:
+          $ref: '#/components/schemas/MetricStartTime'
+        endTime:
+          $ref: '#/components/schemas/MetricEndTime'
+        metricType:
+          $ref: '#/components/schemas/PerfMetricType'
+        sliceBy:
+          $ref: '#/components/schemas/MonitoringSliceBy'
+        numTopK:
+          $ref: '#/components/schemas/NumTopK'
+      required:
+      - serviceId
+      - serviceInstanceId
+      - metricType
+      - startTime
+      - endTime
+    SlicedMetric:
+      title: SlicedMetric
+      type: object
+      properties:
+        slicedEntityName:
+          type: string
+          description: Name of the sliced entity in the metric distribution.
+        metricValues:
+          type: array
+          description: Array containing metric values associated with the sliced entity.
+          items:
+            $ref: '#/components/schemas/MetricValue'
+    TopDimensionsAdditionalMetricValue:
+      title: TopDimensionsAdditionalMetricValue
+      type: object
+      properties:
+        metricName:
+          type: string
+          description: Name of the additional metric
+        metricValue:
+          type: number
+          format: double
+          description: Value of the metric
+    AggregationType:
+      title: Aggregation
+      type: string
+      enum:
+      - AVG
+      - MIN
+      - MAX
+    MonitoringFeatureName:
+      type: string
+      description: Monitoring features
+      enum:
+      - perf-insights
+    AvgDbLoadResponse:
+      title: AvgDbLoadResponse
+      properties:
+        serviceId:
+          $ref: '#/components/schemas/ServiceId'
+        serviceInstanceId:
+          $ref: '#/components/schemas/ServiceInstanceId'
+        startTime:
+          $ref: '#/components/schemas/MetricStartTime'
+        endTime:
+          $ref: '#/components/schemas/MetricEndTime'
+        sliceBy:
+          $ref: '#/components/schemas/MonitoringSliceBy'
+        filterBy:
+          type: array
+          description: Array of filters to filter Avg Db Load
+          items:
+            $ref: '#/components/schemas/MonitoringFilterBy'
+        metricDistribution:
+          type: array
+          description: Distribution of Avg DB Load across different entities as categorized by the specified slice by parameter.
+          items:
+            $ref: '#/components/schemas/SlicedMetric'
+    MonitoringEntityType:
+      description: Entity types for monitoring chart
+      type: string
+      enum:
+      - NODE
+      - DB
+    AvgDbLoadPayload:
+      title: AvgDbLoadPayload
+      type: object
+      properties:
+        serviceId:
+          $ref: '#/components/schemas/ServiceId'
+        serviceInstanceId:
+          $ref: '#/components/schemas/ServiceInstanceId'
+        startTime:
+          $ref: '#/components/schemas/MetricStartTime'
+        endTime:
+          $ref: '#/components/schemas/MetricEndTime'
+        sliceBy:
+          $ref: '#/components/schemas/MonitoringSliceBy'
+        filterBy:
+          type: array
+          description: Array of filters to filter Avg Db Load
+          items:
+            $ref: '#/components/schemas/MonitoringFilterBy'
+        step:
+          type: integer
+          format: int32
+          default: 1
+          minimum: 1
+          maximum: 86400
+          description: Specifies the frequency at which data points are sampled or aggregated within the specified time range
+      required:
+      - serviceId
+      - serviceInstanceId
+      - startTime
+      - endTime
+    PerfMetricType:
+      type: string
+      description: Type of Performance Metric
+      enum:
+      - SQL
+      - HOST
+      - DB
+      - USER
+      - WAIT
+    PatchMonitoringFeaturePayload:
+      title: PatchMonitoringFeaturePayload
+      type: object
+      required:
+      - enable
+      properties:
+        enable:
+          type: boolean
+          default: false
+    MonitoringFilterBy:
+      title: MonitoringFilterBy
+      type: object
+      properties:
+        metricType:
+          $ref: '#/components/schemas/PerfMetricType'
+        metricValue:
+          type: string
+          minLength: 1
+          description: Value of the metric filter
+        metricValueMasked:
+          type: boolean
+          default: false
+          description: Boolean that indicates if the value passed in the filter is masked or not
+      required:
+      - metricType
+      - metricValue
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    MetricStartTime:
+      type: string
+      pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{9}Z$
+      description: Start timestamp in prometheus date-time format
+    ComputeResourceId:
       type: string
       format: uuid
-      description: The ID of the DB Service Instance.
-    ComputeResourceMonitoringSummaryResponse:
-      title: ComputeResourceMonitoringSummaryResponse
+      description: The ID of the Compute Resource.
+    TopDimensionsResponse:
+      title: TopDimensionsResponse
       properties:
-        timeDurationForAggregation:
-          type: string
-          format: int32
-          description: Time duration for aggregation
-        aggregationType:
-          $ref: '#/components/schemas/AggregationType'
-        stats:
+        serviceId:
+          $ref: '#/components/schemas/ServiceId'
+        serviceInstanceId:
+          $ref: '#/components/schemas/ServiceInstanceId'
+        metricType:
+          $ref: '#/components/schemas/PerfMetricType'
+        startTime:
+          $ref: '#/components/schemas/MetricStartTime'
+        endTime:
+          $ref: '#/components/schemas/MetricEndTime'
+        numTopK:
+          $ref: '#/components/schemas/NumTopK'
+        extendedPerfMetricsAvailable:
+          type: boolean
+          default: false
+          description: Indicates if Extended Perf Metrics are available for the metric values returned in response or not
+        sliceBy:
+          $ref: '#/components/schemas/MonitoringSliceBy'
+        metricValues:
           type: array
-          description: Array of the aggregated metric stats
+          description: Top dimension metric values
           items:
-            $ref: '#/components/schemas/ComputeResourceMonitoringSummary'
-    MonitoringInfrasResponse:
-      title: MonitoringInfrasResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/MonitoringInfraDTO'
+            $ref: '#/components/schemas/TopDimensionsMetricValue'
     ProvisionMonitoringInfraPayload:
       title: ProvisionMonitoringInfraPayload
       type: object
@@ -859,74 +1037,10 @@ components:
       enum:
       - PROMETHEUS
       - VICTORIA_METRICS
-    ExtendedPerfMetricsPayload:
-      title: ExtendedPerfMetricsPayload
-      type: object
-      properties:
-        serviceId:
-          $ref: '#/components/schemas/ServiceId'
-        serviceInstanceId:
-          $ref: '#/components/schemas/ServiceInstanceId'
-        startTime:
-          $ref: '#/components/schemas/MetricStartTime'
-        endTime:
-          $ref: '#/components/schemas/MetricEndTime'
-        metricType:
-          $ref: '#/components/schemas/PerfMetricType'
-        metricValue:
-          type: string
-          description: Value of the metric of which the extended metrics to be fetched
-        limit:
-          type: integer
-          format: int32
-          default: 10
-          minimum: 1
-          maximum: 100
-          description: Number of metrics to be fetched
-      required:
-      - serviceId
-      - serviceInstanceId
-      - startTime
-      - endTime
-      - metricType
-      - metricValue
-    ComputeResourceId:
+    ServiceId:
       type: string
       format: uuid
-      description: The ID of the Compute Resource.
-    TopProcessesResponse:
-      title: TopProcessesResponse
-      properties:
-        computeResourceId:
-          $ref: '#/components/schemas/ComputeResourceId'
-        startTime:
-          $ref: '#/components/schemas/MetricStartTime'
-        endTime:
-          $ref: '#/components/schemas/MetricEndTime'
-        metrics:
-          type: array
-          description: Array containing top processes categorized on metric like CPU, Memory, etc,.
-          items:
-            $ref: '#/components/schemas/TopProcessesMetric'
-    MetricStartTime:
-      type: string
-      pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{9}Z$
-      description: Start timestamp in prometheus date-time format
-    MetricValue:
-      title: MetricValue
-      type: object
-      properties:
-        timestamp:
-          type: number
-          format: double
-          description: Timestamp representing the time at which the metric value was recorded
-        value:
-          type: number
-          format: double
-          description: The numeric value associated with the metric at the specified timestamp.
-      required:
-      - timestamp
-      - value
+      description: The ID of the DB Service.
     MonitoringDeploymentCommon:
       title: MonitoringDeploymentCommon
       type: object
@@ -962,112 +1076,39 @@ components:
         dateModified:
           type: string
           format: date-time
-    MonitoringFeatureName:
-      type: string
-      description: Monitoring features
-      enum:
-      - perf-insights
-    MonitoringInstanceStatusOps:
-      title: MonitoringInstanceStatusOps
+    cloudType:
+      description: Tessell supported cloud types
       type: string
       enum:
-      - CREATING
-      - CREATION_FAILED
-      - RUNNING
-      - STOPPED
-      - DELETING
-      - DELETED
-      - DELETION_FAILED
-    MonitoringInfraActiveDbServiceDto:
-      title: MonitoringInfraActiveDbServiceDto
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    MetricValue:
+      title: MetricValue
       type: object
       properties:
-        serviceId:
-          type: string
-          format: uuid
-        serviceName:
-          type: string
-        serviceOwner:
-          type: string
-        databaseEngineType:
-          $ref: '#/components/schemas/databaseEngineType'
-    MonitoringSliceBy:
-      title: MonitoringSliceBy
-      type: object
-      properties:
-        metricType:
-          $ref: '#/components/schemas/PerfMetricType'
-        limit:
-          type: integer
-          format: int32
-          default: 5
-          minimum: 1
-          maximum: 25
-          description: Limit the number of entities to slice the metric with
+        timestamp:
+          type: number
+          format: double
+          description: Timestamp representing the time at which the metric value was recorded
+        value:
+          type: number
+          format: double
+          description: The numeric value associated with the metric at the specified timestamp.
       required:
-      - metricType
-    ComputeResourceMonitoringSummary:
-      title: ComputeResourceMonitoringSummary
-      type: object
-      properties:
-        computeResourceId:
-          $ref: '#/components/schemas/ComputeResourceId'
-        cpuUsagePct:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 100
-          description: CPU utilization in percentage
-        memoryAvailable:
-          type: integer
-          format: int64
-          description: Available memory in bytes
-        memoryTotal:
-          type: integer
-          format: int64
-          description: Total memory in bytes
-    MonitoringEntityType:
-      description: Entity types for monitoring chart
-      type: string
-      enum:
-      - NODE
-      - DB
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    MonitoringDeploymentOpsDTO:
-      title: MonitoringDeploymentOpsDTO
-      type: object
+      - timestamp
+      - value
+    MonitoringInfrasResponse:
+      title: MonitoringInfrasResponse
       allOf:
-      - $ref: '#/components/schemas/MonitoringDeploymentCommon'
-      properties:
-        cloudAccountId:
-          type: string
-          format: uuid
-        connectivity:
-          $ref: '#/components/schemas/MonitoringDeploymentConnectivity'
-        instances:
-          type: array
-          items:
-            $ref: '#/components/schemas/MonitoringInstanceOpsDTO'
-    MonitoringInstanceInfraInfo:
-      title: MonitoringInstanceInfraInfo
-      type: object
-      properties:
-        computeId:
-          type: string
-          format: uuid
-        compute:
-          type: string
-    ServiceId:
-      type: string
-      format: uuid
-      description: The ID of the DB Service.
+      - $ref: '#/components/schemas/apiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/MonitoringInfraDTO'
     MonitoringInstanceOpsDTO:
       title: MonitoringInstanceOpsDTO
       type: object
@@ -1108,6 +1149,107 @@ components:
         dateModified:
           type: string
           format: date-time
+    MonitoringInstanceInfraInfo:
+      title: MonitoringInstanceInfraInfo
+      type: object
+      properties:
+        computeId:
+          type: string
+          format: uuid
+        compute:
+          type: string
+    MonitoringDeploymentOpsDTO:
+      title: MonitoringDeploymentOpsDTO
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/MonitoringDeploymentCommon'
+      properties:
+        cloudAccountId:
+          type: string
+          format: uuid
+        connectivity:
+          $ref: '#/components/schemas/MonitoringDeploymentConnectivity'
+        instances:
+          type: array
+          items:
+            $ref: '#/components/schemas/MonitoringInstanceOpsDTO'
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    TopProcessesMetric:
+      title: TopProcessesMetric
+      properties:
+        metricName:
+          type: string
+          description: Name of the top process metric.
+        displayName:
+          type: string
+          description: Name of the top process metric, e.g Top CPU Processes, Top Memory Processes
+        unit:
+          type: string
+          description: Unit of the metric values
+        metricValues:
+          type: array
+          description: Array of top processes for a specific metric
+          items:
+            $ref: '#/components/schemas/TopProcessesMetricValue'
+    TopProcessesMetricValue:
+      title: TopProcessesMetricValue
+      type: object
+      properties:
+        processName:
+          type: string
+          description: Name of the process
+        pid:
+          type: string
+          description: PID of the processes
+        value:
+          type: number
+          format: double
+          description: Value of the process metric
+    MonitoringInstanceStatusOps:
+      title: MonitoringInstanceStatusOps
+      type: string
+      enum:
+      - CREATING
+      - CREATION_FAILED
+      - RUNNING
+      - STOPPED
+      - DELETING
+      - DELETED
+      - DELETION_FAILED
+    MonitoringInfraActiveDbServicesResponse:
+      title: MonitoringInfraActiveDbServicesResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/MonitoringInfraActiveDbServiceDto'
+    ComputeResourceMonitoringSummaryResponse:
+      title: ComputeResourceMonitoringSummaryResponse
+      properties:
+        timeDurationForAggregation:
+          type: string
+          format: int32
+          description: Time duration for aggregation
+        aggregationType:
+          $ref: '#/components/schemas/AggregationType'
+        stats:
+          type: array
+          description: Array of the aggregated metric stats
+          items:
+            $ref: '#/components/schemas/ComputeResourceMonitoringSummary'
     taskSummary:
       title: taskSummary
       type: object
@@ -1129,236 +1271,6 @@ components:
           type: object
           additionalProperties:
             type: string
-    PatchMonitoringFeaturePayload:
-      title: PatchMonitoringFeaturePayload
-      type: object
-      required:
-      - enable
-      properties:
-        enable:
-          type: boolean
-          default: false
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
-    MetricEndTime:
-      type: string
-      pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{9}Z$
-      description: End timestamp in prometheus date-time format
-    NumTopK:
-      type: integer
-      format: int32
-      default: 10
-      minimum: 1
-      maximum: 25
-      description: Number of top dimension entities
-    AggregationType:
-      title: Aggregation
-      type: string
-      enum:
-      - AVG
-      - MIN
-      - MAX
-    MonitoringChart:
-      description: Monitoring Metrics Chart object
-      type: object
-      properties:
-        entityId:
-          type: string
-          format: uuid
-        title:
-          type: string
-          description: The title of the chart
-        entityType:
-          $ref: '#/components/schemas/MonitoringEntityType'
-        xlabel:
-          type: string
-          description: The label of x-axis
-        ylabel:
-          type: string
-          description: The label of y-axis
-        unit:
-          type: string
-          description: The unit of the metric
-        metrics:
-          type: array
-          description: Array of Metrics in the chart
-          items:
-            $ref: '#/components/schemas/TessellMonitoringMetricsDTO'
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    ExtendedPerfMetricsResponse:
-      title: ExtendedPerfMetricsResponse
-      type: object
-      properties:
-        serviceId:
-          $ref: '#/components/schemas/ServiceId'
-        serviceInstanceId:
-          $ref: '#/components/schemas/ServiceInstanceId'
-        startTime:
-          $ref: '#/components/schemas/MetricStartTime'
-        endTime:
-          $ref: '#/components/schemas/MetricEndTime'
-        limit:
-          type: integer
-          format: int32
-        metricType:
-          $ref: '#/components/schemas/PerfMetricType'
-        metricValue:
-          type: string
-          description: Value of the metric of which the extended metrics to be fetched
-        extendedMetricValues:
-          type: array
-          description: Array of extended metric values
-          items:
-            $ref: '#/components/schemas/TopDimensionsMetricValue'
-    apiResponse:
-      example:
-        metadata:
-          pagination:
-            pageOffset: 0
-            pageSize: 6
-          records: 1
-          timeZone: timeZone
-        response: '{}'
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-      title: ApiResponse
-      type: object
-    TopDimensionsPayload:
-      title: TopDimensionsPayload
-      type: object
-      properties:
-        serviceId:
-          $ref: '#/components/schemas/ServiceId'
-        serviceInstanceId:
-          $ref: '#/components/schemas/ServiceInstanceId'
-        startTime:
-          $ref: '#/components/schemas/MetricStartTime'
-        endTime:
-          $ref: '#/components/schemas/MetricEndTime'
-        metricType:
-          $ref: '#/components/schemas/PerfMetricType'
-        sliceBy:
-          $ref: '#/components/schemas/MonitoringSliceBy'
-        numTopK:
-          $ref: '#/components/schemas/NumTopK'
-      required:
-      - serviceId
-      - serviceInstanceId
-      - metricType
-      - startTime
-      - endTime
-    MonitoringInfraActiveDbServicesResponse:
-      title: MonitoringInfraActiveDbServicesResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/MonitoringInfraActiveDbServiceDto'
-    SlicedMetric:
-      title: SlicedMetric
-      type: object
-      properties:
-        slicedEntityName:
-          type: string
-          description: Name of the sliced entity in the metric distribution.
-        metricValues:
-          type: array
-          description: Array containing metric values associated with the sliced entity.
-          items:
-            $ref: '#/components/schemas/MetricValue'
-    MonitoringInfraDTO:
-      title: MonitoringInfraDTO
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/MonitoringDeploymentCommon'
-      properties:
-        computeId:
-          type: string
-          format: uuid
-        activeDbServicesCount:
-          type: integer
-          format: int32
-          minimum: 0
-    TopProcessesMetricValue:
-      title: TopProcessesMetricValue
-      type: object
-      properties:
-        processName:
-          type: string
-          description: Name of the process
-        pid:
-          type: string
-          description: PID of the processes
-        value:
-          type: number
-          format: double
-          description: Value of the process metric
-    AvgDbLoadPayload:
-      title: AvgDbLoadPayload
-      type: object
-      properties:
-        serviceId:
-          $ref: '#/components/schemas/ServiceId'
-        serviceInstanceId:
-          $ref: '#/components/schemas/ServiceInstanceId'
-        startTime:
-          $ref: '#/components/schemas/MetricStartTime'
-        endTime:
-          $ref: '#/components/schemas/MetricEndTime'
-        sliceBy:
-          $ref: '#/components/schemas/MonitoringSliceBy'
-        filterBy:
-          type: array
-          description: Array of filters to filter Avg Db Load
-          items:
-            $ref: '#/components/schemas/MonitoringFilterBy'
-        step:
-          type: integer
-          format: int32
-          default: 1
-          minimum: 1
-          maximum: 86400
-          description: Specifies the frequency at which data points are sampled or aggregated within the specified time range
-      required:
-      - serviceId
-      - serviceInstanceId
-      - startTime
-      - endTime
     TopDimensionsMetricValue:
       title: TopDimensionsMetricValue
       properties:
@@ -1377,34 +1289,6 @@ components:
             $ref: '#/components/schemas/TopDimensionSlicedMetricValue'
       required:
       - value
-    MonitoringDeploymentConnectivity:
-      title: MonitoringDeploymentConnectivity
-      type: object
-      properties:
-        deploymentId:
-          type: string
-          format: uuid
-        publicIp:
-          type: string
-        privateIp:
-          type: string
-    MonitoringFilterBy:
-      title: MonitoringFilterBy
-      type: object
-      properties:
-        metricType:
-          $ref: '#/components/schemas/PerfMetricType'
-        metricValue:
-          type: string
-          minLength: 1
-          description: Value of the metric filter
-        metricValueMasked:
-          type: boolean
-          default: false
-          description: Boolean that indicates if the value passed in the filter is masked or not
-      required:
-      - metricType
-      - metricValue
     GetMonitoringFeatureResponse:
       title: GetMonitoringFeatureResponse
       description: Get details of the monitoring feature
@@ -1412,6 +1296,58 @@ components:
       properties:
         status:
           $ref: '#/components/schemas/MonitoringFeatureStatus'
+    MonitoringInfraActiveDbServiceDto:
+      title: MonitoringInfraActiveDbServiceDto
+      type: object
+      properties:
+        serviceId:
+          type: string
+          format: uuid
+        serviceName:
+          type: string
+        serviceOwner:
+          type: string
+        databaseEngineType:
+          $ref: '#/components/schemas/databaseEngineType'
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    TopProcessesResponse:
+      title: TopProcessesResponse
+      properties:
+        computeResourceId:
+          $ref: '#/components/schemas/ComputeResourceId'
+        startTime:
+          $ref: '#/components/schemas/MetricStartTime'
+        endTime:
+          $ref: '#/components/schemas/MetricEndTime'
+        metrics:
+          type: array
+          description: Array containing top processes categorized on metric like CPU, Memory, etc,.
+          items:
+            $ref: '#/components/schemas/TopProcessesMetric'
+    NumTopK:
+      type: integer
+      format: int32
+      default: 10
+      minimum: 1
+      maximum: 25
+      description: Number of top dimension entities
+    MonitoringFeatureStatus:
+      type: string
+      description: Status of the monitoring feature
+      enum:
+      - ENABLING
+      - ENABLED
+      - DISABLING
+      - DISABLED
+      - FAILED_ENABLE
+      - FAILED_DISABLE
     TessellMonitoringMetricsDTO:
       title: Metrics
       description: This is a definition for Tessell Monitoring Metrics
@@ -1440,6 +1376,79 @@ components:
               type: number
               format: double
           description: Metric data points
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    MetricEndTime:
+      type: string
+      pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{9}Z$
+      description: End timestamp in prometheus date-time format
+    MonitoringInstanceConnectivity:
+      title: MonitoringInstanceConnectivity
+      type: object
+      properties:
+        publicIp:
+          type: string
+        privateIp:
+          type: string
+    ExtendedPerfMetricsPayload:
+      title: ExtendedPerfMetricsPayload
+      type: object
+      properties:
+        serviceId:
+          $ref: '#/components/schemas/ServiceId'
+        serviceInstanceId:
+          $ref: '#/components/schemas/ServiceInstanceId'
+        startTime:
+          $ref: '#/components/schemas/MetricStartTime'
+        endTime:
+          $ref: '#/components/schemas/MetricEndTime'
+        metricType:
+          $ref: '#/components/schemas/PerfMetricType'
+        metricValue:
+          type: string
+          description: Value of the metric of which the extended metrics to be fetched
+        limit:
+          type: integer
+          format: int32
+          default: 10
+          minimum: 1
+          maximum: 100
+          description: Number of metrics to be fetched
+      required:
+      - serviceId
+      - serviceInstanceId
+      - startTime
+      - endTime
+      - metricType
+      - metricValue
+    ComputeResourceMonitoringSummary:
+      title: ComputeResourceMonitoringSummary
+      type: object
+      properties:
+        computeResourceId:
+          $ref: '#/components/schemas/ComputeResourceId'
+        cpuUsagePct:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 100
+          description: CPU utilization in percentage
+        memoryAvailable:
+          type: integer
+          format: int64
+          description: Available memory in bytes
+        memoryTotal:
+          type: integer
+          format: int64
+          description: Total memory in bytes
     MonitoringDeploymentStatusOps:
       title: MonitoringDeploymentStatusOps
       type: string
@@ -1451,72 +1460,21 @@ components:
       - DELETING
       - DELETED
       - DELETION_FAILED
-    AvgDbLoadResponse:
-      title: AvgDbLoadResponse
+    MonitoringSliceBy:
+      title: MonitoringSliceBy
+      type: object
       properties:
-        serviceId:
-          $ref: '#/components/schemas/ServiceId'
-        serviceInstanceId:
-          $ref: '#/components/schemas/ServiceInstanceId'
-        startTime:
-          $ref: '#/components/schemas/MetricStartTime'
-        endTime:
-          $ref: '#/components/schemas/MetricEndTime'
-        sliceBy:
-          $ref: '#/components/schemas/MonitoringSliceBy'
-        filterBy:
-          type: array
-          description: Array of filters to filter Avg Db Load
-          items:
-            $ref: '#/components/schemas/MonitoringFilterBy'
-        metricDistribution:
-          type: array
-          description: Distribution of Avg DB Load across different entities as categorized by the specified slice by parameter.
-          items:
-            $ref: '#/components/schemas/SlicedMetric'
-    TopDimensionsResponse:
-      title: TopDimensionsResponse
-      properties:
-        serviceId:
-          $ref: '#/components/schemas/ServiceId'
-        serviceInstanceId:
-          $ref: '#/components/schemas/ServiceInstanceId'
         metricType:
           $ref: '#/components/schemas/PerfMetricType'
-        startTime:
-          $ref: '#/components/schemas/MetricStartTime'
-        endTime:
-          $ref: '#/components/schemas/MetricEndTime'
-        numTopK:
-          $ref: '#/components/schemas/NumTopK'
-        extendedPerfMetricsAvailable:
-          type: boolean
-          default: false
-          description: Indicates if Extended Perf Metrics are available for the metric values returned in response or not
-        sliceBy:
-          $ref: '#/components/schemas/MonitoringSliceBy'
-        metricValues:
-          type: array
-          description: Top dimension metric values
-          items:
-            $ref: '#/components/schemas/TopDimensionsMetricValue'
-    TopProcessesMetric:
-      title: TopProcessesMetric
-      properties:
-        metricName:
-          type: string
-          description: Name of the top process metric.
-        displayName:
-          type: string
-          description: Name of the top process metric, e.g Top CPU Processes, Top Memory Processes
-        unit:
-          type: string
-          description: Unit of the metric values
-        metricValues:
-          type: array
-          description: Array of top processes for a specific metric
-          items:
-            $ref: '#/components/schemas/TopProcessesMetricValue'
+        limit:
+          type: integer
+          format: int32
+          default: 5
+          minimum: 1
+          maximum: 25
+          description: Limit the number of entities to slice the metric with
+      required:
+      - metricType
     apiMetadata:
       title: apiMetadata
       type: object
@@ -1528,54 +1486,96 @@ components:
           format: int32
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
-    MonitoringFeatureStatus:
-      type: string
-      description: Status of the monitoring feature
-      enum:
-      - ENABLING
-      - ENABLED
-      - DISABLING
-      - DISABLED
-      - FAILED_ENABLE
-      - FAILED_DISABLE
-    databaseEngineType:
-      description: Database Engine Type
-      type: string
-      enum:
-      - ORACLE
-      - POSTGRESQL
-      - SQLSERVER
-      - MYSQL
-      - APACHE_KAFKA
-      - MONGODB
-      - MILVUS
-    MonitoringInstanceConnectivity:
-      title: MonitoringInstanceConnectivity
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    MonitoringDeploymentConnectivity:
+      title: MonitoringDeploymentConnectivity
       type: object
       properties:
+        deploymentId:
+          type: string
+          format: uuid
         publicIp:
           type: string
         privateIp:
           type: string
-    PerfMetricType:
-      type: string
-      description: Type of Performance Metric
-      enum:
-      - SQL
-      - HOST
-      - DB
-      - USER
-      - WAIT
-    apiPaginationInfo:
-      title: apiPaginationInfo
+    ExtendedPerfMetricsResponse:
+      title: ExtendedPerfMetricsResponse
       type: object
       properties:
-        pageSize:
+        serviceId:
+          $ref: '#/components/schemas/ServiceId'
+        serviceInstanceId:
+          $ref: '#/components/schemas/ServiceInstanceId'
+        startTime:
+          $ref: '#/components/schemas/MetricStartTime'
+        endTime:
+          $ref: '#/components/schemas/MetricEndTime'
+        limit:
           type: integer
           format: int32
-        pageOffset:
-          type: integer
-          format: int32
+        metricType:
+          $ref: '#/components/schemas/PerfMetricType'
+        metricValue:
+          type: string
+          description: Value of the metric of which the extended metrics to be fetched
+        extendedMetricValues:
+          type: array
+          description: Array of extended metric values
+          items:
+            $ref: '#/components/schemas/TopDimensionsMetricValue'
+    MonitoringChart:
+      description: Monitoring Metrics Chart object
+      type: object
+      properties:
+        entityId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          description: The title of the chart
+        entityType:
+          $ref: '#/components/schemas/MonitoringEntityType'
+        xlabel:
+          type: string
+          description: The label of x-axis
+        ylabel:
+          type: string
+          description: The label of y-axis
+        unit:
+          type: string
+          description: The unit of the metric
+        metrics:
+          type: array
+          description: Array of Metrics in the chart
+          items:
+            $ref: '#/components/schemas/TessellMonitoringMetricsDTO'
+    ServiceInstanceId:
+      type: string
+      format: uuid
+      description: The ID of the DB Service Instance.
   securitySchemes:
     BearerAuth:
       type: http

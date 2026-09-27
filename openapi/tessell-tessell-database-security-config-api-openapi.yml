@@ -93,36 +93,13 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    taskSummary:
-      title: taskSummary
-      type: object
-      properties:
-        taskId:
-          type: string
-          format: uuid
-        taskType:
-          type: string
-        resourceId:
-          type: string
-          format: uuid
-        associatedResourceIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        details:
-          type: object
-          additionalProperties:
-            type: string
-    DBServerSecurityConfigUpdateRequest:
-      type: object
-      required:
-      - securityProfile
-      properties:
-        securityProfile:
-          $ref: '#/components/schemas/SecurityProfileUpdateConfig'
-        applyConfig:
-          $ref: '#/components/schemas/ApplyConfig'
+    ApplyStrategy:
+      type: string
+      enum:
+      - IMMEDIATELY
+      - MAINTENANCE_WINDOW
+      - CUSTOM_DATE_TIME
+      - DO_NOT_APPLY
     DBServiceInstanceSecurityConfigUpdateRequest:
       type: object
       required:
@@ -135,13 +112,15 @@ components:
           description: The instance Id for which security configuration update needs to be triggered
         securityProfile:
           $ref: '#/components/schemas/SecurityProfileUpdateConfig'
-    ApplyStrategy:
-      type: string
-      enum:
-      - IMMEDIATELY
-      - MAINTENANCE_WINDOW
-      - CUSTOM_DATE_TIME
-      - DO_NOT_APPLY
+    DBServerSecurityConfigUpdateRequest:
+      type: object
+      required:
+      - securityProfile
+      properties:
+        securityProfile:
+          $ref: '#/components/schemas/SecurityProfileUpdateConfig'
+        applyConfig:
+          $ref: '#/components/schemas/ApplyConfig'
     ApplyConfig:
       title: ApplyConfig
       type: object
@@ -164,18 +143,6 @@ components:
           type: string
           format: date-time
           description: Needed when strategy is CUSTOM_DATE_TIME
-    DBServiceSecurityConfigUpdateRequest:
-      type: object
-      description: Object to capture the security configuration update request for a DB Service
-      required:
-      - instanceSecurityUpdateConfig
-      properties:
-        instanceSecurityUpdateConfig:
-          type: array
-          items:
-            $ref: '#/components/schemas/DBServiceInstanceSecurityConfigUpdateRequest'
-        applyConfig:
-          $ref: '#/components/schemas/ApplyConfig'
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -200,6 +167,27 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
+    taskSummary:
+      title: taskSummary
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        taskType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        associatedResourceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        details:
+          type: object
+          additionalProperties:
+            type: string
     SecurityProfileUpdateConfig:
       type: object
       properties:
@@ -211,6 +199,18 @@ components:
           type: string
           format: uuid
           description: Security Profile Version Id to which instance needs to be update
+    DBServiceSecurityConfigUpdateRequest:
+      type: object
+      description: Object to capture the security configuration update request for a DB Service
+      required:
+      - instanceSecurityUpdateConfig
+      properties:
+        instanceSecurityUpdateConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/DBServiceInstanceSecurityConfigUpdateRequest'
+        applyConfig:
+          $ref: '#/components/schemas/ApplyConfig'
   parameters:
     id:
       name: id

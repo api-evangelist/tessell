@@ -80,6 +80,93 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    AgentDTO:
+      title: Agent
+      type: object
+      description: Agent object
+      properties:
+        available:
+          type: boolean
+          description: If the agent is in a group that has enabled "Automatic Ticket Assignment", this attribute will be set to true if the agent is accepting new tickets
+        available_since:
+          type: string
+          format: date-time
+          description: Timestamp that denotes when the agent became available/unavailable
+        id:
+          type: integer
+          format: int64
+          description: User ID of the agent
+        occasional:
+          type: boolean
+          description: Set to true if this is an occasional agent (true => occasional, false => full-time)
+        signature:
+          type: string
+          description: Signature of the agent in HTML format
+        ticket_scope:
+          type: integer
+          format: int64
+          description: Ticket permission of the agent
+        type:
+          type: string
+          description: Type of Agent
+        skill_ids:
+          type: array
+          description: Skill ids associated with the agent
+          items:
+            type: integer
+            format: int64
+        group_ids:
+          type: array
+          description: Group IDs associated with the agent
+          items:
+            type: integer
+            format: int64
+        role_ids:
+          type: array
+          description: Role IDs associated with the agent
+          items:
+            type: integer
+            format: int64
+        created_at:
+          type: string
+          format: date-time
+          description: Agent creation timestamp
+        updated_at:
+          type: string
+          format: date-time
+          description: Agent updated timestamp
+        contact:
+          $ref: '#/components/schemas/ContactDTO'
+    AgentsResponse:
+      title: Get Agents Response
+      description: array of agents
+      type: array
+      items:
+        $ref: '#/components/schemas/AgentDTO'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
     ContactDTO:
       title: Contact
       type: object
@@ -192,93 +279,6 @@ components:
           type: string
           format: date-time
           description: ticket last updated
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    AgentDTO:
-      title: Agent
-      type: object
-      description: Agent object
-      properties:
-        available:
-          type: boolean
-          description: If the agent is in a group that has enabled "Automatic Ticket Assignment", this attribute will be set to true if the agent is accepting new tickets
-        available_since:
-          type: string
-          format: date-time
-          description: Timestamp that denotes when the agent became available/unavailable
-        id:
-          type: integer
-          format: int64
-          description: User ID of the agent
-        occasional:
-          type: boolean
-          description: Set to true if this is an occasional agent (true => occasional, false => full-time)
-        signature:
-          type: string
-          description: Signature of the agent in HTML format
-        ticket_scope:
-          type: integer
-          format: int64
-          description: Ticket permission of the agent
-        type:
-          type: string
-          description: Type of Agent
-        skill_ids:
-          type: array
-          description: Skill ids associated with the agent
-          items:
-            type: integer
-            format: int64
-        group_ids:
-          type: array
-          description: Group IDs associated with the agent
-          items:
-            type: integer
-            format: int64
-        role_ids:
-          type: array
-          description: Role IDs associated with the agent
-          items:
-            type: integer
-            format: int64
-        created_at:
-          type: string
-          format: date-time
-          description: Agent creation timestamp
-        updated_at:
-          type: string
-          format: date-time
-          description: Agent updated timestamp
-        contact:
-          $ref: '#/components/schemas/ContactDTO'
-    AgentsResponse:
-      title: Get Agents Response
-      description: array of agents
-      type: array
-      items:
-        $ref: '#/components/schemas/AgentDTO'
   securitySchemes:
     BearerAuth:
       type: http

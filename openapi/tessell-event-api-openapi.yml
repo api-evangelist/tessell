@@ -188,24 +188,6 @@ paths:
           type: string
 components:
   schemas:
-    ApiPaginationInfo:
-      title: ApiPaginationInfo
-      type: object
-      required:
-      - pageSize
-      - pageOffset
-      properties:
-        pageOffset:
-          format: int32
-          type: integer
-        pageSize:
-          format: int32
-          type: integer
-    GetEventResponse:
-      title: Get Events Response
-      type: array
-      items:
-        $ref: '#/components/schemas/Event'
     Event:
       title: Event
       type: object
@@ -295,6 +277,38 @@ components:
           description: Is system generated event
         visibility:
           $ref: '#/components/schemas/Visibility'
+    SeverityEvents:
+      title: Severity
+      type: string
+      enum:
+      - INFO
+      - WARNING
+      - CRITICAL
+      description: Enumeration for severity level
+    ApiPaginationInfo:
+      title: ApiPaginationInfo
+      type: object
+      required:
+      - pageSize
+      - pageOffset
+      properties:
+        pageOffset:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+    ApiMetadata:
+      properties:
+        pagination:
+          $ref: '#/components/schemas/ApiPaginationInfo'
+        records:
+          format: int32
+          type: integer
+        timeZone:
+          type: string
+      title: ApiMetadata
+      type: object
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -319,21 +333,6 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    SeverityEvents:
-      title: Severity
-      type: string
-      enum:
-      - INFO
-      - WARNING
-      - CRITICAL
-      description: Enumeration for severity level
-    Visibility:
-      title: Visibility
-      type: string
-      description: Visibility level
-      enum:
-      - USER
-      - SYSTEM
     EventApiResponse:
       title: EventApiResponse
       type: object
@@ -342,17 +341,18 @@ components:
           $ref: '#/components/schemas/ApiMetadata'
         response:
           $ref: '#/components/schemas/GetEventResponse'
-    ApiMetadata:
-      properties:
-        pagination:
-          $ref: '#/components/schemas/ApiPaginationInfo'
-        records:
-          format: int32
-          type: integer
-        timeZone:
-          type: string
-      title: ApiMetadata
-      type: object
+    Visibility:
+      title: Visibility
+      type: string
+      description: Visibility level
+      enum:
+      - USER
+      - SYSTEM
+    GetEventResponse:
+      title: Get Events Response
+      type: array
+      items:
+        $ref: '#/components/schemas/Event'
     Severity:
       type: string
       description: Severity of a CVE or issue

@@ -159,48 +159,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
+  parameters:
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
   schemas:
-    ConfiguredIdpsApiResponse:
-      title: ConfiguredIdpsApiResponse
-      description: Array of currently configured IDP types
+    apiMetadata:
+      title: apiMetadata
       type: object
       properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdentityProviderType'
-    IdentityProviderDTO:
-      title: IdentityProviderDTO
-      type: object
-      description: Component to represent Identity Provider properties
-      properties:
-        id:
+        timeZone:
           type: string
-          description: Unique ID of Identity Provider configuration
-          format: uuid
-        type:
-          $ref: '#/components/schemas/IdentityProviderType'
-        entityId:
-          type: string
-          description: Entity ID of Identity Provider
-        loginUrl:
-          type: string
-          description: Login URL of Identity Provider
-        certificate:
-          type: string
-          description: Certificate of Identity Provider
-        status:
-          $ref: '#/components/schemas/IdentityProviderStatus'
-        dateCreated:
-          type: string
-          description: Date when the IDP configuration was created
-          format: date-time
-        dateModified:
-          type: string
-          description: Date when the IDP configuration was last modified
-          format: date-time
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
     CreateIdpPayload:
       title: CreateIdpPayload
       type: object
@@ -231,24 +212,6 @@ components:
           minLength: 1
           maxLength: 10000
           example: '-----BEGIN CERTIFICATE-----\nMIIF0jCCA ... tg3g\n-----END CERTIFICATE-----'
-    IdentityProviderStatus:
-      title: IdentityProviderStatus
-      type: string
-      description: Status of Identity Provider for SSO
-      enum:
-      - ENABLED
-      - DISABLED
-      - DELETED
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -273,6 +236,72 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    ConfiguredIdpsApiResponse:
+      title: ConfiguredIdpsApiResponse
+      description: Array of currently configured IDP types
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityProviderType'
+    IdentityProviderType:
+      title: IdentityProviderType
+      type: string
+      description: Currently supported Identity Providers for SSO
+      enum:
+      - AZURE_AD
+      - OKTA
+    IdentityProviderStatus:
+      title: IdentityProviderStatus
+      type: string
+      description: Status of Identity Provider for SSO
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+    IdentityProviderDTO:
+      title: IdentityProviderDTO
+      type: object
+      description: Component to represent Identity Provider properties
+      properties:
+        id:
+          type: string
+          description: Unique ID of Identity Provider configuration
+          format: uuid
+        type:
+          $ref: '#/components/schemas/IdentityProviderType'
+        entityId:
+          type: string
+          description: Entity ID of Identity Provider
+        loginUrl:
+          type: string
+          description: Login URL of Identity Provider
+        certificate:
+          type: string
+          description: Certificate of Identity Provider
+        status:
+          $ref: '#/components/schemas/IdentityProviderStatus'
+        dateCreated:
+          type: string
+          description: Date when the IDP configuration was created
+          format: date-time
+        dateModified:
+          type: string
+          description: Date when the IDP configuration was last modified
+          format: date-time
     apiStatus:
       title: apiStatus
       type: object
@@ -281,35 +310,6 @@ components:
           type: string
         message:
           type: string
-    IdentityProviderType:
-      title: IdentityProviderType
-      type: string
-      description: Currently supported Identity Providers for SSO
-      enum:
-      - AZURE_AD
-      - OKTA
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-  parameters:
-    tenantIdMandatory:
-      name: tenant-id
-      in: header
-      description: Id of the Tenant
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-        example: 12345678-abcd-1234-abcd-1234abcd5678
   securitySchemes:
     BearerAuth:
       type: http

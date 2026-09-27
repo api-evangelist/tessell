@@ -300,45 +300,166 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    EntityAclSharingSummaryInfo:
-      title: EntityAclSharingSummaryInfo
-      description: Tessell Entity ACL Sharing Summary Info
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-    BackupDatabaseInfo:
+    DataflixSanitizedSnapshot:
+      title: DataflixSanitizedSnapshot
       type: object
-      description: The databases that are captured as part of the snapshot
+      description: Information about a Sanitized Snapshot
       properties:
         id:
           type: string
           format: uuid
-          description: ID of the database
+          description: ID of the sanitized snapshot
         name:
           type: string
-          description: Name of the database
-        status:
-          type: string
-          description: Status of the database as of capture of this snapshot
-        sizeInMB:
-          type: number
-          format: double
-          description: Size of the database in MB
-        dateCreated:
+          description: Name of the sanitized snapshot
+        snapshotTime:
           type: string
           format: date-time
-          description: Timestamp when the database was created
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
-    CloudRegionInfo:
+          description: Capture time of the source snapshot from which this sanitized snapshot is created
+        status:
+          x-enum: true
+          $ref: '#/components/schemas/DatabaseBackupStatus'
+          description: Status of this snapshot
+        size:
+          type: integer
+          format: int64
+          description: Size of this snapshot (in bytes)
+        manual:
+          type: boolean
+          description: Specifies whether this snapshot is created based on a manual user request or through an automated schedule
+        cloudAvailability:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseSnapshotCloudRegionInfo'
+          description: The cloud and region information where this snapshot has been made available at
+        databases:
+          description: The databases that are captured as part of the source snapshot
+          type: array
+          items:
+            $ref: '#/components/schemas/BackupDatabaseInfo'
+        sharedWith:
+          description: List of users having access to this snapshot
+          $ref: '#/components/schemas/EntityAclSharingSummaryInfo'
+    GetDataflixBackupCatalogResponse:
+      title: GetDataflixBackupCatalogResponse
+      type: object
+      description: The Dataflix catalog details for native backup contents
+      properties:
+        availabilityMachineId:
+          type: string
+          format: uuid
+          description: ID of the Availability Machine
+        tessellServiceId:
+          type: string
+          format: uuid
+          description: ID of the associated DB Service
+        serviceName:
+          type: string
+          description: Name of the associated DB Service
+        engineType:
+          x-enum: true
+          $ref: '#/components/schemas/databaseEngineType'
+          description: Database engine type of the associated DB Service
+        timeZone:
+          type: string
+          description: Timezone applicable for timestamps that are returned in this response
+        owner:
+          type: string
+          description: Owner of the Availability Machine
+        backupCatalog:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataflixBackup'
+          description: Catalog information for the available native backups
+        multiDisk:
+          type: boolean
+          description: Whether the service uses multi-disk configuration. Indicates the worker backed up each data disk separately.
+    DataflixSnapshot:
+      title: DataflixSnapshot
+      description: Information about a snapshot
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of the snapshot
+          x-computed: true
+        name:
+          type: string
+          description: Name of the snapshot
+        description:
+          type: string
+          description: Description for the snapshot
+        snapshotTime:
+          type: string
+          format: date-time
+          description: Capture time of the snapshot
+          x-computed: true
+        status:
+          x-enum: true
+          $ref: '#/components/schemas/DatabaseBackupStatus'
+          description: Current status of this snapshot
+          x-computed: true
+        size:
+          type: integer
+          format: int64
+          description: Size of this snapshot (in bytes)
+          x-computed: true
+        manual:
+          type: boolean
+          description: Specifies whether the backup is captured as per manual user request or as per the automated schedule
+          x-computed: true
+        incremental:
+          type: boolean
+          description: Specifies if Database Backup's is incremental
+          example: false
+        cloudAvailability:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseSnapshotCloudRegionInfo'
+          x-computed: true
+          description: The cloud and region information where this snapshot has been made available at
+        databases:
+          description: The databases that are captured as part of this snapshot
+          type: array
+          items:
+            $ref: '#/components/schemas/BackupDatabaseInfo'
+          x-computed: true
+        sharedWith:
+          description: List of users who have access to this snapshot
+          $ref: '#/components/schemas/EntityAclSharingSummaryInfo'
+          x-computed: true
+        backupStatus:
+          description: The associated native backup status (deprecated)
+          $ref: '#/components/schemas/PreAuthUrlStatus'
+    DatabaseSnapshotRegionInfo:
+      title: RegionInfo
+      description: Region availability details for a snapshot
+      required:
+      - region
+      properties:
+        region:
+          type: string
+          description: The region name
+        status:
+          description: The current status of the snapshot in the respective region
+          type: string
+          enum:
+          - AVAILABLE
+          - COPYING
+          - NOT_AVAILABLE
+    TessellDataflixPitrInfo:
+      type: object
+      description: Availability Machine's Point-In-Time recoverability information within a cloud
+      properties:
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+          description: Cloud type
+        regions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellDataflixPitrInfoForRegion'
+    DatabaseSnapshotCloudRegionInfo:
       title: CloudRegionInfo
       description: Cloud and region details
       required:
@@ -348,10 +469,10 @@ components:
           $ref: '#/components/schemas/cloudType'
           description: The cloud type
         regions:
-          description: The regions details
+          description: Region specific availability details for the snapshot
           type: array
           items:
-            $ref: '#/components/schemas/RegionInfo'
+            $ref: '#/components/schemas/DatabaseSnapshotRegionInfo'
     BackupTargetType:
       type: string
       description: Type of database entity being backed up
@@ -361,47 +482,32 @@ components:
       - SCHEMA
       - TABLESPACE
       - COLLECTION
-    BackupSourceInfo:
-      description: Backup Source Info if the backup source is Snapshot
-      title: BackupSourceInfo
-      type: object
-      properties:
-        sourceSnapshotId:
-          type: string
-          format: uuid
-          description: ID of the snapshot from which this backup was created
-        snapshotName:
-          type: string
-          description: Name of the snapshot from which this backup was created
-        snapshotTime:
-          type: string
-          format: date-time
-          description: Capture time of snapshot from which this backup was created
-    StorageProviderType:
-      description: Storage Type in the cloud
+    TessellDataflixResponse:
+      title: TessellDataflixResponse
+      allOf:
+      - $ref: '#/components/schemas/TessellApiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/TessellAmDataflixDTO'
+    BackupSource:
+      description: Source from which the backup is derived
+      type: string
+      default: SNAPSHOT
       enum:
-      - AWS_EBS
-      - AWS_FSX_NETAPP
-      - AWS_HPC
-      - AWS_S3
-      - AZURE_HPC
-      - AZURE_MANAGED_DISK
-      - GCP_HYPERDISK
-      - GCP_GCS
-      - AZURE_BLOB
-      - MINIO
-      - AZURE_NETAPP
-      - OCI_EXADATA
-      - AZURE_EXADATA
-      - AWS_EXADATA
-    TessellApiResponse:
-      title: TessellApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
+      - SNAPSHOT
+      - DATABASE
+    PreAuthUrlStatus:
+      description: PreAuthUrl Status
+      type: string
+      enum:
+      - NOT_REQUESTED
+      - CREATING
+      - AVAILABLE
+      - DELETING
+      - EXPIRED
     TessellDataflixFromTimeInfo:
       title: TessellDataflixFromTimeInfo
       description: Availability Machine's Point-In-Time recoverability timeline
@@ -418,6 +524,14 @@ components:
         sharedWith:
           $ref: '#/components/schemas/EntityAclSharingSummaryInfo'
           description: List of users having access to the recoverability timeline
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
     GetDataflixCatalogResponse:
       title: GetDataflixCatalogResponse
       type: object
@@ -459,44 +573,6 @@ components:
           items:
             $ref: '#/components/schemas/DataflixSnapshot'
           description: Catalog information for the available snapshots
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    RegionInfo:
-      title: RegionInfo
-      description: Cloud region details
-      required:
-      - region
-      properties:
-        region:
-          description: The cloud region name
-          type: string
-        availabilityZones:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
     apiMetadata:
       title: apiMetadata
       type: object
@@ -508,6 +584,20 @@ components:
           format: int32
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
+    CloudRegionInfo:
+      title: CloudRegionInfo
+      description: Cloud and region details
+      required:
+      - cloud
+      properties:
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+          description: The cloud type
+        regions:
+          description: The regions details
+          type: array
+          items:
+            $ref: '#/components/schemas/RegionInfo'
     GetDataflixSanitizedCatalogResponse:
       title: GetDataflixSanitizedCatalogResponse
       type: object
@@ -539,167 +629,83 @@ components:
           items:
             $ref: '#/components/schemas/DataflixSanitizedSnapshot'
           description: Catalog information for the available Sanitized Snapshots
-    DataflixSanitizedSnapshot:
-      title: DataflixSanitizedSnapshot
+    ApiError:
       type: object
-      description: Information about a Sanitized Snapshot
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    StorageProviderType:
+      description: Storage Type in the cloud
+      enum:
+      - AWS_EBS
+      - AWS_FSX_NETAPP
+      - AWS_HPC
+      - AWS_S3
+      - AZURE_HPC
+      - AZURE_MANAGED_DISK
+      - GCP_HYPERDISK
+      - GCP_GCS
+      - AZURE_BLOB
+      - MINIO
+      - AZURE_NETAPP
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    BackupDatabaseInfo:
+      type: object
+      description: The databases that are captured as part of the snapshot
       properties:
         id:
           type: string
           format: uuid
-          description: ID of the sanitized snapshot
+          description: ID of the database
         name:
           type: string
-          description: Name of the sanitized snapshot
-        snapshotTime:
+          description: Name of the database
+        status:
+          type: string
+          description: Status of the database as of capture of this snapshot
+        sizeInMB:
+          type: number
+          format: double
+          description: Size of the database in MB
+        dateCreated:
           type: string
           format: date-time
-          description: Capture time of the source snapshot from which this sanitized snapshot is created
-        status:
-          x-enum: true
-          $ref: '#/components/schemas/DatabaseBackupStatus'
-          description: Status of this snapshot
-        size:
-          type: integer
-          format: int64
-          description: Size of this snapshot (in bytes)
-        manual:
-          type: boolean
-          description: Specifies whether this snapshot is created based on a manual user request or through an automated schedule
-        cloudAvailability:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseSnapshotCloudRegionInfo'
-          description: The cloud and region information where this snapshot has been made available at
-        databases:
-          description: The databases that are captured as part of the source snapshot
-          type: array
-          items:
-            $ref: '#/components/schemas/BackupDatabaseInfo'
-        sharedWith:
-          description: List of users having access to this snapshot
-          $ref: '#/components/schemas/EntityAclSharingSummaryInfo'
-    TessellAmDataflixDTO:
-      title: TessellAmDataflixDTO
-      type: object
-      description: The Dataflix summary details
-      x-terraform-resource: Dataflix
-      x-terraform:
-        plural-name: Dataflixes
-        render:
-        - data_source
-        - data_source_list
-        resourceIdFromSchema: availabilityMachineId
-      properties:
-        availabilityMachineId:
-          type: string
-          format: uuid
-          description: ID of the Availability Machine
-        tessellServiceId:
-          type: string
-          format: uuid
-          description: ID of the associated DB Service
-        serviceName:
-          type: string
-          description: Name of the associated DB Service
-        engineType:
-          $ref: '#/components/schemas/databaseEngineType'
-          description: Engine type of the associated DB Service
-        cloudAvailability:
-          type: array
-          items:
-            $ref: '#/components/schemas/CloudRegionInfo'
-          description: The cloud and region information where the data is available for access
-        owner:
-          type: string
-          description: Owner of the Availability Machine
-        tsm:
-          type: boolean
-          default: false
-          description: Specify whether the associated DB Service is created using TSM compute type
-        sharedWith:
-          $ref: '#/components/schemas/EntityAclSharingSummaryInfo'
-          description: List of users who have access to data provided by this Dataflix
-        storageProviderType:
-          $ref: '#/components/schemas/StorageProviderType'
-    databaseEngineType:
-      description: Database Engine Type
-      type: string
-      enum:
-      - ORACLE
-      - POSTGRESQL
-      - SQLSERVER
-      - MYSQL
-      - APACHE_KAFKA
-      - MONGODB
-      - MILVUS
-    DatabaseSnapshotRegionInfo:
+          description: Timestamp when the database was created
+    RegionInfo:
       title: RegionInfo
-      description: Region availability details for a snapshot
+      description: Cloud region details
       required:
       - region
       properties:
         region:
+          description: The cloud region name
           type: string
-          description: The region name
-        status:
-          description: The current status of the snapshot in the respective region
-          type: string
-          enum:
-          - AVAILABLE
-          - COPYING
-          - NOT_AVAILABLE
-    TessellDataflixPitrInfo:
-      type: object
-      description: Availability Machine's Point-In-Time recoverability information within a cloud
-      properties:
-        cloud:
-          $ref: '#/components/schemas/cloudType'
-          description: Cloud type
-        regions:
+        availabilityZones:
           type: array
+          uniqueItems: true
           items:
-            $ref: '#/components/schemas/TessellDataflixPitrInfoForRegion'
-    BackupSource:
-      description: Source from which the backup is derived
-      type: string
-      default: SNAPSHOT
-      enum:
-      - SNAPSHOT
-      - DATABASE
-    DatabaseSnapshotCloudRegionInfo:
-      title: CloudRegionInfo
-      description: Cloud and region details
-      required:
-      - cloud
-      properties:
-        cloud:
-          $ref: '#/components/schemas/cloudType'
-          description: The cloud type
-        regions:
-          description: Region specific availability details for the snapshot
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseSnapshotRegionInfo'
-    DatabaseBackupStatus:
-      description: Database Backup Status
-      type: string
-      enum:
-      - AVAILABLE
-      - CREATING
-      - FAILED
-      - PREPARING
-      - COPYING
-    TessellDataflixResponse:
-      title: TessellDataflixResponse
-      allOf:
-      - $ref: '#/components/schemas/TessellApiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/TessellAmDataflixDTO'
+            type: string
     DataflixBackup:
       title: DataflixBackup
       type: object
@@ -776,83 +782,26 @@ components:
             Null for service-level backups, populated for database-level backups.
 
             '
-    DataflixSnapshot:
-      title: DataflixSnapshot
-      description: Information about a snapshot
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: ID of the snapshot
-          x-computed: true
-        name:
-          type: string
-          description: Name of the snapshot
-        description:
-          type: string
-          description: Description for the snapshot
-        snapshotTime:
-          type: string
-          format: date-time
-          description: Capture time of the snapshot
-          x-computed: true
-        status:
-          x-enum: true
-          $ref: '#/components/schemas/DatabaseBackupStatus'
-          description: Current status of this snapshot
-          x-computed: true
-        size:
-          type: integer
-          format: int64
-          description: Size of this snapshot (in bytes)
-          x-computed: true
-        manual:
-          type: boolean
-          description: Specifies whether the backup is captured as per manual user request or as per the automated schedule
-          x-computed: true
-        incremental:
-          type: boolean
-          description: Specifies if Database Backup's is incremental
-          example: false
-        cloudAvailability:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseSnapshotCloudRegionInfo'
-          x-computed: true
-          description: The cloud and region information where this snapshot has been made available at
-        databases:
-          description: The databases that are captured as part of this snapshot
-          type: array
-          items:
-            $ref: '#/components/schemas/BackupDatabaseInfo'
-          x-computed: true
-        sharedWith:
-          description: List of users who have access to this snapshot
-          $ref: '#/components/schemas/EntityAclSharingSummaryInfo'
-          x-computed: true
-        backupStatus:
-          description: The associated native backup status (deprecated)
-          $ref: '#/components/schemas/PreAuthUrlStatus'
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    PreAuthUrlStatus:
-      description: PreAuthUrl Status
+    DatabaseBackupStatus:
+      description: Database Backup Status
       type: string
       enum:
-      - NOT_REQUESTED
-      - CREATING
       - AVAILABLE
-      - DELETING
-      - EXPIRED
+      - CREATING
+      - FAILED
+      - PREPARING
+      - COPYING
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
     TessellDataflixPitrInfoForRegion:
       type: object
       title: TessellDataflixPitrInfoForRegion
@@ -865,10 +814,35 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TessellDataflixFromTimeInfo'
-    GetDataflixBackupCatalogResponse:
-      title: GetDataflixBackupCatalogResponse
+    TessellApiResponse:
+      title: TessellApiResponse
       type: object
-      description: The Dataflix catalog details for native backup contents
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    TessellAmDataflixDTO:
+      title: TessellAmDataflixDTO
+      type: object
+      description: The Dataflix summary details
+      x-terraform-resource: Dataflix
+      x-terraform:
+        plural-name: Dataflixes
+        render:
+        - data_source
+        - data_source_list
+        resourceIdFromSchema: availabilityMachineId
       properties:
         availabilityMachineId:
           type: string
@@ -882,49 +856,50 @@ components:
           type: string
           description: Name of the associated DB Service
         engineType:
-          x-enum: true
           $ref: '#/components/schemas/databaseEngineType'
-          description: Database engine type of the associated DB Service
-        timeZone:
-          type: string
-          description: Timezone applicable for timestamps that are returned in this response
+          description: Engine type of the associated DB Service
+        cloudAvailability:
+          type: array
+          items:
+            $ref: '#/components/schemas/CloudRegionInfo'
+          description: The cloud and region information where the data is available for access
         owner:
           type: string
           description: Owner of the Availability Machine
-        backupCatalog:
+        tsm:
+          type: boolean
+          default: false
+          description: Specify whether the associated DB Service is created using TSM compute type
+        sharedWith:
+          $ref: '#/components/schemas/EntityAclSharingSummaryInfo'
+          description: List of users who have access to data provided by this Dataflix
+        storageProviderType:
+          $ref: '#/components/schemas/StorageProviderType'
+    BackupSourceInfo:
+      description: Backup Source Info if the backup source is Snapshot
+      title: BackupSourceInfo
+      type: object
+      properties:
+        sourceSnapshotId:
+          type: string
+          format: uuid
+          description: ID of the snapshot from which this backup was created
+        snapshotName:
+          type: string
+          description: Name of the snapshot from which this backup was created
+        snapshotTime:
+          type: string
+          format: date-time
+          description: Capture time of snapshot from which this backup was created
+    EntityAclSharingSummaryInfo:
+      title: EntityAclSharingSummaryInfo
+      description: Tessell Entity ACL Sharing Summary Info
+      properties:
+        users:
           type: array
           items:
-            $ref: '#/components/schemas/DataflixBackup'
-          description: Catalog information for the available native backups
-        multiDisk:
-          type: boolean
-          description: Whether the service uses multi-disk configuration. Indicates the worker backed up each data disk separately.
+            type: string
   parameters:
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
-    load-for-refresh-service-id:
-      name: refresh-service-id
-      description: Fetch refresh eligible parent dataflix catalog for the child service id
-      in: query
-      required: false
-      schema:
-        type: string
-        format: uuid
     pageOffset:
       name: page-offset
       in: query
@@ -934,6 +909,31 @@ components:
         type: integer
         format: int32
         default: 0
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    load-for-refresh-service-id:
+      name: refresh-service-id
+      description: Fetch refresh eligible parent dataflix catalog for the child service id
+      in: query
+      required: false
+      schema:
+        type: string
+        format: uuid
     owners:
       name: owners
       in: query
@@ -968,29 +968,6 @@ components:
         owner: myself@my-org.com
         sharedWith:
           users: []
-    GetDataflixes:
-      summary: Get all Dataflix
-      value:
-        metadata:
-          timeZone: UTC
-          records: 19
-          pagination:
-            pageSize: 100
-            pageOffset: 0
-        response:
-        - availabilityMachineId: bd23bc2f-38e1-42d4-bd9e-f5dae62eeb85
-          tessellServiceId: 4b705c41-5222-46d0-84de-cf805456afbd
-          serviceName: finance-db-mysql-si
-          engineType: MYSQL
-          cloudAvailability:
-          - cloud: AWS
-            regions:
-            - region: ap-south-1
-              availabilityZones:
-              - ap-south-1a
-          owner: myself@my-org.com
-          sharedWith:
-            users: []
     DataflixCatalog:
       summary: Dataflix Catalog
       value:
@@ -1049,6 +1026,29 @@ components:
           sharedWith:
             users:
             - user1@my-org.com
+    GetDataflixes:
+      summary: Get all Dataflix
+      value:
+        metadata:
+          timeZone: UTC
+          records: 19
+          pagination:
+            pageSize: 100
+            pageOffset: 0
+        response:
+        - availabilityMachineId: bd23bc2f-38e1-42d4-bd9e-f5dae62eeb85
+          tessellServiceId: 4b705c41-5222-46d0-84de-cf805456afbd
+          serviceName: finance-db-mysql-si
+          engineType: MYSQL
+          cloudAvailability:
+          - cloud: AWS
+            regions:
+            - region: ap-south-1
+              availabilityZones:
+              - ap-south-1a
+          owner: myself@my-org.com
+          sharedWith:
+            users: []
   securitySchemes:
     BearerAuth:
       type: http

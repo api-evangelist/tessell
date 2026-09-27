@@ -124,6 +124,34 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    TicketConversationResponseV2:
+      title: Ticket Conversation Response
+      description: array of conversations
+      type: array
+      items:
+        $ref: '#/components/schemas/ConversationDTOV2'
+    AttachmentDTO:
+      title: Ticket conversation attachment
+      type: object
+      description: Conversation attachment
+      properties:
+        attachment_url:
+          type: string
+          description: attachment url
+        content_type:
+          type: string
+          description: attachment content type
+        id:
+          type: integer
+          format: int64
+          description: attachment identifier
+        name:
+          type: string
+          description: attachment name
+        size:
+          type: integer
+          format: int64
+          description: attachment size
     NoteTicketRequestBodyV2:
       title: Note to ticket body
       type: object
@@ -132,6 +160,30 @@ components:
         body:
           type: string
           description: reply body
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
     ReplyTicketRequestBodyV2:
       title: Reply to ticket body
       type: object
@@ -146,12 +198,6 @@ components:
           items:
             type: string
             format: binary
-    TicketConversationResponseV2:
-      title: Ticket Conversation Response
-      description: array of conversations
-      type: array
-      items:
-        $ref: '#/components/schemas/ConversationDTOV2'
     ConversationDTOV2:
       title: Ticket conversation
       type: object
@@ -180,52 +226,6 @@ components:
         name:
           type: string
           description: user who made this conversation
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    AttachmentDTO:
-      title: Ticket conversation attachment
-      type: object
-      description: Conversation attachment
-      properties:
-        attachment_url:
-          type: string
-          description: attachment url
-        content_type:
-          type: string
-          description: attachment content type
-        id:
-          type: integer
-          format: int64
-          description: attachment identifier
-        name:
-          type: string
-          description: attachment name
-        size:
-          type: integer
-          format: int64
-          description: attachment size
   securitySchemes:
     BearerAuth:
       type: http

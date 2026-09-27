@@ -343,13 +343,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    SlaMaturityStatus:
-      description: Maturity status for the RPO Policy
-      type: string
-      enum:
-      - DRAFT
-      - PUBLISHED
-      - UNPUBLISHED
     RpoPolicyConsumptionView:
       type: object
       properties:
@@ -362,65 +355,13 @@ components:
           $ref: '#/components/schemas/SlaMaturityStatus'
         retentionInfo:
           $ref: '#/components/schemas/SlaRetentionInfo'
-    TessellApiResponse:
-      title: TessellApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-    GetRpoPolicyUsage:
-      allOf:
-      - $ref: '#/components/schemas/TessellApiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/RpoPolicyUsage'
-    GetRpoPoliciesServiceView:
-      allOf:
-      - $ref: '#/components/schemas/TessellApiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/RpoPolicyServiceView'
-    GetRpoPoliciesConsumptionView:
-      allOf:
-      - $ref: '#/components/schemas/TessellApiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/RpoPolicyConsumptionView'
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
+    SlaMaturityStatus:
+      description: Maturity status for the RPO Policy
+      type: string
+      enum:
+      - DRAFT
+      - PUBLISHED
+      - UNPUBLISHED
     RpoPolicyUsage:
       type: object
       properties:
@@ -437,6 +378,104 @@ components:
           description: Email id of the AM owner
         status:
           $ref: '#/components/schemas/DmmStatus'
+    SlaRetentionInfo:
+      description: Retention details of the data that is being governed by the RPO policy
+      type: object
+      properties:
+        pitr:
+          type: integer
+          format: int32
+          description: Retention time (in days) for Point-In-Time recoverability
+          default: 0
+          minimum: 0
+          maximum: 180
+        daily:
+          type: integer
+          format: int32
+          description: Retention time (in days) to retain daily snapshots
+          default: 0
+          minimum: 0
+          maximum: 730
+        weekly:
+          type: integer
+          format: int32
+          description: Retention time (number of weeks) to retain weekly snapshots
+          default: 0
+          minimum: 0
+          maximum: 104
+        monthly:
+          type: integer
+          format: int32
+          description: Retention time (number of months) to retain monthly snapshots
+          default: 0
+          minimum: 0
+          maximum: 60
+        yearly:
+          type: integer
+          format: int32
+          description: Retention time (number of years) to retain yearly snapshots
+          default: 0
+          minimum: 0
+          maximum: 30
+    GetRpoPoliciesConsumptionView:
+      allOf:
+      - $ref: '#/components/schemas/TessellApiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/RpoPolicyConsumptionView'
+    GetRpoPoliciesServiceView:
+      allOf:
+      - $ref: '#/components/schemas/TessellApiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/RpoPolicyServiceView'
+    RpoPolicyCreateUpdatePayload:
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+          minLength: 2
+          maxLength: 50
+        retentionInfo:
+          $ref: '#/components/schemas/SlaRetentionInfo'
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    GetRpoPolicyUsage:
+      allOf:
+      - $ref: '#/components/schemas/TessellApiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/RpoPolicyUsage'
+    DmmStatus:
+      description: DMM Status
+      type: string
+      enum:
+      - CREATING
+      - DELETED
+      - DELETING
+      - TO_BE_DELETED
+      - DELETION_FAILED
+      - DISABLED
+      - PAUSED
+      - RUNNING
+      - FROZEN
     apiMetadata:
       title: apiMetadata
       type: object
@@ -479,6 +518,40 @@ components:
           type: string
           description: Timestamp when the entity was last modified
           format: date-time
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
     databaseEngineType:
       description: Database Engine Type
       type: string
@@ -490,105 +563,15 @@ components:
       - APACHE_KAFKA
       - MONGODB
       - MILVUS
-    RpoPolicyCreateUpdatePayload:
+    TessellApiResponse:
+      title: TessellApiResponse
       type: object
       properties:
-        description:
-          type: string
-        name:
-          type: string
-          minLength: 2
-          maxLength: 50
-        retentionInfo:
-          $ref: '#/components/schemas/SlaRetentionInfo'
-    DmmStatus:
-      description: DMM Status
-      type: string
-      enum:
-      - CREATING
-      - DELETED
-      - DELETING
-      - TO_BE_DELETED
-      - DELETION_FAILED
-      - DISABLED
-      - PAUSED
-      - RUNNING
-      - FROZEN
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    SlaRetentionInfo:
-      description: Retention details of the data that is being governed by the RPO policy
-      type: object
-      properties:
-        pitr:
-          type: integer
-          format: int32
-          description: Retention time (in days) for Point-In-Time recoverability
-          default: 0
-          minimum: 0
-          maximum: 180
-        daily:
-          type: integer
-          format: int32
-          description: Retention time (in days) to retain daily snapshots
-          default: 0
-          minimum: 0
-          maximum: 730
-        weekly:
-          type: integer
-          format: int32
-          description: Retention time (number of weeks) to retain weekly snapshots
-          default: 0
-          minimum: 0
-          maximum: 104
-        monthly:
-          type: integer
-          format: int32
-          description: Retention time (number of months) to retain monthly snapshots
-          default: 0
-          minimum: 0
-          maximum: 60
-        yearly:
-          type: integer
-          format: int32
-          description: Retention time (number of years) to retain yearly snapshots
-          default: 0
-          minimum: 0
-          maximum: 30
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
   parameters:
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
     pageOffset:
       name: page-offset
       in: query
@@ -598,6 +581,23 @@ components:
         type: integer
         format: int32
         default: 0
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
   securitySchemes:
     BearerAuth:
       type: http

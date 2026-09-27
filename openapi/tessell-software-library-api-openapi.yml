@@ -102,25 +102,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   parameters:
-    imageName:
-      name: name
-      in: query
-      required: false
-      explode: true
-      description: Name of a Software Image
-      schema:
-        type: string
-      style: form
-      example:
-        name: postgresql-rhel6
-    allImages:
-      in: query
-      name: allImages
-      description: Returns All Software Images
-      required: false
-      schema:
-        type: boolean
-        default: false
     cloudRegion:
       name: region
       description: Cloud Region
@@ -137,40 +118,6 @@ components:
         azure:
           value: eastUS
           summary: azure region example
-    tenantIdMandatory:
-      name: tenant-id
-      in: header
-      description: Id of the Tenant
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-        example: 12345678-abcd-1234-abcd-1234abcd5678
-    cloudTypeOldConventionMandatory:
-      name: cloudType
-      in: query
-      description: Name of the Cloud
-      required: true
-      schema:
-        $ref: '#/components/schemas/cloudType'
-    timeZoneOldConvention:
-      in: query
-      name: timeZone
-      description: Time Zone
-      schema:
-        type: string
-      required: false
-    software-image-provider-type-in-query:
-      name: softwareImageProviderType
-      in: query
-      description: softwareImageProviderType
-      required: false
-      schema:
-        type: array
-        uniqueItems: true
-        items:
-          $ref: '#/components/schemas/SoftwareImageProviderType'
     cloudTypeOldConvention:
       name: cloudType
       description: Name of the Cloud
@@ -192,39 +139,85 @@ components:
         personas:
         - CloudAdmin
         - TessellAdmin
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
+    allImages:
+      in: query
+      name: allImages
+      description: Returns All Software Images
+      required: false
+      schema:
+        type: boolean
+        default: false
+    software-image-provider-type-in-query:
+      name: softwareImageProviderType
+      in: query
+      description: softwareImageProviderType
+      required: false
+      schema:
+        type: array
+        uniqueItems: true
+        items:
+          $ref: '#/components/schemas/SoftwareImageProviderType'
+    imageName:
+      name: name
+      in: query
+      required: false
+      explode: true
+      description: Name of a Software Image
+      schema:
+        type: string
+      style: form
+      example:
+        name: postgresql-rhel6
+    timeZoneOldConvention:
+      in: query
+      name: timeZone
+      description: Time Zone
+      schema:
+        type: string
+      required: false
+    cloudTypeOldConventionMandatory:
+      name: cloudType
+      in: query
+      description: Name of the Cloud
+      required: true
+      schema:
+        $ref: '#/components/schemas/cloudType'
   schemas:
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
     getSoftwareImageByNameResponse:
       allOf:
       - $ref: '#/components/schemas/SoftwareImage'
-    SoftwareImageMetadata:
-      description: Software image metadata
+    SoftwareImage:
+      description: Software Image Response Object
       type: object
       properties:
-        engine:
+        description:
           type: string
-        edition:
+          description: Description of the SoftwareImage.
+          maxLength: 512
+        name:
           type: string
-        version:
-          type: string
-        createContainer:
-          type: boolean
-        tessellLibBucketPath:
-          type: string
-        licenseModel:
-          $ref: '#/components/schemas/LicenseModel'
-    SoftwareImageProviderType:
-      type: string
-      enum:
-      - TESSELL
-      - OCI_EXADATA
+          maxLength: 128
+          description: Name of the Software Image.
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SoftwareImageVersion'
+        status:
+          $ref: '#/components/schemas/SoftwareImageStatus'
+        metadata:
+          $ref: '#/components/schemas/SoftwareImageMetadata'
+        provider:
+          $ref: '#/components/schemas/SoftwareImageProviderType'
     SoftwareImageStatus:
       description: Software Image Status
       x-dao-query: true
@@ -238,6 +231,40 @@ components:
       - DELETED
       - DEPRECATED
       type: string
+    SoftwareImageVersion:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Version name
+        version:
+          type: string
+          description: DB version string
+        osVersion:
+          type: string
+          description: OS Version string
+        cloudAndAvailability:
+          type: array
+          items:
+            type: string
+          description: Cloud and Location detail
+        status:
+          $ref: '#/components/schemas/SoftwareImageStatus'
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    LicenseModel:
+      description: "Licensing model for a software image.\n  * PAYG - Pay-As-You-Go; license cost is bundled with compute and no\n           separate license acquisition is performed by Tessell.\n  * BYOL - Bring Your Own License; Tessell acquires/locks a license\n           from the customer's license pool.\n"
+      type: string
+      default: BYOL
+      enum:
+      - PAYG
+      - BYOL
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -262,47 +289,27 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    SoftwareImage:
-      description: Software Image Response Object
+    SoftwareImageProviderType:
+      type: string
+      enum:
+      - TESSELL
+      - OCI_EXADATA
+    SoftwareImageMetadata:
+      description: Software image metadata
       type: object
       properties:
-        description:
+        engine:
           type: string
-          description: Description of the SoftwareImage.
-          maxLength: 512
-        name:
+        edition:
           type: string
-          maxLength: 128
-          description: Name of the Software Image.
-        versions:
-          type: array
-          items:
-            $ref: '#/components/schemas/SoftwareImageVersion'
-        status:
-          $ref: '#/components/schemas/SoftwareImageStatus'
-        metadata:
-          $ref: '#/components/schemas/SoftwareImageMetadata'
-        provider:
-          $ref: '#/components/schemas/SoftwareImageProviderType'
-    SoftwareImageVersion:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Version name
         version:
           type: string
-          description: DB version string
-        osVersion:
+        createContainer:
+          type: boolean
+        tessellLibBucketPath:
           type: string
-          description: OS Version string
-        cloudAndAvailability:
-          type: array
-          items:
-            type: string
-          description: Cloud and Location detail
-        status:
-          $ref: '#/components/schemas/SoftwareImageStatus'
+        licenseModel:
+          $ref: '#/components/schemas/LicenseModel'
     getSoftwareImagesResponse:
       description: Response returned by APIs.
       type: object
@@ -311,13 +318,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SoftwareImage'
-    LicenseModel:
-      description: "Licensing model for a software image.\n  * PAYG - Pay-As-You-Go; license cost is bundled with compute and no\n           separate license acquisition is performed by Tessell.\n  * BYOL - Bring Your Own License; Tessell acquires/locks a license\n           from the customer's license pool.\n"
-      type: string
-      default: BYOL
-      enum:
-      - PAYG
-      - BYOL
   securitySchemes:
     BearerAuth:
       type: http

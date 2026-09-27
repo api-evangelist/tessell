@@ -130,12 +130,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    TicketConversationResponse:
-      title: Ticket Conversation Response
-      description: array of conversations
-      type: array
-      items:
-        $ref: '#/components/schemas/ConversationDTO'
     JiraAttachmentUserDetails:
       type: object
       properties:
@@ -182,6 +176,57 @@ components:
           readOnly: true
       additionalProperties: false
       description: "User details permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
+    Attachment:
+      title: Ticket conversation attachment
+      type: object
+      description: Conversation attachment
+      properties:
+        attachment_url:
+          type: string
+          description: attachment url
+        content_type:
+          type: string
+          description: attachment content type
+        created_at:
+          type: string
+          format: date-time
+          description: attachment creation date
+        id:
+          type: integer
+          format: int64
+          description: attachment identifier
+        name:
+          type: string
+          description: attachment name
+        size:
+          type: integer
+          format: int64
+          description: attachment size
+        updated_at:
+          type: string
+          format: date-time
+          description: attachment last updated
+    AvatarUrlsBean:
+      type: object
+      description: An object that stores URLs for different sizes of an item's avatar.
+      properties:
+        16x16:
+          type: string
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
+        24x24:
+          type: string
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+        32x32:
+          type: string
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+        48x48:
+          type: string
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
+      additionalProperties: false
     JiraAttachment:
       title: Jira attachment
       type: object
@@ -191,6 +236,30 @@ components:
           type: string
           format: binary
           description: File content
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
     ConversationDTO:
       title: Ticket conversation
       type: object
@@ -270,6 +339,12 @@ components:
         name:
           type: string
           description: user who made this conversation
+    TicketConversationResponse:
+      title: Ticket Conversation Response
+      description: array of conversations
+      type: array
+      items:
+        $ref: '#/components/schemas/ConversationDTO'
     JiraAttachmentResponse:
       type: object
       properties:
@@ -308,81 +383,6 @@ components:
           description: The URL of a thumbnail representing the attachment.
           readOnly: true
       description: Details about an attachment.
-    Attachment:
-      title: Ticket conversation attachment
-      type: object
-      description: Conversation attachment
-      properties:
-        attachment_url:
-          type: string
-          description: attachment url
-        content_type:
-          type: string
-          description: attachment content type
-        created_at:
-          type: string
-          format: date-time
-          description: attachment creation date
-        id:
-          type: integer
-          format: int64
-          description: attachment identifier
-        name:
-          type: string
-          description: attachment name
-        size:
-          type: integer
-          format: int64
-          description: attachment size
-        updated_at:
-          type: string
-          format: date-time
-          description: attachment last updated
-    AvatarUrlsBean:
-      type: object
-      description: An object that stores URLs for different sizes of an item's avatar.
-      properties:
-        16x16:
-          type: string
-          description: The URL of the item's 16x16 pixel avatar.
-          format: uri
-        24x24:
-          type: string
-          description: The URL of the item's 24x24 pixel avatar.
-          format: uri
-        32x32:
-          type: string
-          description: The URL of the item's 32x32 pixel avatar.
-          format: uri
-        48x48:
-          type: string
-          description: The URL of the item's 48x48 pixel avatar.
-          format: uri
-      additionalProperties: false
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
     NoteTicketRequestBody:
       title: Note to ticket body
       type: object

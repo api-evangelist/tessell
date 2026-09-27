@@ -581,31 +581,69 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    AvailableUpdatesInfo:
+    AssociatedActivities:
       type: object
       properties:
-        osPatch:
-          $ref: '#/components/schemas/PatchVersionsInfo'
         dbPatch:
-          $ref: '#/components/schemas/PatchVersionsInfo'
-    ServiceIdentifier:
-      type: object
-      required:
-      - serviceId
-      properties:
-        serviceId:
-          type: string
-          format: uuid
-        serviceName:
-          type: string
-    StartSingleServerMaintenanceResponse:
+          $ref: '#/components/schemas/PatchActivity'
+        osPatch:
+          $ref: '#/components/schemas/PatchActivity'
+        parameterProfileUpdate:
+          $ref: '#/components/schemas/PatchActivity'
+    BulkScheduleServerMaintenanceResponse:
       type: object
       properties:
         message:
           type: string
+        scheduledServerIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+    ScheduleServerItem:
+      type: object
+      required:
+      - serverId
+      - taskIds
+      properties:
         serverId:
           type: string
           format: uuid
+        maintenanceWindowId:
+          type: string
+          format: uuid
+          description: For scheduling in existing MW
+        date:
+          type: string
+          description: For custom date scheduling (YYYY-MM-DD)
+        time:
+          type: string
+          description: For custom time scheduling (HH:mm)
+        taskIds:
+          type: array
+          description: List of task IDs associated with this schedule item
+          items:
+            type: string
+            format: uuid
+    ServerIdentifier:
+      type: object
+      required:
+      - serverId
+      properties:
+        serverId:
+          type: string
+          format: uuid
+        serverName:
+          type: string
+    ScheduleServerMaintenanceRequest:
+      type: object
+      properties:
+        servers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduleServerItem'
+        serverPatchingConfig:
+          $ref: '#/components/schemas/ServerPatchingConfig'
     ComputeResourceMaintenanceWindow:
       title: ComputeResourceMaintenanceWindow
       type: object
@@ -655,6 +693,327 @@ components:
           MONTHLY: '#/components/schemas/CrMonthlyMaintenanceWindow'
           QUARTERLY: '#/components/schemas/CrQuarterlyMaintenanceWindow'
           NO_PREFERENCE: '#/components/schemas/CrNoPreferenceMaintenanceWindow'
+    StartMaintenanceWindowsRequest:
+      type: object
+      required:
+      - windows
+      properties:
+        windows:
+          type: array
+          description: List of entities (services or servers) to start maintenance for
+          items:
+            $ref: '#/components/schemas/MaintenanceWindowItem'
+        date:
+          type: string
+          description: Optional custom date for scheduling (YYYY-MM-DD)
+          example: '2026-02-27'
+        time:
+          type: string
+          description: Optional custom time for scheduling (HH:mm)
+          example: '20:00'
+    ServerMaintenanceDetail:
+      type: object
+      properties:
+        serverId:
+          type: string
+          format: uuid
+        serverName:
+          type: string
+        serverType:
+          $ref: '#/components/schemas/ServerType'
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        subscription:
+          type: string
+        numberOfHostedDbServices:
+          type: integer
+        osVersion:
+          type: string
+        dbVersion:
+          type: string
+          description: Only for dedicated servers
+        dbInstances:
+          type: array
+          items:
+            type: string
+            format: uuid
+        maintenanceWindow:
+          $ref: '#/components/schemas/MaintenanceCenterWindow'
+        upcomingMaintenanceWindows:
+          type: array
+          items:
+            $ref: '#/components/schemas/MaintenanceWindowInfo'
+        availableUpdates:
+          $ref: '#/components/schemas/AvailableUpdatesInfo'
+        lastRunMaintenanceWindows:
+          type: array
+          items:
+            $ref: '#/components/schemas/MaintenanceWindowInfo'
+        inProgressMaintenanceWindow:
+          type: array
+          items:
+            $ref: '#/components/schemas/MaintenanceWindowInfo'
+        serverPatchingConfig:
+          $ref: '#/components/schemas/ServerPatchingConfig'
+    CrMaintenanceWindowPreference:
+      enum:
+      - MONTHLY
+      - WEEKLY
+      - QUARTERLY
+      - NO_PREFERENCE
+    ScheduleServiceItem:
+      type: object
+      required:
+      - serviceId
+      - taskIds
+      properties:
+        serviceId:
+          type: string
+          format: uuid
+        maintenanceWindowId:
+          type: string
+          format: uuid
+          description: For scheduling in existing MW
+        date:
+          type: string
+          description: For custom date scheduling (YYYY-MM-DD)
+        time:
+          type: string
+          description: For custom time scheduling (HH:mm)
+        taskIds:
+          type: array
+          description: List of task IDs associated with this schedule item
+          items:
+            type: string
+            format: uuid
+    StartSingleServiceMaintenanceResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        serviceId:
+          type: string
+          format: uuid
+    StartSingleMaintenanceRequest:
+      type: object
+      required:
+      - maintenanceWindowId
+      properties:
+        maintenanceWindowId:
+          type: string
+          format: uuid
+        taskId:
+          type: string
+          format: uuid
+          description: The ID of the task associated with this maintenance request
+    PatchType:
+      type: string
+      enum:
+      - CRITICAL
+      - NON_CRITICAL
+      description: Type of patch
+    TaskStatus:
+      type: string
+      description: The status of Task
+      enum:
+      - AVAILABLE
+      - QUEUED
+      - CANCELLED
+      - OVERRIDDEN
+      - IN_PROGRESS
+      - SUCCESS
+      - FAILED
+    MaintenanceCadence:
+      type: string
+      enum:
+      - DAILY
+      - WEEKLY
+      - MONTHLY
+      description: Frequency of maintenance window
+    StartMaintenanceWindowsResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Response message
+        startedEntityIds:
+          type: array
+          description: List of entity IDs for which maintenance was started
+          items:
+            type: string
+            format: uuid
+    BulkScheduleServiceMaintenanceResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        scheduledServiceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+    ScriptInfo:
+      title: ScriptInfo
+      type:
+      - object
+      - 'null'
+      properties:
+        scriptId:
+          type: string
+          format: uuid
+          description: The Tessell Script ID
+        scriptName:
+          type: string
+          description: The Tessell Script Name
+        scriptVersion:
+          type: string
+          description: The Tessell Script version
+        useActiveVersion:
+          type: boolean
+          default: false
+          description: 'When set to true, the scriptVersion field should be null and the system
+
+            will automatically use the active version of the script.
+
+            When set to false (default), the scriptVersion field specifies the
+
+            exact version to use.
+
+            '
+    MaintenanceWindowItem:
+      type: object
+      required:
+      - entityId
+      - maintenanceWindowId
+      properties:
+        entityId:
+          type: string
+          format: uuid
+          description: UUID of the entity (service or server)
+        maintenanceWindowId:
+          type: string
+          format: uuid
+          description: UUID of the maintenance window
+    ServerType:
+      type: string
+      enum:
+      - DEDICATED
+      - SHARED
+      description: Type of server
+    PatchVersionDetail:
+      type: object
+      properties:
+        versionNo:
+          type: string
+        typeOfPatch:
+          $ref: '#/components/schemas/PatchType'
+        impact:
+          type: string
+        taskId:
+          type: string
+          format: uuid
+          description: The ID of the task associated with this patch version
+    MaintenanceWindowType:
+      type: string
+      description: The type of maintenance window
+      enum:
+      - SYSTEM
+      - CUSTOM
+    PatchActivity:
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        versionNo:
+          type: string
+        typeOfPatch:
+          $ref: '#/components/schemas/PatchType'
+        impact:
+          type: string
+        scheduledBy:
+          type: string
+        status:
+          $ref: '#/components/schemas/TaskStatus'
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    UpdateSingleServiceMaintenanceWindowRequest:
+      type: object
+      required:
+      - maintenanceWindow
+      properties:
+        maintenanceWindow:
+          $ref: '#/components/schemas/MaintenanceCenterWindow'
+    UpdateSingleServiceMaintenanceWindowResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        serviceId:
+          type: string
+          format: uuid
+    ServiceMaintenanceResponse:
+      type: object
+      properties:
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceMaintenanceInfo'
+    tessellServiceTopology:
+      type: string
+      description: DB Service topology. This would specify whether the DB Service is single-node, or multi-node.
+      enum:
+      - single_instance
+      - high_availability
+    MaintenanceWindowInfo:
+      type: object
+      properties:
+        maintenanceWindowId:
+          type: string
+          format: uuid
+        cadence:
+          $ref: '#/components/schemas/MaintenanceCadence'
+        date:
+          type: string
+          format: date
+          description: Date in YYYY-MM-DD format (ISO 8601)
+          example: '2026-03-15'
+        time:
+          type: string
+          description: Time in HH:mm format
+          example: 02:00
+        duration:
+          type: integer
+          description: Duration in minutes
+        downtime:
+          type: string
+        maintenanceWindowType:
+          $ref: '#/components/schemas/MaintenanceWindowType'
+        resourceType:
+          $ref: '#/components/schemas/entityType'
+        associatedActivities:
+          $ref: '#/components/schemas/AssociatedActivities'
+    UpdateSingleServerMaintenanceWindowResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        serverId:
+          type: string
+          format: uuid
+    ServerMaintenanceResponse:
+      type: object
+      properties:
+        servers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServerMaintenanceInfo'
     ServerMaintenanceInfo:
       type: object
       properties:
@@ -763,75 +1122,13 @@ components:
       - DNS_RECORD
       - LICENSE
       - SECURITY_PROFILE
-    AssociatedActivities:
+    UpdateSingleServerMaintenanceWindowRequest:
       type: object
+      required:
+      - maintenanceWindow
       properties:
-        dbPatch:
-          $ref: '#/components/schemas/PatchActivity'
-        osPatch:
-          $ref: '#/components/schemas/PatchActivity'
-        parameterProfileUpdate:
-          $ref: '#/components/schemas/PatchActivity'
-    ServerMaintenanceDetail:
-      type: object
-      properties:
-        serverId:
-          type: string
-          format: uuid
-        serverName:
-          type: string
-        serverType:
-          $ref: '#/components/schemas/ServerType'
-        engineType:
-          $ref: '#/components/schemas/databaseEngineType'
-        subscription:
-          type: string
-        numberOfHostedDbServices:
-          type: integer
-        osVersion:
-          type: string
-        dbVersion:
-          type: string
-          description: Only for dedicated servers
-        dbInstances:
-          type: array
-          items:
-            type: string
-            format: uuid
         maintenanceWindow:
           $ref: '#/components/schemas/MaintenanceCenterWindow'
-        upcomingMaintenanceWindows:
-          type: array
-          items:
-            $ref: '#/components/schemas/MaintenanceWindowInfo'
-        availableUpdates:
-          $ref: '#/components/schemas/AvailableUpdatesInfo'
-        lastRunMaintenanceWindows:
-          type: array
-          items:
-            $ref: '#/components/schemas/MaintenanceWindowInfo'
-        inProgressMaintenanceWindow:
-          type: array
-          items:
-            $ref: '#/components/schemas/MaintenanceWindowInfo'
-        serverPatchingConfig:
-          $ref: '#/components/schemas/ServerPatchingConfig'
-    UpdateSingleServerMaintenanceWindowResponse:
-      type: object
-      properties:
-        message:
-          type: string
-        serverId:
-          type: string
-          format: uuid
-    UpdateSingleServiceMaintenanceWindowResponse:
-      type: object
-      properties:
-        message:
-          type: string
-        serviceId:
-          type: string
-          format: uuid
     ConfigureSingleServerMaintenanceRequest:
       type: object
       required:
@@ -842,73 +1139,6 @@ components:
           $ref: '#/components/schemas/MaintenanceCenterWindow'
         serverPatchingConfig:
           $ref: '#/components/schemas/ServerPatchingConfig'
-    MaintenanceState:
-      type: string
-      enum:
-      - SCHEDULED
-      - UNSCHEDULED
-      - ALL
-      description: State of maintenance window
-    StartSingleServiceMaintenanceResponse:
-      type: object
-      properties:
-        message:
-          type: string
-        serviceId:
-          type: string
-          format: uuid
-    ScheduleServerMaintenanceRequest:
-      type: object
-      properties:
-        servers:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScheduleServerItem'
-        serverPatchingConfig:
-          $ref: '#/components/schemas/ServerPatchingConfig'
-    ServerIdentifier:
-      type: object
-      required:
-      - serverId
-      properties:
-        serverId:
-          type: string
-          format: uuid
-        serverName:
-          type: string
-    MaintenanceCenterWindow:
-      description: 'Maintenance window configuration for maintenance center.
-
-        Uses the same structure as TessellServiceMaintenanceWindow from provisioning.
-
-        Can be WeeklyMaintenanceWindow, MonthlyMaintenanceWindow, or QuarterlyMaintenanceWindow.'
-      $ref: '#/components/schemas/TessellServiceMaintenanceWindow'
-    StartSingleMaintenanceRequest:
-      type: object
-      required:
-      - maintenanceWindowId
-      properties:
-        maintenanceWindowId:
-          type: string
-          format: uuid
-        taskId:
-          type: string
-          format: uuid
-          description: The ID of the task associated with this maintenance request
-    MaintenanceWindowItem:
-      type: object
-      required:
-      - entityId
-      - maintenanceWindowId
-      properties:
-        entityId:
-          type: string
-          format: uuid
-          description: UUID of the entity (service or server)
-        maintenanceWindowId:
-          type: string
-          format: uuid
-          description: UUID of the maintenance window
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -933,6 +1163,107 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
+    TessellServiceMaintenanceWindow:
+      title: TessellServiceMaintenanceWindow
+      type: object
+      description: 'Base class for maintenance window configurations.
+
+        Supports multiple cadences: Weekly, Monthly, and Quarterly.
+
+        Use concrete subclasses: WeeklyMaintenanceWindow, MonthlyMaintenanceWindow, QuarterlyMaintenanceWindow.'
+      required:
+      - cadence
+      - time
+      - duration
+      properties:
+        cadence:
+          type: string
+          description: The cadence type for maintenance window
+          default: WEEKLY
+          enum:
+          - WEEKLY
+          - MONTHLY
+          - QUARTERLY
+        time:
+          type: string
+          description: Time value in (hh:mm) format. ex. "02:00"
+          pattern: ^([0-1][0-9]|2[0-3]):[0-5][0-9]$
+          example: 02:00
+        duration:
+          type: integer
+          format: int32
+          minimum: 30
+          description: The duration during which the maintenance window will be allowed to trigger (in minutes)
+      discriminator:
+        propertyName: cadence
+        mapping:
+          WEEKLY: '#/components/schemas/WeeklyMaintenanceWindow'
+          MONTHLY: '#/components/schemas/MonthlyMaintenanceWindow'
+          QUARTERLY: '#/components/schemas/QuarterlyMaintenanceWindow'
+    ScheduleSingleServerMaintenanceResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        requestId:
+          type: string
+          format: uuid
+        serverId:
+          type: string
+          format: uuid
+    MaintenanceState:
+      type: string
+      enum:
+      - SCHEDULED
+      - UNSCHEDULED
+      - ALL
+      description: State of maintenance window
+    MaintenanceCenterWindow:
+      description: 'Maintenance window configuration for maintenance center.
+
+        Uses the same structure as TessellServiceMaintenanceWindow from provisioning.
+
+        Can be WeeklyMaintenanceWindow, MonthlyMaintenanceWindow, or QuarterlyMaintenanceWindow.'
+      $ref: '#/components/schemas/TessellServiceMaintenanceWindow'
+    ScheduleSingleServerMaintenanceRequest:
+      type: object
+      required:
+      - patchInfo
+      properties:
+        maintenanceWindowId:
+          type: string
+          format: uuid
+          description: For scheduling in existing MW
+        date:
+          type: string
+          description: For custom date scheduling (YYYY-MM-DD)
+        time:
+          type: string
+          description: For custom time scheduling (HH:mm)
+        taskId:
+          type: string
+          format: uuid
+          description: The ID of the task associated with this schedule request
+        patchInfo:
+          $ref: '#/components/schemas/ServerPatchInfo'
+    StartSingleServerMaintenanceResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        serverId:
+          type: string
+          format: uuid
+    ServiceIdentifier:
+      type: object
+      required:
+      - serviceId
+      properties:
+        serviceId:
+          type: string
+          format: uuid
+        serviceName:
+          type: string
     ServerPatchingConfig:
       title: ServerPatchingConfig
       type: object
@@ -964,34 +1295,22 @@ components:
         postScriptInfo:
           scriptId: 123e4567-e89b-12d3-a456-426614174001
           scriptVersion: v1.0
-    ScheduleSingleServerMaintenanceRequest:
+    ScheduleServiceMaintenanceRequest:
       type: object
-      required:
-      - patchInfo
       properties:
-        maintenanceWindowId:
-          type: string
-          format: uuid
-          description: For scheduling in existing MW
-        date:
-          type: string
-          description: For custom date scheduling (YYYY-MM-DD)
-        time:
-          type: string
-          description: For custom time scheduling (HH:mm)
-        taskId:
-          type: string
-          format: uuid
-          description: The ID of the task associated with this schedule request
-        patchInfo:
-          $ref: '#/components/schemas/ServerPatchInfo'
-    MaintenanceCadence:
-      type: string
-      enum:
-      - DAILY
-      - WEEKLY
-      - MONTHLY
-      description: Frequency of maintenance window
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduleServiceItem'
+        serverPatchingConfig:
+          $ref: '#/components/schemas/ServerPatchingConfig'
+    PatchVersionsInfo:
+      type: object
+      properties:
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PatchVersionDetail'
     ConfigureSingleServerMaintenanceResponse:
       type: object
       properties:
@@ -1000,110 +1319,71 @@ components:
         serverId:
           type: string
           format: uuid
-    UpdateSingleServiceMaintenanceWindowRequest:
+    BulkScheduleServerMaintenanceRequest:
       type: object
       required:
       - maintenanceWindow
+      - servers
       properties:
         maintenanceWindow:
-          $ref: '#/components/schemas/MaintenanceCenterWindow'
-    BulkScheduleServiceMaintenanceResponse:
+          $ref: '#/components/schemas/ComputeResourceMaintenanceWindow'
+        serverPatchingConfig:
+          $ref: '#/components/schemas/ServerPatchingConfig'
+        servers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServerIdentifier'
+    ServerPatchInfo:
+      type: object
+      required:
+      - osPatchVersion
+      properties:
+        osPatchVersion:
+          type: string
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    AvailableUpdatesInfo:
+      type: object
+      properties:
+        osPatch:
+          $ref: '#/components/schemas/PatchVersionsInfo'
+        dbPatch:
+          $ref: '#/components/schemas/PatchVersionsInfo'
+    ScheduleServerMaintenanceResponse:
       type: object
       properties:
         message:
           type: string
+        requestId:
+          type: string
+          format: uuid
+        scheduledServerIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+    ScheduleServiceMaintenanceResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        requestId:
+          type: string
+          format: uuid
         scheduledServiceIds:
           type: array
           items:
             type: string
             format: uuid
-    ServerType:
-      type: string
-      enum:
-      - DEDICATED
-      - SHARED
-      description: Type of server
-    StartMaintenanceWindowsResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Response message
-        startedEntityIds:
-          type: array
-          description: List of entity IDs for which maintenance was started
-          items:
-            type: string
-            format: uuid
-    BulkScheduleServiceMaintenanceRequest:
-      type: object
-      required:
-      - maintenanceWindow
-      - services
-      properties:
-        maintenanceWindow:
-          $ref: '#/components/schemas/TessellServiceMaintenanceWindow'
-        services:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServiceIdentifier'
-        serverPatchingConfig:
-          $ref: '#/components/schemas/ServerPatchingConfig'
-    ScriptInfo:
-      title: ScriptInfo
-      type:
-      - object
-      - 'null'
-      properties:
-        scriptId:
-          type: string
-          format: uuid
-          description: The Tessell Script ID
-        scriptName:
-          type: string
-          description: The Tessell Script Name
-        scriptVersion:
-          type: string
-          description: The Tessell Script version
-        useActiveVersion:
-          type: boolean
-          default: false
-          description: 'When set to true, the scriptVersion field should be null and the system
-
-            will automatically use the active version of the script.
-
-            When set to false (default), the scriptVersion field specifies the
-
-            exact version to use.
-
-            '
-    PatchActivity:
-      type: object
-      properties:
-        taskId:
-          type: string
-          format: uuid
-        versionNo:
-          type: string
-        typeOfPatch:
-          $ref: '#/components/schemas/PatchType'
-        impact:
-          type: string
-        scheduledBy:
-          type: string
-        status:
-          $ref: '#/components/schemas/TaskStatus'
-    TaskStatus:
-      type: string
-      description: The status of Task
-      enum:
-      - AVAILABLE
-      - QUEUED
-      - CANCELLED
-      - OVERRIDDEN
-      - IN_PROGRESS
-      - SUCCESS
-      - FAILED
     ServiceMaintenanceInfo:
       type: object
       properties:
@@ -1144,150 +1424,12 @@ components:
             $ref: '#/components/schemas/MaintenanceWindowInfo'
         serverPatchingConfig:
           $ref: '#/components/schemas/ServerPatchingConfig'
-    ScheduleServerItem:
-      type: object
-      required:
-      - serverId
-      - taskIds
-      properties:
-        serverId:
-          type: string
-          format: uuid
-        maintenanceWindowId:
-          type: string
-          format: uuid
-          description: For scheduling in existing MW
-        date:
-          type: string
-          description: For custom date scheduling (YYYY-MM-DD)
-        time:
-          type: string
-          description: For custom time scheduling (HH:mm)
-        taskIds:
-          type: array
-          description: List of task IDs associated with this schedule item
-          items:
-            type: string
-            format: uuid
-    databaseEngineType:
-      description: Database Engine Type
-      type: string
-      enum:
-      - ORACLE
-      - POSTGRESQL
-      - SQLSERVER
-      - MYSQL
-      - APACHE_KAFKA
-      - MONGODB
-      - MILVUS
-    CrMaintenanceWindowPreference:
-      enum:
-      - MONTHLY
-      - WEEKLY
-      - QUARTERLY
-      - NO_PREFERENCE
-    ScheduleSingleServerMaintenanceResponse:
-      type: object
-      properties:
-        message:
-          type: string
-        requestId:
-          type: string
-          format: uuid
-        serverId:
-          type: string
-          format: uuid
     MaintenanceStatus:
       type: string
       enum:
       - SCHEDULED
       - NOT_SCHEDULED
       description: Status of maintenance
-    ServerPatchInfo:
-      type: object
-      required:
-      - osPatchVersion
-      properties:
-        osPatchVersion:
-          type: string
-    TessellServiceMaintenanceWindow:
-      title: TessellServiceMaintenanceWindow
-      type: object
-      description: 'Base class for maintenance window configurations.
-
-        Supports multiple cadences: Weekly, Monthly, and Quarterly.
-
-        Use concrete subclasses: WeeklyMaintenanceWindow, MonthlyMaintenanceWindow, QuarterlyMaintenanceWindow.'
-      required:
-      - cadence
-      - time
-      - duration
-      properties:
-        cadence:
-          type: string
-          description: The cadence type for maintenance window
-          default: WEEKLY
-          enum:
-          - WEEKLY
-          - MONTHLY
-          - QUARTERLY
-        time:
-          type: string
-          description: Time value in (hh:mm) format. ex. "02:00"
-          pattern: ^([0-1][0-9]|2[0-3]):[0-5][0-9]$
-          example: 02:00
-        duration:
-          type: integer
-          format: int32
-          minimum: 30
-          description: The duration during which the maintenance window will be allowed to trigger (in minutes)
-      discriminator:
-        propertyName: cadence
-        mapping:
-          WEEKLY: '#/components/schemas/WeeklyMaintenanceWindow'
-          MONTHLY: '#/components/schemas/MonthlyMaintenanceWindow'
-          QUARTERLY: '#/components/schemas/QuarterlyMaintenanceWindow'
-    PatchVersionsInfo:
-      type: object
-      properties:
-        versions:
-          type: array
-          items:
-            $ref: '#/components/schemas/PatchVersionDetail'
-    PatchType:
-      type: string
-      enum:
-      - CRITICAL
-      - NON_CRITICAL
-      description: Type of patch
-    MaintenanceWindowInfo:
-      type: object
-      properties:
-        maintenanceWindowId:
-          type: string
-          format: uuid
-        cadence:
-          $ref: '#/components/schemas/MaintenanceCadence'
-        date:
-          type: string
-          format: date
-          description: Date in YYYY-MM-DD format (ISO 8601)
-          example: '2026-03-15'
-        time:
-          type: string
-          description: Time in HH:mm format
-          example: 02:00
-        duration:
-          type: integer
-          description: Duration in minutes
-        downtime:
-          type: string
-        maintenanceWindowType:
-          $ref: '#/components/schemas/MaintenanceWindowType'
-        resourceType:
-          $ref: '#/components/schemas/entityType'
-        associatedActivities:
-          $ref: '#/components/schemas/AssociatedActivities'
     ServiceMaintenanceDetail:
       type: object
       properties:
@@ -1328,162 +1470,20 @@ components:
             $ref: '#/components/schemas/MaintenanceWindowInfo'
         serverPatchingConfig:
           $ref: '#/components/schemas/ServerPatchingConfig'
-    PatchVersionDetail:
-      type: object
-      properties:
-        versionNo:
-          type: string
-        typeOfPatch:
-          $ref: '#/components/schemas/PatchType'
-        impact:
-          type: string
-        taskId:
-          type: string
-          format: uuid
-          description: The ID of the task associated with this patch version
-    tessellServiceTopology:
-      type: string
-      description: DB Service topology. This would specify whether the DB Service is single-node, or multi-node.
-      enum:
-      - single_instance
-      - high_availability
-    BulkScheduleServerMaintenanceResponse:
-      type: object
-      properties:
-        message:
-          type: string
-        scheduledServerIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-    BulkScheduleServerMaintenanceRequest:
+    BulkScheduleServiceMaintenanceRequest:
       type: object
       required:
       - maintenanceWindow
-      - servers
+      - services
       properties:
         maintenanceWindow:
-          $ref: '#/components/schemas/ComputeResourceMaintenanceWindow'
-        serverPatchingConfig:
-          $ref: '#/components/schemas/ServerPatchingConfig'
-        servers:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServerIdentifier'
-    ScheduleServerMaintenanceResponse:
-      type: object
-      properties:
-        message:
-          type: string
-        requestId:
-          type: string
-          format: uuid
-        scheduledServerIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-    ScheduleServiceItem:
-      type: object
-      required:
-      - serviceId
-      - taskIds
-      properties:
-        serviceId:
-          type: string
-          format: uuid
-        maintenanceWindowId:
-          type: string
-          format: uuid
-          description: For scheduling in existing MW
-        date:
-          type: string
-          description: For custom date scheduling (YYYY-MM-DD)
-        time:
-          type: string
-          description: For custom time scheduling (HH:mm)
-        taskIds:
-          type: array
-          description: List of task IDs associated with this schedule item
-          items:
-            type: string
-            format: uuid
-    ServiceMaintenanceResponse:
-      type: object
-      properties:
+          $ref: '#/components/schemas/TessellServiceMaintenanceWindow'
         services:
           type: array
           items:
-            $ref: '#/components/schemas/ServiceMaintenanceInfo'
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    StartMaintenanceWindowsRequest:
-      type: object
-      required:
-      - windows
-      properties:
-        windows:
-          type: array
-          description: List of entities (services or servers) to start maintenance for
-          items:
-            $ref: '#/components/schemas/MaintenanceWindowItem'
-        date:
-          type: string
-          description: Optional custom date for scheduling (YYYY-MM-DD)
-          example: '2026-02-27'
-        time:
-          type: string
-          description: Optional custom time for scheduling (HH:mm)
-          example: '20:00'
-    UpdateSingleServerMaintenanceWindowRequest:
-      type: object
-      required:
-      - maintenanceWindow
-      properties:
-        maintenanceWindow:
-          $ref: '#/components/schemas/MaintenanceCenterWindow'
-    MaintenanceWindowType:
-      type: string
-      description: The type of maintenance window
-      enum:
-      - SYSTEM
-      - CUSTOM
-    ServerMaintenanceResponse:
-      type: object
-      properties:
-        servers:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServerMaintenanceInfo'
-    ScheduleServiceMaintenanceRequest:
-      type: object
-      properties:
-        services:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScheduleServiceItem'
+            $ref: '#/components/schemas/ServiceIdentifier'
         serverPatchingConfig:
           $ref: '#/components/schemas/ServerPatchingConfig'
-    ScheduleServiceMaintenanceResponse:
-      type: object
-      properties:
-        message:
-          type: string
-        requestId:
-          type: string
-          format: uuid
-        scheduledServiceIds:
-          type: array
-          items:
-            type: string
-            format: uuid
   securitySchemes:
     BearerAuth:
       type: http

@@ -154,44 +154,80 @@ paths:
       tags:
       - Authorization
 components:
-  parameters:
-    tenantIdMandatory:
-      name: tenant-id
-      in: header
-      description: Id of the Tenant
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-        example: 12345678-abcd-1234-abcd-1234abcd5678
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
   schemas:
+    AuthorizeApiKeyResponse:
+      title: AuthorizeApiKeyResponse
+      type: object
+      description: Response for access token from API Key
+      properties:
+        accessToken:
+          type: string
+          description: access token
+    ApiKeyDTO:
+      type: object
+      description: This is a definition for Tessell API key DTO object
+      title: ApiKeyDTO
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell created unique uuid
+        label:
+          description: Label of the key
+          type: string
+        description:
+          description: Description of the key
+          type: string
+        neverExpire:
+          type: boolean
+          default: false
+        status:
+          $ref: '#/components/schemas/ApiKeyStatus'
+        dateCreated:
+          type: string
+          description: Date when the feature is created  metadata
+          format: date-time
+        dateLastUsed:
+          type: string
+          description: Date when the API key was last used
+          format: date-time
+        dateExpiry:
+          type: string
+          description: Expire date of the API key
+          format: date-time
+    CreateApiKeyDTO:
+      type: object
+      description: This is a definition for Tessell API key DTO object
+      title: CreateApiKeyDTO
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell created unique uuid
+        label:
+          description: Label of the key
+          type: string
+        apiKey:
+          description: Hashed API key
+          type: string
+        description:
+          description: Description of the key
+          type: string
+        neverExpire:
+          type: boolean
+          default: false
+        dateCreated:
+          type: string
+          description: Date when the feature is created  metadata
+          format: date-time
+        dateLastUsed:
+          type: string
+          description: Date when the API key was last used
+          format: date-time
+        dateExpiry:
+          type: string
+          description: Expire date of the API key
+          format: date-time
     apiMetadata:
       title: apiMetadata
       type: object
@@ -203,6 +239,30 @@ components:
           format: int32
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
     CreateApiKeyPayload:
       title: CreateApiKeyPayload
       type: object
@@ -238,14 +298,6 @@ components:
         pageOffset:
           type: integer
           format: int32
-    ApiKeyStatus:
-      title: ApiKeyStatus
-      type: string
-      description: This is a definition for Tessell API key status object
-      enum:
-      - ACTIVE
-      - REVOKED
-      - EXPIRED
     AuthorizeApiKeyPayload:
       title: AuthorizeApiKeyPayload
       type: object
@@ -254,79 +306,14 @@ components:
         apiKey:
           type: string
           description: API key
-    AuthorizeApiKeyResponse:
-      title: AuthorizeApiKeyResponse
-      type: object
-      description: Response for access token from API Key
-      properties:
-        accessToken:
-          type: string
-          description: access token
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    CreateApiKeyDTO:
-      type: object
-      description: This is a definition for Tessell API key DTO object
-      title: CreateApiKeyDTO
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Tessell created unique uuid
-        label:
-          description: Label of the key
-          type: string
-        apiKey:
-          description: Hashed API key
-          type: string
-        description:
-          description: Description of the key
-          type: string
-        neverExpire:
-          type: boolean
-          default: false
-        dateCreated:
-          type: string
-          description: Date when the feature is created  metadata
-          format: date-time
-        dateLastUsed:
-          type: string
-          description: Date when the API key was last used
-          format: date-time
-        dateExpiry:
-          type: string
-          description: Expire date of the API key
-          format: date-time
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
+    ApiKeyStatus:
+      title: ApiKeyStatus
+      type: string
+      description: This is a definition for Tessell API key status object
+      enum:
+      - ACTIVE
+      - REVOKED
+      - EXPIRED
     ApiKeyApiResponse:
       title: ApiKeyApiResponse
       type: object
@@ -337,38 +324,51 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ApiKeyDTO'
-    ApiKeyDTO:
+    apiStatus:
+      title: apiStatus
       type: object
-      description: This is a definition for Tessell API key DTO object
-      title: ApiKeyDTO
       properties:
-        id:
-          type: string
-          format: uuid
-          description: Tessell created unique uuid
-        label:
-          description: Label of the key
-          type: string
-        description:
-          description: Description of the key
-          type: string
-        neverExpire:
-          type: boolean
-          default: false
         status:
-          $ref: '#/components/schemas/ApiKeyStatus'
-        dateCreated:
           type: string
-          description: Date when the feature is created  metadata
-          format: date-time
-        dateLastUsed:
+        message:
           type: string
-          description: Date when the API key was last used
-          format: date-time
-        dateExpiry:
-          type: string
-          description: Expire date of the API key
-          format: date-time
+  parameters:
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
   securitySchemes:
     BearerAuth:
       type: http

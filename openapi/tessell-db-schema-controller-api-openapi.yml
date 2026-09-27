@@ -55,43 +55,17 @@ paths:
         schema:
           type: string
 components:
+  parameters:
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
   schemas:
-    DatabaseSchemaDb:
-      type: object
-      description: Represents a database instance within the schema structure.
-      properties:
-        databaseName:
-          type: string
-          example: PDB52E
-        databaseId:
-          type: string
-          format: uuid
-          description: Unique identifier for the database instance.
-        schemas:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseSchemaDbSchema'
-    DatabaseSchemaDbSchemaTableColumn:
-      type: object
-      description: Represents a column within a table.
-      properties:
-        columnName:
-          type: string
-          example: ID
-        dataType:
-          type: string
-          example: NUMBER
-        isEligibleForDataPipeline:
-          type: boolean
-          description: Indicates if this column's dataType is supported across all target databases for data pipeline operations.
-          example: true
-        constraints:
-          type: array
-          items:
-            type: string
-          example:
-          - Primary Key
-          - Not Null
     DatabaseSchemaDbSchemaTable:
       type: object
       description: Represents a table within a schema.
@@ -168,6 +142,21 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DatabaseSchemaDbSchemaTable'
+    DatabaseSchemaDb:
+      type: object
+      description: Represents a database instance within the schema structure.
+      properties:
+        databaseName:
+          type: string
+          example: PDB52E
+        databaseId:
+          type: string
+          format: uuid
+          description: Unique identifier for the database instance.
+        schemas:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseSchemaDbSchema'
     DatabaseSchema:
       type: object
       description: Represents the complete schema structure of a database, including databases, schemas within databases, tables, and columns.
@@ -177,16 +166,27 @@ components:
           description: List of databases in the schema.
           items:
             $ref: '#/components/schemas/DatabaseSchemaDb'
-  parameters:
-    id:
-      name: id
-      description: Id of entity
-      in: path
-      style: simple
-      required: true
-      schema:
-        type: string
-        format: uuid
+    DatabaseSchemaDbSchemaTableColumn:
+      type: object
+      description: Represents a column within a table.
+      properties:
+        columnName:
+          type: string
+          example: ID
+        dataType:
+          type: string
+          example: NUMBER
+        isEligibleForDataPipeline:
+          type: boolean
+          description: Indicates if this column's dataType is supported across all target databases for data pipeline operations.
+          example: true
+        constraints:
+          type: array
+          items:
+            type: string
+          example:
+          - Primary Key
+          - Not Null
   securitySchemes:
     BearerAuth:
       type: http

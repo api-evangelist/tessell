@@ -63,6 +63,49 @@ paths:
       - Service Plan
 components:
   schemas:
+    ServicePlanStatus:
+      x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n"
+      description: Service Plan Status
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+      type: string
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
     BaseEntity:
       type: object
       properties:
@@ -83,17 +126,6 @@ components:
           example: 123e4567-e89b-12d3-a456-426614174000
           format: uuid
           type: string
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
     ServicePlanAppFeature:
       description: This is a definition for Tessell app DTO object
       allOf:
@@ -153,38 +185,6 @@ components:
             type: array
           status:
             $ref: '#/components/schemas/ServicePlanStatus'
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    ServicePlanStatus:
-      x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n"
-      description: Service Plan Status
-      enum:
-      - ENABLED
-      - DISABLED
-      - DELETED
-      type: string
     ServicePlanApp:
       description: This is a definition for Tessell app DTO object
       allOf:
@@ -224,14 +224,6 @@ components:
         type: integer
         format: int32
         default: 10
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
     pageOffset:
       name: page-offset
       in: query
@@ -241,6 +233,14 @@ components:
         type: integer
         format: int32
         default: 0
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
   securitySchemes:
     BearerAuth:
       type: http

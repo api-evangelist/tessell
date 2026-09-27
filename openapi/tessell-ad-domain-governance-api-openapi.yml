@@ -166,59 +166,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
-  parameters:
-    tenantIdMandatory:
-      name: tenant-id
-      in: header
-      description: Id of the Tenant
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-        example: 12345678-abcd-1234-abcd-1234abcd5678
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
   schemas:
-    AdDomain:
-      description: AD Domain Details
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        tessellName:
-          type: string
-          description: Tessell Name for Ad Domain
-        domainName:
-          type: string
-          description: Domain Name
-        netBIOSorOU:
-          type: string
-          description: NetBIOS name or OU
-        dnsServer:
-          type: array
-          items:
-            type: string
-        domainAccountUser:
-          type: string
-          description: Domain Account User
     ReconfigureAdDomainPayload:
       description: Reconfigure Ad Domain Payload
       type: object
@@ -280,6 +228,29 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
+    AdDomain:
+      description: AD Domain Details
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tessellName:
+          type: string
+          description: Tessell Name for Ad Domain
+        domainName:
+          type: string
+          description: Domain Name
+        netBIOSorOU:
+          type: string
+          description: NetBIOS name or OU
+        dnsServer:
+          type: array
+          items:
+            type: string
+        domainAccountUser:
+          type: string
+          description: Domain Account User
     apiStatus:
       title: apiStatus
       type: object
@@ -288,6 +259,35 @@ components:
           type: string
         message:
           type: string
+  parameters:
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
   securitySchemes:
     BearerAuth:
       type: http

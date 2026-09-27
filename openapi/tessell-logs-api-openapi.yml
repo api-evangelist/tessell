@@ -596,72 +596,27 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    DBLogFilesInfoDTO:
-      title: DB Files Info
-      description: This is a definition for DB log file object
+    TessellLogsCloudInfo:
+      oneOf:
+      - $ref: '#/components/schemas/TessellLogsAWSStorageCloudInfo'
+    TessellDbServiceInstanceInfo:
+      description: Tessell's DB Service and DB Service Instance info
       type: object
       properties:
-        fileName:
+        serviceId:
           type: string
-          description: The name of the log file
-        firstEventTimestamp:
-          type: number
-          format: long
-          description: The time of the first event in the log file in Epoch timestamp(in milliseconds). This will be 0 in case of Azure.
-        lastEventTimestamp:
-          type: number
-          format: long
-          description: The time of the last event in the log file in Epoch timestamp(in milliseconds). This will be 0 in case of Azure.
-    TessellLogFilesCloudInfo:
-      title: TessellLogFilesCloudInfo
-      description: Info of where the logs are stored in cloud
-      type: object
-      properties:
+          description: Service ID
+          format: uuid
+        serviceName:
+          type: string
+          description: Service Name
         serviceInstanceId:
           type: string
+          description: Service Instance Id
           format: uuid
         serviceInstanceName:
           type: string
-        logfiles:
-          type: array
-          items:
-            $ref: '#/components/schemas/TessellLogsCloudInfo'
-    TessellAWSLogGroupDTO:
-      title: Log Group
-      description: This is a definition for Log Group Object
-      type: object
-      properties:
-        logGroupName:
-          type: string
-          description: The name of the log group
-        region:
-          type: string
-          description: The region of the log group
-        cloudAccountId:
-          type: string
-          format: uuid
-          description: The cloud account id of the account corresponding to the log group
-        retentionDays:
-          type: number
-          format: integer
-          description: The number of days the logs will be retained in the log group
-    TessellLogEventsDTO:
-      title: Log Events
-      description: This is a definition for the list of log events
-      type: object
-      properties:
-        logs:
-          type: array
-          items:
-            type: string
-          description: The list of log events
-        metadata:
-          $ref: '#/components/schemas/TessellLogEventsMetadata'
-    TessellLogsBaseStorageCloudInfo:
-      type: object
-      properties:
-        fileId:
-          type: string
+          description: Service Instance Name
     TessellLogEventsMetadata:
       title: Log Events Metadata
       description: This is a definition for the metadata of log events
@@ -681,24 +636,25 @@ components:
           type: string
           format: date-time
           description: The timestamp of the last log event in the list
-    TessellDbServiceInstanceInfo:
-      description: Tessell's DB Service and DB Service Instance info
+    TessellAWSLogGroupDTO:
+      title: Log Group
+      description: This is a definition for Log Group Object
       type: object
       properties:
-        serviceId:
+        logGroupName:
           type: string
-          description: Service ID
+          description: The name of the log group
+        region:
+          type: string
+          description: The region of the log group
+        cloudAccountId:
+          type: string
           format: uuid
-        serviceName:
-          type: string
-          description: Service Name
-        serviceInstanceId:
-          type: string
-          description: Service Instance Id
-          format: uuid
-        serviceInstanceName:
-          type: string
-          description: Service Instance Name
+          description: The cloud account id of the account corresponding to the log group
+        retentionDays:
+          type: number
+          format: integer
+          description: The number of days the logs will be retained in the log group
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -723,9 +679,48 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    TessellLogsCloudInfo:
-      oneOf:
-      - $ref: '#/components/schemas/TessellLogsAWSStorageCloudInfo'
+    TessellLogEventsDTO:
+      title: Log Events
+      description: This is a definition for the list of log events
+      type: object
+      properties:
+        logs:
+          type: array
+          items:
+            type: string
+          description: The list of log events
+        metadata:
+          $ref: '#/components/schemas/TessellLogEventsMetadata'
+    TessellLogFilesCloudInfo:
+      title: TessellLogFilesCloudInfo
+      description: Info of where the logs are stored in cloud
+      type: object
+      properties:
+        serviceInstanceId:
+          type: string
+          format: uuid
+        serviceInstanceName:
+          type: string
+        logfiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellLogsCloudInfo'
+    DBLogFilesInfoDTO:
+      title: DB Files Info
+      description: This is a definition for DB log file object
+      type: object
+      properties:
+        fileName:
+          type: string
+          description: The name of the log file
+        firstEventTimestamp:
+          type: number
+          format: long
+          description: The time of the first event in the log file in Epoch timestamp(in milliseconds). This will be 0 in case of Azure.
+        lastEventTimestamp:
+          type: number
+          format: long
+          description: The time of the last event in the log file in Epoch timestamp(in milliseconds). This will be 0 in case of Azure.
     TessellLogsAWSStorageCloudInfo:
       title: TessellLogsAWSStorageCloudInfo
       description: Info of log groups and stream of the logs
@@ -739,6 +734,11 @@ components:
             type: string
           region:
             type: string
+    TessellLogsBaseStorageCloudInfo:
+      type: object
+      properties:
+        fileId:
+          type: string
   securitySchemes:
     BearerAuth:
       type: http
