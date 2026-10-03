@@ -393,62 +393,160 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    WeeklySchedule:
-      type: object
-      properties:
-        days:
-          description: Days in a week to retain weekly backups for
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/WeekDay'
-            x-enum: true
-    WeekDay:
-      description: Week Days
+    Month:
+      description: Name of a month
       type: string
       enum:
-      - Sunday
-      - Monday
-      - Tuesday
-      - Wednesday
-      - Thursday
-      - Friday
-      - Saturday
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
       x-enum-varnames:
-      - Sunday
-      - Monday
-      - Tuesday
-      - Wednesday
-      - Thursday
-      - Friday
-      - Saturday
-    MilvusDatabaseConfig:
-      title: MilvusDatabaseConfig
-      type:
-      - object
-      - 'null'
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
       properties:
-        parameterProfileId:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    CreateDatabasePayload:
+      title: CreateDatabasePayload
+      type: object
+      properties:
+        databaseName:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: The name of the database to be created
+        description:
+          type: string
+          maxLength: 512
+          description: Description of database created
+        sourceDatabaseId:
           type: string
           format: uuid
-          description: The parameter profile ID for the database
-    MonthWiseDates:
+          description: Required while creating a clone. It specifies the Id of the source database from which the clone is being created.
+        databaseConfiguration:
+          type: object
+          properties:
+            oracleConfig:
+              $ref: '#/components/schemas/CreateOracleDatabaseConfig'
+            postgresqlConfig:
+              $ref: '#/components/schemas/PostgresqlDatabaseConfig'
+            mysqlConfig:
+              $ref: '#/components/schemas/MySqlDatabaseConfig'
+            sqlServerConfig:
+              $ref: '#/components/schemas/SqlServerDatabaseConfig'
+            mongodbConfig:
+              $ref: '#/components/schemas/MongodbDatabaseConfig'
+            milvusConfig:
+              $ref: '#/components/schemas/MilvusDatabaseConfig'
+        collectionConfig:
+          $ref: '#/components/schemas/DbCollectionCreatePayload'
+    RpoPolicyConfig:
+      description: This is the definition for RPO Policy details for Tessell DB Service
       type: object
       required:
-      - month
-      - dates
+      - enableAutoSnapshot
       properties:
-        month:
-          $ref: '#/components/schemas/Month'
-          x-enum: true
-        dates:
-          uniqueItems: true
-          type: array
-          items:
-            type: integer
-            format: int32
-            minimum: 1
-            maximum: 31
+        includeTransactionLogs:
+          description: Determines whether transaction logs should be retained to enable Point-In-Time Recovery (PITR) functionality
+          type: boolean
+          default: false
+        enableAutoSnapshot:
+          description: Specify whether system will take automatic snapshots
+          type: boolean
+          default: true
+        standardPolicy:
+          $ref: '#/components/schemas/StandardRpoPolicy'
+        customPolicy:
+          $ref: '#/components/schemas/CustomRpoPolicy'
+        fullBackupSchedule:
+          $ref: '#/components/schemas/FullBackupSchedule'
+        enableAutoBackup:
+          description: Specify whether system will take automatic backups
+          type: boolean
+          default: false
+        backupRpoConfig:
+          type: object
+          description: Config for the Native Backup RPO policies
+          properties:
+            fullBackupSchedule:
+              $ref: '#/components/schemas/FullBackupSchedule'
+            standardPolicy:
+              $ref: '#/components/schemas/BackupStandardRpoPolicy'
+            customPolicy:
+              $ref: '#/components/schemas/BackupCustomRpoPolicy'
+    MilvusCreateCollectionField:
+      type: object
+      properties:
+        name:
+          type: string
+          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
+          minLength: 1
+          maxLength: 255
+        description:
+          type:
+          - string
+          - 'null'
+        dtype:
+          $ref: '#/components/schemas/MilvusDatatype'
+        isPrimary:
+          type: boolean
+          default: false
+        autoId:
+          type: boolean
+          default: false
+        defaultValue:
+          type:
+          - string
+          - 'null'
+        isPartitionKey:
+          type: boolean
+          default: false
+        maxLength:
+          type: integer
+        dim:
+          type: integer
+        indexCreatePayload:
+          $ref: '#/components/schemas/DbCollectionIndexPayload'
     OraclePdbConfig:
       type: object
       properties:
@@ -477,62 +575,34 @@ components:
             Note: This does not affect snapshot-based backups, which are managed at the service level.
 
             '
-    StandardRpoPolicy:
-      description: This is the definition of Standard RPO Policy for Snapshot for Tessell DB Service
+    StopTessellServiceDatabasePayload:
+      title: Payload to stop a database
+      allOf:
+      - $ref: '#/components/schemas/ActionWithCommentPayload'
+    OracleDeleteDatabaseConfig:
       type: object
-      required:
-      - retentionDays
-      - snapshotStartTime
+      description: Oracle-specific delete configuration
       properties:
-        retentionDays:
-          description: Number of days for which the snapshot of DB Service would be retained
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 35
-        includeTransactionLogs:
-          description: Determines whether transaction logs should be retained to enable Point-In-Time Recovery (PITR) functionality
+        deleteNativeBackups:
           type: boolean
           default: false
-        snapshotStartTime:
-          $ref: '#/components/schemas/TimeFormat'
-    BackupStandardRpoPolicy:
-      description: This is the definition of Standard RPO Policy for Backup for Tessell DB Service
-      type: object
-      required:
-      - retentionDays
-      properties:
-        retentionDays:
-          description: Number of days for which the backup of DB Service would be retained
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 35
-        backupStartTime:
-          $ref: '#/components/schemas/TimeFormat'
-    taskSummary:
-      title: taskSummary
+          description: 'Whether to delete PDB-level native backups when deleting the PDB.
+
+            If false (default), backups are retained for potential recovery.
+
+            '
+    WeeklySchedule:
       type: object
       properties:
-        taskId:
-          type: string
-          format: uuid
-        taskType:
-          type: string
-        resourceId:
-          type: string
-          format: uuid
-        associatedResourceIds:
+        days:
+          description: Days in a week to retain weekly backups for
+          uniqueItems: true
           type: array
           items:
-            type: string
-            format: uuid
-        details:
-          type: object
-          additionalProperties:
-            type: string
-    CreateOracleDatabaseConfig:
-      title: CreateOracleDatabaseConfig
+            $ref: '#/components/schemas/WeekDay'
+            x-enum: true
+    SqlServerDatabaseConfig:
+      title: SqlServerDatabaseConfig
       type:
       - object
       - 'null'
@@ -541,23 +611,28 @@ components:
           type: string
           format: uuid
           description: The parameter profile ID for the database
-        optionsProfile:
+    DailySchedule:
+      type: object
+      properties:
+        backupsPerDay:
+          type: integer
+          format: int32
+          description: The number of backups to be captured per day.
+          minimum: 0
+    PostgresqlDatabaseConfig:
+      title: PostgresqlDatabaseConfig
+      type:
+      - object
+      - 'null'
+      properties:
+        parameterProfileId:
           type: string
-          description: The options profile for the database
+          format: uuid
+          description: The parameter profile ID for the database
         optionProfileId:
           type: string
           format: uuid
           description: The options profile for the database
-        username:
-          type: string
-          description: Username for the oracle database
-        password:
-          type: string
-          description: Password for the oracle database
-        pdbConfig:
-          type: array
-          items:
-            $ref: '#/components/schemas/OraclePdbConfig'
     CloneDatabasePayload:
       title: CloneDatabasePayload
       description: 'Payload for cloning a database (PDB) from a native backup to an existing Oracle multi-tenant service.
@@ -609,164 +684,100 @@ components:
             - rpoPolicyConfig: Optional RPO policy for automated native backups
 
             '
-    commonYearlySchedule:
-      allOf:
-      - $ref: '#/components/schemas/DatesForEachMonth'
-      - type: object
-        properties:
-          months:
-            type: array
-            uniqueItems: true
-            items:
-              $ref: '#/components/schemas/Month'
-              x-enum: true
-    RpoPolicyConfig:
-      description: This is the definition for RPO Policy details for Tessell DB Service
+    taskSummary:
+      title: taskSummary
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        taskType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        associatedResourceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        details:
+          type: object
+          additionalProperties:
+            type: string
+    MilvusIndexConfig:
+      type: object
+      properties:
+        indexSpecifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndexSpecification'
+    StandardRpoPolicy:
+      description: This is the definition of Standard RPO Policy for Snapshot for Tessell DB Service
       type: object
       required:
-      - enableAutoSnapshot
+      - retentionDays
+      - snapshotStartTime
       properties:
+        retentionDays:
+          description: Number of days for which the snapshot of DB Service would be retained
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 35
         includeTransactionLogs:
           description: Determines whether transaction logs should be retained to enable Point-In-Time Recovery (PITR) functionality
           type: boolean
           default: false
-        enableAutoSnapshot:
-          description: Specify whether system will take automatic snapshots
-          type: boolean
-          default: true
-        standardPolicy:
-          $ref: '#/components/schemas/StandardRpoPolicy'
-        customPolicy:
-          $ref: '#/components/schemas/CustomRpoPolicy'
-        fullBackupSchedule:
-          $ref: '#/components/schemas/FullBackupSchedule'
-        enableAutoBackup:
-          description: Specify whether system will take automatic backups
-          type: boolean
-          default: false
-        backupRpoConfig:
-          type: object
-          description: Config for the Native Backup RPO policies
-          properties:
-            fullBackupSchedule:
-              $ref: '#/components/schemas/FullBackupSchedule'
-            standardPolicy:
-              $ref: '#/components/schemas/BackupStandardRpoPolicy'
-            customPolicy:
-              $ref: '#/components/schemas/BackupCustomRpoPolicy'
-    ScheduleInfo:
+        snapshotStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+    BackupStandardRpoPolicy:
+      description: This is the definition of Standard RPO Policy for Backup for Tessell DB Service
       type: object
+      required:
+      - retentionDays
       properties:
+        retentionDays:
+          description: Number of days for which the backup of DB Service would be retained
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 35
         backupStartTime:
           $ref: '#/components/schemas/TimeFormat'
-        dailySchedule:
-          $ref: '#/components/schemas/DailySchedule'
-        weeklySchedule:
-          $ref: '#/components/schemas/WeeklySchedule'
-        monthlySchedule:
-          $ref: '#/components/schemas/MonthlySchedule'
-        yearlySchedule:
-          $ref: '#/components/schemas/YearlySchedule'
-    Month:
-      description: Name of a month
+    MilvusDatatype:
       type: string
       enum:
-      - January
-      - February
-      - March
-      - April
-      - May
-      - June
-      - July
-      - August
-      - September
-      - October
-      - November
-      - December
+      - VARCHAR
+      - INT64
+      - BOOL
+      - INT8
+      - INT16
+      - INT32
+      - FLOAT
+      - DOUBLE
+      - JSON
+      - BINARY_VECTOR
+      - FLOAT_VECTOR
+    WeekDay:
+      description: Week Days
+      type: string
+      enum:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
       x-enum-varnames:
-      - January
-      - February
-      - March
-      - April
-      - May
-      - June
-      - July
-      - August
-      - September
-      - October
-      - November
-      - December
-    DatesForEachMonth:
-      type: object
-      properties:
-        dates:
-          description: Dates in a month to retain monthly backups
-          uniqueItems: true
-          type: array
-          items:
-            type: integer
-            format: int32
-            minimum: 1
-            maximum: 31
-        lastDayOfMonth:
-          type: boolean
-          default: false
-    MongodbDatabaseConfig:
-      title: MongodbDatabaseConfig
-      type:
-      - object
-      - 'null'
-      properties:
-        parameterProfileId:
-          type: string
-          format: uuid
-          description: The parameter profile ID for the database
-    IndexSpecification:
-      type: object
-      properties:
-        indexType:
-          $ref: '#/components/schemas/MilvusIndexType'
-        metricType:
-          $ref: '#/components/schemas/MilvusIndexMetricType'
-        parameters:
-          $ref: '#/components/schemas/MilvusIndexParameters'
-    DbCollectionIndexPayload:
-      type: object
-      properties:
-        fieldName:
-          type: string
-        indexName:
-          type: string
-        milvusIndexConfig:
-          $ref: '#/components/schemas/MilvusIndexConfig'
-    ScriptInfo:
-      title: ScriptInfo
-      type:
-      - object
-      - 'null'
-      properties:
-        scriptId:
-          type: string
-          format: uuid
-          description: The Tessell Script ID
-        scriptName:
-          type: string
-          description: The Tessell Script Name
-        scriptVersion:
-          type: string
-          description: The Tessell Script version
-        useActiveVersion:
-          type: boolean
-          default: false
-          description: 'When set to true, the scriptVersion field should be null and the system
-
-            will automatically use the active version of the script.
-
-            When set to false (default), the scriptVersion field specifies the
-
-            exact version to use.
-
-            '
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
     CustomRpoPolicy:
       description: This is the definition of Custom RPO Policy for Snapshot for Tessell DB Service
       type: object
@@ -779,25 +790,26 @@ components:
           description: Custom RPO policy name
         schedule:
           $ref: '#/components/schemas/ScheduleInfo'
-    MilvusIndexParameters:
-      type: object
+    MongodbDatabaseConfig:
+      title: MongodbDatabaseConfig
+      type:
+      - object
+      - 'null'
       properties:
-        m:
-          type:
-          - integer
-          - 'null'
-        nlist:
-          type:
-          - integer
-          - 'null'
-        efconstructions:
-          type:
-          - integer
-          - 'null'
-        ntrees:
-          type:
-          - integer
-          - 'null'
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
+    MilvusDatabaseConfig:
+      title: MilvusDatabaseConfig
+      type:
+      - object
+      - 'null'
+      properties:
+        parameterProfileId:
+          type: string
+          format: uuid
+          description: The parameter profile ID for the database
     MilvusIndexMetricType:
       type: string
       enum:
@@ -808,49 +820,12 @@ components:
       - HAMMING
       - SUPERSTRUCTURE
       - SUBSTRUCTURE
-    MySqlDatabaseConfig:
-      title: MySqlDatabaseConfig
-      type:
-      - object
-      - 'null'
-      properties:
-        parameterProfileId:
-          type: string
-          format: uuid
-          description: The parameter profile ID for the database
-        optionProfileId:
-          type: string
-          format: uuid
-          description: The options profile for the database
-    StartTessellServiceDatabasePayload:
-      title: Payload to start a database
-      allOf:
-      - $ref: '#/components/schemas/ActionWithCommentPayload'
-    DbCollectionCreatePayload:
+    MonthlySchedule:
+      description: Definition for taking month specific schedule.
       type: object
       properties:
-        name:
-          type: string
-          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
-          minLength: 1
-          maxLength: 255
-        milvusCollectionConfig:
-          $ref: '#/components/schemas/MilvusCreateCollectionConfig'
-    ValidateDatabaseDeleteResponse:
-      type: object
-      description: Response for validate database delete API
-      properties:
-        hasAssociatedBackups:
-          type: boolean
-          description: Indicates whether the database has any associated backups
-    DailySchedule:
-      type: object
-      properties:
-        backupsPerDay:
-          type: integer
-          format: int32
-          description: The number of backups to be captured per day.
-          minimum: 0
+        commonSchedule:
+          $ref: '#/components/schemas/DatesForEachMonth'
     MilvusIndexType:
       type: string
       enum:
@@ -866,18 +841,12 @@ components:
       - RHNSW_SQ
       - RHNSW_PQ
       - ANNOY
-    OracleDeleteDatabaseConfig:
+    DeleteDatabaseConfiguration:
       type: object
-      description: Oracle-specific delete configuration
+      description: Engine-specific delete configuration
       properties:
-        deleteNativeBackups:
-          type: boolean
-          default: false
-          description: 'Whether to delete PDB-level native backups when deleting the PDB.
-
-            If false (default), backups are retained for potential recovery.
-
-            '
+        oracleConfig:
+          $ref: '#/components/schemas/OracleDeleteDatabaseConfig'
     DeleteDatabasePayload:
       title: DeleteDatabasePayload
       type: object
@@ -888,157 +857,21 @@ components:
           description: Comment for the database deletion operation
         deleteConfiguration:
           $ref: '#/components/schemas/DeleteDatabaseConfiguration'
-    apiStatus:
-      title: apiStatus
+    DatesForEachMonth:
       type: object
       properties:
-        status:
-          type: string
-        message:
-          type: string
-    MilvusCreateCollectionField:
-      type: object
-      properties:
-        name:
-          type: string
-          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
-          minLength: 1
-          maxLength: 255
-        description:
-          type:
-          - string
-          - 'null'
-        dtype:
-          $ref: '#/components/schemas/MilvusDatatype'
-        isPrimary:
-          type: boolean
-          default: false
-        autoId:
-          type: boolean
-          default: false
-        defaultValue:
-          type:
-          - string
-          - 'null'
-        isPartitionKey:
-          type: boolean
-          default: false
-        maxLength:
-          type: integer
-        dim:
-          type: integer
-        indexCreatePayload:
-          $ref: '#/components/schemas/DbCollectionIndexPayload'
-    StopTessellServiceDatabasePayload:
-      title: Payload to stop a database
-      allOf:
-      - $ref: '#/components/schemas/ActionWithCommentPayload'
-    UpdateDatabasePayload:
-      title: UpdateDatabasePayload
-      type: object
-      required:
-      - description
-      properties:
-        description:
-          type: string
-          minLength: 0
-          maxLength: 512
-    CreateDatabasePayload:
-      title: CreateDatabasePayload
-      type: object
-      properties:
-        databaseName:
-          type: string
-          minLength: 1
-          maxLength: 128
-          description: The name of the database to be created
-        description:
-          type: string
-          maxLength: 512
-          description: Description of database created
-        sourceDatabaseId:
-          type: string
-          format: uuid
-          description: Required while creating a clone. It specifies the Id of the source database from which the clone is being created.
-        databaseConfiguration:
-          type: object
-          properties:
-            oracleConfig:
-              $ref: '#/components/schemas/CreateOracleDatabaseConfig'
-            postgresqlConfig:
-              $ref: '#/components/schemas/PostgresqlDatabaseConfig'
-            mysqlConfig:
-              $ref: '#/components/schemas/MySqlDatabaseConfig'
-            sqlServerConfig:
-              $ref: '#/components/schemas/SqlServerDatabaseConfig'
-            mongodbConfig:
-              $ref: '#/components/schemas/MongodbDatabaseConfig'
-            milvusConfig:
-              $ref: '#/components/schemas/MilvusDatabaseConfig'
-        collectionConfig:
-          $ref: '#/components/schemas/DbCollectionCreatePayload'
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    TimeFormat:
-      title: TimeFormat
-      description: Clock time format value in hour and minute.
-      type: object
-      required:
-      - hour
-      - minute
-      properties:
-        hour:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 23
-          default: 1
-        minute:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 59
-          default: 0
-    YearlySchedule:
-      type: object
-      properties:
-        commonSchedule:
-          $ref: '#/components/schemas/commonYearlySchedule'
-        monthSpecificSchedule:
-          type: array
+        dates:
+          description: Dates in a month to retain monthly backups
           uniqueItems: true
-          required:
-          - months
+          type: array
           items:
-            $ref: '#/components/schemas/MonthWiseDates'
-    ActionWithCommentPayload:
-      type: object
-      properties:
-        comment:
-          type: string
-          description: Comment for the action
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 31
+        lastDayOfMonth:
+          type: boolean
+          default: false
     MilvusCreateCollectionConfig:
       title: MilvusCreateCollectionConfig
       type:
@@ -1075,54 +908,57 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/MilvusCreateCollectionField'
-    FullBackupSchedule:
-      description: The schedule at which full backups would be triggered
-      type: object
+    ScriptInfo:
+      title: ScriptInfo
+      type:
+      - object
+      - 'null'
       properties:
-        startTime:
-          description: Optional Time when full backup(s) has to be captured | If not specified, the default time (same as incremental backup) would be used
-          $ref: '#/components/schemas/TimeFormat'
-        weeklySchedule:
-          $ref: '#/components/schemas/WeeklySchedule'
-    DeleteDatabaseConfiguration:
-      type: object
-      description: Engine-specific delete configuration
-      properties:
-        oracleConfig:
-          $ref: '#/components/schemas/OracleDeleteDatabaseConfig'
-    MonthlySchedule:
-      description: Definition for taking month specific schedule.
+        scriptId:
+          type: string
+          format: uuid
+          description: The Tessell Script ID
+        scriptName:
+          type: string
+          description: The Tessell Script Name
+        scriptVersion:
+          type: string
+          description: The Tessell Script version
+        useActiveVersion:
+          type: boolean
+          default: false
+          description: 'When set to true, the scriptVersion field should be null and the system
+
+            will automatically use the active version of the script.
+
+            When set to false (default), the scriptVersion field specifies the
+
+            exact version to use.
+
+            '
+    YearlySchedule:
       type: object
       properties:
         commonSchedule:
-          $ref: '#/components/schemas/DatesForEachMonth'
-    BackupCustomRpoPolicy:
-      description: This is the definition of Custom RPO Policy for Backup for Tessell DB Service
-      allOf:
-      - $ref: '#/components/schemas/CustomRpoPolicy'
-    MilvusDatatype:
-      type: string
-      enum:
-      - VARCHAR
-      - INT64
-      - BOOL
-      - INT8
-      - INT16
-      - INT32
-      - FLOAT
-      - DOUBLE
-      - JSON
-      - BINARY_VECTOR
-      - FLOAT_VECTOR
-    MilvusIndexConfig:
+          $ref: '#/components/schemas/commonYearlySchedule'
+        monthSpecificSchedule:
+          type: array
+          uniqueItems: true
+          required:
+          - months
+          items:
+            $ref: '#/components/schemas/MonthWiseDates'
+    IndexSpecification:
       type: object
       properties:
-        indexSpecifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/IndexSpecification'
-    PostgresqlDatabaseConfig:
-      title: PostgresqlDatabaseConfig
+        indexType:
+          $ref: '#/components/schemas/MilvusIndexType'
+        metricType:
+          $ref: '#/components/schemas/MilvusIndexMetricType'
+        parameters:
+          $ref: '#/components/schemas/MilvusIndexParameters'
+    MySqlDatabaseConfig:
+      title: MySqlDatabaseConfig
       type:
       - object
       - 'null'
@@ -1135,8 +971,8 @@ components:
           type: string
           format: uuid
           description: The options profile for the database
-    SqlServerDatabaseConfig:
-      title: SqlServerDatabaseConfig
+    CreateOracleDatabaseConfig:
+      title: CreateOracleDatabaseConfig
       type:
       - object
       - 'null'
@@ -1145,6 +981,170 @@ components:
           type: string
           format: uuid
           description: The parameter profile ID for the database
+        optionsProfile:
+          type: string
+          description: The options profile for the database
+        optionProfileId:
+          type: string
+          format: uuid
+          description: The options profile for the database
+        username:
+          type: string
+          description: Username for the oracle database
+        password:
+          type: string
+          description: Password for the oracle database
+        pdbConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/OraclePdbConfig'
+    MonthWiseDates:
+      type: object
+      required:
+      - month
+      - dates
+      properties:
+        month:
+          $ref: '#/components/schemas/Month'
+          x-enum: true
+        dates:
+          uniqueItems: true
+          type: array
+          items:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 31
+    ScheduleInfo:
+      type: object
+      properties:
+        backupStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+        dailySchedule:
+          $ref: '#/components/schemas/DailySchedule'
+        weeklySchedule:
+          $ref: '#/components/schemas/WeeklySchedule'
+        monthlySchedule:
+          $ref: '#/components/schemas/MonthlySchedule'
+        yearlySchedule:
+          $ref: '#/components/schemas/YearlySchedule'
+    TimeFormat:
+      title: TimeFormat
+      description: Clock time format value in hour and minute.
+      type: object
+      required:
+      - hour
+      - minute
+      properties:
+        hour:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 23
+          default: 1
+        minute:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 59
+          default: 0
+    ActionWithCommentPayload:
+      type: object
+      properties:
+        comment:
+          type: string
+          description: Comment for the action
+    DbCollectionIndexPayload:
+      type: object
+      properties:
+        fieldName:
+          type: string
+        indexName:
+          type: string
+        milvusIndexConfig:
+          $ref: '#/components/schemas/MilvusIndexConfig'
+    MilvusIndexParameters:
+      type: object
+      properties:
+        m:
+          type:
+          - integer
+          - 'null'
+        nlist:
+          type:
+          - integer
+          - 'null'
+        efconstructions:
+          type:
+          - integer
+          - 'null'
+        ntrees:
+          type:
+          - integer
+          - 'null'
+    DbCollectionCreatePayload:
+      type: object
+      properties:
+        name:
+          type: string
+          pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
+          minLength: 1
+          maxLength: 255
+        milvusCollectionConfig:
+          $ref: '#/components/schemas/MilvusCreateCollectionConfig'
+    BackupCustomRpoPolicy:
+      description: This is the definition of Custom RPO Policy for Backup for Tessell DB Service
+      allOf:
+      - $ref: '#/components/schemas/CustomRpoPolicy'
+    commonYearlySchedule:
+      allOf:
+      - $ref: '#/components/schemas/DatesForEachMonth'
+      - type: object
+        properties:
+          months:
+            type: array
+            uniqueItems: true
+            items:
+              $ref: '#/components/schemas/Month'
+              x-enum: true
+    FullBackupSchedule:
+      description: The schedule at which full backups would be triggered
+      type: object
+      properties:
+        startTime:
+          description: Optional Time when full backup(s) has to be captured | If not specified, the default time (same as incremental backup) would be used
+          $ref: '#/components/schemas/TimeFormat'
+        weeklySchedule:
+          $ref: '#/components/schemas/WeeklySchedule'
+    UpdateDatabasePayload:
+      title: UpdateDatabasePayload
+      type: object
+      required:
+      - description
+      properties:
+        description:
+          type: string
+          minLength: 0
+          maxLength: 512
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ValidateDatabaseDeleteResponse:
+      type: object
+      description: Response for validate database delete API
+      properties:
+        hasAssociatedBackups:
+          type: boolean
+          description: Indicates whether the database has any associated backups
+    StartTessellServiceDatabasePayload:
+      title: Payload to start a database
+      allOf:
+      - $ref: '#/components/schemas/ActionWithCommentPayload'
   securitySchemes:
     BearerAuth:
       type: http

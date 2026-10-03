@@ -240,6 +240,73 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    LicenseModel:
+      description: "Licensing model for a software image.\n  * PAYG - Pay-As-You-Go; license cost is bundled with compute and no\n           separate license acquisition is performed by Tessell.\n  * BYOL - Bring Your Own License; Tessell acquires/locks a license\n           from the customer's license pool.\n"
+      type: string
+      default: BYOL
+      enum:
+      - PAYG
+      - BYOL
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    restrictAccessToSoftwareImagesRequest:
+      type: object
+      required:
+      - names
+      - personas
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 64
+          minItems: 1
+          maxItems: 20
+          example:
+          - MySQL 5.6
+          - MySQL 8.0
+        personas:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 64
+          minItems: 1
+          maxItems: 20
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
     getPatchableImageVersionsResponse:
       description: Response returned by getPatchableImageVersions.
       type: object
@@ -255,45 +322,73 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/SoftwareImageVersionEntity'
-    SoftwareImageWithStatus:
-      description: Software Image Response Object
+    disableSoftwareImagesRequest:
       type: object
+      required:
+      - names
       properties:
-        description:
-          type: string
-          description: Description of the SoftwareImage.
-          maxLength: 512
-        name:
-          type: string
-          maxLength: 128
-          description: Name of the Software Image.
-        provider:
-          $ref: '#/components/schemas/SoftwareImageProviderType'
-        cloudAndAvailability:
-          additionalProperties:
-            $ref: '#/components/schemas/SoftwareImageStatus'
-          description: Cloud and Location detail
-        versions:
+        names:
           type: array
           items:
-            $ref: '#/components/schemas/SoftwareImageVersionWithStatus'
-        status:
-          $ref: '#/components/schemas/SoftwareImageStatus'
-        metadata:
-          $ref: '#/components/schemas/SoftwareImageMetadata'
-    SoftwareImageStatus:
-      description: Software Image Status
-      x-dao-query: true
-      x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n  @Type(type = \"pgsql_enum\")\n"
-      x-dto-annotations: '@ToString.Exclude
-
-        '
-      enum:
-      - ENABLED
-      - DISABLED
-      - DELETED
-      - DEPRECATED
+            type: string
+            minLength: 1
+            maxLength: 64
+          minItems: 1
+          maxItems: 100
+          example:
+          - MySQL 5.6
+          - MySQL 8.0
+    restrictAccessToSoftwareImagesResponse:
+      type: object
+      properties:
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              disabledInPersonas:
+                type: array
+                items:
+                  type: string
+              enabledInPersonas:
+                type: array
+                items:
+                  type: string
+    cloudType:
+      description: Tessell supported cloud types
       type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    SoftwareImageMetadata:
+      description: Software image metadata
+      type: object
+      properties:
+        engine:
+          type: string
+        edition:
+          type: string
+        version:
+          type: string
+        createContainer:
+          type: boolean
+        tessellLibBucketPath:
+          type: string
+        licenseModel:
+          $ref: '#/components/schemas/LicenseModel'
+    TessellLibrarySnapshotConfig:
+      type: object
+      description: Configuration for Tessell Library Snapshot resource
+      required:
+      - cloudAccountId
+      properties:
+        cloudAccountId:
+          type: string
+          description: ID of the cloud account for Tessell Library Snapshot
     SoftwareImageEntity:
       description: SoftwareImage Entity
       x-dao-entity: true
@@ -365,6 +460,140 @@ components:
           description: Timestamp when the entity was last modified
           format: date-time
           type: string
+    OsImageConfig:
+      type: object
+      description: Configuration for OS Image resource
+      required:
+      - cloudAccountId
+      properties:
+        cloudAccountId:
+          type: string
+          description: ID of the cloud account for OS Image
+    SoftwareImageCloudLocationEntity:
+      description: SoftwareImage Cloud Location Entity
+      x-dao-entity: true
+      x-dao-table-name: TESSELL_SOFTWARE_IMAGE_CLOUD_LOCATIONS
+      x-dao-entity-annotations: '@Table(name = "TESSELL_SOFTWARE_IMAGE_CLOUD_LOCATIONS")
+
+        '
+      type: object
+      properties:
+        id:
+          x-dao-annotations: "@Id\n  @Type(type = \"pg-uuid\")\n  @GeneratedValue(strategy = GenerationType.AUTO)\n"
+          description: Software Image Cloud Location identifier
+          type: string
+          format: uuid
+          x-dao-query: true
+        osImageId:
+          x-dao-query: true
+          type: string
+          maxLength: 2048
+          description: OS Image Identifier.
+        dbEngineSnapshotId:
+          x-dao-query: true
+          type: string
+          maxLength: 2048
+          description: DB Engine disk Identifier.
+        tessellLibrarySnapshotId:
+          type: string
+          maxLength: 2048
+          description: Tessell Library Disk Snapshot Id. This will be deprecated once os image is self sufficient.
+        version:
+          x-dao-foreign-key-reference: true
+          x-dao-annotations: "@ManyToOne(fetch = FetchType.EAGER)\n  @JoinColumn(name=\"software_image_version_id\", nullable=false)\n  @JsonBackReference\n"
+          x-dto-annotations: "@ToString.Exclude\n  @JsonBackReference\n"
+          allOf:
+          - $ref: '#/components/schemas/SoftwareImageVersionEntity'
+        cloudAndAvailability:
+          x-dao-annotations: '@Column(name=''cloud_location'')
+
+            '
+          description: Cloud Location
+          type: string
+        status:
+          $ref: '#/components/schemas/SoftwareImageStatus'
+        metadata:
+          x-dao-column-converter: true
+          $ref: '#/components/schemas/SoftwareImageCloudLocationEntityMetadata'
+    disableSoftwareImagesResponse:
+      type: object
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+    SoftwareImageProviderType:
+      type: string
+      enum:
+      - TESSELL
+      - OCI_EXADATA
+    enableSoftwareImagesRequest:
+      type: object
+      required:
+      - names
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 64
+          minItems: 1
+          maxItems: 100
+          example:
+          - MySQL 5.6
+          - MySQL 8.0
+    DbEngineSnapshotConfig:
+      type: object
+      description: Configuration for DB Engine Snapshot resource
+      required:
+      - cloudAccountId
+      properties:
+        cloudAccountId:
+          type: string
+          description: ID of the cloud account for DB Engine Snapshot
+    SoftwareImageVersionWithStatus:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Version name
+        version:
+          type: string
+          description: DB version string
+        osVersion:
+          type: string
+          description: OS Version string
+        cloudAndAvailability:
+          additionalProperties:
+            $ref: '#/components/schemas/SoftwareImageStatus'
+          description: Cloud and Location detail
+    SoftwareImageWithStatus:
+      description: Software Image Response Object
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the SoftwareImage.
+          maxLength: 512
+        name:
+          type: string
+          maxLength: 128
+          description: Name of the Software Image.
+        provider:
+          $ref: '#/components/schemas/SoftwareImageProviderType'
+        cloudAndAvailability:
+          additionalProperties:
+            $ref: '#/components/schemas/SoftwareImageStatus'
+          description: Cloud and Location detail
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SoftwareImageVersionWithStatus'
+        status:
+          $ref: '#/components/schemas/SoftwareImageStatus'
+        metadata:
+          $ref: '#/components/schemas/SoftwareImageMetadata'
     restrictSoftwareImagesInRegionsRequest:
       description: Restrict software images in regions Request
       type: object
@@ -394,22 +623,6 @@ components:
                 maxItems: 100
           minItems: 1
           maxItems: 20
-    disableSoftwareImagesRequest:
-      type: object
-      required:
-      - names
-      properties:
-        names:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            maxLength: 64
-          minItems: 1
-          maxItems: 100
-          example:
-          - MySQL 5.6
-          - MySQL 8.0
     getAllSoftwareImagesResponse:
       description: Response returned by APIs.
       type: object
@@ -418,6 +631,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SoftwareImageWithStatus'
+    SoftwareImageStatus:
+      description: Software Image Status
+      x-dao-query: true
+      x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n  @Type(type = \"pgsql_enum\")\n"
+      x-dto-annotations: '@ToString.Exclude
+
+        '
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+      - DEPRECATED
+      type: string
     enableSoftwareImagesResponse:
       type: object
       properties:
@@ -425,6 +651,33 @@ components:
           type: array
           items:
             type: string
+    SoftwareImageCloudLocationEntityMetadata:
+      description: Metadata entity for Software Image cloud location and resource availabilities
+      properties:
+        resourceConfig:
+          type: object
+          description: Configuration details of various resources
+          properties:
+            osImage:
+              $ref: '#/components/schemas/OsImageConfig'
+            dbEngineSnapshot:
+              $ref: '#/components/schemas/DbEngineSnapshotConfig'
+            tessellLibrarySnapshot:
+              $ref: '#/components/schemas/TessellLibrarySnapshotConfig'
+    restrictSoftwareImagesInRegionsResponse:
+      type: object
+      properties:
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              cloudAndAvailabilty:
+                type: string
+              status:
+                $ref: '#/components/schemas/SoftwareImageStatus'
     SoftwareImageVersionEntity:
       description: SoftwareImage Version Entity
       x-dao-entity: true
@@ -488,259 +741,6 @@ components:
           description: Cloud and Location detail
         status:
           $ref: '#/components/schemas/SoftwareImageStatus'
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
-    restrictAccessToSoftwareImagesResponse:
-      type: object
-      properties:
-        images:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              disabledInPersonas:
-                type: array
-                items:
-                  type: string
-              enabledInPersonas:
-                type: array
-                items:
-                  type: string
-    LicenseModel:
-      description: "Licensing model for a software image.\n  * PAYG - Pay-As-You-Go; license cost is bundled with compute and no\n           separate license acquisition is performed by Tessell.\n  * BYOL - Bring Your Own License; Tessell acquires/locks a license\n           from the customer's license pool.\n"
-      type: string
-      default: BYOL
-      enum:
-      - PAYG
-      - BYOL
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    SoftwareImageProviderType:
-      type: string
-      enum:
-      - TESSELL
-      - OCI_EXADATA
-    enableSoftwareImagesRequest:
-      type: object
-      required:
-      - names
-      properties:
-        names:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            maxLength: 64
-          minItems: 1
-          maxItems: 100
-          example:
-          - MySQL 5.6
-          - MySQL 8.0
-    SoftwareImageCloudLocationEntity:
-      description: SoftwareImage Cloud Location Entity
-      x-dao-entity: true
-      x-dao-table-name: TESSELL_SOFTWARE_IMAGE_CLOUD_LOCATIONS
-      x-dao-entity-annotations: '@Table(name = "TESSELL_SOFTWARE_IMAGE_CLOUD_LOCATIONS")
-
-        '
-      type: object
-      properties:
-        id:
-          x-dao-annotations: "@Id\n  @Type(type = \"pg-uuid\")\n  @GeneratedValue(strategy = GenerationType.AUTO)\n"
-          description: Software Image Cloud Location identifier
-          type: string
-          format: uuid
-          x-dao-query: true
-        osImageId:
-          x-dao-query: true
-          type: string
-          maxLength: 2048
-          description: OS Image Identifier.
-        dbEngineSnapshotId:
-          x-dao-query: true
-          type: string
-          maxLength: 2048
-          description: DB Engine disk Identifier.
-        tessellLibrarySnapshotId:
-          type: string
-          maxLength: 2048
-          description: Tessell Library Disk Snapshot Id. This will be deprecated once os image is self sufficient.
-        version:
-          x-dao-foreign-key-reference: true
-          x-dao-annotations: "@ManyToOne(fetch = FetchType.EAGER)\n  @JoinColumn(name=\"software_image_version_id\", nullable=false)\n  @JsonBackReference\n"
-          x-dto-annotations: "@ToString.Exclude\n  @JsonBackReference\n"
-          allOf:
-          - $ref: '#/components/schemas/SoftwareImageVersionEntity'
-        cloudAndAvailability:
-          x-dao-annotations: '@Column(name=''cloud_location'')
-
-            '
-          description: Cloud Location
-          type: string
-        status:
-          $ref: '#/components/schemas/SoftwareImageStatus'
-        metadata:
-          x-dao-column-converter: true
-          $ref: '#/components/schemas/SoftwareImageCloudLocationEntityMetadata'
-    SoftwareImageVersionWithStatus:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Version name
-        version:
-          type: string
-          description: DB version string
-        osVersion:
-          type: string
-          description: OS Version string
-        cloudAndAvailability:
-          additionalProperties:
-            $ref: '#/components/schemas/SoftwareImageStatus'
-          description: Cloud and Location detail
-    DbEngineSnapshotConfig:
-      type: object
-      description: Configuration for DB Engine Snapshot resource
-      required:
-      - cloudAccountId
-      properties:
-        cloudAccountId:
-          type: string
-          description: ID of the cloud account for DB Engine Snapshot
-    disableSoftwareImagesResponse:
-      type: object
-      properties:
-        names:
-          type: array
-          items:
-            type: string
-    OsImageConfig:
-      type: object
-      description: Configuration for OS Image resource
-      required:
-      - cloudAccountId
-      properties:
-        cloudAccountId:
-          type: string
-          description: ID of the cloud account for OS Image
-    restrictSoftwareImagesInRegionsResponse:
-      type: object
-      properties:
-        images:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              cloudAndAvailabilty:
-                type: string
-              status:
-                $ref: '#/components/schemas/SoftwareImageStatus'
-    SoftwareImageMetadata:
-      description: Software image metadata
-      type: object
-      properties:
-        engine:
-          type: string
-        edition:
-          type: string
-        version:
-          type: string
-        createContainer:
-          type: boolean
-        tessellLibBucketPath:
-          type: string
-        licenseModel:
-          $ref: '#/components/schemas/LicenseModel'
-    restrictAccessToSoftwareImagesRequest:
-      type: object
-      required:
-      - names
-      - personas
-      properties:
-        names:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            maxLength: 64
-          minItems: 1
-          maxItems: 20
-          example:
-          - MySQL 5.6
-          - MySQL 8.0
-        personas:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            maxLength: 64
-          minItems: 1
-          maxItems: 20
-    SoftwareImageCloudLocationEntityMetadata:
-      description: Metadata entity for Software Image cloud location and resource availabilities
-      properties:
-        resourceConfig:
-          type: object
-          description: Configuration details of various resources
-          properties:
-            osImage:
-              $ref: '#/components/schemas/OsImageConfig'
-            dbEngineSnapshot:
-              $ref: '#/components/schemas/DbEngineSnapshotConfig'
-            tessellLibrarySnapshot:
-              $ref: '#/components/schemas/TessellLibrarySnapshotConfig'
-    databaseEngineType:
-      description: Database Engine Type
-      type: string
-      enum:
-      - ORACLE
-      - POSTGRESQL
-      - SQLSERVER
-      - MYSQL
-      - APACHE_KAFKA
-      - MONGODB
-      - MILVUS
-    TessellLibrarySnapshotConfig:
-      type: object
-      description: Configuration for Tessell Library Snapshot resource
-      required:
-      - cloudAccountId
-      properties:
-        cloudAccountId:
-          type: string
-          description: ID of the cloud account for Tessell Library Snapshot
   parameters:
     cloudRegion:
       name: region
@@ -758,13 +758,6 @@ components:
         azure:
           value: eastUS
           summary: azure region example
-    cloudTypeOldConvention:
-      name: cloudType
-      description: Name of the Cloud
-      in: query
-      required: false
-      schema:
-        $ref: '#/components/schemas/cloudType'
     tenantIdMandatory:
       name: tenant-id
       in: header
@@ -792,6 +785,13 @@ components:
       schema:
         type: string
       required: false
+    cloudTypeOldConvention:
+      name: cloudType
+      description: Name of the Cloud
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/cloudType'
   securitySchemes:
     BearerAuth:
       type: http

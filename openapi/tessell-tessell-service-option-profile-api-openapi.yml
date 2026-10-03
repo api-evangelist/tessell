@@ -86,6 +86,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
+  parameters:
+    service-id:
+      name: service-id
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
   schemas:
     DBServiceOptionProfileUpdateRequest:
       type: object
@@ -94,14 +103,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DBServiceInstanceOptionProfileUpdateRequest'
-    OptionProfileStatus:
-      type: string
-      description: Association status of the instance to the option profile
-      enum:
-      - IN_SYNC
-      - UPDATING
-      - OUT_OF_SYNC
-      - PENDING_REBOOT
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -167,15 +168,14 @@ components:
           - 'null'
           format: uuid
           description: The option profile version to which instance needs to be updated. By default, instance is updated to the latest version of the option profile.
-  parameters:
-    service-id:
-      name: service-id
-      in: path
-      required: true
-      style: simple
-      schema:
-        type: string
-        format: uuid
+    OptionProfileStatus:
+      type: string
+      description: Association status of the instance to the option profile
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+      - PENDING_REBOOT
   securitySchemes:
     BearerAuth:
       type: http

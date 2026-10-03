@@ -159,29 +159,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
-  parameters:
-    tenantIdMandatory:
-      name: tenant-id
-      in: header
-      description: Id of the Tenant
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-        example: 12345678-abcd-1234-abcd-1234abcd5678
   schemas:
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
     CreateIdpPayload:
       title: CreateIdpPayload
       type: object
@@ -212,30 +190,6 @@ components:
           minLength: 1
           maxLength: 10000
           example: '-----BEGIN CERTIFICATE-----\nMIIF0jCCA ... tg3g\n-----END CERTIFICATE-----'
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
     apiPaginationInfo:
       title: apiPaginationInfo
       type: object
@@ -246,17 +200,6 @@ components:
         pageOffset:
           type: integer
           format: int32
-    ConfiguredIdpsApiResponse:
-      title: ConfiguredIdpsApiResponse
-      description: Array of currently configured IDP types
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdentityProviderType'
     IdentityProviderType:
       title: IdentityProviderType
       type: string
@@ -264,14 +207,6 @@ components:
       enum:
       - AZURE_AD
       - OKTA
-    IdentityProviderStatus:
-      title: IdentityProviderStatus
-      type: string
-      description: Status of Identity Provider for SSO
-      enum:
-      - ENABLED
-      - DISABLED
-      - DELETED
     IdentityProviderDTO:
       title: IdentityProviderDTO
       type: object
@@ -302,6 +237,41 @@ components:
           type: string
           description: Date when the IDP configuration was last modified
           format: date-time
+    ConfiguredIdpsApiResponse:
+      title: ConfiguredIdpsApiResponse
+      description: Array of currently configured IDP types
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityProviderType'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
     apiStatus:
       title: apiStatus
       type: object
@@ -310,6 +280,36 @@ components:
           type: string
         message:
           type: string
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    IdentityProviderStatus:
+      title: IdentityProviderStatus
+      type: string
+      description: Status of Identity Provider for SSO
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+  parameters:
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
   securitySchemes:
     BearerAuth:
       type: http

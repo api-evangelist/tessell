@@ -219,92 +219,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
-  requestBodies:
-    GenieRequestPatch:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GenieRequestPatch'
-    GenieEnablePayload:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GenieEnablePayload'
-    GenieDisablePayload:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GenieDisablePayload'
-    GenieRequestPayload:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GenieRequestPayload'
   schemas:
-    AuthenticationMethod:
-      title: AuthenticationMethod
-      description: Enumeration for genie authentication
-      type: string
-      enum:
-      - OTP
-      - CUSTOMER_APPROVAL
-    GenieForceRevokePayload:
-      title: GenieForceRevokePayload
+    GenieConfig:
+      title: GenieConfig
       type: object
+      description: Genie Configuration object
       properties:
-        allComputes:
-          description: Force revoke Genie for all computes in the request
+        installFrp:
+          description: Setting it to true implies that FRP client software can be installed on a compute. Setting it to false implies that installation will be skipped and the software will be deleted if it is already present.
           type: boolean
-        computeResourceIds:
-          description: Computes for which Genie is to be forced revoked
-          type: array
-          items:
-            type: string
-    InitialisationMethod:
-      title: InitialisationMethod
-      description: Enumeration for genie initialisation
-      type: string
-      enum:
-      - OPS_PORTAL
-      - CUSTOMER_PORTAL
-    GenieType:
-      title: GenieType
-      description: Enumeration for genie type
-      type: string
-      enum:
-      - CUSTOMER
-      - INTERNAL
-      - ANSIBLE
-    GenieRequestPatch:
-      title: GenieRequestPatch
-      type: object
-      description: Patch for genie request
-      properties:
-        requestID:
-          description: Request ID for which Genie has to be extended
+        useFrpClient:
+          description: Stringified boolean, if FRP client process should be used to perform genie operation. If set to false then Agent integrated FRPC will be used
+          type: boolean
+        vmAccessForCustomer:
+          description: Check if Genie for customer feature is enabled
+          type: boolean
+        approvalForGenieExternal:
+          description: If approval from Tessell is required when Genie is requested by external customer
+          type: boolean
+        approvalForGenieInternal:
+          description: If approval from Customer is required when Genie is requested by internal support team
+          type: boolean
+        useKeycloakForFrpClientServerAuthentication:
+          description: Setting this to true will move the authentication method to OIDC which will require customer to whitelist new frp and keycloak ports
+          type: boolean
+        maxExpiryTime:
+          description: Maximum Expiry time customer can set for a Genie request
           type: string
-        expiryInMinutes:
-          type: integer
-          format: int32
-          default: 60
-          minimum: 60
-        addComputes:
-          allOf:
-          - $ref: '#/components/schemas/GenieAddComputes'
-    GenieStatus:
-      title: GenieStatus
-      description: Enumeration for genie status
-      type: string
-      enum:
-      - ENABLED
-      - DISABLED
-      - REQUESTED
-      - REQUEST_DECLINED
-      - ENABLING
-      - PARTIAL_ENABLED
-      - DISABLING
-      - FAILED_ENABLE
-      - FAILED_DISABLE
     GenieRequestPayload:
       title: GenieRequestPayload
       type: object
@@ -351,132 +292,22 @@ components:
         ticketSummary:
           description: Jira or freshdesk ticket summary
           type: string
-    GenieEntity:
-      description: Genie Entity to track status of individual compute
-      x-gorm: true
-      x-gorm-table-name: TESSELL_GENIES
+    GenieRequestPatch:
+      title: GenieRequestPatch
       type: object
-      properties:
-        id:
-          x-gorm-primary-key: true
-          x-gorm-column-attrs: not null
-          type: string
-          description: Id
-        computeResourceId:
-          x-gorm-column-attrs: not null
-          type: string
-          description: Associated compute id
-        genieType:
-          x-gorm-column-attrs: not null
-          description: Genie Type, Customer or Internal
-          allOf:
-          - $ref: '#/components/schemas/GenieType'
-        metadata:
-          x-gorm-column-type: json
-          description: Genie Compute Metadata
-          allOf:
-          - $ref: '#/components/schemas/GenieInstanceMetadata'
-        configiration:
-          x-gorm-column-type: json
-          description: Genie configuration
-          allOf:
-          - $ref: '#/components/schemas/GenieConfigurationInstance'
-        currentStatus:
-          x-gorm-column-attrs: not null
-          description: Current status of the genie on this entity
-          allOf:
-          - $ref: '#/components/schemas/GenieStatus'
-    GenieConfig:
-      title: GenieConfig
-      type: object
-      description: Genie Configuration object
-      properties:
-        installFrp:
-          description: Setting it to true implies that FRP client software can be installed on a compute. Setting it to false implies that installation will be skipped and the software will be deleted if it is already present.
-          type: boolean
-        useFrpClient:
-          description: Stringified boolean, if FRP client process should be used to perform genie operation. If set to false then Agent integrated FRPC will be used
-          type: boolean
-        vmAccessForCustomer:
-          description: Check if Genie for customer feature is enabled
-          type: boolean
-        approvalForGenieExternal:
-          description: If approval from Tessell is required when Genie is requested by external customer
-          type: boolean
-        approvalForGenieInternal:
-          description: If approval from Customer is required when Genie is requested by internal support team
-          type: boolean
-        useKeycloakForFrpClientServerAuthentication:
-          description: Setting this to true will move the authentication method to OIDC which will require customer to whitelist new frp and keycloak ports
-          type: boolean
-        maxExpiryTime:
-          description: Maximum Expiry time customer can set for a Genie request
-          type: string
-    GenieConfigurationInstance:
-      title: Genie Configuration for a instance
-      type: object
-      description: Genie Configuration instance object
-      properties:
-        visitorFrpcConfig:
-          type: string
-          description: Visitor FRPC configuration
-        hostFrpcConfig:
-          type: string
-          description: Host FRPC configuration
-        pemFile:
-          type: string
-          description: File that contains private key
-        pubFile:
-          type: string
-          description: File that contains public key
-        user:
-          type: string
-          description: Linux user
-        rdpUserName:
-          type: string
-          description: User name created on the VM for Genie
-        rdpPassword:
-          type: string
-          description: Admin password for the user
-        os:
-          allOf:
-          - $ref: '#/components/schemas/OsType'
-    GenieDisablePayload:
-      title: GenieDisablePayload
-      type: object
+      description: Patch for genie request
       properties:
         requestID:
-          description: Request ID for which Genie is to be disabled
+          description: Request ID for which Genie has to be extended
           type: string
-        isDeclined:
-          description: is genie request declined
-          type: boolean
-          default: false
-        forceRevoke:
+        expiryInMinutes:
+          type: integer
+          format: int32
+          default: 60
+          minimum: 60
+        addComputes:
           allOf:
-          - $ref: '#/components/schemas/GenieForceRevokePayload'
-    GenieAddComputes:
-      title: GenieAddComputes
-      type: object
-      properties:
-        serviceId:
-          description: All computes
-          type: string
-        computeResourceIds:
-          description: Computes for which Genie is to be enabled
-          type: array
-          items:
-            type: string
-    GenieRetryPayload:
-      title: GenieRetryPayload
-      type: object
-      properties:
-        allowedIpAddresses:
-          description: cidr block of the virtual network
-          example: 10.0.0.4/24
-          type: array
-          items:
-            type: string
+          - $ref: '#/components/schemas/GenieAddComputes'
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -508,6 +339,35 @@ components:
       enum:
       - Linux
       - Windows
+    GenieConfigurationInstance:
+      title: Genie Configuration for a instance
+      type: object
+      description: Genie Configuration instance object
+      properties:
+        visitorFrpcConfig:
+          type: string
+          description: Visitor FRPC configuration
+        hostFrpcConfig:
+          type: string
+          description: Host FRPC configuration
+        pemFile:
+          type: string
+          description: File that contains private key
+        pubFile:
+          type: string
+          description: File that contains public key
+        user:
+          type: string
+          description: Linux user
+        rdpUserName:
+          type: string
+          description: User name created on the VM for Genie
+        rdpPassword:
+          type: string
+          description: Admin password for the user
+        os:
+          allOf:
+          - $ref: '#/components/schemas/OsType'
     GenieResponse:
       title: GenieResponse
       type: object
@@ -553,52 +413,6 @@ components:
           description: Genie Request Metadata
           allOf:
           - $ref: '#/components/schemas/GenieRequestEntityMetadata'
-    GenieInstanceMetadata:
-      title: GenieInstanceMetadata
-      type: object
-      properties:
-        allowedIpAddresses:
-          type: array
-          items:
-            type: string
-        activeRequests:
-          type: array
-          items:
-            type: string
-        role:
-          type: string
-          description: role of the instance associated with the compute
-        clientID:
-          type: string
-          x-gorm-column-attrs: not null
-          description: FRPC client ID to authenticate with frps
-        name:
-          type: string
-          description: name of the instance associated with the compute
-        error:
-          type: string
-          description: Error while enabling Genie
-        statusModifiedAt:
-          type: string
-          format: date-time
-          description: Last time at which the status of the genie entity was modified
-        useFrpClient:
-          type: string
-          description: Stringified boolean, if FRP client process should be used to perform genie operation. If set to false then Agent integrated FRPC will be used
-    GenieEnablePayload:
-      title: GenieEnablePayload
-      type: object
-      description: Payload for genie
-      properties:
-        requestID:
-          description: Request ID for which Genie is to be enabled
-          type: string
-        otp:
-          description: OTP to enable the genie
-          type: string
-        retry:
-          allOf:
-          - $ref: '#/components/schemas/GenieRetryPayload'
     GenieRequestEntityMetadata:
       description: Genie Request Entity Metadata
       type: object
@@ -639,57 +453,183 @@ components:
           type: string
           format: date-time
           description: entry modification timestamp
-  responses:
-    GenieResponseList:
-      description: OK
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/GenieResponse'
-    GenieConfigResponseDownload:
-      description: OK
-      content:
-        application/zip:
-          schema:
+    GenieAddComputes:
+      title: GenieAddComputes
+      type: object
+      properties:
+        serviceId:
+          description: All computes
+          type: string
+        computeResourceIds:
+          description: Computes for which Genie is to be enabled
+          type: array
+          items:
             type: string
-            format: binary
-        application/octet-stream:
-          schema:
+    AuthenticationMethod:
+      title: AuthenticationMethod
+      description: Enumeration for genie authentication
+      type: string
+      enum:
+      - OTP
+      - CUSTOMER_APPROVAL
+    GenieEnablePayload:
+      title: GenieEnablePayload
+      type: object
+      description: Payload for genie
+      properties:
+        requestID:
+          description: Request ID for which Genie is to be enabled
+          type: string
+        otp:
+          description: OTP to enable the genie
+          type: string
+        retry:
+          allOf:
+          - $ref: '#/components/schemas/GenieRetryPayload'
+    GenieStatus:
+      title: GenieStatus
+      description: Enumeration for genie status
+      type: string
+      enum:
+      - ENABLED
+      - DISABLED
+      - REQUESTED
+      - REQUEST_DECLINED
+      - ENABLING
+      - PARTIAL_ENABLED
+      - DISABLING
+      - FAILED_ENABLE
+      - FAILED_DISABLE
+    GenieType:
+      title: GenieType
+      description: Enumeration for genie type
+      type: string
+      enum:
+      - CUSTOMER
+      - INTERNAL
+      - ANSIBLE
+    GenieEntity:
+      description: Genie Entity to track status of individual compute
+      x-gorm: true
+      x-gorm-table-name: TESSELL_GENIES
+      type: object
+      properties:
+        id:
+          x-gorm-primary-key: true
+          x-gorm-column-attrs: not null
+          type: string
+          description: Id
+        computeResourceId:
+          x-gorm-column-attrs: not null
+          type: string
+          description: Associated compute id
+        genieType:
+          x-gorm-column-attrs: not null
+          description: Genie Type, Customer or Internal
+          allOf:
+          - $ref: '#/components/schemas/GenieType'
+        metadata:
+          x-gorm-column-type: json
+          description: Genie Compute Metadata
+          allOf:
+          - $ref: '#/components/schemas/GenieInstanceMetadata'
+        configiration:
+          x-gorm-column-type: json
+          description: Genie configuration
+          allOf:
+          - $ref: '#/components/schemas/GenieConfigurationInstance'
+        currentStatus:
+          x-gorm-column-attrs: not null
+          description: Current status of the genie on this entity
+          allOf:
+          - $ref: '#/components/schemas/GenieStatus'
+    InitialisationMethod:
+      title: InitialisationMethod
+      description: Enumeration for genie initialisation
+      type: string
+      enum:
+      - OPS_PORTAL
+      - CUSTOMER_PORTAL
+    GenieRetryPayload:
+      title: GenieRetryPayload
+      type: object
+      properties:
+        allowedIpAddresses:
+          description: cidr block of the virtual network
+          example: 10.0.0.4/24
+          type: array
+          items:
             type: string
-            format: binary
-    GenieResponse:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GenieResponse'
-    GenieConfig:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GenieConfig'
+    GenieDisablePayload:
+      title: GenieDisablePayload
+      type: object
+      properties:
+        requestID:
+          description: Request ID for which Genie is to be disabled
+          type: string
+        isDeclined:
+          description: is genie request declined
+          type: boolean
+          default: false
+        forceRevoke:
+          allOf:
+          - $ref: '#/components/schemas/GenieForceRevokePayload'
+    GenieForceRevokePayload:
+      title: GenieForceRevokePayload
+      type: object
+      properties:
+        allComputes:
+          description: Force revoke Genie for all computes in the request
+          type: boolean
+        computeResourceIds:
+          description: Computes for which Genie is to be forced revoked
+          type: array
+          items:
+            type: string
+    GenieInstanceMetadata:
+      title: GenieInstanceMetadata
+      type: object
+      properties:
+        allowedIpAddresses:
+          type: array
+          items:
+            type: string
+        activeRequests:
+          type: array
+          items:
+            type: string
+        role:
+          type: string
+          description: role of the instance associated with the compute
+        clientID:
+          type: string
+          x-gorm-column-attrs: not null
+          description: FRPC client ID to authenticate with frps
+        name:
+          type: string
+          description: name of the instance associated with the compute
+        error:
+          type: string
+          description: Error while enabling Genie
+        statusModifiedAt:
+          type: string
+          format: date-time
+          description: Last time at which the status of the genie entity was modified
+        useFrpClient:
+          type: string
+          description: Stringified boolean, if FRP client process should be used to perform genie operation. If set to false then Agent integrated FRPC will be used
   parameters:
+    requestId:
+      description: Request ID of the Genie request
+      in: query
+      name: requestId
+      required: false
+      schema:
+        type: string
     serviceId:
       description: DB Service Id for which the Genie Access request is in context
       in: query
       name: serviceId
-      required: false
-      schema:
-        type: string
-    tenantIdPath:
-      in: path
-      name: tenantId
-      description: Tenant ID
-      required: true
-      schema:
-        type: string
-    computeResourceId:
-      description: Compute Resource Id for which the Genie Access request is in context
-      in: query
-      name: computeResourceId
       required: false
       schema:
         type: string
@@ -703,13 +643,73 @@ components:
         minLength: 1
         maxLength: 128
         example: 12345678-abcd-1234-abcd-1234abcd5678
-    requestId:
-      description: Request ID of the Genie request
+    computeResourceId:
+      description: Compute Resource Id for which the Genie Access request is in context
       in: query
-      name: requestId
+      name: computeResourceId
       required: false
       schema:
         type: string
+    tenantIdPath:
+      in: path
+      name: tenantId
+      description: Tenant ID
+      required: true
+      schema:
+        type: string
+  requestBodies:
+    GenieRequestPatch:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenieRequestPatch'
+    GenieEnablePayload:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenieEnablePayload'
+    GenieRequestPayload:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenieRequestPayload'
+    GenieDisablePayload:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenieDisablePayload'
+  responses:
+    GenieConfigResponseDownload:
+      description: OK
+      content:
+        application/zip:
+          schema:
+            type: string
+            format: binary
+        application/octet-stream:
+          schema:
+            type: string
+            format: binary
+    GenieResponseList:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/GenieResponse'
+    GenieConfig:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenieConfig'
+    GenieResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenieResponse'
   securitySchemes:
     BearerAuth:
       type: http

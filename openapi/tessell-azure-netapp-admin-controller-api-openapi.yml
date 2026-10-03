@@ -354,39 +354,207 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
+  parameters:
+    azure-netapp-skip-statuses:
+      name: skip-statuses
+      description: Statuses of Azure NetApp to be skipped
+      in: query
+      required: false
+      schema:
+        type: array
+        uniqueItems: true
+        items:
+          $ref: '#/components/schemas/AzureNetAppStatus'
+    azure-netapp-statuses:
+      name: statuses
+      description: Statuses of Azure NetApp to be included
+      in: query
+      required: false
+      schema:
+        type: array
+        uniqueItems: true
+        items:
+          $ref: '#/components/schemas/AzureNetAppStatus'
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    anf-id-path:
+      name: anf-id
+      description: Tessell Generated UUID of the Azure NetApp
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+      example: 12345678-abcd-1234-abcd-1234abcd5678
+    subscriptionNameMandatory:
+      name: subscription-name
+      in: query
+      description: Subscription name
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 64
+        example: Sub-Experiments-2
+    subscription-query:
+      name: subscription
+      description: Filter the entities based on cloud-subscription
+      in: query
+      required: false
+      schema:
+        type: string
+    cp-id-path:
+      name: cp-id
+      description: Tessell Generated UUID of the Capacity-Pool
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    region-query:
+      name: region
+      description: Filter the entities based on cloud-region
+      in: query
+      required: false
+      schema:
+        type: string
   schemas:
-    AzureNetAppEncryptionKeyInfo:
-      description: Details of encryption key
+    AzureNetAppStatus:
+      enum:
+      - AVAILABLE
+      - DOWN
+      - DELETING
+    AzureNetAppsResponse:
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
       type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/AzureNetAppDTO'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    AzurePermissionPolicy:
+      description: Permission policy for Azure NetApp
+      type: object
+      properties:
+        permissions:
+          description: Permission policy for Azure NetApp
+          type: object
+          properties:
+            actions:
+              items:
+                maxLength: 1024
+                minLength: 1
+                type: string
+              type: array
+            notActions:
+              type: array
+              items:
+                type: string
+            dataActions:
+              type: array
+              items:
+                type: string
+            notDataActions:
+              type: array
+              items:
+                type: string
+    AzureNetAppEncryptionKeySource:
+      enum:
+      - Microsoft.NetApp
+      - Microsoft.KeyVault
+      x-enum-varnames:
+      - MICROSOFT_NET_APP
+      - MICROSOFT_KEY_VAULT
+    RegisterAzureNetAppCapacityPoolPayload:
+      type: object
+      properties:
+        capacityPoolIds:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+    AzureNetAppCapacityPoolQosType:
+      type: string
+      enum:
+      - Auto
+      - Manual
+      x-enum-varnames:
+      - AUTO
+      - MANUAL
+    AzureNetAppCapacityPoolDTO:
+      type: object
+      description: This is a definition for Tessell Azure NetApp Capacity Pool Object
       properties:
         id:
           type: string
-          description: Id of the encryption key
           format: uuid
         name:
           type: string
-          description: name of the encryption key
-        keyVaultCloudResourceId:
-          type: string
-          description: name of the encryption key vault in cloud
-        keySource:
-          $ref: '#/components/schemas/AzureNetAppEncryptionKeySource'
-    DiscoveryAzureNetAppCapacityPoolResponse:
-      type: object
-      properties:
-        azureNetAppId:
+          description: The name of the Azure NetApp Capacity Pool
+        azureNetappId:
           type: string
           format: uuid
-        azureNetAppName:
+        status:
+          $ref: '#/components/schemas/AzureNetAppCapacityPoolStatus'
+        cloudResourceId:
           type: string
-          description: The name of the Azure NetApp
-        cloudStatus:
-          type: string
-          description: Status of Azure NetApp in cloud
-        capacityPoolInfo:
+        configurations:
+          $ref: '#/components/schemas/AzureNetAppCapacityPoolConfigurationInfo'
+        volumeInfo:
           type: array
           items:
-            $ref: '#/components/schemas/DiscoveryAzureNetAppCapacityPoolDTO'
+            $ref: '#/components/schemas/AzureNetAppVolumeDTO'
+        dateCreated:
+          type: string
+          description: Timestamp when the entity was created
+          format: date-time
+        dateModified:
+          type: string
+          description: Timestamp when the entity was created
+          format: date-time
     AzureNetAppDTO:
       type: object
       description: This is a definition for Tessell Azure-NetApp Object
@@ -425,174 +593,27 @@ components:
           type: string
           description: Timestamp when the entity was modified
           format: date-time
-    AzureNetAppInfrastructureInfo:
+    RegisterAzureNetAppPayload:
       type: object
-      description: This is definition for Azure NetApp's infrastructure info
       properties:
-        cloud:
-          $ref: '#/components/schemas/cloudType'
+        azureNetAppId:
+          type: string
+          description: The id of the FSx NetApp
+        subscription:
+          type: string
+          description: The name of the subscription
+          minLength: 1
+          maxLength: 128
         region:
           type: string
-          description: Region of the FSx NetApp File System
-        encryptionKey:
-          $ref: '#/components/schemas/AzureNetAppEncryptionKeyInfo'
-    DiscoveryAzureNetAppDTO:
-      type: object
-      properties:
-        cloudAzureNetAppId:
-          type: string
-        azureNetAppName:
-          type: string
-          description: The name of the Azure NetApp
-        cloudStatus:
-          type: string
-          description: Status of Azure NetApp in cloud
-        resourceGroup:
-          type: string
-          description: Resource Group of Azure NetApp in cloud
-        capacityPoolInfo:
+          description: Region of the FSx NetApp
+          minLength: 1
+          maxLength: 128
+        capacityPoolIds:
           type: array
+          maxItems: 100
           items:
-            $ref: '#/components/schemas/DiscoveryAzureNetAppCapacityPoolDTO'
-        infrastructureInfo:
-          type: object
-          properties:
-            cloud:
-              $ref: '#/components/schemas/cloudType'
-            region:
-              type: string
-        registeredWithTessell:
-          type: boolean
-          default: false
-    AzurePermissionPolicy:
-      description: Permission policy for Azure NetApp
-      type: object
-      properties:
-        permissions:
-          description: Permission policy for Azure NetApp
-          type: object
-          properties:
-            actions:
-              items:
-                maxLength: 1024
-                minLength: 1
-                type: string
-              type: array
-            notActions:
-              type: array
-              items:
-                type: string
-            dataActions:
-              type: array
-              items:
-                type: string
-            notDataActions:
-              type: array
-              items:
-                type: string
-    DiscoveryAzureNetAppResponse:
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      type: object
-      properties:
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/DiscoveryAzureNetAppDTO'
-    AzureNetAppCapacityPoolDTO:
-      type: object
-      description: This is a definition for Tessell Azure NetApp Capacity Pool Object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          description: The name of the Azure NetApp Capacity Pool
-        azureNetappId:
-          type: string
-          format: uuid
-        status:
-          $ref: '#/components/schemas/AzureNetAppCapacityPoolStatus'
-        cloudResourceId:
-          type: string
-        configurations:
-          $ref: '#/components/schemas/AzureNetAppCapacityPoolConfigurationInfo'
-        volumeInfo:
-          type: array
-          items:
-            $ref: '#/components/schemas/AzureNetAppVolumeDTO'
-        dateCreated:
-          type: string
-          description: Timestamp when the entity was created
-          format: date-time
-        dateModified:
-          type: string
-          description: Timestamp when the entity was created
-          format: date-time
-    AzureNetAppCapacityPoolQosType:
-      type: string
-      enum:
-      - Auto
-      - Manual
-      x-enum-varnames:
-      - AUTO
-      - MANUAL
-    AzureNetAppCapacityPoolStatus:
-      enum:
-      - AVAILABLE
-      - DOWN
-      - DELETING
-    AzureNetAppStatus:
-      enum:
-      - AVAILABLE
-      - DOWN
-      - DELETING
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    AzureNetAppsResponse:
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      type: object
-      properties:
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/AzureNetAppDTO'
-    AzureNetAppPermissionPolicy:
-      description: Representation of Azure NetApp policy
-      type: object
-      properties:
-        azureSubscriptionPolicy:
-          description: Permission policy for Azure Subscription for NetApp
-          type: object
-          properties:
-            name:
-              description: Subscription name in Azure.
-              maxLength: 2048
-              minLength: 1
-              type: string
-            policy:
-              description: Reference to AzurePermissionPolicy
-              $ref: '#/components/schemas/AzurePermissionPolicy'
-        azureResourceGroupPolicy:
-          description: Permission policy for Azure Resource Group for NetApp
-          type: object
-          properties:
-            name:
-              description: Resource group name in Azure.
-              maxLength: 2048
-              minLength: 1
-              type: string
-            policy:
-              description: Reference to AzurePermissionPolicy
-              $ref: '#/components/schemas/AzurePermissionPolicy'
+            type: string
     AzureNetAppQuota:
       type: object
       description: Quotas available in Azure-NetApp.
@@ -621,16 +642,110 @@ components:
       - AZURE
       - GCP
       - OCI
-    AzureNetAppCapacityPoolServiceLevel:
-      type: string
-      enum:
-      - Standard
-      - Premium
-      - Ultra
-      x-enum-varnames:
-      - STANDARD
-      - PREMIUM
-      - ULTRA
+    DiscoveryAzureNetAppCapacityPoolResponse:
+      type: object
+      properties:
+        azureNetAppId:
+          type: string
+          format: uuid
+        azureNetAppName:
+          type: string
+          description: The name of the Azure NetApp
+        cloudStatus:
+          type: string
+          description: Status of Azure NetApp in cloud
+        capacityPoolInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiscoveryAzureNetAppCapacityPoolDTO'
+    AzureNetAppEncryptionKeyInfo:
+      description: Details of encryption key
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the encryption key
+          format: uuid
+        name:
+          type: string
+          description: name of the encryption key
+        keyVaultCloudResourceId:
+          type: string
+          description: name of the encryption key vault in cloud
+        keySource:
+          $ref: '#/components/schemas/AzureNetAppEncryptionKeySource'
+    AzureNetAppPermissionPolicy:
+      description: Representation of Azure NetApp policy
+      type: object
+      properties:
+        azureSubscriptionPolicy:
+          description: Permission policy for Azure Subscription for NetApp
+          type: object
+          properties:
+            name:
+              description: Subscription name in Azure.
+              maxLength: 2048
+              minLength: 1
+              type: string
+            policy:
+              description: Reference to AzurePermissionPolicy
+              $ref: '#/components/schemas/AzurePermissionPolicy'
+        azureResourceGroupPolicy:
+          description: Permission policy for Azure Resource Group for NetApp
+          type: object
+          properties:
+            name:
+              description: Resource group name in Azure.
+              maxLength: 2048
+              minLength: 1
+              type: string
+            policy:
+              description: Reference to AzurePermissionPolicy
+              $ref: '#/components/schemas/AzurePermissionPolicy'
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    DiscoveryAzureNetAppCapacityPoolDTO:
+      type: object
+      properties:
+        cloudCapacityPoolId:
+          type: string
+        capacityPoolName:
+          type: string
+          description: The name of the Azure NetApp Capacity pool
+        cloudStatus:
+          type: string
+          description: Status of Azure NetApp Capacity pool in cloud
+        noOfVolumes:
+          type: integer
+          description: Number of volumes provisioned
+          format: int32
+          minimum: 0
+          default: 0
+        registeredWithTessell:
+          type: boolean
+        configurations:
+          $ref: '#/components/schemas/AzureNetAppCapacityPoolConfigurationInfo'
+        dateCreated:
+          type: string
+          description: Timestamp when the entity was created
+          format: date-time
+    DiscoveryAzureNetAppResponse:
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiscoveryAzureNetAppDTO'
     apiMetadata:
       title: apiMetadata
       type: object
@@ -642,35 +757,36 @@ components:
           format: int32
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
-    AzureNetAppVolumeStatus:
-      enum:
-      - CREATING
-      - DELETING
-      - READY
-    ApiError:
+    AzureNetAppQuotaResponse:
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
       type: object
-      description: Common error response object for non 2xx responses
       properties:
-        code:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/AzureNetAppQuota'
+    AzureNetAppCapacityPoolServiceLevel:
+      type: string
+      enum:
+      - Standard
+      - Premium
+      - Ultra
+      x-enum-varnames:
+      - STANDARD
+      - PREMIUM
+      - ULTRA
+    AzureNetAppInfrastructureInfo:
+      type: object
+      description: This is definition for Azure NetApp's infrastructure info
+      properties:
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+        region:
           type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
+          description: Region of the FSx NetApp File System
+        encryptionKey:
+          $ref: '#/components/schemas/AzureNetAppEncryptionKeyInfo'
     AzureNetAppCapacityPoolConfigurationInfo:
       properties:
         availableStorage:
@@ -707,46 +823,6 @@ components:
           $ref: '#/components/schemas/AzureNetAppCapacityPoolServiceLevel'
         qosType:
           $ref: '#/components/schemas/AzureNetAppCapacityPoolQosType'
-    RegisterAzureNetAppCapacityPoolPayload:
-      type: object
-      properties:
-        capacityPoolIds:
-          type: array
-          maxItems: 100
-          items:
-            type: string
-    DiscoveryAzureNetAppCapacityPoolDTO:
-      type: object
-      properties:
-        cloudCapacityPoolId:
-          type: string
-        capacityPoolName:
-          type: string
-          description: The name of the Azure NetApp Capacity pool
-        cloudStatus:
-          type: string
-          description: Status of Azure NetApp Capacity pool in cloud
-        noOfVolumes:
-          type: integer
-          description: Number of volumes provisioned
-          format: int32
-          minimum: 0
-          default: 0
-        registeredWithTessell:
-          type: boolean
-        configurations:
-          $ref: '#/components/schemas/AzureNetAppCapacityPoolConfigurationInfo'
-        dateCreated:
-          type: string
-          description: Timestamp when the entity was created
-          format: date-time
-    AzureNetAppEncryptionKeySource:
-      enum:
-      - Microsoft.NetApp
-      - Microsoft.KeyVault
-      x-enum-varnames:
-      - MICROSOFT_NET_APP
-      - MICROSOFT_KEY_VAULT
     AzureNetAppVolumeDTO:
       type: object
       description: This is the configuration of FSx NetApp Volume
@@ -782,6 +858,19 @@ components:
           type: string
           description: Timestamp when the entity was created
           format: date-time
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    AzureNetAppVolumeStatus:
+      enum:
+      - CREATING
+      - DELETING
+      - READY
     apiResponse:
       example:
         metadata:
@@ -798,128 +887,39 @@ components:
           type: object
       title: ApiResponse
       type: object
-    apiPaginationInfo:
-      title: apiPaginationInfo
+    DiscoveryAzureNetAppDTO:
       type: object
       properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    AzureNetAppQuotaResponse:
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      type: object
-      properties:
-        response:
+        cloudAzureNetAppId:
+          type: string
+        azureNetAppName:
+          type: string
+          description: The name of the Azure NetApp
+        cloudStatus:
+          type: string
+          description: Status of Azure NetApp in cloud
+        resourceGroup:
+          type: string
+          description: Resource Group of Azure NetApp in cloud
+        capacityPoolInfo:
           type: array
           items:
-            $ref: '#/components/schemas/AzureNetAppQuota'
-    RegisterAzureNetAppPayload:
-      type: object
-      properties:
-        azureNetAppId:
-          type: string
-          description: The id of the FSx NetApp
-        subscription:
-          type: string
-          description: The name of the subscription
-          minLength: 1
-          maxLength: 128
-        region:
-          type: string
-          description: Region of the FSx NetApp
-          minLength: 1
-          maxLength: 128
-        capacityPoolIds:
-          type: array
-          maxItems: 100
-          items:
-            type: string
-  parameters:
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    cp-id-path:
-      name: cp-id
-      description: Tessell Generated UUID of the Capacity-Pool
-      in: path
-      style: simple
-      required: true
-      schema:
-        type: string
-        format: uuid
-    subscriptionNameMandatory:
-      name: subscription-name
-      in: query
-      description: Subscription name
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 64
-        example: Sub-Experiments-2
-    region-query:
-      name: region
-      description: Filter the entities based on cloud-region
-      in: query
-      required: false
-      schema:
-        type: string
-    anf-id-path:
-      name: anf-id
-      description: Tessell Generated UUID of the Azure NetApp
-      in: path
-      style: simple
-      required: true
-      schema:
-        type: string
-        format: uuid
-      example: 12345678-abcd-1234-abcd-1234abcd5678
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
-    azure-netapp-skip-statuses:
-      name: skip-statuses
-      description: Statuses of Azure NetApp to be skipped
-      in: query
-      required: false
-      schema:
-        type: array
-        uniqueItems: true
-        items:
-          $ref: '#/components/schemas/AzureNetAppStatus'
-    subscription-query:
-      name: subscription
-      description: Filter the entities based on cloud-subscription
-      in: query
-      required: false
-      schema:
-        type: string
-    azure-netapp-statuses:
-      name: statuses
-      description: Statuses of Azure NetApp to be included
-      in: query
-      required: false
-      schema:
-        type: array
-        uniqueItems: true
-        items:
-          $ref: '#/components/schemas/AzureNetAppStatus'
+            $ref: '#/components/schemas/DiscoveryAzureNetAppCapacityPoolDTO'
+        infrastructureInfo:
+          type: object
+          properties:
+            cloud:
+              $ref: '#/components/schemas/cloudType'
+            region:
+              type: string
+        registeredWithTessell:
+          type: boolean
+          default: false
+    AzureNetAppCapacityPoolStatus:
+      enum:
+      - AVAILABLE
+      - DOWN
+      - DELETING
   securitySchemes:
     BearerAuth:
       type: http

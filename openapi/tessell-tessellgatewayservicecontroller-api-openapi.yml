@@ -50,12 +50,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    AgentStatus:
-      type: string
-      description: Agent Status
-      enum:
-      - CONNECTED
-      - DISCONNECTED
     asyncStatusResponse:
       type: object
       description: Information for getting status asynchronously
@@ -70,6 +64,22 @@ components:
           description: NATS Subject to subscribe to
         commandCredentials:
           $ref: '#/components/schemas/JWTCredentials'
+    JWTCredentials:
+      type: object
+      description: JWT Credentials
+      properties:
+        userName:
+          type: string
+          description: Name of the user
+        publicKey:
+          type: string
+          description: Public Key
+        seed:
+          type: string
+          description: Seed
+        jwt:
+          type: string
+          description: JWT of the user
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -94,22 +104,12 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    JWTCredentials:
-      type: object
-      description: JWT Credentials
-      properties:
-        userName:
-          type: string
-          description: Name of the user
-        publicKey:
-          type: string
-          description: Public Key
-        seed:
-          type: string
-          description: Seed
-        jwt:
-          type: string
-          description: JWT of the user
+    AgentStatus:
+      type: string
+      description: Agent Status
+      enum:
+      - CONNECTED
+      - DISCONNECTED
   securitySchemes:
     BearerAuth:
       type: http

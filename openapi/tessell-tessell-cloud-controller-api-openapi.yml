@@ -131,17 +131,6 @@ paths:
           type: string
 components:
   schemas:
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
     consumerType:
       description: Tessell Consumer Type
       type: string
@@ -149,6 +138,16 @@ components:
       - SERVICE
       - OPS
       - INTERNAL
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
     Cloud:
       x-dao-entity: true
       x-dao-table-name: TESSELL_CLOUDS
@@ -207,22 +206,6 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    apiResponse:
-      example:
-        metadata:
-          pagination:
-            pageOffset: 0
-            pageSize: 6
-          records: 1
-          timeZone: timeZone
-        response: '{}'
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-      title: ApiResponse
-      type: object
     BaseEntity:
       type: object
       properties:
@@ -243,16 +226,33 @@ components:
           example: 123e4567-e89b-12d3-a456-426614174000
           format: uuid
           type: string
-    apiPaginationInfo:
-      title: apiPaginationInfo
+    apiMetadata:
+      title: apiMetadata
       type: object
       properties:
-        pageSize:
+        timeZone:
+          type: string
+        records:
           type: integer
           format: int32
-        pageOffset:
-          type: integer
-          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
   securitySchemes:
     BearerAuth:
       type: http

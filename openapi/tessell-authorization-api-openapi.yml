@@ -155,46 +155,6 @@ paths:
       - Authorization
 components:
   schemas:
-    AuthorizeApiKeyResponse:
-      title: AuthorizeApiKeyResponse
-      type: object
-      description: Response for access token from API Key
-      properties:
-        accessToken:
-          type: string
-          description: access token
-    ApiKeyDTO:
-      type: object
-      description: This is a definition for Tessell API key DTO object
-      title: ApiKeyDTO
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Tessell created unique uuid
-        label:
-          description: Label of the key
-          type: string
-        description:
-          description: Description of the key
-          type: string
-        neverExpire:
-          type: boolean
-          default: false
-        status:
-          $ref: '#/components/schemas/ApiKeyStatus'
-        dateCreated:
-          type: string
-          description: Date when the feature is created  metadata
-          format: date-time
-        dateLastUsed:
-          type: string
-          description: Date when the API key was last used
-          format: date-time
-        dateExpiry:
-          type: string
-          description: Expire date of the API key
-          format: date-time
     CreateApiKeyDTO:
       type: object
       description: This is a definition for Tessell API key DTO object
@@ -228,41 +188,38 @@ components:
           type: string
           description: Expire date of the API key
           format: date-time
-    apiMetadata:
-      title: apiMetadata
+    ApiKeyDTO:
       type: object
+      description: This is a definition for Tessell API key DTO object
+      title: ApiKeyDTO
       properties:
-        timeZone:
+        id:
           type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
+          format: uuid
+          description: Tessell created unique uuid
+        label:
+          description: Label of the key
           type: string
-          description: Status code for the error response
-        message:
+        description:
+          description: Description of the key
           type: string
-          description: Error message for API response
-        resolution:
+        neverExpire:
+          type: boolean
+          default: false
+        status:
+          $ref: '#/components/schemas/ApiKeyStatus'
+        dateCreated:
           type: string
-        timestamp:
-          type: string
+          description: Date when the feature is created  metadata
           format: date-time
-        contextId:
+        dateLastUsed:
           type: string
-          description: ContextId of API request
-        sessionId:
+          description: Date when the API key was last used
+          format: date-time
+        dateExpiry:
           type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
+          description: Expire date of the API key
+          format: date-time
     CreateApiKeyPayload:
       title: CreateApiKeyPayload
       type: object
@@ -298,14 +255,46 @@ components:
         pageOffset:
           type: integer
           format: int32
-    AuthorizeApiKeyPayload:
-      title: AuthorizeApiKeyPayload
+    AuthorizeApiKeyResponse:
+      title: AuthorizeApiKeyResponse
       type: object
-      description: Payload for access token from API Key
+      description: Response for access token from API Key
       properties:
-        apiKey:
+        accessToken:
           type: string
-          description: API key
+          description: access token
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
     ApiKeyStatus:
       title: ApiKeyStatus
       type: string
@@ -314,6 +303,17 @@ components:
       - ACTIVE
       - REVOKED
       - EXPIRED
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
     ApiKeyApiResponse:
       title: ApiKeyApiResponse
       type: object
@@ -324,15 +324,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ApiKeyDTO'
-    apiStatus:
-      title: apiStatus
+    AuthorizeApiKeyPayload:
+      title: AuthorizeApiKeyPayload
       type: object
+      description: Payload for access token from API Key
       properties:
-        status:
+        apiKey:
           type: string
-        message:
-          type: string
+          description: API key
   parameters:
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
     tenantIdMandatory:
       name: tenant-id
       in: header
@@ -343,15 +352,14 @@ components:
         minLength: 1
         maxLength: 128
         example: 12345678-abcd-1234-abcd-1234abcd5678
-    pageSize:
-      name: page-size
+    timeZone:
+      name: time-zone
       in: query
-      description: Page size for get query
+      description: Timezone for return data
       required: false
       schema:
-        type: integer
-        format: int32
-        default: 10
+        type: string
+        default: UTC
     pageOffset:
       name: page-offset
       in: query
@@ -361,14 +369,6 @@ components:
         type: integer
         format: int32
         default: 0
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
   securitySchemes:
     BearerAuth:
       type: http

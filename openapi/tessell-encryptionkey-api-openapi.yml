@@ -603,290 +603,27 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    azure:
-      title: azureConfig
+    RegisterEncryptionKeyPayload:
       type: object
-      description: azure cloud configuration for the key
+      description: Payload for Registering encryption Key
       properties:
-        fileId:
-          type: string
-          format: uuid
-          description: uuid for the file
-        password:
-          type: string
-          description: password for the file
-          minLength: 8
-          maxLength: 64
-        isCustomerManaged:
-          type: boolean
-          default: false
-          description: is encryption Tessell managed
-    EncryptionKeyStatus:
-      title: EncryptionKeyStatus
-      type: string
-      description: State of an Encryption Key
-      enum:
-      - CREATING
-      - REPLICATING
-      - WAITING
-      - PROCESSING
-      - AVAILABLE
-      - DISABLED
-      - DISABLING
-      - ENABLING
-      - DELETED
-      - DELETING
-      - DELETION_FAILED
-      - FAILED
-      - VALIDATION_PENDING
-      - VALIDATION_FAILED
-    CreateEncryptionKeyPayload:
-      title: CreateEncryptionKeyPayload
-      type: object
-      description: Payload for Creating encryption Key
-      properties:
-        cloud:
-          $ref: '#/components/schemas/cloudType'
         name:
           type: string
           description: name of encryption key alias
           minLength: 1
+          maxLength: 256
+        owner:
+          description: email id of the owner of the encryption key
+          type: string
+          minLength: 0
           maxLength: 256
         description:
           type: string
           description: Description of the encryption key
           minLength: 0
           maxLength: 512
-        cloudConfig:
-          $ref: '#/components/schemas/CloudConfig'
-    EncryptionKeyConsumerViewApiResponse:
-      title: EncryptionKeyApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/EncryptionKeyConsumerView'
-    EncryptionFileType:
-      type: string
-      description: File type of script e.g. shell, python, sql
-      enum:
-      - PEM
-      - PFX
-    EligilbleEncryptionKeyConsumerView:
-      type: object
-      description: This is a definition for Tessell encryption key DTO object along with availability
-      allOf:
-      - $ref: '#/components/schemas/EncryptionKeyConsumerView'
-      - title: EncryptionKeyDetailsDTO
-        properties:
-          id:
-            type: string
-            format: UUID
-          region:
-            type: string
-          subscriptionName:
-            description: Name of the subscription
-            type: string
-    aws:
-      title: awsConfig
-      type: object
-      description: aws cloud configuration for the key
-      properties:
-        keyMaterial:
-          type: string
-          description: Key material of base64 format
-          minLength: 1
-          maxLength: 6144
-        isCustomerManaged:
-          type: boolean
-          default: false
-          description: is encryption Tessell managed
-    EncryptionFileStatus:
-      type: string
-      description: Status of the script
-      enum:
-      - AVAILABLE
-      - DELETED
-    AclUserPayload:
-      title: AclUserPayload
-      description: Payload to create an user's entity ACL
-      required:
-      - emailId
-      - role
-      properties:
-        emailId:
-          description: Email id of the user
-          type: string
-          minLength: 1
-          maxLength: 256
-        role:
-          description: Role Info
-          type: string
-          minLength: 1
-          maxLength: 64
-    AclEligibleUser:
-      title: AclEligibleUser
-      description: Eligible user for sharing the entity
-      properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
-        emailId:
-          type: string
-        eligibleRoles:
-          type: array
-          items:
-            type: string
-        accessibleSubscriptions:
-          type: array
-          items:
-            type: string
-          description: List of subscriptions user has access to
-    MaturityStatus:
-      description: Maturity Status
-      type: string
-      enum:
-      - DRAFT
-      - PUBLISHED
-      - UNPUBLISHED
-    AclPayload:
-      title: AclPayload
-      description: Payload to create an entity ACL
-      required:
-      - users
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/AclUserPayload'
-          minItems: 1
-          maxItems: 100
-    SecurityStatus:
-      title: Status
-      type: object
-      properties:
-        message:
-          type: string
-        status:
-          type: string
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    EncryptionKeyConsumerView:
-      type: object
-      description: This is a definition for Tessell encryption key Consumer View object
-      allOf:
-      - title: EncryptionKeyConsumerView
-        type: object
-        properties:
-          name:
-            description: Name of the key
-            type: string
-          description:
-            description: Description of the key
-            type: string
-          oob:
-            description: if the key is oob
-            type: boolean
-          cloud:
-            $ref: '#/components/schemas/cloudType'
-    EncryptionKeyApiResponse:
-      title: EncryptionKeyApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/EncryptionKeyDTO'
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    RegisterEncryptionCloudAvailability:
-      type: object
-      description: This is a definition for Tessell encryption key cloud availability object
-      title: RegisterEncryptionCloudAvailability
-      properties:
-        cloud:
-          $ref: '#/components/schemas/cloudType'
-        region:
-          description: Region
-          type: string
-          minLength: 1
-          maxLength: 36
-        subscriptionId:
-          description: Subscription ID
-          type: string
-          format: UUID
-        subscriptionName:
-          description: Name of the subscription
-          type: string
-        externalId:
-          description: External Id of the disk encryption set
-          type: string
-        keyVaultName:
-          description: Name of the key vault where key is stored
-          type: string
-        markAvailable:
-          type: boolean
-          default: false
-          description: Registered encryption key should be marked as available or not
-    EligibleEncryptionKeyConsumerViewApiResponse:
-      title: EligibleEncryptionKeyApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/EligilbleEncryptionKeyConsumerView'
-    EncryptionFileDTO:
-      description: Tessell Script Version Service view definition
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          maxLength: 128
-          description: Version of the script.
-        password:
-          type: string
-        type:
-          $ref: '#/components/schemas/EncryptionFileType'
-        status:
-          $ref: '#/components/schemas/EncryptionFileStatus'
-        dateCreated:
-          type: string
-          format: date-time
+        availability:
+          $ref: '#/components/schemas/RegisterEncryptionCloudAvailability'
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -911,6 +648,170 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
+    BaseEntity:
+      type: object
+      properties:
+        dateCreated:
+          x-dao-annotations: "@Column(name = \"DATE_CREATED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @CreationTimestamp\n"
+          description: Timestamp when the entity was created
+          format: date-time
+          type: string
+        dateModified:
+          x-dao-annotations: "@Column(name = \"DATE_MODIFIED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @UpdateTimestamp\n"
+          description: Timestamp when the entity was last modified
+          format: date-time
+          type: string
+        id:
+          x-dao-query: true
+          x-dao-annotations: "@Id\n  @GeneratedValue(generator = \"UUID\")\n  @GenericGenerator(name = \"UUID\", strategy = \"org.hibernate.id.UUIDGenerator\")\n  @Column(name = \"id\", updatable = false, nullable = false)\n"
+          description: generated UUID for the entity
+          example: 123e4567-e89b-12d3-a456-426614174000
+          format: uuid
+          type: string
+    EntityUserAclSharingInfo:
+      title: EntityUserAclSharingInfo
+      description: Tessell Entity ACL Sharing Info for a user
+      properties:
+        emailId:
+          type: string
+        role:
+          type: string
+        sharedBy:
+          type: string
+          description: Email of the user who shared the entity
+        sharedOn:
+          type: string
+          format: date-time
+          description: Date when the entity was shared
+    EncryptionKeyStatus:
+      title: EncryptionKeyStatus
+      type: string
+      description: State of an Encryption Key
+      enum:
+      - CREATING
+      - REPLICATING
+      - WAITING
+      - PROCESSING
+      - AVAILABLE
+      - DISABLED
+      - DISABLING
+      - ENABLING
+      - DELETED
+      - DELETING
+      - DELETION_FAILED
+      - FAILED
+      - VALIDATION_PENDING
+      - VALIDATION_FAILED
+    MaturityStatus:
+      description: Maturity Status
+      type: string
+      enum:
+      - DRAFT
+      - PUBLISHED
+      - UNPUBLISHED
+    EligilbleEncryptionKeyConsumerView:
+      type: object
+      description: This is a definition for Tessell encryption key DTO object along with availability
+      allOf:
+      - $ref: '#/components/schemas/EncryptionKeyConsumerView'
+      - title: EncryptionKeyDetailsDTO
+        properties:
+          id:
+            type: string
+            format: UUID
+          region:
+            type: string
+          subscriptionName:
+            description: Name of the subscription
+            type: string
+    EncryptionKeyConsumerView:
+      type: object
+      description: This is a definition for Tessell encryption key Consumer View object
+      allOf:
+      - title: EncryptionKeyConsumerView
+        type: object
+        properties:
+          name:
+            description: Name of the key
+            type: string
+          description:
+            description: Description of the key
+            type: string
+          oob:
+            description: if the key is oob
+            type: boolean
+          cloud:
+            $ref: '#/components/schemas/cloudType'
+    EncryptionFileType:
+      type: string
+      description: File type of script e.g. shell, python, sql
+      enum:
+      - PEM
+      - PFX
+    aws:
+      title: awsConfig
+      type: object
+      description: aws cloud configuration for the key
+      properties:
+        keyMaterial:
+          type: string
+          description: Key material of base64 format
+          minLength: 1
+          maxLength: 6144
+        isCustomerManaged:
+          type: boolean
+          default: false
+          description: is encryption Tessell managed
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    AclUserPayload:
+      title: AclUserPayload
+      description: Payload to create an user's entity ACL
+      required:
+      - emailId
+      - role
+      properties:
+        emailId:
+          description: Email id of the user
+          type: string
+          minLength: 1
+          maxLength: 256
+        role:
+          description: Role Info
+          type: string
+          minLength: 1
+          maxLength: 64
+    EncryptionFileStatus:
+      type: string
+      description: Status of the script
+      enum:
+      - AVAILABLE
+      - DELETED
+    CreateEncryptionKeyPayload:
+      title: CreateEncryptionKeyPayload
+      type: object
+      description: Payload for Creating encryption Key
+      properties:
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+        name:
+          type: string
+          description: name of encryption key alias
+          minLength: 1
+          maxLength: 256
+        description:
+          type: string
+          description: Description of the encryption key
+          minLength: 0
+          maxLength: 512
+        cloudConfig:
+          $ref: '#/components/schemas/CloudConfig'
     CloudConfig:
       title: CloudConfig
       type: object
@@ -920,6 +821,49 @@ components:
           $ref: '#/components/schemas/aws'
         azure:
           $ref: '#/components/schemas/azure'
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    EncryptionKeyConsumerViewApiResponse:
+      title: EncryptionKeyApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/EncryptionKeyConsumerView'
+    AclPayload:
+      title: AclPayload
+      description: Payload to create an entity ACL
+      required:
+      - users
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/AclUserPayload'
+          minItems: 1
+          maxItems: 100
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
     AclRevokePayload:
       title: AclRevokePayload
       description: Payload to revoke Tessell ACLs
@@ -982,57 +926,108 @@ components:
           crossCloudAccountKey:
             type: boolean
             description: Represents if it is cross cloud account key if it is a registered key in Tessell
-    BaseEntity:
+    RegisterEncryptionCloudAvailability:
       type: object
+      description: This is a definition for Tessell encryption key cloud availability object
+      title: RegisterEncryptionCloudAvailability
       properties:
-        dateCreated:
-          x-dao-annotations: "@Column(name = \"DATE_CREATED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @CreationTimestamp\n"
-          description: Timestamp when the entity was created
-          format: date-time
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+        region:
+          description: Region
           type: string
-        dateModified:
-          x-dao-annotations: "@Column(name = \"DATE_MODIFIED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @UpdateTimestamp\n"
-          description: Timestamp when the entity was last modified
-          format: date-time
-          type: string
-        id:
-          x-dao-query: true
-          x-dao-annotations: "@Id\n  @GeneratedValue(generator = \"UUID\")\n  @GenericGenerator(name = \"UUID\", strategy = \"org.hibernate.id.UUIDGenerator\")\n  @Column(name = \"id\", updatable = false, nullable = false)\n"
-          description: generated UUID for the entity
-          example: 123e4567-e89b-12d3-a456-426614174000
-          format: uuid
-          type: string
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    RegisterEncryptionKeyPayload:
-      type: object
-      description: Payload for Registering encryption Key
-      properties:
-        name:
-          type: string
-          description: name of encryption key alias
           minLength: 1
-          maxLength: 256
-        owner:
-          description: email id of the owner of the encryption key
+          maxLength: 36
+        subscriptionId:
+          description: Subscription ID
           type: string
-          minLength: 0
-          maxLength: 256
-        description:
+          format: UUID
+        subscriptionName:
+          description: Name of the subscription
           type: string
-          description: Description of the encryption key
-          minLength: 0
-          maxLength: 512
-        availability:
-          $ref: '#/components/schemas/RegisterEncryptionCloudAvailability'
+        externalId:
+          description: External Id of the disk encryption set
+          type: string
+        keyVaultName:
+          description: Name of the key vault where key is stored
+          type: string
+        markAvailable:
+          type: boolean
+          default: false
+          description: Registered encryption key should be marked as available or not
+    SecurityStatus:
+      title: Status
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: string
+    azure:
+      title: azureConfig
+      type: object
+      description: azure cloud configuration for the key
+      properties:
+        fileId:
+          type: string
+          format: uuid
+          description: uuid for the file
+        password:
+          type: string
+          description: password for the file
+          minLength: 8
+          maxLength: 64
+        isCustomerManaged:
+          type: boolean
+          default: false
+          description: is encryption Tessell managed
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    EligibleEncryptionKeyConsumerViewApiResponse:
+      title: EligibleEncryptionKeyApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/EligilbleEncryptionKeyConsumerView'
+    EncryptionKeyApiResponse:
+      title: EncryptionKeyApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/EncryptionKeyDTO'
+    AclEligibleUser:
+      title: AclEligibleUser
+      description: Eligible user for sharing the entity
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        emailId:
+          type: string
+        eligibleRoles:
+          type: array
+          items:
+            type: string
+        accessibleSubscriptions:
+          type: array
+          items:
+            type: string
+          description: List of subscriptions user has access to
     EntityAclSharingInfo:
       title: EntityAclSharingInfo
       description: Tessell Entity ACL Sharing Info
@@ -1041,31 +1036,27 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EntityUserAclSharingInfo'
-    EntityUserAclSharingInfo:
-      title: EntityUserAclSharingInfo
-      description: Tessell Entity ACL Sharing Info for a user
+    EncryptionFileDTO:
+      description: Tessell Script Version Service view definition
+      type: object
       properties:
-        emailId:
+        id:
           type: string
-        role:
+          format: uuid
+        name:
           type: string
-        sharedBy:
+          maxLength: 128
+          description: Version of the script.
+        password:
           type: string
-          description: Email of the user who shared the entity
-        sharedOn:
+        type:
+          $ref: '#/components/schemas/EncryptionFileType'
+        status:
+          $ref: '#/components/schemas/EncryptionFileStatus'
+        dateCreated:
           type: string
           format: date-time
-          description: Date when the entity was shared
   parameters:
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
     timeZone:
       name: time-zone
       in: query
@@ -1083,6 +1074,15 @@ components:
         type: integer
         format: int32
         default: 10
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
   securitySchemes:
     BearerAuth:
       type: http

@@ -291,25 +291,16 @@ components:
         dateCreated:
           type: string
           format: date-time
-    WeekDay:
-      description: Week Days
-      type: string
-      enum:
-      - Sunday
-      - Monday
-      - Tuesday
-      - Wednesday
-      - Thursday
-      - Friday
-      - Saturday
-      x-enum-varnames:
-      - Sunday
-      - Monday
-      - Tuesday
-      - Wednesday
-      - Thursday
-      - Friday
-      - Saturday
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
     GetSanitizationSchedulesServiceApiResponse:
       title: GetSanitizationSchedulesServiceApiResponse
       allOf:
@@ -320,53 +311,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/TessellSanitizationScheduleServiceDTO'
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    TessellSanitizationScheduleUpdatePayload:
-      description: Tessell Sanitization Schedule update payload definition
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 128
-          description: Name of the sanitization schedule
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 0
-          maxLength: 512
-          description: Description for the sanitization schedule
-        sanitizedBackupNamePrefix:
-          type: string
-          minLength: 1
-          maxLength: 20
-          description: Prefix to be prepended with sanitized backup names that are created as part of this schedule
-        scriptId:
-          type: string
-          format: uuid
-          description: Id of the script associated with the Schedule
-        scriptVersionInfo:
-          type: object
-          properties:
-            useActiveScriptVersion:
-              type: boolean
-              description: If true, use the version that is chosen as the Active Version for the script
-            scriptVersion:
-              type: string
-              description: If useActiveVersion is false, use the specified version, else use the active version
-        scheduleInfo:
-          $ref: '#/components/schemas/SanitizationScheduleInfo'
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -391,31 +335,6 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    SanitizationScheduleStatus:
-      type: string
-      description: Status of the sanitization schedule
-      enum:
-      - ACTIVE
-      - PAUSED
-      - DELETING
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    TessellApiResponse:
-      title: TessellApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
     SanitizationScheduleInfo:
       title: SanitizationScheduleInfo
       type: object
@@ -440,6 +359,21 @@ components:
               type: integer
               format: int32
               description: Retention period for sanitized backups (in weeks)
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    SanitizationScheduleStatus:
+      type: string
+      description: Status of the sanitization schedule
+      enum:
+      - ACTIVE
+      - PAUSED
+      - DELETING
     TessellSanitizationScheduleCreatePayload:
       description: Tessell Sanitization Schedule create payload definition
       type: object
@@ -481,24 +415,89 @@ components:
               description: If useActiveVersion is false, use the specified version, else use the active version
         scheduleInfo:
           $ref: '#/components/schemas/SanitizationScheduleInfo'
-    apiStatus:
-      title: apiStatus
+    TessellSanitizationScheduleUpdatePayload:
+      description: Tessell Sanitization Schedule update payload definition
       type: object
       properties:
-        status:
+        name:
           type: string
-        message:
+          minLength: 1
+          maxLength: 128
+          description: Name of the sanitization schedule
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 0
+          maxLength: 512
+          description: Description for the sanitization schedule
+        sanitizedBackupNamePrefix:
           type: string
+          minLength: 1
+          maxLength: 20
+          description: Prefix to be prepended with sanitized backup names that are created as part of this schedule
+        scriptId:
+          type: string
+          format: uuid
+          description: Id of the script associated with the Schedule
+        scriptVersionInfo:
+          type: object
+          properties:
+            useActiveScriptVersion:
+              type: boolean
+              description: If true, use the version that is chosen as the Active Version for the script
+            scriptVersion:
+              type: string
+              description: If useActiveVersion is false, use the specified version, else use the active version
+        scheduleInfo:
+          $ref: '#/components/schemas/SanitizationScheduleInfo'
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    TessellApiResponse:
+      title: TessellApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+    WeekDay:
+      description: Week Days
+      type: string
+      enum:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+      x-enum-varnames:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
   parameters:
-    pageSize:
-      name: page-size
+    timeZone:
+      name: time-zone
       in: query
-      description: Page size for get query
+      description: Timezone for return data
       required: false
       schema:
-        type: integer
-        format: int32
-        default: 10
+        type: string
+        default: UTC
     pageOffset:
       name: page-offset
       in: query
@@ -516,14 +515,15 @@ components:
       schema:
         type: boolean
         default: false
-    timeZone:
-      name: time-zone
+    pageSize:
+      name: page-size
       in: query
-      description: Timezone for return data
+      description: Page size for get query
       required: false
       schema:
-        type: string
-        default: UTC
+        type: integer
+        format: int32
+        default: 10
   securitySchemes:
     BearerAuth:
       type: http

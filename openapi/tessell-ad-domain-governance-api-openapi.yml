@@ -181,29 +181,6 @@ components:
         domainAccountPassword:
           type: string
           description: Domain Account Password
-    RegisterAdDomainPayload:
-      description: Register Ad Domain Payload
-      type: object
-      properties:
-        tessellName:
-          type: string
-          description: Tessell Name for Ad Domain
-        domainName:
-          type: string
-          description: Domain Name
-        netBIOSorOU:
-          type: string
-          description: NetBIOS name or OU for AD
-        dnsServer:
-          type: array
-          items:
-            type: string
-        domainAccountUser:
-          type: string
-          description: Domain Account User
-        domainAccountPassword:
-          type: string
-          description: Domain Account Password
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -228,6 +205,14 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
     AdDomain:
       description: AD Domain Details
       type: object
@@ -251,14 +236,29 @@ components:
         domainAccountUser:
           type: string
           description: Domain Account User
-    apiStatus:
-      title: apiStatus
+    RegisterAdDomainPayload:
+      description: Register Ad Domain Payload
       type: object
       properties:
-        status:
+        tessellName:
           type: string
-        message:
+          description: Tessell Name for Ad Domain
+        domainName:
           type: string
+          description: Domain Name
+        netBIOSorOU:
+          type: string
+          description: NetBIOS name or OU for AD
+        dnsServer:
+          type: array
+          items:
+            type: string
+        domainAccountUser:
+          type: string
+          description: Domain Account User
+        domainAccountPassword:
+          type: string
+          description: Domain Account Password
   parameters:
     tenantIdMandatory:
       name: tenant-id
@@ -270,15 +270,6 @@ components:
         minLength: 1
         maxLength: 128
         example: 12345678-abcd-1234-abcd-1234abcd5678
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
     pageOffset:
       name: page-offset
       in: query
@@ -288,6 +279,15 @@ components:
         type: integer
         format: int32
         default: 0
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
   securitySchemes:
     BearerAuth:
       type: http

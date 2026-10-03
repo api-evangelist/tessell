@@ -92,35 +92,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
+  parameters:
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
   schemas:
-    ApplyStrategy:
-      type: string
-      enum:
-      - IMMEDIATELY
-      - MAINTENANCE_WINDOW
-      - CUSTOM_DATE_TIME
-      - DO_NOT_APPLY
-    DBServiceInstanceSecurityConfigUpdateRequest:
-      type: object
-      required:
-      - instanceId
-      - securityProfile
-      properties:
-        instanceId:
-          type: string
-          format: uuid
-          description: The instance Id for which security configuration update needs to be triggered
-        securityProfile:
-          $ref: '#/components/schemas/SecurityProfileUpdateConfig'
-    DBServerSecurityConfigUpdateRequest:
-      type: object
-      required:
-      - securityProfile
-      properties:
-        securityProfile:
-          $ref: '#/components/schemas/SecurityProfileUpdateConfig'
-        applyConfig:
-          $ref: '#/components/schemas/ApplyConfig'
     ApplyConfig:
       title: ApplyConfig
       type: object
@@ -143,6 +125,24 @@ components:
           type: string
           format: date-time
           description: Needed when strategy is CUSTOM_DATE_TIME
+    SecurityProfileUpdateConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Security Profile Id to which instance needs to be updated
+        versionId:
+          type: string
+          format: uuid
+          description: Security Profile Version Id to which instance needs to be update
+    ApplyStrategy:
+      type: string
+      enum:
+      - IMMEDIATELY
+      - MAINTENANCE_WINDOW
+      - CUSTOM_DATE_TIME
+      - DO_NOT_APPLY
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -167,6 +167,15 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
+    DBServerSecurityConfigUpdateRequest:
+      type: object
+      required:
+      - securityProfile
+      properties:
+        securityProfile:
+          $ref: '#/components/schemas/SecurityProfileUpdateConfig'
+        applyConfig:
+          $ref: '#/components/schemas/ApplyConfig'
     taskSummary:
       title: taskSummary
       type: object
@@ -188,17 +197,18 @@ components:
           type: object
           additionalProperties:
             type: string
-    SecurityProfileUpdateConfig:
+    DBServiceInstanceSecurityConfigUpdateRequest:
       type: object
+      required:
+      - instanceId
+      - securityProfile
       properties:
-        id:
+        instanceId:
           type: string
           format: uuid
-          description: Security Profile Id to which instance needs to be updated
-        versionId:
-          type: string
-          format: uuid
-          description: Security Profile Version Id to which instance needs to be update
+          description: The instance Id for which security configuration update needs to be triggered
+        securityProfile:
+          $ref: '#/components/schemas/SecurityProfileUpdateConfig'
     DBServiceSecurityConfigUpdateRequest:
       type: object
       description: Object to capture the security configuration update request for a DB Service
@@ -211,16 +221,6 @@ components:
             $ref: '#/components/schemas/DBServiceInstanceSecurityConfigUpdateRequest'
         applyConfig:
           $ref: '#/components/schemas/ApplyConfig'
-  parameters:
-    id:
-      name: id
-      description: Id of entity
-      in: path
-      style: simple
-      required: true
-      schema:
-        type: string
-        format: uuid
   securitySchemes:
     BearerAuth:
       type: http

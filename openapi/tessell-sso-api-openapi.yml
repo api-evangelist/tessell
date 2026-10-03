@@ -48,42 +48,7 @@ paths:
       summary: Get sso configuration
       x-summary-source: derived
 components:
-  parameters:
-    tenantIdMandatory:
-      name: tenant-id
-      in: header
-      description: Id of the Tenant
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-        example: 12345678-abcd-1234-abcd-1234abcd5678
   schemas:
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
     IdentityProviderType:
       title: IdentityProviderType
       type: string
@@ -91,14 +56,27 @@ components:
       enum:
       - AZURE_AD
       - OKTA
-    IdentityProviderStatus:
-      title: IdentityProviderStatus
-      type: string
-      description: Status of Identity Provider for SSO
-      enum:
-      - ENABLED
-      - DISABLED
-      - DELETED
+    SsoConfigurationDTO:
+      title: SsoConfigurationDTO
+      description: Component to represent SSO Configuration
+      type: object
+      properties:
+        tessellEntityId:
+          type: string
+          description: Tessell's Entity ID for SSO
+        assertionConsumerServiceUrl:
+          type: string
+          description: Assertion Consumer Service URL
+        tessellLoginUrl:
+          type: string
+          description: Tessell Login URL
+        scimBaseUrl:
+          type: string
+          description: Base URL for SCIM protocol
+        idps:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityProviderDTO'
     IdentityProviderDTO:
       title: IdentityProviderDTO
       type: object
@@ -129,27 +107,49 @@ components:
           type: string
           description: Date when the IDP configuration was last modified
           format: date-time
-    SsoConfigurationDTO:
-      title: SsoConfigurationDTO
-      description: Component to represent SSO Configuration
+    ApiError:
       type: object
+      description: Common error response object for non 2xx responses
       properties:
-        tessellEntityId:
+        code:
           type: string
-          description: Tessell's Entity ID for SSO
-        assertionConsumerServiceUrl:
+          description: Status code for the error response
+        message:
           type: string
-          description: Assertion Consumer Service URL
-        tessellLoginUrl:
+          description: Error message for API response
+        resolution:
           type: string
-          description: Tessell Login URL
-        scimBaseUrl:
+        timestamp:
           type: string
-          description: Base URL for SCIM protocol
-        idps:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdentityProviderDTO'
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    IdentityProviderStatus:
+      title: IdentityProviderStatus
+      type: string
+      description: Status of Identity Provider for SSO
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+  parameters:
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
   securitySchemes:
     BearerAuth:
       type: http

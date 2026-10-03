@@ -464,6 +464,110 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    SecurityProfileRuleProtocolOps:
+      type: string
+      description: Protocol for the security rule
+      enum:
+      - TCP
+      - UDP
+      - ICMP
+      - ALL
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    SecurityProfileRuleSourceOps:
+      type: object
+      properties:
+        aws:
+          $ref: '#/components/schemas/AwsRuleSourceOps'
+        azure:
+          $ref: '#/components/schemas/AzureRuleSourceOps'
+    SecurityProfileUsageResponse:
+      type: object
+      properties:
+        servers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServersUsageResponse'
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabasesUsageResponse'
+    EntityUserAclSharingInfo:
+      title: EntityUserAclSharingInfo
+      description: Tessell Entity ACL Sharing Info for a user
+      properties:
+        emailId:
+          type: string
+        role:
+          type: string
+        sharedBy:
+          type: string
+          description: Email of the user who shared the entity
+        sharedOn:
+          type: string
+          format: date-time
+          description: Date when the entity was shared
+    UpdateSecurityProfileStatusPayload:
+      type: object
+      required:
+      - status
+      properties:
+        status:
+          $ref: '#/components/schemas/SecurityProfileStatus'
+          description: New status for the Security Profile
+    SecurityProfileSyncStatus:
+      type: string
+      description: Sync status of the security profile applied on an instance/server
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+    UpdateSecurityProfileRulePayload:
+      allOf:
+      - $ref: '#/components/schemas/CreateSecurityProfileRulePayload'
+    AddSecurityProfileRulePayload:
+      allOf:
+      - $ref: '#/components/schemas/CreateSecurityProfileRulePayload'
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    DeleteValidationResponse:
+      type: object
+      properties:
+        deletable:
+          type: boolean
+        message:
+          type: string
     DatabasesUsageResponse:
       type: object
       description: Captures the list of Databases using the Security Profile
@@ -489,6 +593,16 @@ components:
         owner:
           type: string
           format: email
+    IpRangeSourceOps:
+      type: object
+      properties:
+        cidr:
+          type: string
+          example: 10.0.0.0/24
+        description:
+          type: string
+          description: Description of the source
+          example: My Source
     UpdateSecurityProfileInfoPayload:
       type: object
       properties:
@@ -509,54 +623,6 @@ components:
             minLength: 1
             maxLength: 128
           description: List of regions for which this profile is created
-    IpRangeSourceOps:
-      type: object
-      properties:
-        cidr:
-          type: string
-          example: 10.0.0.0/24
-        description:
-          type: string
-          description: Description of the source
-          example: My Source
-    CreateSecurityProfileRulePayload:
-      type: object
-      required:
-      - name
-      - direction
-      - protocol
-      - source
-      properties:
-        name:
-          type: string
-          description: Name of the rule
-        direction:
-          $ref: '#/components/schemas/SecurityProfileRuleDirectionOps'
-        protocol:
-          $ref: '#/components/schemas/SecurityProfileRuleProtocolOps'
-        ports:
-          type: array
-          items:
-            type: string
-        source:
-          $ref: '#/components/schemas/SecurityProfileRuleSourceOps'
-    UpdateSecurityProfileStatusPayload:
-      type: object
-      required:
-      - status
-      properties:
-        status:
-          $ref: '#/components/schemas/SecurityProfileStatus'
-          description: New status for the Security Profile
-    SecurityProfileRuleDirectionOps:
-      type: string
-      description: Direction of network traffic for the security rule
-      enum:
-      - INBOUND
-      - OUTBOUND
-    AddSecurityProfileRulePayload:
-      allOf:
-      - $ref: '#/components/schemas/CreateSecurityProfileRulePayload'
     SecurityProfileResponse:
       allOf:
       - $ref: '#/components/schemas/apiResponse'
@@ -566,252 +632,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SecurityProfile'
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    SecurityProfileRuleProtocolOps:
+    SecurityProfileRuleDirectionOps:
       type: string
-      description: Protocol for the security rule
+      description: Direction of network traffic for the security rule
       enum:
-      - TCP
-      - UDP
-      - ICMP
-      - ALL
-    UpdateSecurityProfileRulePayload:
-      allOf:
-      - $ref: '#/components/schemas/CreateSecurityProfileRulePayload'
-    SecurityProfileRuleSourceOps:
-      type: object
-      properties:
-        aws:
-          $ref: '#/components/schemas/AwsRuleSourceOps'
-        azure:
-          $ref: '#/components/schemas/AzureRuleSourceOps'
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    DeleteValidationResponse:
-      type: object
-      properties:
-        deletable:
-          type: boolean
-        message:
-          type: string
-    ServiceTagSourceOps:
-      type: object
-      properties:
-        tag:
-          type: string
-          description: Azure service tag name
-          example: AzureMonitor
-    AwsRuleSourceOps:
-      type: object
-      properties:
-        ipRanges:
-          type: array
-          items:
-            $ref: '#/components/schemas/IpRangeSourceOps'
-    dateCreated:
-      type: string
-      description: Timestamp when the entity was created
-      format: date-time
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    SecurityProfileRuleOps:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Tessell generated UUID for the entity
-        name:
-          type: string
-          description: Name of the rule
-        direction:
-          $ref: '#/components/schemas/SecurityProfileRuleDirectionOps'
-        protocol:
-          $ref: '#/components/schemas/SecurityProfileRuleProtocolOps'
-        ports:
-          type: array
-          items:
-            type: string
-          description: List of ports for which this rule is created
-        source:
-          $ref: '#/components/schemas/SecurityProfileRuleSourceOps'
-    SecurityProfileView:
-      type: string
-      enum:
-      - SUMMARY
-    SecurityProfileStatus:
-      type: string
-      description: Status of the security profile
-      enum:
-      - PUBLISHED
-      - UNPUBLISHED
-    SecurityProfileUsageResponse:
-      type: object
-      properties:
-        servers:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServersUsageResponse'
-        databases:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabasesUsageResponse'
-    CreateSecurityProfilePayload:
-      type: object
-      required:
-      - name
-      - subscriptionName
-      - regions
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 128
-          description: Name of the security profile
-        description:
-          type: string
-          default: ''
-          maxLength: 2048
-          description: Description of the security profile
-        regions:
-          type: array
-          minItems: 1
-          items:
-            type: string
-            minLength: 1
-            maxLength: 128
-          description: List of regions for which this profile is created
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreateSecurityProfileRulePayload'
-          description: List of rules for this version
-        subscriptionName:
-          type: string
-          description: Subscription for which this profile is created
-    AzureRuleSourceOps:
-      type: object
-      properties:
-        ipRanges:
-          type: array
-          items:
-            $ref: '#/components/schemas/IpRangeSourceOps'
-        serviceTag:
-          $ref: '#/components/schemas/ServiceTagSourceOps'
-    dateModified:
-      type: string
-      description: Timestamp when the entity was last modified
-      format: date-time
-    ServersUsageResponse:
-      type: object
-      description: Captures the list of Servers using the Security Profile
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        status:
-          $ref: '#/components/schemas/SecurityProfileSyncStatus'
-        region:
-          type: string
-        cloudType:
-          $ref: '#/components/schemas/cloudType'
-        engineType:
-          $ref: '#/components/schemas/databaseEngineType'
-        owner:
-          type: string
-          format: email
-    SecurityProfileSyncStatus:
-      type: string
-      description: Sync status of the security profile applied on an instance/server
-      enum:
-      - IN_SYNC
-      - UPDATING
-      - OUT_OF_SYNC
-    apiResponse:
-      example:
-        metadata:
-          pagination:
-            pageOffset: 0
-            pageSize: 6
-          records: 1
-          timeZone: timeZone
-        response: '{}'
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-      title: ApiResponse
-      type: object
-    databaseEngineType:
-      description: Database Engine Type
-      type: string
-      enum:
-      - ORACLE
-      - POSTGRESQL
-      - SQLSERVER
-      - MYSQL
-      - APACHE_KAFKA
-      - MONGODB
-      - MILVUS
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
+      - INBOUND
+      - OUTBOUND
     SecurityProfile:
       type: object
       properties:
@@ -868,6 +694,92 @@ components:
           $ref: '#/components/schemas/dateModified'
         sharedWith:
           $ref: '#/components/schemas/EntityAclSharingInfo'
+    SecurityProfileRuleOps:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the entity
+        name:
+          type: string
+          description: Name of the rule
+        direction:
+          $ref: '#/components/schemas/SecurityProfileRuleDirectionOps'
+        protocol:
+          $ref: '#/components/schemas/SecurityProfileRuleProtocolOps'
+        ports:
+          type: array
+          items:
+            type: string
+          description: List of ports for which this rule is created
+        source:
+          $ref: '#/components/schemas/SecurityProfileRuleSourceOps'
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    AzureRuleSourceOps:
+      type: object
+      properties:
+        ipRanges:
+          type: array
+          items:
+            $ref: '#/components/schemas/IpRangeSourceOps'
+        serviceTag:
+          $ref: '#/components/schemas/ServiceTagSourceOps'
+    dateModified:
+      type: string
+      description: Timestamp when the entity was last modified
+      format: date-time
+    AwsRuleSourceOps:
+      type: object
+      properties:
+        ipRanges:
+          type: array
+          items:
+            $ref: '#/components/schemas/IpRangeSourceOps'
+    SecurityProfileStatus:
+      type: string
+      description: Status of the security profile
+      enum:
+      - PUBLISHED
+      - UNPUBLISHED
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    CreateSecurityProfileRulePayload:
+      type: object
+      required:
+      - name
+      - direction
+      - protocol
+      - source
+      properties:
+        name:
+          type: string
+          description: Name of the rule
+        direction:
+          $ref: '#/components/schemas/SecurityProfileRuleDirectionOps'
+        protocol:
+          $ref: '#/components/schemas/SecurityProfileRuleProtocolOps'
+        ports:
+          type: array
+          items:
+            type: string
+        source:
+          $ref: '#/components/schemas/SecurityProfileRuleSourceOps'
     SecurityTagsResponse:
       type: object
       properties:
@@ -875,6 +787,109 @@ components:
           type: array
           items:
             type: string
+    CreateSecurityProfilePayload:
+      type: object
+      required:
+      - name
+      - subscriptionName
+      - regions
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: Name of the security profile
+        description:
+          type: string
+          default: ''
+          maxLength: 2048
+          description: Description of the security profile
+        regions:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            minLength: 1
+            maxLength: 128
+          description: List of regions for which this profile is created
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateSecurityProfileRulePayload'
+          description: List of rules for this version
+        subscriptionName:
+          type: string
+          description: Subscription for which this profile is created
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    SecurityProfileView:
+      type: string
+      enum:
+      - SUMMARY
+    ServiceTagSourceOps:
+      type: object
+      properties:
+        tag:
+          type: string
+          description: Azure service tag name
+          example: AzureMonitor
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    dateCreated:
+      type: string
+      description: Timestamp when the entity was created
+      format: date-time
+    ServersUsageResponse:
+      type: object
+      description: Captures the list of Servers using the Security Profile
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        status:
+          $ref: '#/components/schemas/SecurityProfileSyncStatus'
+        region:
+          type: string
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        owner:
+          type: string
+          format: email
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
     EntityAclSharingInfo:
       title: EntityAclSharingInfo
       description: Tessell Entity ACL Sharing Info
@@ -883,38 +898,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EntityUserAclSharingInfo'
-    EntityUserAclSharingInfo:
-      title: EntityUserAclSharingInfo
-      description: Tessell Entity ACL Sharing Info for a user
-      properties:
-        emailId:
-          type: string
-        role:
-          type: string
-        sharedBy:
-          type: string
-          description: Email of the user who shared the entity
-        sharedOn:
-          type: string
-          format: date-time
-          description: Date when the entity was shared
   parameters:
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    cloudTypeMandatory:
-      name: cloud-type
-      in: query
-      description: Cloud Type
-      required: true
-      schema:
-        $ref: '#/components/schemas/cloudType'
     cloudRegion:
       name: region
       description: Cloud Region
@@ -931,12 +915,6 @@ components:
         azure:
           value: eastUS
           summary: azure region example
-    cloudType:
-      name: cloud-type
-      in: query
-      description: Cloud Type
-      schema:
-        $ref: '#/components/schemas/cloudType'
     include-shared-with:
       name: include-shared-with
       in: query
@@ -945,6 +923,28 @@ components:
       schema:
         type: boolean
         default: false
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+    cloudType:
+      name: cloud-type
+      in: query
+      description: Cloud Type
+      schema:
+        $ref: '#/components/schemas/cloudType'
+    cloudTypeMandatory:
+      name: cloud-type
+      in: query
+      description: Cloud Type
+      required: true
+      schema:
+        $ref: '#/components/schemas/cloudType'
     pageSize:
       name: page-size
       in: query
@@ -963,15 +963,15 @@ components:
         minLength: 1
         maxLength: 64
         example: Sub-Experiments-2
-    id:
-      name: id
-      description: Id of entity
-      in: path
-      style: simple
-      required: true
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
       schema:
-        type: string
-        format: uuid
+        type: integer
+        format: int32
+        default: 0
   securitySchemes:
     BearerAuth:
       type: http

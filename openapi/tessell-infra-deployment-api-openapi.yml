@@ -65,19 +65,6 @@ paths:
                 $ref: '#/components/schemas/ApiErrorOps'
 components:
   schemas:
-    TessellExceptionUserView:
-      title: TessellExceptionUserView
-      type: object
-      properties:
-        message:
-          type: string
-          description: End-user representation of the message
-        resolution:
-          type: string
-          description: End-user representation of resolution
-        errorCode:
-          $ref: '#/components/schemas/TessellHTTPErrorCode'
-          description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
     TessellHTTPErrorCode:
       type: object
       properties:
@@ -87,14 +74,13 @@ components:
         code:
           type: string
           description: Tessell's specific code with more context on error
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
+    TenantRegionsResponse:
+      title: TenantRegionsResponse
+      properties:
+        regions:
+          type: array
+          items:
+            type: string
     ApiErrorOps:
       type: object
       description: Common error response object for non 2xx responses of internal or ops APIs
@@ -121,13 +107,27 @@ components:
           description: Unique error code specific to Tessell
         userView:
           $ref: '#/components/schemas/TessellExceptionUserView'
-    TenantRegionsResponse:
-      title: TenantRegionsResponse
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    TessellExceptionUserView:
+      title: TessellExceptionUserView
+      type: object
       properties:
-        regions:
-          type: array
-          items:
-            type: string
+        message:
+          type: string
+          description: End-user representation of the message
+        resolution:
+          type: string
+          description: End-user representation of resolution
+        errorCode:
+          $ref: '#/components/schemas/TessellHTTPErrorCode'
+          description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
   securitySchemes:
     BearerAuth:
       type: http

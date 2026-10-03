@@ -286,6 +286,93 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    Month:
+      description: Name of a month
+      type: string
+      enum:
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+      x-enum-varnames:
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    RpoPolicyConfig:
+      description: This is the definition for RPO Policy details for Tessell DB Service
+      type: object
+      required:
+      - enableAutoSnapshot
+      properties:
+        includeTransactionLogs:
+          description: Determines whether transaction logs should be retained to enable Point-In-Time Recovery (PITR) functionality
+          type: boolean
+          default: false
+        enableAutoSnapshot:
+          description: Specify whether system will take automatic snapshots
+          type: boolean
+          default: true
+        standardPolicy:
+          $ref: '#/components/schemas/StandardRpoPolicy'
+        customPolicy:
+          $ref: '#/components/schemas/CustomRpoPolicy'
+        fullBackupSchedule:
+          $ref: '#/components/schemas/FullBackupSchedule'
+        enableAutoBackup:
+          description: Specify whether system will take automatic backups
+          type: boolean
+          default: false
+        backupRpoConfig:
+          type: object
+          description: Config for the Native Backup RPO policies
+          properties:
+            fullBackupSchedule:
+              $ref: '#/components/schemas/FullBackupSchedule'
+            standardPolicy:
+              $ref: '#/components/schemas/BackupStandardRpoPolicy'
+            customPolicy:
+              $ref: '#/components/schemas/BackupCustomRpoPolicy'
     WeeklySchedule:
       type: object
       properties:
@@ -296,35 +383,14 @@ components:
           items:
             $ref: '#/components/schemas/WeekDay'
             x-enum: true
-    ServiceRpoPolicySummary:
-      description: 'Summary of service-level RPO policy.
-
-
-        To update this policy, use the `rpoPolicyConfig` object with:
-
-        `PATCH /availability-machines/{availabilityMachineId}/rpo-policy`
-
-        '
+    DailySchedule:
       type: object
       properties:
-        rpoPolicyConfig:
-          description: 'The RPO policy configuration. This object can be directly used (after modification if needed)
-
-            as the request body for the update API.
-
-            '
-          allOf:
-          - $ref: '#/components/schemas/RpoPolicyConfig'
-        status:
-          $ref: '#/components/schemas/DmmAvailabilityStatus'
-        dateCreated:
-          type: string
-          format: date-time
-          description: Timestamp when the RPO policy was created
-        dateModified:
-          type: string
-          format: date-time
-          description: Timestamp when the RPO policy was last modified
+        backupsPerDay:
+          type: integer
+          format: int32
+          description: The number of backups to be captured per day.
+          minimum: 0
     DatabaseRpoPolicySummary:
       description: 'Summary of a database-level RPO policy.
 
@@ -365,42 +431,6 @@ components:
           type: string
           format: date-time
           description: Timestamp when the RPO policy was last modified
-    WeekDay:
-      description: Week Days
-      type: string
-      enum:
-      - Sunday
-      - Monday
-      - Tuesday
-      - Wednesday
-      - Thursday
-      - Friday
-      - Saturday
-      x-enum-varnames:
-      - Sunday
-      - Monday
-      - Tuesday
-      - Wednesday
-      - Thursday
-      - Friday
-      - Saturday
-    MonthWiseDates:
-      type: object
-      required:
-      - month
-      - dates
-      properties:
-        month:
-          $ref: '#/components/schemas/Month'
-          x-enum: true
-        dates:
-          uniqueItems: true
-          type: array
-          items:
-            type: integer
-            format: int32
-            minimum: 1
-            maximum: 31
     StandardRpoPolicy:
       description: This is the definition of Standard RPO Policy for Snapshot for Tessell DB Service
       type: object
@@ -434,108 +464,25 @@ components:
           maximum: 35
         backupStartTime:
           $ref: '#/components/schemas/TimeFormat'
-    commonYearlySchedule:
-      allOf:
-      - $ref: '#/components/schemas/DatesForEachMonth'
-      - type: object
-        properties:
-          months:
-            type: array
-            uniqueItems: true
-            items:
-              $ref: '#/components/schemas/Month'
-              x-enum: true
-    RpoPolicyConfig:
-      description: This is the definition for RPO Policy details for Tessell DB Service
-      type: object
-      required:
-      - enableAutoSnapshot
-      properties:
-        includeTransactionLogs:
-          description: Determines whether transaction logs should be retained to enable Point-In-Time Recovery (PITR) functionality
-          type: boolean
-          default: false
-        enableAutoSnapshot:
-          description: Specify whether system will take automatic snapshots
-          type: boolean
-          default: true
-        standardPolicy:
-          $ref: '#/components/schemas/StandardRpoPolicy'
-        customPolicy:
-          $ref: '#/components/schemas/CustomRpoPolicy'
-        fullBackupSchedule:
-          $ref: '#/components/schemas/FullBackupSchedule'
-        enableAutoBackup:
-          description: Specify whether system will take automatic backups
-          type: boolean
-          default: false
-        backupRpoConfig:
-          type: object
-          description: Config for the Native Backup RPO policies
-          properties:
-            fullBackupSchedule:
-              $ref: '#/components/schemas/FullBackupSchedule'
-            standardPolicy:
-              $ref: '#/components/schemas/BackupStandardRpoPolicy'
-            customPolicy:
-              $ref: '#/components/schemas/BackupCustomRpoPolicy'
-    ScheduleInfo:
-      type: object
-      properties:
-        backupStartTime:
-          $ref: '#/components/schemas/TimeFormat'
-        dailySchedule:
-          $ref: '#/components/schemas/DailySchedule'
-        weeklySchedule:
-          $ref: '#/components/schemas/WeeklySchedule'
-        monthlySchedule:
-          $ref: '#/components/schemas/MonthlySchedule'
-        yearlySchedule:
-          $ref: '#/components/schemas/YearlySchedule'
-    Month:
-      description: Name of a month
+    WeekDay:
+      description: Week Days
       type: string
       enum:
-      - January
-      - February
-      - March
-      - April
-      - May
-      - June
-      - July
-      - August
-      - September
-      - October
-      - November
-      - December
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
       x-enum-varnames:
-      - January
-      - February
-      - March
-      - April
-      - May
-      - June
-      - July
-      - August
-      - September
-      - October
-      - November
-      - December
-    DatesForEachMonth:
-      type: object
-      properties:
-        dates:
-          description: Dates in a month to retain monthly backups
-          uniqueItems: true
-          type: array
-          items:
-            type: integer
-            format: int32
-            minimum: 1
-            maximum: 31
-        lastDayOfMonth:
-          type: boolean
-          default: false
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
     CustomRpoPolicy:
       description: This is the definition of Custom RPO Policy for Snapshot for Tessell DB Service
       type: object
@@ -548,106 +495,6 @@ components:
           description: Custom RPO policy name
         schedule:
           $ref: '#/components/schemas/ScheduleInfo'
-    DailySchedule:
-      type: object
-      properties:
-        backupsPerDay:
-          type: integer
-          format: int32
-          description: The number of backups to be captured per day.
-          minimum: 0
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    TimeFormat:
-      title: TimeFormat
-      description: Clock time format value in hour and minute.
-      type: object
-      required:
-      - hour
-      - minute
-      properties:
-        hour:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 23
-          default: 1
-        minute:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 59
-          default: 0
-    YearlySchedule:
-      type: object
-      properties:
-        commonSchedule:
-          $ref: '#/components/schemas/commonYearlySchedule'
-        monthSpecificSchedule:
-          type: array
-          uniqueItems: true
-          required:
-          - months
-          items:
-            $ref: '#/components/schemas/MonthWiseDates'
-    FullBackupSchedule:
-      description: The schedule at which full backups would be triggered
-      type: object
-      properties:
-        startTime:
-          description: Optional Time when full backup(s) has to be captured | If not specified, the default time (same as incremental backup) would be used
-          $ref: '#/components/schemas/TimeFormat'
-        weeklySchedule:
-          $ref: '#/components/schemas/WeeklySchedule'
-    MonthlySchedule:
-      description: Definition for taking month specific schedule.
-      type: object
-      properties:
-        commonSchedule:
-          $ref: '#/components/schemas/DatesForEachMonth'
-    BackupCustomRpoPolicy:
-      description: This is the definition of Custom RPO Policy for Backup for Tessell DB Service
-      allOf:
-      - $ref: '#/components/schemas/CustomRpoPolicy'
-    DmmAvailabilityStatus:
-      description: DMM Availability Status
-      type: string
-      enum:
-      - ACTIVE
-      - DELETED
-      - DELETING
-      - FROZEN
-      - PAUSED
     AllRpoPoliciesResponse:
       description: 'Response containing all RPO policies for an Availability Machine, including
 
@@ -678,6 +525,159 @@ components:
           description: List of database-level RPO policies (e.g., Oracle PDBs)
           items:
             $ref: '#/components/schemas/DatabaseRpoPolicySummary'
+    DmmAvailabilityStatus:
+      description: DMM Availability Status
+      type: string
+      enum:
+      - ACTIVE
+      - DELETED
+      - DELETING
+      - FROZEN
+      - PAUSED
+    MonthlySchedule:
+      description: Definition for taking month specific schedule.
+      type: object
+      properties:
+        commonSchedule:
+          $ref: '#/components/schemas/DatesForEachMonth'
+    DatesForEachMonth:
+      type: object
+      properties:
+        dates:
+          description: Dates in a month to retain monthly backups
+          uniqueItems: true
+          type: array
+          items:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 31
+        lastDayOfMonth:
+          type: boolean
+          default: false
+    YearlySchedule:
+      type: object
+      properties:
+        commonSchedule:
+          $ref: '#/components/schemas/commonYearlySchedule'
+        monthSpecificSchedule:
+          type: array
+          uniqueItems: true
+          required:
+          - months
+          items:
+            $ref: '#/components/schemas/MonthWiseDates'
+    MonthWiseDates:
+      type: object
+      required:
+      - month
+      - dates
+      properties:
+        month:
+          $ref: '#/components/schemas/Month'
+          x-enum: true
+        dates:
+          uniqueItems: true
+          type: array
+          items:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 31
+    ScheduleInfo:
+      type: object
+      properties:
+        backupStartTime:
+          $ref: '#/components/schemas/TimeFormat'
+        dailySchedule:
+          $ref: '#/components/schemas/DailySchedule'
+        weeklySchedule:
+          $ref: '#/components/schemas/WeeklySchedule'
+        monthlySchedule:
+          $ref: '#/components/schemas/MonthlySchedule'
+        yearlySchedule:
+          $ref: '#/components/schemas/YearlySchedule'
+    ServiceRpoPolicySummary:
+      description: 'Summary of service-level RPO policy.
+
+
+        To update this policy, use the `rpoPolicyConfig` object with:
+
+        `PATCH /availability-machines/{availabilityMachineId}/rpo-policy`
+
+        '
+      type: object
+      properties:
+        rpoPolicyConfig:
+          description: 'The RPO policy configuration. This object can be directly used (after modification if needed)
+
+            as the request body for the update API.
+
+            '
+          allOf:
+          - $ref: '#/components/schemas/RpoPolicyConfig'
+        status:
+          $ref: '#/components/schemas/DmmAvailabilityStatus'
+        dateCreated:
+          type: string
+          format: date-time
+          description: Timestamp when the RPO policy was created
+        dateModified:
+          type: string
+          format: date-time
+          description: Timestamp when the RPO policy was last modified
+    TimeFormat:
+      title: TimeFormat
+      description: Clock time format value in hour and minute.
+      type: object
+      required:
+      - hour
+      - minute
+      properties:
+        hour:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 23
+          default: 1
+        minute:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 59
+          default: 0
+    BackupCustomRpoPolicy:
+      description: This is the definition of Custom RPO Policy for Backup for Tessell DB Service
+      allOf:
+      - $ref: '#/components/schemas/CustomRpoPolicy'
+    commonYearlySchedule:
+      allOf:
+      - $ref: '#/components/schemas/DatesForEachMonth'
+      - type: object
+        properties:
+          months:
+            type: array
+            uniqueItems: true
+            items:
+              $ref: '#/components/schemas/Month'
+              x-enum: true
+    FullBackupSchedule:
+      description: The schedule at which full backups would be triggered
+      type: object
+      properties:
+        startTime:
+          description: Optional Time when full backup(s) has to be captured | If not specified, the default time (same as incremental backup) would be used
+          $ref: '#/components/schemas/TimeFormat'
+        weeklySchedule:
+          $ref: '#/components/schemas/WeeklySchedule'
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
   securitySchemes:
     BearerAuth:
       type: http

@@ -136,31 +136,17 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    PrivilegeDTO:
-      title: PrivilegeDTO
+    PrivilegeCreatePayload:
+      title: PrivilegeCreatePayload
       type: object
       properties:
-        dateCreated:
-          type: string
-          description: Date when the app is created  metadata
-          format: date-time
-        dateModified:
-          type: string
-          description: Date when app is last modified  metadata
-          format: date-time
         description:
           type: string
-          description: Description of the app
-        id:
-          type: string
-          description: Tessell generated UUID for the app object
-          format: uuid
+          description: Description of the privilege
         name:
           type: string
           description: Name of the privilege
-        status:
-          $ref: '#/components/schemas/PrivilegeStatus'
-      description: This is a definition for Tessell
+      description: This is a definition for Tessell internal create privilege payload object
     PrivilegeStatus:
       title: PrivilegeStatus
       type: string
@@ -192,17 +178,6 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    PrivilegeCreatePayload:
-      title: PrivilegeCreatePayload
-      type: object
-      properties:
-        description:
-          type: string
-          description: Description of the privilege
-        name:
-          type: string
-          description: Name of the privilege
-      description: This is a definition for Tessell internal create privilege payload object
     PrivilegeUpdatePayload:
       title: PrivilegeUpdatePayload
       type: object
@@ -214,6 +189,31 @@ components:
           type: string
           description: Name of the privilege
       description: This is a definition for Tessell privilege update object
+    PrivilegeDTO:
+      title: PrivilegeDTO
+      type: object
+      properties:
+        dateCreated:
+          type: string
+          description: Date when the app is created  metadata
+          format: date-time
+        dateModified:
+          type: string
+          description: Date when app is last modified  metadata
+          format: date-time
+        description:
+          type: string
+          description: Description of the app
+        id:
+          type: string
+          description: Tessell generated UUID for the app object
+          format: uuid
+        name:
+          type: string
+          description: Name of the privilege
+        status:
+          $ref: '#/components/schemas/PrivilegeStatus'
+      description: This is a definition for Tessell
     apiStatus:
       title: apiStatus
       type: object

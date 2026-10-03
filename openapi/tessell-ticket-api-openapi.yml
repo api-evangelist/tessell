@@ -235,6 +235,23 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    TicketUpdateRequestBodyV2:
+      title: Update ticket request body
+      type: object
+      description: Update ticket request body
+      properties:
+        status:
+          type: string
+          enum:
+          - open
+          - closed
+          description: Status of the ticket
+        priority:
+          type: string
+          description: Priority of the ticket.
+        subject:
+          type: string
+          description: Subject of the ticket.
     RequestFieldValues:
       type: object
       description: Request fields values for jira ticket
@@ -276,6 +293,53 @@ components:
             id:
               type: string
               description: user id of assignee
+    TicketRequestBodyV2:
+      title: Create ticket request body
+      type: object
+      description: Create ticket payload
+      properties:
+        entityType:
+          type: string
+          description: Associated entityType
+        entityId:
+          type: string
+          description: Associated entityId
+        ccEmails:
+          type: array
+          items:
+            type: string
+        jiraFields:
+          $ref: '#/components/schemas/RequestFieldValues'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    TicketsResponseV2:
+      title: Get Tickets Response
+      description: array of tickets
+      type: array
+      items:
+        $ref: '#/components/schemas/TicketDTOV2'
     TicketDTOV2:
       title: Ticket
       type: object
@@ -319,70 +383,6 @@ components:
         name:
           type: string
           description: Name of owner
-    TicketsResponseV2:
-      title: Get Tickets Response
-      description: array of tickets
-      type: array
-      items:
-        $ref: '#/components/schemas/TicketDTOV2'
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    TicketUpdateRequestBodyV2:
-      title: Update ticket request body
-      type: object
-      description: Update ticket request body
-      properties:
-        status:
-          type: string
-          enum:
-          - open
-          - closed
-          description: Status of the ticket
-        priority:
-          type: string
-          description: Priority of the ticket.
-        subject:
-          type: string
-          description: Subject of the ticket.
-    TicketRequestBodyV2:
-      title: Create ticket request body
-      type: object
-      description: Create ticket payload
-      properties:
-        entityType:
-          type: string
-          description: Associated entityType
-        entityId:
-          type: string
-          description: Associated entityId
-        ccEmails:
-          type: array
-          items:
-            type: string
-        jiraFields:
-          $ref: '#/components/schemas/RequestFieldValues'
   securitySchemes:
     BearerAuth:
       type: http

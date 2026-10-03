@@ -63,61 +63,45 @@ paths:
       tags:
       - Tessell App
 components:
-  parameters:
-    consumerType:
-      name: consumer-type
-      in: query
-      description: API consumer type
-      required: false
-      schema:
-        type: string
-        default: OPS
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
   schemas:
-    apiMetadata:
-      title: apiMetadata
+    apiPaginationInfo:
+      title: apiPaginationInfo
       type: object
       properties:
-        timeZone:
-          type: string
-        records:
+        pageSize:
           type: integer
           format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    AppStatus:
-      x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n"
-      description: App Status
-      enum:
-      - ENABLED
-      - DISABLED
-      - DELETED
-      type: string
+        pageOffset:
+          type: integer
+          format: int32
+    AppFeature:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          description:
+            x-dao-annotations: '@NotNull
+
+              '
+            description: Description of the app family
+            type: string
+          name:
+            x-dao-query: true
+            x-dao-annotations: '@NotNull
+
+              '
+            description: Name of the app family
+            type: string
+          displayName:
+            x-dao-query: true
+            x-dao-annotations: '@NotNull
+
+              '
+            description: Name of the app family
+            type: string
+          status:
+            $ref: '#/components/schemas/FeatureStatus'
+        title: AppFeature
+        type: object
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -162,25 +146,6 @@ components:
           example: 123e4567-e89b-12d3-a456-426614174000
           format: uuid
           type: string
-    FeatureStatus:
-      title: FeatureStatus
-      type: string
-      description: This is a definition for Tessell feature status object
-      enum:
-      - DELETED
-      - ENABLED
-      - DISABLED
-      - NOT_SUPPORTED
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
     Privilege:
       description: This is a definition for Tessell internal privilege DTO object
       example:
@@ -216,44 +181,6 @@ components:
           type: string
       title: Privilege
       type: object
-    AppFeature:
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - properties:
-          description:
-            x-dao-annotations: '@NotNull
-
-              '
-            description: Description of the app family
-            type: string
-          name:
-            x-dao-query: true
-            x-dao-annotations: '@NotNull
-
-              '
-            description: Name of the app family
-            type: string
-          displayName:
-            x-dao-query: true
-            x-dao-annotations: '@NotNull
-
-              '
-            description: Name of the app family
-            type: string
-          status:
-            $ref: '#/components/schemas/FeatureStatus'
-        title: AppFeature
-        type: object
-    AppApiResponse:
-      title: AppApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/App'
     App:
       x-dao-entity: true
       x-dao-table-name: TESSELL_APPS
@@ -300,6 +227,79 @@ components:
             type: array
           status:
             $ref: '#/components/schemas/AppStatus'
+    AppStatus:
+      x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n"
+      description: App Status
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+      type: string
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    FeatureStatus:
+      title: FeatureStatus
+      type: string
+      description: This is a definition for Tessell feature status object
+      enum:
+      - DELETED
+      - ENABLED
+      - DISABLED
+      - NOT_SUPPORTED
+    AppApiResponse:
+      title: AppApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/App'
+  parameters:
+    consumerType:
+      name: consumer-type
+      in: query
+      description: API consumer type
+      required: false
+      schema:
+        type: string
+        default: OPS
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
   securitySchemes:
     BearerAuth:
       type: http

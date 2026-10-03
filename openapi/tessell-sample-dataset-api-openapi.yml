@@ -169,38 +169,14 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    ServiceSampleDatasetLoadingInfo:
-      title: ServiceSampleDatasetLoadingInfo
-      type: object
-      description: Details about the sample dataset being/already loaded in a DB Service.
-      properties:
-        datasetId:
-          type: string
-          format: uuid
-          description: Sample Dataset ID which is loaded/being loaded in service.
-        datasetName:
-          type: string
-          description: Name of sample dataset loading/loaded.
-        datasetSize:
-          type: integer
-          format: int64
-          description: Size of dataset that is loaded.
-        dataLoadingStartAt:
-          type: string
-          format: date-time
-          description: Time at which sample dataset loading started.
-        dataLoadingCompletedAt:
-          type: string
-          format: date-time
-          description: Time at which sample dataset loading completed.
-        status:
-          $ref: '#/components/schemas/SampleDatasetLoadingStatus'
-        databaseId:
-          type: string
-          format: uuid
-          description: DB Service database Id where the sample dataset is loading/loaded.
-    SampleDatasetSuggestionsResponse:
-      title: SampleDatasetSuggestionsResponse
+    SampleDatasetOpsStatus:
+      description: Status of the the sample dataset
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+    ServiceSampleDatasetInfoResponse:
+      title: ServiceSampleDatasetInfoResponse
       allOf:
       - $ref: '#/components/schemas/apiResponse'
       type: object
@@ -208,95 +184,7 @@ components:
         response:
           type: array
           items:
-            $ref: '#/components/schemas/SampleDatasetOpsDTO'
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    ManageLoadSampleDatasetSuggestionPayload:
-      title: ManageLoadSampleDatasetSuggestionPayload
-      type: object
-      required:
-      - showSuggestion
-      properties:
-        showSuggestion:
-          type: boolean
-          description: True/False based on if the data loading suggestion popup should be shown or not.
-    apiResponse:
-      example:
-        metadata:
-          pagination:
-            pageOffset: 0
-            pageSize: 6
-          records: 1
-          timeZone: timeZone
-        response: '{}'
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-      title: ApiResponse
-      type: object
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    SampleDatasetLoadingStatus:
-      description: Status of the the sample dataset
-      enum:
-      - NA
-      - LOADING
-      - LOADED
-      - FAILED
-    databaseEngineType:
-      description: Database Engine Type
-      type: string
-      enum:
-      - ORACLE
-      - POSTGRESQL
-      - SQLSERVER
-      - MYSQL
-      - APACHE_KAFKA
-      - MONGODB
-      - MILVUS
+            $ref: '#/components/schemas/ServiceSampleDatasetLoadingInfo'
     LoadSampleDatasetRequestPayload:
       title: LoadSampleDatasetRequestPayload
       type: object
@@ -326,6 +214,67 @@ components:
         scriptName:
           type: string
           description: Masking Script name.
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    ManageLoadSampleDatasetSuggestionPayload:
+      title: ManageLoadSampleDatasetSuggestionPayload
+      type: object
+      required:
+      - showSuggestion
+      properties:
+        showSuggestion:
+          type: boolean
+          description: True/False based on if the data loading suggestion popup should be shown or not.
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    SampleDatasetLoadingStatus:
+      description: Status of the the sample dataset
+      enum:
+      - NA
+      - LOADING
+      - LOADED
+      - FAILED
     SampleDatasetOpsDTO:
       title: SampleDatasetOpsDTO
       type: object
@@ -378,22 +327,6 @@ components:
           type: string
           format: date-time
           description: Timestamp when this sample-dataset was last modified
-    SampleDatasetOpsStatus:
-      description: Status of the the sample dataset
-      enum:
-      - ENABLED
-      - DISABLED
-      - DELETED
-    ServiceSampleDatasetInfoResponse:
-      title: ServiceSampleDatasetInfoResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      type: object
-      properties:
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServiceSampleDatasetLoadingInfo'
     apiStatus:
       title: apiStatus
       type: object
@@ -402,6 +335,73 @@ components:
           type: string
         message:
           type: string
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    ServiceSampleDatasetLoadingInfo:
+      title: ServiceSampleDatasetLoadingInfo
+      type: object
+      description: Details about the sample dataset being/already loaded in a DB Service.
+      properties:
+        datasetId:
+          type: string
+          format: uuid
+          description: Sample Dataset ID which is loaded/being loaded in service.
+        datasetName:
+          type: string
+          description: Name of sample dataset loading/loaded.
+        datasetSize:
+          type: integer
+          format: int64
+          description: Size of dataset that is loaded.
+        dataLoadingStartAt:
+          type: string
+          format: date-time
+          description: Time at which sample dataset loading started.
+        dataLoadingCompletedAt:
+          type: string
+          format: date-time
+          description: Time at which sample dataset loading completed.
+        status:
+          $ref: '#/components/schemas/SampleDatasetLoadingStatus'
+        databaseId:
+          type: string
+          format: uuid
+          description: DB Service database Id where the sample dataset is loading/loaded.
+    SampleDatasetSuggestionsResponse:
+      title: SampleDatasetSuggestionsResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/SampleDatasetOpsDTO'
   securitySchemes:
     BearerAuth:
       type: http

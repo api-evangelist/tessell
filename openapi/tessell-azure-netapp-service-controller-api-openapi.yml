@@ -50,7 +50,138 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
+  parameters:
+    azure-netapp-skip-statuses:
+      name: skip-statuses
+      description: Statuses of Azure NetApp to be skipped
+      in: query
+      required: false
+      schema:
+        type: array
+        uniqueItems: true
+        items:
+          $ref: '#/components/schemas/AzureNetAppStatus'
+    azure-netapp-statuses:
+      name: statuses
+      description: Statuses of Azure NetApp to be included
+      in: query
+      required: false
+      schema:
+        type: array
+        uniqueItems: true
+        items:
+          $ref: '#/components/schemas/AzureNetAppStatus'
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    subscription-query:
+      name: subscription
+      description: Filter the entities based on cloud-subscription
+      in: query
+      required: false
+      schema:
+        type: string
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    region-query:
+      name: region
+      description: Filter the entities based on cloud-region
+      in: query
+      required: false
+      schema:
+        type: string
   schemas:
+    AzureNetAppStatus:
+      enum:
+      - AVAILABLE
+      - DOWN
+      - DELETING
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    AzureNetAppEncryptionKeySource:
+      enum:
+      - Microsoft.NetApp
+      - Microsoft.KeyVault
+      x-enum-varnames:
+      - MICROSOFT_NET_APP
+      - MICROSOFT_KEY_VAULT
+    AzureNetAppCapacityPoolQosType:
+      type: string
+      enum:
+      - Auto
+      - Manual
+      x-enum-varnames:
+      - AUTO
+      - MANUAL
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    AzureNetAppEncryptionKeyInfo:
+      description: Details of encryption key
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the encryption key
+          format: uuid
+        name:
+          type: string
+          description: name of the encryption key
+        keyVaultCloudResourceId:
+          type: string
+          description: name of the encryption key vault in cloud
+        keySource:
+          $ref: '#/components/schemas/AzureNetAppEncryptionKeySource'
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
     AzureNetAppConsumerDTO:
       type: object
       description: This is a definition of Azure-NetApp(s) available for Provisioning DB services in Tessell.
@@ -98,62 +229,6 @@ components:
           type: string
           description: Timestamp when the entity was created
           format: date-time
-    AzureNetAppInfrastructureInfo:
-      type: object
-      description: This is definition for Azure NetApp's infrastructure info
-      properties:
-        cloud:
-          $ref: '#/components/schemas/cloudType'
-        region:
-          type: string
-          description: Region of the FSx NetApp File System
-        encryptionKey:
-          $ref: '#/components/schemas/AzureNetAppEncryptionKeyInfo'
-    AzureNetAppConsumerResponse:
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      type: object
-      properties:
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/AzureNetAppConsumerDTO'
-    AzureNetAppCapacityPoolQosType:
-      type: string
-      enum:
-      - Auto
-      - Manual
-      x-enum-varnames:
-      - AUTO
-      - MANUAL
-    AzureNetAppCapacityPoolStatus:
-      enum:
-      - AVAILABLE
-      - DOWN
-      - DELETING
-    AzureNetAppStatus:
-      enum:
-      - AVAILABLE
-      - DOWN
-      - DELETING
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
-    AzureNetAppCapacityPoolServiceLevel:
-      type: string
-      enum:
-      - Standard
-      - Premium
-      - Ultra
-      x-enum-varnames:
-      - STANDARD
-      - PREMIUM
-      - ULTRA
     apiMetadata:
       title: apiMetadata
       type: object
@@ -165,30 +240,27 @@ components:
           format: int32
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
-    ApiError:
+    AzureNetAppCapacityPoolServiceLevel:
+      type: string
+      enum:
+      - Standard
+      - Premium
+      - Ultra
+      x-enum-varnames:
+      - STANDARD
+      - PREMIUM
+      - ULTRA
+    AzureNetAppInfrastructureInfo:
       type: object
-      description: Common error response object for non 2xx responses
+      description: This is definition for Azure NetApp's infrastructure info
       properties:
-        code:
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+        region:
           type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
+          description: Region of the FSx NetApp File System
+        encryptionKey:
+          $ref: '#/components/schemas/AzureNetAppEncryptionKeyInfo'
     AzureNetAppCapacityPoolConfigurationInfo:
       properties:
         availableStorage:
@@ -225,13 +297,15 @@ components:
           $ref: '#/components/schemas/AzureNetAppCapacityPoolServiceLevel'
         qosType:
           $ref: '#/components/schemas/AzureNetAppCapacityPoolQosType'
-    AzureNetAppEncryptionKeySource:
-      enum:
-      - Microsoft.NetApp
-      - Microsoft.KeyVault
-      x-enum-varnames:
-      - MICROSOFT_NET_APP
-      - MICROSOFT_KEY_VAULT
+    AzureNetAppConsumerResponse:
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/AzureNetAppConsumerDTO'
     apiResponse:
       example:
         metadata:
@@ -248,85 +322,11 @@ components:
           type: object
       title: ApiResponse
       type: object
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    AzureNetAppEncryptionKeyInfo:
-      description: Details of encryption key
-      type: object
-      properties:
-        id:
-          type: string
-          description: Id of the encryption key
-          format: uuid
-        name:
-          type: string
-          description: name of the encryption key
-        keyVaultCloudResourceId:
-          type: string
-          description: name of the encryption key vault in cloud
-        keySource:
-          $ref: '#/components/schemas/AzureNetAppEncryptionKeySource'
-  parameters:
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    region-query:
-      name: region
-      description: Filter the entities based on cloud-region
-      in: query
-      required: false
-      schema:
-        type: string
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
-    azure-netapp-skip-statuses:
-      name: skip-statuses
-      description: Statuses of Azure NetApp to be skipped
-      in: query
-      required: false
-      schema:
-        type: array
-        uniqueItems: true
-        items:
-          $ref: '#/components/schemas/AzureNetAppStatus'
-    subscription-query:
-      name: subscription
-      description: Filter the entities based on cloud-subscription
-      in: query
-      required: false
-      schema:
-        type: string
-    azure-netapp-statuses:
-      name: statuses
-      description: Statuses of Azure NetApp to be included
-      in: query
-      required: false
-      schema:
-        type: array
-        uniqueItems: true
-        items:
-          $ref: '#/components/schemas/AzureNetAppStatus'
+    AzureNetAppCapacityPoolStatus:
+      enum:
+      - AVAILABLE
+      - DOWN
+      - DELETING
   securitySchemes:
     BearerAuth:
       type: http

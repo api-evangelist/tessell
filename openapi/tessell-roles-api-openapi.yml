@@ -86,24 +86,16 @@ components:
           description: Date when onboarded acl is last modified  metadata
           format: date-time
       description: This is a definition for Tessell internal create onboarded acl payload object
-    apiMetadata:
-      title: apiMetadata
+    apiPaginationInfo:
+      title: apiPaginationInfo
       type: object
       properties:
-        timeZone:
-          type: string
-        records:
+        pageSize:
           type: integer
           format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    RoleStatus:
-      title: RoleStatus
-      type: string
-      description: This is a definition for Tessell onboarded acl status object
-      enum:
-      - DELETED
-      - ENABLED
+        pageOffset:
+          type: integer
+          format: int32
     RoleApiResponse:
       title: RoleApiResponse
       type: object
@@ -114,6 +106,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RoleResponse'
+    PermissionResponse:
+      title: PermissionResponse
+      type: object
+      properties:
+        permission:
+          type: string
+          description: role name
+        description:
+          type: string
+          description: Description of role
+      description: This is a definition for Tessell internal create onboarded acl payload object
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -138,28 +141,33 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    apiPaginationInfo:
-      title: apiPaginationInfo
+    apiMetadata:
+      title: apiMetadata
       type: object
       properties:
-        pageSize:
+        timeZone:
+          type: string
+        records:
           type: integer
           format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    PermissionResponse:
-      title: PermissionResponse
-      type: object
-      properties:
-        permission:
-          type: string
-          description: role name
-        description:
-          type: string
-          description: Description of role
-      description: This is a definition for Tessell internal create onboarded acl payload object
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+    RoleStatus:
+      title: RoleStatus
+      type: string
+      description: This is a definition for Tessell onboarded acl status object
+      enum:
+      - DELETED
+      - ENABLED
   parameters:
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
     pageOffset:
       name: page-offset
       in: query
@@ -178,14 +186,6 @@ components:
         type: integer
         format: int32
         default: 10
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
   securitySchemes:
     BearerAuth:
       type: http

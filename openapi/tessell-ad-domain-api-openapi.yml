@@ -87,36 +87,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
-  parameters:
-    tenantIdMandatory:
-      name: tenant-id
-      in: header
-      description: Id of the Tenant
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-        example: 12345678-abcd-1234-abcd-1234abcd5678
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
   schemas:
+    AdDomainServiceView:
+      description: AD Domain Service View
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tessellName:
+          type: string
+          description: Tessell Name for Ad Domain
+        domainName:
+          type: string
+          description: Domain Name
+        netBIOSorOU:
+          type: string
+          description: NetBIOS name or OU
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -141,22 +128,35 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    AdDomainServiceView:
-      description: AD Domain Service View
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        tessellName:
-          type: string
-          description: Tessell Name for Ad Domain
-        domainName:
-          type: string
-          description: Domain Name
-        netBIOSorOU:
-          type: string
-          description: NetBIOS name or OU
+  parameters:
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
   securitySchemes:
     BearerAuth:
       type: http

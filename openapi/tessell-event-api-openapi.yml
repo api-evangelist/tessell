@@ -188,6 +188,62 @@ paths:
           type: string
 components:
   schemas:
+    ApiMetadata:
+      properties:
+        pagination:
+          $ref: '#/components/schemas/ApiPaginationInfo'
+        records:
+          format: int32
+          type: integer
+        timeZone:
+          type: string
+      title: ApiMetadata
+      type: object
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    GetEventResponse:
+      title: Get Events Response
+      type: array
+      items:
+        $ref: '#/components/schemas/Event'
+    Severity:
+      type: string
+      description: Severity of a CVE or issue
+      enum:
+      - CRITICAL
+      - HIGH
+      - MEDIUM
+      - LOW
+    EventApiResponse:
+      title: EventApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/ApiMetadata'
+        response:
+          $ref: '#/components/schemas/GetEventResponse'
     Event:
       title: Event
       type: object
@@ -277,14 +333,13 @@ components:
           description: Is system generated event
         visibility:
           $ref: '#/components/schemas/Visibility'
-    SeverityEvents:
-      title: Severity
+    Visibility:
+      title: Visibility
       type: string
+      description: Visibility level
       enum:
-      - INFO
-      - WARNING
-      - CRITICAL
-      description: Enumeration for severity level
+      - USER
+      - SYSTEM
     ApiPaginationInfo:
       title: ApiPaginationInfo
       type: object
@@ -298,69 +353,14 @@ components:
         pageSize:
           format: int32
           type: integer
-    ApiMetadata:
-      properties:
-        pagination:
-          $ref: '#/components/schemas/ApiPaginationInfo'
-        records:
-          format: int32
-          type: integer
-        timeZone:
-          type: string
-      title: ApiMetadata
-      type: object
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    EventApiResponse:
-      title: EventApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/ApiMetadata'
-        response:
-          $ref: '#/components/schemas/GetEventResponse'
-    Visibility:
-      title: Visibility
+    SeverityEvents:
+      title: Severity
       type: string
-      description: Visibility level
       enum:
-      - USER
-      - SYSTEM
-    GetEventResponse:
-      title: Get Events Response
-      type: array
-      items:
-        $ref: '#/components/schemas/Event'
-    Severity:
-      type: string
-      description: Severity of a CVE or issue
-      enum:
+      - INFO
+      - WARNING
       - CRITICAL
-      - HIGH
-      - MEDIUM
-      - LOW
+      description: Enumeration for severity level
   securitySchemes:
     BearerAuth:
       type: http
