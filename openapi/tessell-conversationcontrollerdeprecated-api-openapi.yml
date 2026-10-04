@@ -130,98 +130,15 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    ApiError:
+    JiraAttachment:
+      title: Jira attachment
       type: object
-      description: Common error response object for non 2xx responses
+      description: Jira attachment
       properties:
-        code:
+        file:
           type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    JiraAttachmentResponse:
-      type: object
-      properties:
-        self:
-          type: string
-          description: The URL of the attachment details response.
-          readOnly: true
-        id:
-          type: string
-          description: The ID of the attachment.
-          readOnly: true
-        filename:
-          type: string
-          description: The file name of the attachment.
-          readOnly: true
-        author:
-          description: Details of the user who added the attachment.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/JiraAttachmentUserDetails'
-        size:
-          type: integer
-          description: The size of the attachment.
-          format: int64
-          readOnly: true
-        mimeType:
-          type: string
-          description: The MIME type of the attachment.
-          readOnly: true
-        content:
-          type: string
-          description: The content of the attachment.
-          readOnly: true
-        thumbnail:
-          type: string
-          description: The URL of a thumbnail representing the attachment.
-          readOnly: true
-      description: Details about an attachment.
-    Attachment:
-      title: Ticket conversation attachment
-      type: object
-      description: Conversation attachment
-      properties:
-        attachment_url:
-          type: string
-          description: attachment url
-        content_type:
-          type: string
-          description: attachment content type
-        created_at:
-          type: string
-          format: date-time
-          description: attachment creation date
-        id:
-          type: integer
-          format: int64
-          description: attachment identifier
-        name:
-          type: string
-          description: attachment name
-        size:
-          type: integer
-          format: int64
-          description: attachment size
-        updated_at:
-          type: string
-          format: date-time
-          description: attachment last updated
+          format: binary
+          description: File content
     ConversationDTO:
       title: Ticket conversation
       type: object
@@ -301,36 +218,36 @@ components:
         name:
           type: string
           description: user who made this conversation
-    AvatarUrlsBean:
+    ApiError:
       type: object
-      description: An object that stores URLs for different sizes of an item's avatar.
+      description: Common error response object for non 2xx responses
       properties:
-        16x16:
+        code:
           type: string
-          description: The URL of the item's 16x16 pixel avatar.
-          format: uri
-        24x24:
+          description: Status code for the error response
+        message:
           type: string
-          description: The URL of the item's 24x24 pixel avatar.
-          format: uri
-        32x32:
+          description: Error message for API response
+        resolution:
           type: string
-          description: The URL of the item's 32x32 pixel avatar.
-          format: uri
-        48x48:
+        timestamp:
           type: string
-          description: The URL of the item's 48x48 pixel avatar.
-          format: uri
-      additionalProperties: false
-    JiraAttachment:
-      title: Jira attachment
-      type: object
-      description: Jira attachment
-      properties:
-        file:
+          format: date-time
+        contextId:
           type: string
-          format: binary
-          description: File content
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    TicketConversationResponse:
+      title: Ticket Conversation Response
+      description: array of conversations
+      type: array
+      items:
+        $ref: '#/components/schemas/ConversationDTO'
     JiraAttachmentUserDetails:
       type: object
       properties:
@@ -377,12 +294,36 @@ components:
           readOnly: true
       additionalProperties: false
       description: "User details permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:\n\n *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).\n *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.\n *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values."
-    TicketConversationResponse:
-      title: Ticket Conversation Response
-      description: array of conversations
-      type: array
-      items:
-        $ref: '#/components/schemas/ConversationDTO'
+    Attachment:
+      title: Ticket conversation attachment
+      type: object
+      description: Conversation attachment
+      properties:
+        attachment_url:
+          type: string
+          description: attachment url
+        content_type:
+          type: string
+          description: attachment content type
+        created_at:
+          type: string
+          format: date-time
+          description: attachment creation date
+        id:
+          type: integer
+          format: int64
+          description: attachment identifier
+        name:
+          type: string
+          description: attachment name
+        size:
+          type: integer
+          format: int64
+          description: attachment size
+        updated_at:
+          type: string
+          format: date-time
+          description: attachment last updated
     NoteTicketRequestBody:
       title: Note to ticket body
       type: object
@@ -410,6 +351,65 @@ components:
           type: object
           additionalProperties: {}
           description: Comment on jira ticket
+    AvatarUrlsBean:
+      type: object
+      description: An object that stores URLs for different sizes of an item's avatar.
+      properties:
+        16x16:
+          type: string
+          description: The URL of the item's 16x16 pixel avatar.
+          format: uri
+        24x24:
+          type: string
+          description: The URL of the item's 24x24 pixel avatar.
+          format: uri
+        32x32:
+          type: string
+          description: The URL of the item's 32x32 pixel avatar.
+          format: uri
+        48x48:
+          type: string
+          description: The URL of the item's 48x48 pixel avatar.
+          format: uri
+      additionalProperties: false
+    JiraAttachmentResponse:
+      type: object
+      properties:
+        self:
+          type: string
+          description: The URL of the attachment details response.
+          readOnly: true
+        id:
+          type: string
+          description: The ID of the attachment.
+          readOnly: true
+        filename:
+          type: string
+          description: The file name of the attachment.
+          readOnly: true
+        author:
+          description: Details of the user who added the attachment.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/JiraAttachmentUserDetails'
+        size:
+          type: integer
+          description: The size of the attachment.
+          format: int64
+          readOnly: true
+        mimeType:
+          type: string
+          description: The MIME type of the attachment.
+          readOnly: true
+        content:
+          type: string
+          description: The content of the attachment.
+          readOnly: true
+        thumbnail:
+          type: string
+          description: The URL of a thumbnail representing the attachment.
+          readOnly: true
+      description: Details about an attachment.
   securitySchemes:
     BearerAuth:
       type: http

@@ -87,7 +87,169 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
+  parameters:
+    entity-id:
+      name: entity-id
+      in: query
+      description: Filter based on entity ID
+      required: false
+      schema:
+        type: string
+        format: uuid
+        maxLength: 128
+    app-family:
+      name: app-family
+      in: query
+      description: Filter based on appfamily (E.g. "DB Services", "Governance")
+      required: false
+      schema:
+        type: string
+        maxLength: 128
+    initiated-by:
+      name: initiated-by
+      in: query
+      description: Filter based on initiated by user
+      required: false
+      schema:
+        type: string
+        maxLength: 128
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
+    load-child-activities:
+      name: load-child-activities
+      in: query
+      description: Whether to load child-activities as well or not
+      required: false
+      schema:
+        type: boolean
+    from-time:
+      name: from-time
+      in: query
+      description: Filter based on time range
+      required: false
+      schema:
+        type: string
+        maxLength: 128
+    to-time:
+      name: to-time
+      in: query
+      description: Filter based on time of completion
+      required: false
+      schema:
+        type: string
+        maxLength: 128
+    app:
+      name: app
+      in: query
+      description: Filter based on app name (E.g. "My Services", "Dataflix" etc)
+      required: false
+      schema:
+        type: string
+        maxLength: 128
+    status:
+      name: status
+      in: query
+      description: Filter Activities based on status
+      required: false
+      schema:
+        $ref: '#/components/schemas/ActivityStatus'
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    activity-id:
+      name: activity-id
+      in: query
+      description: Filter based on activity ID
+      required: false
+      schema:
+        type: string
+        maxLength: 128
+    action-type:
+      name: action-type
+      in: query
+      description: Filter based on action taken on entity
+      required: false
+      schema:
+        type: string
+        maxLength: 128
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    entity-type:
+      name: entity-type
+      in: query
+      description: Filter based on entity
+      required: false
+      schema:
+        $ref: '#/components/schemas/entityType'
   schemas:
+    TessellHTTPErrorCode:
+      type: object
+      properties:
+        httpCode:
+          type: integer
+          description: HTTP code
+        code:
+          type: string
+          description: Tessell's specific code with more context on error
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    ActivityMetadata:
+      type: object
+      x-gorm-column-type: json
+      properties:
+        data:
+          type: object
+          additionalProperties: {}
+        applicableAcls:
+          type: array
+          description: ACLs for which given activity should be shown. The ACLs are in respect to current activity's entityType.
+          items:
+            type: string
+        entityDeletedFromUI:
+          type: boolean
     ActivityDTO:
       type: object
       required:
@@ -159,70 +321,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ActivityDTO'
-    ActivityMetadata:
-      type: object
-      x-gorm-column-type: json
-      properties:
-        data:
-          type: object
-          additionalProperties: {}
-        applicableAcls:
-          type: array
-          description: ACLs for which given activity should be shown. The ACLs are in respect to current activity's entityType.
-          items:
-            type: string
-        entityDeletedFromUI:
-          type: boolean
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    UpdateNotificationsRequest:
-      type: object
-      properties:
-        markReadIds:
-          type: array
-          items:
-            type: string
-        markNotifiedIds:
-          type: array
-          items:
-            type: string
-        markAllAsRead:
-          type: boolean
-    ActivityStatus:
-      x-gorm-column-attrs: not null
-      x-gorm-index: true
-      description: The status of Activity
-      type: string
-      enum:
-      - QUEUED
-      - RUNNING
-      - SKIPPED
-      - SUSPENDED
-      - SUCCESS
-      - FAILED
-      - UNKNOWN
+    GetActivitiesResponse:
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/ActivityDTO'
     entityType:
       description: Tessell Entity Type
       type: string
@@ -293,36 +400,19 @@ components:
       - DNS_RECORD
       - LICENSE
       - SECURITY_PROFILE
-    apiPaginationInfo:
-      title: apiPaginationInfo
+    UpdateNotificationsRequest:
       type: object
       properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    TessellHTTPErrorCode:
-      type: object
-      properties:
-        httpCode:
-          type: integer
-          description: HTTP code
-        code:
-          type: string
-          description: Tessell's specific code with more context on error
+        markReadIds:
+          type: array
+          items:
+            type: string
+        markNotifiedIds:
+          type: array
+          items:
+            type: string
+        markAllAsRead:
+          type: boolean
     apiResponse:
       example:
         metadata:
@@ -339,6 +429,19 @@ components:
           type: object
       title: ApiResponse
       type: object
+    ActivityStatus:
+      x-gorm-column-attrs: not null
+      x-gorm-index: true
+      description: The status of Activity
+      type: string
+      enum:
+      - QUEUED
+      - RUNNING
+      - SKIPPED
+      - SUSPENDED
+      - SUCCESS
+      - FAILED
+      - UNKNOWN
     ExceptionDTO:
       type: object
       required:
@@ -371,130 +474,27 @@ components:
         externalStackTrace:
           type: string
           description: Any stack trace from third party libraries/tools that should be retained for better debugging
-    GetActivitiesResponse:
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/ActivityDTO'
-  parameters:
-    from-time:
-      name: from-time
-      in: query
-      description: Filter based on time range
-      required: false
-      schema:
-        type: string
-        maxLength: 128
-    app:
-      name: app
-      in: query
-      description: Filter based on app name (E.g. "My Services", "Dataflix" etc)
-      required: false
-      schema:
-        type: string
-        maxLength: 128
-    entity-type:
-      name: entity-type
-      in: query
-      description: Filter based on entity
-      required: false
-      schema:
-        $ref: '#/components/schemas/entityType'
-    status:
-      name: status
-      in: query
-      description: Filter Activities based on status
-      required: false
-      schema:
-        $ref: '#/components/schemas/ActivityStatus'
-    initiated-by:
-      name: initiated-by
-      in: query
-      description: Filter based on initiated by user
-      required: false
-      schema:
-        type: string
-        maxLength: 128
-    load-child-activities:
-      name: load-child-activities
-      in: query
-      description: Whether to load child-activities as well or not
-      required: false
-      schema:
-        type: boolean
-    tenantIdMandatory:
-      name: tenant-id
-      in: header
-      description: Id of the Tenant
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-        example: 12345678-abcd-1234-abcd-1234abcd5678
-    app-family:
-      name: app-family
-      in: query
-      description: Filter based on appfamily (E.g. "DB Services", "Governance")
-      required: false
-      schema:
-        type: string
-        maxLength: 128
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
-    to-time:
-      name: to-time
-      in: query
-      description: Filter based on time of completion
-      required: false
-      schema:
-        type: string
-        maxLength: 128
-    action-type:
-      name: action-type
-      in: query
-      description: Filter based on action taken on entity
-      required: false
-      schema:
-        type: string
-        maxLength: 128
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    activity-id:
-      name: activity-id
-      in: query
-      description: Filter based on activity ID
-      required: false
-      schema:
-        type: string
-        maxLength: 128
-    entity-id:
-      name: entity-id
-      in: query
-      description: Filter based on entity ID
-      required: false
-      schema:
-        type: string
-        format: uuid
-        maxLength: 128
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
   securitySchemes:
     BearerAuth:
       type: http

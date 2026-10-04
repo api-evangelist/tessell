@@ -222,24 +222,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
-  parameters:
-    service-id:
-      name: service-id
-      in: path
-      required: true
-      style: simple
-      schema:
-        type: string
-        format: uuid
-    id:
-      name: id
-      description: Id of entity
-      in: path
-      style: simple
-      required: true
-      schema:
-        type: string
-        format: uuid
   schemas:
     ApiError:
       type: object
@@ -295,6 +277,14 @@ components:
         dateModified:
           type: string
           format: date-time
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
     RefreshScheduleMetadata:
       type: object
       properties:
@@ -304,6 +294,26 @@ components:
           description: Time at which refresh workflow is dispatched using schedule refresh.
           type: string
           format: date-time
+    TimeFormat:
+      title: TimeFormat
+      description: Clock time format value in hour and minute.
+      type: object
+      required:
+      - hour
+      - minute
+      properties:
+        hour:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 23
+          default: 1
+        minute:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 59
+          default: 0
     RefreshScheduleRefreshMode:
       enum:
       - SNAPSHOT
@@ -314,53 +324,70 @@ components:
       enum:
       - AS_IS
       - SANITIZED
-    taskSummary:
-      title: taskSummary
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    RefreshScheduleInfo:
       type: object
       properties:
-        taskId:
+        recurring:
+          $ref: '#/components/schemas/RefreshScheduleRecurrenceInfo'
+    GetRefreshSchedulesResponse:
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/RefreshScheduleDTO'
+    ScriptInfo:
+      title: ScriptInfo
+      type:
+      - object
+      - 'null'
+      properties:
+        scriptId:
           type: string
           format: uuid
-        taskType:
+          description: The Tessell Script ID
+        scriptName:
           type: string
-        resourceId:
+          description: The Tessell Script Name
+        scriptVersion:
           type: string
-          format: uuid
-        associatedResourceIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        details:
-          type: object
-          additionalProperties:
-            type: string
+          description: The Tessell Script version
+        useActiveVersion:
+          type: boolean
+          default: false
+          description: 'When set to true, the scriptVersion field should be null and the system
+
+            will automatically use the active version of the script.
+
+            When set to false (default), the scriptVersion field specifies the
+
+            exact version to use.
+
+            '
     CloneSourceType:
       description: Source type for clone/refresh operation
       type: string
       enum:
       - SNAPSHOT
       - NATIVE_BACKUP
-    RefreshScheduleRecurrenceInfo:
-      type: object
-      required:
-      - triggerTime
-      properties:
-        triggerTime:
-          $ref: '#/components/schemas/TimeFormat'
-        dailySchedule:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-        weeklySchedule:
-          type: object
-          properties:
-            weekDays:
-              type: array
-              uniqueItems: true
-              items:
-                $ref: '#/components/schemas/WeekDay'
     RefreshServicePayload:
       properties:
         pitr:
@@ -402,16 +429,32 @@ components:
       - Thursday
       - Friday
       - Saturday
-    apiPaginationInfo:
-      title: apiPaginationInfo
+    RefreshScheduleStatus:
+      enum:
+      - ACTIVE
+      - PAUSED
+      - SUSPENDED
+    taskSummary:
+      title: taskSummary
       type: object
       properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
+        taskId:
+          type: string
+          format: uuid
+        taskType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        associatedResourceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        details:
+          type: object
+          additionalProperties:
+            type: string
     CreateUpdateRefreshSchedulePayload:
       properties:
         refreshMode:
@@ -422,92 +465,6 @@ components:
           $ref: '#/components/schemas/PrePostScriptInfo'
         scheduleInfo:
           $ref: '#/components/schemas/RefreshScheduleInfo'
-    RefreshScheduleStatus:
-      enum:
-      - ACTIVE
-      - PAUSED
-      - SUSPENDED
-    ScriptInfo:
-      title: ScriptInfo
-      type:
-      - object
-      - 'null'
-      properties:
-        scriptId:
-          type: string
-          format: uuid
-          description: The Tessell Script ID
-        scriptName:
-          type: string
-          description: The Tessell Script Name
-        scriptVersion:
-          type: string
-          description: The Tessell Script version
-        useActiveVersion:
-          type: boolean
-          default: false
-          description: 'When set to true, the scriptVersion field should be null and the system
-
-            will automatically use the active version of the script.
-
-            When set to false (default), the scriptVersion field specifies the
-
-            exact version to use.
-
-            '
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    TimeFormat:
-      title: TimeFormat
-      description: Clock time format value in hour and minute.
-      type: object
-      required:
-      - hour
-      - minute
-      properties:
-        hour:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 23
-          default: 1
-        minute:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 59
-          default: 0
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    RefreshScheduleInfo:
-      type: object
-      properties:
-        recurring:
-          $ref: '#/components/schemas/RefreshScheduleRecurrenceInfo'
-    GetRefreshSchedulesResponse:
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/RefreshScheduleDTO'
     PrePostScriptInfo:
       type: object
       properties:
@@ -519,22 +476,65 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ScriptInfo'
-    apiResponse:
-      example:
-        metadata:
-          pagination:
-            pageOffset: 0
-            pageSize: 6
-          records: 1
-          timeZone: timeZone
-        response: '{}'
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-      title: ApiResponse
+    apiPaginationInfo:
+      title: apiPaginationInfo
       type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    RefreshScheduleRecurrenceInfo:
+      type: object
+      required:
+      - triggerTime
+      properties:
+        triggerTime:
+          $ref: '#/components/schemas/TimeFormat'
+        dailySchedule:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+        weeklySchedule:
+          type: object
+          properties:
+            weekDays:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/WeekDay'
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+  parameters:
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+    service-id:
+      name: service-id
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     BearerAuth:
       type: http

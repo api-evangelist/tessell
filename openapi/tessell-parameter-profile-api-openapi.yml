@@ -680,6 +680,461 @@ components:
         isLegacy:
           type: boolean
           description: Whether this Parameter Profile is Legacy or not
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    ServiceInstances:
+      properties:
+        service:
+          $ref: '#/components/schemas/GovernanceServiceInfo'
+        instances:
+          type: array
+          items:
+            $ref: '#/components/schemas/GovernanceInstanceInfo'
+    DatabaseParameterProfilePatchRequest:
+      required:
+      - parameterProfileInfo
+      - propagationPolicy
+      type: object
+      properties:
+        parameterProfileInfo:
+          $ref: '#/components/schemas/DatabaseParameterProfilePatchInfo'
+        propagationPolicy:
+          $ref: '#/components/schemas/UpdatePropagationPolicy'
+        serviceInstances:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceInstancesPatchRequest'
+      description: Parameter Profile Object to be updates and details on how it should be propagated to the service instances using that
+    InstanceLevelMaintenanceWindowInfo:
+      type: object
+      properties:
+        maintenanceWindowId:
+          type: string
+          format: uuid
+        triggerTime:
+          type: string
+          format: date-time
+    GovernanceInstanceInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+          format: uuid
+        role:
+          $ref: '#/components/schemas/TessellServiceInstanceRole'
+        status:
+          $ref: '#/components/schemas/ParameterProfileStatus'
+        maintenanceWindow:
+          $ref: '#/components/schemas/InstanceLevelMaintenanceWindowInfo'
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    GovernancePatchInstanceRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+          format: uuid
+    TessellServiceInstanceRole:
+      type: string
+      description: DB Service instance role
+      enum:
+      - primary
+      - read_only_replica
+      - failover_replica
+      - dr
+    GovernanceServiceInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+          format: uuid
+    DatabaseProfileParameterRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          example: autovacuum
+        value:
+          type: string
+          minLength: 0
+          maxLength: 1000
+          example: 'off'
+    DatabaseParameterTypeStatus:
+      type: string
+      enum:
+      - DISABLED
+      - ENABLED
+    DatabaseParameterProfileListResponse:
+      title: DatabaseParameterProfileListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseParameterProfileResponse'
+    DeleteValidationResponse:
+      type: object
+      properties:
+        deletable:
+          type: boolean
+        message:
+          type: string
+    ParameterProfileStatus:
+      type: string
+      description: Association status of the instance to the parameter profile
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+      - PENDING_REBOOT
+    DatabaseParameterProfileMetadata:
+      title: DatabaseParameterProfileMetadata
+      type: object
+      properties:
+        data:
+          type: object
+    CopyToProfiles:
+      type: object
+      properties:
+        copyTo:
+          type: array
+          items:
+            type: string
+            format: uuid
+          minItems: 1
+          maxItems: 30
+    DatabaseParameterProfileDriverInfo:
+      title: DatabaseParameterProfileDriverInfo
+      type: object
+      properties:
+        data:
+          type: object
+    DatabaseFactoryParameterListResponse:
+      title: DatabaseFactoryParameterListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseFactoryParameterResponse'
+    DatabaseFactoryParameterResponse:
+      title: DatabaseFactoryParameterResponse
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        version:
+          type: string
+        engineInfo:
+          $ref: '#/components/schemas/DatabaseParameterEngineInfo'
+        status:
+          $ref: '#/components/schemas/DatabaseParameterTypeStatus'
+        infraType:
+          $ref: '#/components/schemas/InfraType'
+        parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseParameterType'
+        isLegacy:
+          type: boolean
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    ParameterUsageType:
+      description: "Specifies when the parameter can be modified:\n- null (default): Standard parameter, follows applyType rules\n- \"INIT\": Can only be set during database initialization and cannot\n  be modified afterward for databases using this profile\n"
+      type: string
+      enum:
+      - INIT
+    ServiceInstancesPatchRequest:
+      properties:
+        service:
+          $ref: '#/components/schemas/GovernanceServiceInfo'
+        instances:
+          type: array
+          items:
+            $ref: '#/components/schemas/GovernancePatchInstanceRequest'
+    ProfileCompareValueChange:
+      type: object
+      properties:
+        dataType:
+          type: string
+        defaultValue:
+          type: string
+        applyType:
+          type: string
+        name:
+          type: string
+        lvalue:
+          type: string
+        rvalue:
+          type: string
+        allowedValues:
+          type: string
+        isFormulaType:
+          type: boolean
+          default: false
+    UpdatePropagationPolicy:
+      title: UpdatePropagationPolicy
+      required:
+      - strategy
+      type: object
+      properties:
+        strategy:
+          $ref: '#/components/schemas/UpdatePropagationStrategy'
+        time:
+          type: string
+          format: date-time
+          description: Needed when strategy is CUSTOM_DATE_TIME
+    DatabaseParameterProfilePatchInfo:
+      required:
+      - parameters
+      properties:
+        description:
+          type: string
+          description: Parameter Profile description
+          minLength: 0
+          maxLength: 128
+          example: Custom Parameter Profile with autovacuum off
+        parameters:
+          type: array
+          description: Parameters associated with Parameter Profile
+          items:
+            $ref: '#/components/schemas/DatabaseProfileParameterRequest'
+          minItems: 1
+          maxItems: 1000
+    DatabaseParameterProfileStatus:
+      description: Database ParameterProfile Status
+      type: string
+      enum:
+      - DELETED
+      - DELETING
+      - DRAFT
+      - PUBLISH
+      - UNPUBLISH
+      - DEPRECATED
+    DatabaseParameterProfileRequest:
+      description: This is a definition for Tessell Parameter Profile Object
+      required:
+      - name
+      - engineType
+      - parameters
+      - dbVersion
+      type: object
+      properties:
+        name:
+          type: string
+          description: Parameter Profile name
+          minLength: 1
+          maxLength: 64
+          example: Postgres Custom Parameter Profile
+        description:
+          type: string
+          description: Parameter Profile description
+          minLength: 0
+          maxLength: 128
+          example: Custom Parameter Profile with autovacuum off
+        engineType:
+          $ref: '#/components/schemas/databaseEngineType'
+        engineInfo:
+          $ref: '#/components/schemas/DatabaseParameterEngineInfo'
+        status:
+          $ref: '#/components/schemas/DatabaseParameterProfileStatus'
+        maturityStatus:
+          $ref: '#/components/schemas/DatabaseParameterProfileMaturityStatus'
+        owner:
+          type: string
+          minLength: 1
+          maxLength: 128
+        infraType:
+          $ref: '#/components/schemas/InfraType'
+        parameters:
+          type: array
+          description: Parameters associated with Parameter Profile
+          items:
+            $ref: '#/components/schemas/DatabaseProfileParameterRequest'
+          maxItems: 1000
+        metadata:
+          $ref: '#/components/schemas/DatabaseParameterProfileMetadata'
+        dbVersion:
+          type: string
+          description: Database Engine version
+          minLength: 1
+          maxLength: 32
+          example: '15.5'
+        sourceParameterProfileId:
+          description: ID of the parameter profile to fetch parameters from. Required only when duplicating an existing profile
+          type: string
+          format: uuid
+    ParameterProfileUsageResponse:
+      title: ParameterProfileUsageResponse
+      type: object
+      properties:
+        serviceInstances:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceInstances'
+    DatabaseParameterProfileMaturityStatus:
+      description: Database ParameterProfile Status
+      type: string
+      enum:
+      - DRAFT
+      - PUBLISHED
+      - UNPUBLISHED
+    ParameterSourceType:
+      description: Defines source type of a parameter
+      type: string
+      enum:
+      - ENGINE_DEFAULT
+      - TESSELL_DEFAULT
+      - USER_DEFINED
+    UpdatePropagationStrategy:
+      type: string
+      enum:
+      - IMMEDIATELY
+      - MAINTENANCE_WINDOW
+      - CUSTOM_DATE_TIME
+      - DO_NOT_APPLY
+    DatabaseParameterEngineInfo:
+      type: object
+      properties:
+        edition:
+          type: string
+          maxLength: 128
+        oracle:
+          type: object
+          description: Oracle specific engine info parameters
+          properties:
+            multiTenancy:
+              $ref: '#/components/schemas/OracleMultiTenancy'
+    ParameterProfileCompareResponse:
+      type: object
+      properties:
+        leftAdditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseProfileParameterType'
+        rightAdditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseProfileParameterType'
+        diffs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileCompareValueChange'
+        common:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseProfileParameterType'
+    DatabaseParameterType:
+      title: DatabaseParameterType
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        defaultValue:
+          type: string
+        dataType:
+          type: string
+        source:
+          $ref: '#/components/schemas/ParameterSourceType'
+        isFormulaType:
+          type: boolean
+          default: false
+        isModifiable:
+          type: boolean
+        allowedValues:
+          type: string
+        applyType:
+          type: string
+        topParameter:
+          description: Boolean variable indicating a parameter is a most modified / key parameter
+          type: boolean
+          default: false
+        usageType:
+          $ref: '#/components/schemas/ParameterUsageType'
     DatabaseProfileParameterType:
       title: DatabaseProfileParameterType
       type: object
@@ -736,361 +1191,18 @@ components:
           type: boolean
         usageType:
           $ref: '#/components/schemas/ParameterUsageType'
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    ParameterUsageType:
-      description: "Specifies when the parameter can be modified:\n- null (default): Standard parameter, follows applyType rules\n- \"INIT\": Can only be set during database initialization and cannot\n  be modified afterward for databases using this profile\n"
-      type: string
-      enum:
-      - INIT
-    UpdatePropagationStrategy:
-      type: string
-      enum:
-      - IMMEDIATELY
-      - MAINTENANCE_WINDOW
-      - CUSTOM_DATE_TIME
-      - DO_NOT_APPLY
-    ServiceInstances:
-      properties:
-        service:
-          $ref: '#/components/schemas/GovernanceServiceInfo'
-        instances:
-          type: array
-          items:
-            $ref: '#/components/schemas/GovernanceInstanceInfo'
-    DatabaseParameterTypeStatus:
-      type: string
-      enum:
-      - DISABLED
-      - ENABLED
-    TessellServiceInstanceRole:
-      type: string
-      description: DB Service instance role
-      enum:
-      - primary
-      - read_only_replica
-      - failover_replica
-      - dr
-    ParameterProfileStatus:
-      type: string
-      description: Association status of the instance to the parameter profile
-      enum:
-      - IN_SYNC
-      - UPDATING
-      - OUT_OF_SYNC
-      - PENDING_REBOOT
-    DatabaseFactoryParameterResponse:
-      title: DatabaseFactoryParameterResponse
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        description:
-          type: string
-        engineType:
-          $ref: '#/components/schemas/databaseEngineType'
-        version:
-          type: string
-        engineInfo:
-          $ref: '#/components/schemas/DatabaseParameterEngineInfo'
-        status:
-          $ref: '#/components/schemas/DatabaseParameterTypeStatus'
-        infraType:
-          $ref: '#/components/schemas/InfraType'
-        parameters:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseParameterType'
-        isLegacy:
-          type: boolean
-    ServiceInstancesPatchRequest:
-      properties:
-        service:
-          $ref: '#/components/schemas/GovernanceServiceInfo'
-        instances:
-          type: array
-          items:
-            $ref: '#/components/schemas/GovernancePatchInstanceRequest'
-    databaseEngineType:
-      description: Database Engine Type
-      type: string
-      enum:
-      - ORACLE
-      - POSTGRESQL
-      - SQLSERVER
-      - MYSQL
-      - APACHE_KAFKA
-      - MONGODB
-      - MILVUS
-    DeleteValidationResponse:
-      type: object
-      properties:
-        deletable:
-          type: boolean
-        message:
-          type: string
-    GovernanceServiceInfo:
-      type: object
-      properties:
-        name:
-          type: string
-        id:
-          type: string
-          format: uuid
-    DatabaseParameterProfileDriverInfo:
-      title: DatabaseParameterProfileDriverInfo
-      type: object
-      properties:
-        data:
-          type: object
-    OracleMultiTenancy:
-      description: Oracle multi-tenant architecture
-      type: string
-      enum:
-      - CDB
-      - NON_CDB
-    DatabaseParameterProfileStatus:
-      description: Database ParameterProfile Status
-      type: string
-      enum:
-      - DELETED
-      - DELETING
-      - DRAFT
-      - PUBLISH
-      - UNPUBLISH
-      - DEPRECATED
-    DatabaseParameterProfileMetadata:
-      title: DatabaseParameterProfileMetadata
-      type: object
-      properties:
-        data:
-          type: object
-    CopyToProfiles:
-      type: object
-      properties:
-        copyTo:
-          type: array
-          items:
-            type: string
-            format: uuid
-          minItems: 1
-          maxItems: 30
-    ParameterProfileUsageResponse:
-      title: ParameterProfileUsageResponse
-      type: object
-      properties:
-        serviceInstances:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServiceInstances'
-    GovernancePatchInstanceRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        id:
-          type: string
-          format: uuid
-    DatabaseParameterProfilePatchInfo:
-      required:
-      - parameters
-      properties:
-        description:
-          type: string
-          description: Parameter Profile description
-          minLength: 0
-          maxLength: 128
-          example: Custom Parameter Profile with autovacuum off
-        parameters:
-          type: array
-          description: Parameters associated with Parameter Profile
-          items:
-            $ref: '#/components/schemas/DatabaseProfileParameterRequest'
-          minItems: 1
-          maxItems: 1000
-    DatabaseParameterEngineInfo:
-      type: object
-      properties:
-        edition:
-          type: string
-          maxLength: 128
-        oracle:
-          type: object
-          description: Oracle specific engine info parameters
-          properties:
-            multiTenancy:
-              $ref: '#/components/schemas/OracleMultiTenancy'
-    ParameterProfileCompareResponse:
-      type: object
-      properties:
-        leftAdditions:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseProfileParameterType'
-        rightAdditions:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseProfileParameterType'
-        diffs:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProfileCompareValueChange'
-        common:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseProfileParameterType'
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
     InfraType:
       type: string
       enum:
       - CLOUD
       - OCI_EXADATA
       description: Details on if / when the changes should be applied
-    ParameterSourceType:
-      description: Defines source type of a parameter
+    OracleMultiTenancy:
+      description: Oracle multi-tenant architecture
       type: string
       enum:
-      - ENGINE_DEFAULT
-      - TESSELL_DEFAULT
-      - USER_DEFINED
-    DatabaseParameterProfileMaturityStatus:
-      description: Database ParameterProfile Status
-      type: string
-      enum:
-      - DRAFT
-      - PUBLISHED
-      - UNPUBLISHED
-    DatabaseParameterProfilePatchRequest:
-      required:
-      - parameterProfileInfo
-      - propagationPolicy
-      type: object
-      properties:
-        parameterProfileInfo:
-          $ref: '#/components/schemas/DatabaseParameterProfilePatchInfo'
-        propagationPolicy:
-          $ref: '#/components/schemas/UpdatePropagationPolicy'
-        serviceInstances:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServiceInstancesPatchRequest'
-      description: Parameter Profile Object to be updates and details on how it should be propagated to the service instances using that
-    DatabaseParameterProfileRequest:
-      description: This is a definition for Tessell Parameter Profile Object
-      required:
-      - name
-      - engineType
-      - parameters
-      - dbVersion
-      type: object
-      properties:
-        name:
-          type: string
-          description: Parameter Profile name
-          minLength: 1
-          maxLength: 64
-          example: Postgres Custom Parameter Profile
-        description:
-          type: string
-          description: Parameter Profile description
-          minLength: 0
-          maxLength: 128
-          example: Custom Parameter Profile with autovacuum off
-        engineType:
-          $ref: '#/components/schemas/databaseEngineType'
-        engineInfo:
-          $ref: '#/components/schemas/DatabaseParameterEngineInfo'
-        status:
-          $ref: '#/components/schemas/DatabaseParameterProfileStatus'
-        maturityStatus:
-          $ref: '#/components/schemas/DatabaseParameterProfileMaturityStatus'
-        owner:
-          type: string
-          minLength: 1
-          maxLength: 128
-        infraType:
-          $ref: '#/components/schemas/InfraType'
-        parameters:
-          type: array
-          description: Parameters associated with Parameter Profile
-          items:
-            $ref: '#/components/schemas/DatabaseProfileParameterRequest'
-          maxItems: 1000
-        metadata:
-          $ref: '#/components/schemas/DatabaseParameterProfileMetadata'
-        dbVersion:
-          type: string
-          description: Database Engine version
-          minLength: 1
-          maxLength: 32
-          example: '15.5'
-        sourceParameterProfileId:
-          description: ID of the parameter profile to fetch parameters from. Required only when duplicating an existing profile
-          type: string
-          format: uuid
-    DatabaseParameterType:
-      title: DatabaseParameterType
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        defaultValue:
-          type: string
-        dataType:
-          type: string
-        source:
-          $ref: '#/components/schemas/ParameterSourceType'
-        isFormulaType:
-          type: boolean
-          default: false
-        isModifiable:
-          type: boolean
-        allowedValues:
-          type: string
-        applyType:
-          type: string
-        topParameter:
-          description: Boolean variable indicating a parameter is a most modified / key parameter
-          type: boolean
-          default: false
-        usageType:
-          $ref: '#/components/schemas/ParameterUsageType'
+      - CDB
+      - NON_CDB
     apiMetadata:
       title: apiMetadata
       type: object
@@ -1102,118 +1214,6 @@ components:
           format: int32
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
-    InstanceLevelMaintenanceWindowInfo:
-      type: object
-      properties:
-        maintenanceWindowId:
-          type: string
-          format: uuid
-        triggerTime:
-          type: string
-          format: date-time
-    GovernanceInstanceInfo:
-      type: object
-      properties:
-        name:
-          type: string
-        id:
-          type: string
-          format: uuid
-        role:
-          $ref: '#/components/schemas/TessellServiceInstanceRole'
-        status:
-          $ref: '#/components/schemas/ParameterProfileStatus'
-        maintenanceWindow:
-          $ref: '#/components/schemas/InstanceLevelMaintenanceWindowInfo'
-    DatabaseFactoryParameterListResponse:
-      title: DatabaseFactoryParameterListResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      type: object
-      properties:
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseFactoryParameterResponse'
-    ProfileCompareValueChange:
-      type: object
-      properties:
-        dataType:
-          type: string
-        defaultValue:
-          type: string
-        applyType:
-          type: string
-        name:
-          type: string
-        lvalue:
-          type: string
-        rvalue:
-          type: string
-        allowedValues:
-          type: string
-        isFormulaType:
-          type: boolean
-          default: false
-    DatabaseParameterProfileListResponse:
-      title: DatabaseParameterProfileListResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      type: object
-      properties:
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseParameterProfileResponse'
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    UpdatePropagationPolicy:
-      title: UpdatePropagationPolicy
-      required:
-      - strategy
-      type: object
-      properties:
-        strategy:
-          $ref: '#/components/schemas/UpdatePropagationStrategy'
-        time:
-          type: string
-          format: date-time
-          description: Needed when strategy is CUSTOM_DATE_TIME
-    apiResponse:
-      example:
-        metadata:
-          pagination:
-            pageOffset: 0
-            pageSize: 6
-          records: 1
-          timeZone: timeZone
-        response: '{}'
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-      title: ApiResponse
-      type: object
-    DatabaseProfileParameterRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 128
-          example: autovacuum
-        value:
-          type: string
-          minLength: 0
-          maxLength: 1000
-          example: 'off'
   parameters:
     id:
       name: id

@@ -382,43 +382,75 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    DapRetentionInfo:
+    UpdateDapAsIsContentPayload:
+      title: UpdateDapAsIsContentPayload
       type: object
       properties:
-        pitr:
-          description: Retention time (in days) for Point-In-Time recoverability
-          type: integer
-          format: int32
-          default: 0
-          minimum: 0
-          maximum: 35
-        dailyBackups:
-          description: Retention time (in days) to retain daily snapshots
-          type: integer
-          format: int32
-          default: 0
-          minimum: 0
-          maximum: 730
-    DapPitrCatalogServiceView:
-      title: DapPitrCatalogServiceView
-      type: object
-      properties:
-        timeRanges:
-          type: array
-          items:
-            $ref: '#/components/schemas/DapFromToDate'
-    CreateDapAsIsContentPayload:
-      title: CreateDapAsIsContentPayload
-      type: object
-      properties:
-        automated:
-          type: boolean
-          description: Share the automated as-is snapshots. This is exclusive with manual specification.
         manual:
           description: The list of snapshots that are to be shared as part of this access policy
           type: array
           items:
             $ref: '#/components/schemas/DapManualContentPayload'
+    DapQuarterlyCatalogServiceView:
+      title: DapQuarterlyCatalogServiceView
+      type: object
+      properties:
+        backupCount:
+          type: integer
+          format: int32
+        backups:
+          type: array
+          items:
+            $ref: '#/components/schemas/OldDatabaseBackup'
+    BackupDapContent:
+      title: BackupDapContent
+      type: object
+      properties:
+        automated:
+          type: boolean
+          description: Share the automated backups. This is exclusive with manual specification.
+        manual:
+          description: The list of backups that are to be shared as part of this access policy
+          type: array
+          items:
+            $ref: '#/components/schemas/DapManualInfo'
+    DapStatus:
+      description: Database Access Policy Status
+      type: string
+      enum:
+      - CREATING
+      - ACTIVE
+      - CREATION_FAILED
+      - TO_BE_DELETED
+      - DELETED
+    TessellDapCatalogServiceView:
+      title: TessellDapCatalogServiceView
+      type: object
+      properties:
+        availabilityCatalog:
+          type: array
+          items:
+            $ref: '#/components/schemas/DapDatabaseAvailabilityCatalogServiceView'
+        cloudAvailability:
+          type: array
+          items:
+            $ref: '#/components/schemas/CloudRegionInfo'
+        dataAccessPolicy:
+          type: string
+        dmm:
+          type: string
+        timeZone:
+          type: string
+    DapContentInfo:
+      title: DapContentInfo
+      type: object
+      properties:
+        asIsContent:
+          $ref: '#/components/schemas/AsIsDapContent'
+        sanitizedContent:
+          $ref: '#/components/schemas/SanitizationDapContent'
+        backupContent:
+          $ref: '#/components/schemas/BackupDapContent'
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -443,119 +475,34 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    SanitizationDapContent:
-      title: SanitizationDapContent
+    CreateDapPayload:
+      title: CreateDapPayload
       type: object
-      properties:
-        automated:
-          type: object
-          required:
-          - sanitizationScheduleId
-          properties:
-            sanitizationScheduleId:
-              type: string
-              format: uuid
-              description: Id of the sanitization schedule to process automated backups, required only if contentType = Sanitized.
-        manual:
-          description: The list of sanitized snapshots that are to be shared as part of this access policy
-          type: array
-          items:
-            $ref: '#/components/schemas/DapManualInfo'
-    GetDmmAvailabilityPoliciesServiceView:
-      title: GetDmmAvailabilityPoliciesServiceView
-      allOf:
-      - $ref: '#/components/schemas/TessellApiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/TessellDapServiceDTO'
-    RegionInfo:
-      title: RegionInfo
-      description: Cloud region details
+      description: Payload to create an Access Policy (DAP) and the associated configuration
       required:
-      - region
+      - name
+      - contentType
+      - subscriptionsCloudLocationsAndKey
       properties:
-        region:
-          description: The cloud region name
-          type: string
-        availabilityZones:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
-    DapContentInfo:
-      title: DapContentInfo
-      type: object
-      properties:
-        asIsContent:
-          $ref: '#/components/schemas/AsIsDapContent'
-        sanitizedContent:
-          $ref: '#/components/schemas/SanitizationDapContent'
-        backupContent:
-          $ref: '#/components/schemas/BackupDapContent'
-    DapDailyCatalogServiceView:
-      title: DapDailyCatalogServiceView
-      type: object
-      properties:
-        backupCount:
-          type: integer
-          format: int32
-        backups:
-          type: array
-          items:
-            $ref: '#/components/schemas/OldDatabaseBackup'
-    TessellApiResponse:
-      title: TessellApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-    DapManualInfo:
-      title: DapManualInfo
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: The DB Service snapshot id
         name:
           type: string
-          description: The DB Service snapshot name
-          x-computed: true
-        creationTime:
-          type: string
-          description: DB Service snapshot capture time
-          format: date-time
-          x-computed: true
-        sharedAt:
-          type: string
-          description: The timestamp when the snapshot was added to DAP for sharing
-          format: date-time
-          x-computed: true
-    RegionToEncryptionKey:
-      type: object
-      required:
-      - region
-      properties:
-        region:
-          type: string
-        encryptionKeyName:
-          type: string
-    DapWeeklyCatalogServiceView:
-      title: DapWeeklyCatalogServiceView
-      type: object
-      properties:
-        backupCount:
-          type: integer
-          format: int32
-        backups:
+          minLength: 1
+          maxLength: 128
+          description: Name of the Access Policy
+        contentType:
+          $ref: '#/components/schemas/DapContentType'
+          description: Type of data content (as-is, sanitized, backup) that this Access Policy is entitled to manage
+        contentInfo:
+          $ref: '#/components/schemas/CreateDapContentInfoPayload'
+          description: Information about the data content that is being managed by this Access Policy
+        dataAccessConfig:
+          $ref: '#/components/schemas/DapRetentionInfo'
+          description: Configuration for retention and expiration of data that is being managed by this Access Policy
+        subscriptionsCloudLocationsAndKey:
           type: array
           items:
-            $ref: '#/components/schemas/OldDatabaseBackup'
+            $ref: '#/components/schemas/SubscriptionsCloudLocationsAndKey'
+          description: The subscription, cloud and region information along with encryption key where the data is being managed by this Access Policy
     CloudRegionInfo:
       title: CloudRegionInfo
       description: Cloud and region details
@@ -570,130 +517,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RegionInfo'
-    UpdateDapSanitizationContentPayload:
-      title: UpdateDapSanitizationContentPayload
-      type: object
-      properties:
-        manual:
-          description: The list of sanitized snapshots that are to be shared as part of this access policy
-          type: array
-          items:
-            $ref: '#/components/schemas/DapManualContentPayload'
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
-    DapManualCatalogServiceView:
-      type: object
-      properties:
-        backupCount:
-          type: integer
-          format: int32
-        backups:
-          type: array
-          items:
-            $ref: '#/components/schemas/OldDatabaseBackup'
-    DapStatus:
-      description: Database Access Policy Status
-      type: string
-      enum:
-      - CREATING
-      - ACTIVE
-      - CREATION_FAILED
-      - TO_BE_DELETED
-      - DELETED
-    OldDatabaseBackup:
-      title: OldDatabaseBackup
-      type: object
-      properties:
-        backupTime:
-          type: string
-          description: Database Backup capture time
-          format: date-time
-        backupType:
-          type: string
-          description: Database Backup's type
-        name:
-          type: string
-          description: Database Snapshot name
-        retentionType:
-          type: string
-          description: Database Backup's retention type
-        status:
-          type: string
-          description: Database Backup status
-      description: This is a definition for Tessell Database Snapshot Service Consumer Object
-    CreateDapContentInfoPayload:
-      title: CreateDapContentInfoPayload
-      type: object
-      properties:
-        asIsContent:
-          $ref: '#/components/schemas/CreateDapAsIsContentPayload'
-        sanitizedContent:
-          $ref: '#/components/schemas/CreateDapSanitizationContentPayload'
-        backupContent:
-          $ref: '#/components/schemas/CreateDapBackupContentPayload'
-    UpdateDapContentInfoPayload:
-      title: UpdateDapContentInfoPayload
-      type: object
-      properties:
-        asIsContent:
-          $ref: '#/components/schemas/UpdateDapAsIsContentPayload'
-        sanitizedContent:
-          $ref: '#/components/schemas/UpdateDapSanitizationContentPayload'
-        backupContent:
-          $ref: '#/components/schemas/UpdateDapBackupContentPayload'
-    TessellDapCatalogServiceView:
-      title: TessellDapCatalogServiceView
-      type: object
-      properties:
-        availabilityCatalog:
-          type: array
-          items:
-            $ref: '#/components/schemas/DapDatabaseAvailabilityCatalogServiceView'
-        cloudAvailability:
-          type: array
-          items:
-            $ref: '#/components/schemas/CloudRegionInfo'
-        dataAccessPolicy:
-          type: string
-        dmm:
-          type: string
-        timeZone:
-          type: string
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    BackupDapContent:
-      title: BackupDapContent
-      type: object
-      properties:
-        automated:
-          type: boolean
-          description: Share the automated backups. This is exclusive with manual specification.
-        manual:
-          description: The list of backups that are to be shared as part of this access policy
-          type: array
-          items:
-            $ref: '#/components/schemas/DapManualInfo'
-    DapContentType:
-      description: Content Type for the Data Access Policy
-      type: string
-      enum:
-      - As-Is
-      - Sanitized
-      - Backup
     DapDatabaseAvailabilityCatalogServiceView:
       title: DapDatabaseAvailabilityCatalogServiceView
       type: object
@@ -714,8 +537,7 @@ components:
           $ref: '#/components/schemas/DapQuarterlyCatalogServiceView'
         yearly:
           $ref: '#/components/schemas/DapYearlyCatalogServiceView'
-    DapQuarterlyCatalogServiceView:
-      title: DapQuarterlyCatalogServiceView
+    DapManualCatalogServiceView:
       type: object
       properties:
         backupCount:
@@ -725,6 +547,202 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OldDatabaseBackup'
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    UpdateDapSanitizationContentPayload:
+      title: UpdateDapSanitizationContentPayload
+      type: object
+      properties:
+        manual:
+          description: The list of sanitized snapshots that are to be shared as part of this access policy
+          type: array
+          items:
+            $ref: '#/components/schemas/DapManualContentPayload'
+    DapYearlyCatalogServiceView:
+      title: DapYearlyCatalogServiceView
+      type: object
+      properties:
+        backupCount:
+          type: integer
+          format: int32
+        backups:
+          type: array
+          items:
+            $ref: '#/components/schemas/OldDatabaseBackup'
+    GetDmmAvailabilityPoliciesServiceView:
+      title: GetDmmAvailabilityPoliciesServiceView
+      allOf:
+      - $ref: '#/components/schemas/TessellApiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/TessellDapServiceDTO'
+    TessellApiResponse:
+      title: TessellApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+    ManageAccessDapPayload:
+      title: ManageAccessDapPayload
+      type: object
+      description: Payload to update users of an Access Policy (DAP)
+      required:
+      - subscriptionsAndUsers
+      properties:
+        subscriptionsAndUsers:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionsAndUsers'
+          description: The subscription and users information for this Access Policy
+    UpdateDapContentInfoPayload:
+      title: UpdateDapContentInfoPayload
+      type: object
+      properties:
+        asIsContent:
+          $ref: '#/components/schemas/UpdateDapAsIsContentPayload'
+        sanitizedContent:
+          $ref: '#/components/schemas/UpdateDapSanitizationContentPayload'
+        backupContent:
+          $ref: '#/components/schemas/UpdateDapBackupContentPayload'
+    CreateDapContentInfoPayload:
+      title: CreateDapContentInfoPayload
+      type: object
+      properties:
+        asIsContent:
+          $ref: '#/components/schemas/CreateDapAsIsContentPayload'
+        sanitizedContent:
+          $ref: '#/components/schemas/CreateDapSanitizationContentPayload'
+        backupContent:
+          $ref: '#/components/schemas/CreateDapBackupContentPayload'
+    CreateDapAsIsContentPayload:
+      title: CreateDapAsIsContentPayload
+      type: object
+      properties:
+        automated:
+          type: boolean
+          description: Share the automated as-is snapshots. This is exclusive with manual specification.
+        manual:
+          description: The list of snapshots that are to be shared as part of this access policy
+          type: array
+          items:
+            $ref: '#/components/schemas/DapManualContentPayload'
+    UpdateDapPayload:
+      title: UpdateDapPayload
+      type: object
+      description: Payload to update an Access Policy (DAP) and the associated configuration
+      required:
+      - name
+      - subscriptionsCloudLocationsAndKey
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: Name of the Access Policy
+        contentInfo:
+          $ref: '#/components/schemas/UpdateDapContentInfoPayload'
+          description: Information about the data content that is being managed by this Access Policy
+        dataAccessConfig:
+          $ref: '#/components/schemas/DapRetentionInfo'
+          description: Configuration for retention and expiration of data that is being managed by this Access Policy
+        subscriptionsCloudLocationsAndKey:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionsCloudLocationsAndKey'
+          description: The subscription, cloud and region information along with encryption key where the data is being managed by this Access Policy
+    DapDailyCatalogServiceView:
+      title: DapDailyCatalogServiceView
+      type: object
+      properties:
+        backupCount:
+          type: integer
+          format: int32
+        backups:
+          type: array
+          items:
+            $ref: '#/components/schemas/OldDatabaseBackup'
+    DapPitrCatalogServiceView:
+      title: DapPitrCatalogServiceView
+      type: object
+      properties:
+        timeRanges:
+          type: array
+          items:
+            $ref: '#/components/schemas/DapFromToDate'
+    SanitizationDapContent:
+      title: SanitizationDapContent
+      type: object
+      properties:
+        automated:
+          type: object
+          required:
+          - sanitizationScheduleId
+          properties:
+            sanitizationScheduleId:
+              type: string
+              format: uuid
+              description: Id of the sanitization schedule to process automated backups, required only if contentType = Sanitized.
+        manual:
+          description: The list of sanitized snapshots that are to be shared as part of this access policy
+          type: array
+          items:
+            $ref: '#/components/schemas/DapManualInfo'
+    SubscriptionsCloudLocationsAndKey:
+      type: object
+      description: The cloud location information along with encryption key where the data is being managed by this Access Policy
+      required:
+      - subscriptionName
+      - cloudRegionAndKey
+      properties:
+        subscriptionName:
+          type: string
+        cloudRegionAndKey:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/RegionToEncryptionKey'
+        users:
+          description: List of users email id who have access to the data/content managed by this Access Policy
+          type: array
+          items:
+            type: string
+    DapWeeklyCatalogServiceView:
+      title: DapWeeklyCatalogServiceView
+      type: object
+      properties:
+        backupCount:
+          type: integer
+          format: int32
+        backups:
+          type: array
+          items:
+            $ref: '#/components/schemas/OldDatabaseBackup'
+    RegionInfo:
+      title: RegionInfo
+      description: Cloud region details
+      required:
+      - region
+      properties:
+        region:
+          description: The cloud region name
+          type: string
+        availabilityZones:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
     UpdateDapBackupContentPayload:
       title: UpdateDapBackupContentPayload
       type: object
@@ -751,28 +769,61 @@ components:
         toTime:
           type: string
           format: date-time
-    DapMonthlyCatalogServiceView:
-      title: DapMonthlyCatalogServiceView
+    CreateDapSanitizationContentPayload:
+      title: CreateDapSanitizationContentPayload
       type: object
       properties:
-        backupCount:
-          type: integer
-          format: int32
-        backups:
+        automated:
+          type: object
+          required:
+          - sanitizationScheduleId
+          properties:
+            sanitizationScheduleId:
+              type: string
+              format: uuid
+              description: Id of the sanitization schedule to process automated backups, required only if contentType = Sanitized.
+        manual:
+          description: The list of sanitized snapshots that are to be shared as part of this access policy
           type: array
           items:
-            $ref: '#/components/schemas/OldDatabaseBackup'
-    apiMetadata:
-      title: apiMetadata
+            $ref: '#/components/schemas/DapManualContentPayload'
+    DapManualContentPayload:
+      title: DapManualContentPayload
       type: object
       properties:
-        timeZone:
+        id:
           type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
+          format: uuid
+          description: content id
+    SubscriptionsAndUsers:
+      type: object
+      description: The subscription information along with users who can access content of this Access Policy
+      required:
+      - subscriptionName
+      properties:
+        subscriptionName:
+          type: string
+        users:
+          type: array
+          items:
+            type: string
+          description: List of users who have access to the data/content managed by this Access Policy
+    DapContentType:
+      description: Content Type for the Data Access Policy
+      type: string
+      enum:
+      - As-Is
+      - Sanitized
+      - Backup
+    RegionToEncryptionKey:
+      type: object
+      required:
+      - region
+      properties:
+        region:
+          type: string
+        encryptionKeyName:
+          type: string
     CreateDapBackupContentPayload:
       title: CreateDapBackupContentPayload
       type: object
@@ -785,18 +836,97 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DapManualContentPayload'
-    ManageAccessDapPayload:
-      title: ManageAccessDapPayload
+    DapRetentionInfo:
       type: object
-      description: Payload to update users of an Access Policy (DAP)
-      required:
-      - subscriptionsAndUsers
       properties:
-        subscriptionsAndUsers:
+        pitr:
+          description: Retention time (in days) for Point-In-Time recoverability
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          maximum: 35
+        dailyBackups:
+          description: Retention time (in days) to retain daily snapshots
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          maximum: 730
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    AsIsDapContent:
+      title: AsIsDapContent
+      type: object
+      properties:
+        automated:
+          type: boolean
+          description: Share the automated as-is snapshots. This is exclusive with manual specification.
+        manual:
+          description: The list of snapshots that are to be shared as part of this access policy
           type: array
           items:
-            $ref: '#/components/schemas/SubscriptionsAndUsers'
-          description: The subscription and users information for this Access Policy
+            $ref: '#/components/schemas/DapManualInfo'
+    DapMonthlyCatalogServiceView:
+      title: DapMonthlyCatalogServiceView
+      type: object
+      properties:
+        backupCount:
+          type: integer
+          format: int32
+        backups:
+          type: array
+          items:
+            $ref: '#/components/schemas/OldDatabaseBackup'
+    DapManualInfo:
+      title: DapManualInfo
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The DB Service snapshot id
+        name:
+          type: string
+          description: The DB Service snapshot name
+          x-computed: true
+        creationTime:
+          type: string
+          description: DB Service snapshot capture time
+          format: date-time
+          x-computed: true
+        sharedAt:
+          type: string
+          description: The timestamp when the snapshot was added to DAP for sharing
+          format: date-time
+          x-computed: true
+    OldDatabaseBackup:
+      title: OldDatabaseBackup
+      type: object
+      properties:
+        backupTime:
+          type: string
+          description: Database Backup capture time
+          format: date-time
+        backupType:
+          type: string
+          description: Database Backup's type
+        name:
+          type: string
+          description: Database Snapshot name
+        retentionType:
+          type: string
+          description: Database Backup's retention type
+        status:
+          type: string
+          description: Database Backup status
+      description: This is a definition for Tessell Database Snapshot Service Consumer Object
     TessellDapServiceDTO:
       title: TessellDapServiceDTO
       type: object
@@ -856,158 +986,36 @@ components:
           type: string
           format: date-time
           description: Timestamp when this Access Policy was last updated at
-    UpdateDapAsIsContentPayload:
-      title: UpdateDapAsIsContentPayload
+    apiPaginationInfo:
+      title: apiPaginationInfo
       type: object
       properties:
-        manual:
-          description: The list of snapshots that are to be shared as part of this access policy
-          type: array
-          items:
-            $ref: '#/components/schemas/DapManualContentPayload'
-    UpdateDapPayload:
-      title: UpdateDapPayload
-      type: object
-      description: Payload to update an Access Policy (DAP) and the associated configuration
-      required:
-      - name
-      - subscriptionsCloudLocationsAndKey
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 128
-          description: Name of the Access Policy
-        contentInfo:
-          $ref: '#/components/schemas/UpdateDapContentInfoPayload'
-          description: Information about the data content that is being managed by this Access Policy
-        dataAccessConfig:
-          $ref: '#/components/schemas/DapRetentionInfo'
-          description: Configuration for retention and expiration of data that is being managed by this Access Policy
-        subscriptionsCloudLocationsAndKey:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriptionsCloudLocationsAndKey'
-          description: The subscription, cloud and region information along with encryption key where the data is being managed by this Access Policy
-    DapYearlyCatalogServiceView:
-      title: DapYearlyCatalogServiceView
-      type: object
-      properties:
-        backupCount:
+        pageSize:
           type: integer
           format: int32
-        backups:
-          type: array
-          items:
-            $ref: '#/components/schemas/OldDatabaseBackup'
-    apiStatus:
-      title: apiStatus
+        pageOffset:
+          type: integer
+          format: int32
+    apiMetadata:
+      title: apiMetadata
       type: object
       properties:
-        status:
+        timeZone:
           type: string
-        message:
-          type: string
-    SubscriptionsAndUsers:
-      type: object
-      description: The subscription information along with users who can access content of this Access Policy
-      required:
-      - subscriptionName
-      properties:
-        subscriptionName:
-          type: string
-        users:
-          type: array
-          items:
-            type: string
-          description: List of users who have access to the data/content managed by this Access Policy
-    CreateDapSanitizationContentPayload:
-      title: CreateDapSanitizationContentPayload
-      type: object
-      properties:
-        automated:
-          type: object
-          required:
-          - sanitizationScheduleId
-          properties:
-            sanitizationScheduleId:
-              type: string
-              format: uuid
-              description: Id of the sanitization schedule to process automated backups, required only if contentType = Sanitized.
-        manual:
-          description: The list of sanitized snapshots that are to be shared as part of this access policy
-          type: array
-          items:
-            $ref: '#/components/schemas/DapManualContentPayload'
-    CreateDapPayload:
-      title: CreateDapPayload
-      type: object
-      description: Payload to create an Access Policy (DAP) and the associated configuration
-      required:
-      - name
-      - contentType
-      - subscriptionsCloudLocationsAndKey
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 128
-          description: Name of the Access Policy
-        contentType:
-          $ref: '#/components/schemas/DapContentType'
-          description: Type of data content (as-is, sanitized, backup) that this Access Policy is entitled to manage
-        contentInfo:
-          $ref: '#/components/schemas/CreateDapContentInfoPayload'
-          description: Information about the data content that is being managed by this Access Policy
-        dataAccessConfig:
-          $ref: '#/components/schemas/DapRetentionInfo'
-          description: Configuration for retention and expiration of data that is being managed by this Access Policy
-        subscriptionsCloudLocationsAndKey:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriptionsCloudLocationsAndKey'
-          description: The subscription, cloud and region information along with encryption key where the data is being managed by this Access Policy
-    SubscriptionsCloudLocationsAndKey:
-      type: object
-      description: The cloud location information along with encryption key where the data is being managed by this Access Policy
-      required:
-      - subscriptionName
-      - cloudRegionAndKey
-      properties:
-        subscriptionName:
-          type: string
-        cloudRegionAndKey:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/RegionToEncryptionKey'
-        users:
-          description: List of users email id who have access to the data/content managed by this Access Policy
-          type: array
-          items:
-            type: string
-    AsIsDapContent:
-      title: AsIsDapContent
-      type: object
-      properties:
-        automated:
-          type: boolean
-          description: Share the automated as-is snapshots. This is exclusive with manual specification.
-        manual:
-          description: The list of snapshots that are to be shared as part of this access policy
-          type: array
-          items:
-            $ref: '#/components/schemas/DapManualInfo'
-    DapManualContentPayload:
-      title: DapManualContentPayload
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: content id
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
   parameters:
+    dap-statuses-in-query:
+      name: statuses
+      in: query
+      description: DAP status to filter upon
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/DapStatus'
     timeZone:
       name: time-zone
       in: query
@@ -1016,15 +1024,6 @@ components:
       schema:
         type: string
         default: UTC
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
     pageOffset:
       name: page-offset
       in: query
@@ -1042,14 +1041,15 @@ components:
       schema:
         type: boolean
         default: false
-    dap-statuses-in-query:
-      name: statuses
+    pageSize:
+      name: page-size
       in: query
-      description: DAP status to filter upon
+      description: Page size for get query
+      required: false
       schema:
-        type: array
-        items:
-          $ref: '#/components/schemas/DapStatus'
+        type: integer
+        format: int32
+        default: 10
   securitySchemes:
     BearerAuth:
       type: http

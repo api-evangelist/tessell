@@ -49,34 +49,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    IdentityProviderType:
-      title: IdentityProviderType
-      type: string
-      description: Currently supported Identity Providers for SSO
-      enum:
-      - AZURE_AD
-      - OKTA
-    SsoConfigurationDTO:
-      title: SsoConfigurationDTO
-      description: Component to represent SSO Configuration
-      type: object
-      properties:
-        tessellEntityId:
-          type: string
-          description: Tessell's Entity ID for SSO
-        assertionConsumerServiceUrl:
-          type: string
-          description: Assertion Consumer Service URL
-        tessellLoginUrl:
-          type: string
-          description: Tessell Login URL
-        scimBaseUrl:
-          type: string
-          description: Base URL for SCIM protocol
-        idps:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdentityProviderDTO'
     IdentityProviderDTO:
       title: IdentityProviderDTO
       type: object
@@ -107,6 +79,27 @@ components:
           type: string
           description: Date when the IDP configuration was last modified
           format: date-time
+    SsoConfigurationDTO:
+      title: SsoConfigurationDTO
+      description: Component to represent SSO Configuration
+      type: object
+      properties:
+        tessellEntityId:
+          type: string
+          description: Tessell's Entity ID for SSO
+        assertionConsumerServiceUrl:
+          type: string
+          description: Assertion Consumer Service URL
+        tessellLoginUrl:
+          type: string
+          description: Tessell Login URL
+        scimBaseUrl:
+          type: string
+          description: Base URL for SCIM protocol
+        idps:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityProviderDTO'
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -131,6 +124,13 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
+    IdentityProviderType:
+      title: IdentityProviderType
+      type: string
+      description: Currently supported Identity Providers for SSO
+      enum:
+      - AZURE_AD
+      - OKTA
     IdentityProviderStatus:
       title: IdentityProviderStatus
       type: string

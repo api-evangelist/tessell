@@ -334,49 +334,121 @@ paths:
       - tessell-notification-profile-controller
 components:
   schemas:
-    NotificationProfileMetadata:
-      title: NotificationProfileMetadata
+    NotificationProfileSplunkCreateUpdatePayload:
+      title: NotificationProfileSplunkCreateUpdatePayload
       type: object
       properties:
-        createdBy:
-          type: string
-          description: User who created the alert profile
-          default: Tessell
-        lastModifiedBy:
-          type: string
-          description: User who last modified the alert profile
-          default: Tessell
-        channelsMigrated:
-          type: boolean
-          description: Tells weather the channels have been created for the destinations for existing profiles
-    NotificationProfileWebhookInfo:
-      title: NotificationProfileWebhookInfo
-      type: object
-      properties:
-        destId:
-          description: Same as `notificationChannelId`. This will be the primary reference going forward.
-          type: string
-          format: uuid
         endpoint:
           $ref: '#/components/schemas/GenericInputString'
-        headers:
+        token:
+          $ref: '#/components/schemas/GenericInputStringSecret'
+    NotificationProfileDTO:
+      title: NotificationProfileDTO
+      allOf:
+      - $ref: '#/components/schemas/NotificationProfileCommonProperties'
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/NotificationProfileStatus'
+        destinationDetails:
+          $ref: '#/components/schemas/NotificationProfileDestinationDetailsDTO'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    NotificationProfileCreateUpdatePayload:
+      title: NotificationProfileCreateUpdatePayload
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the profile
+        name:
+          type: string
+          description: Name of the profile
+        sourceDataTypes:
           type: array
+          minItems: 1
+          maxItems: 1
+          description: List of Source Data Types
           items:
-            $ref: '#/components/schemas/GenericInputString'
-    NotificationProfileConsumer:
-      title: NotificationProfileConsumer
+            $ref: '#/components/schemas/NotificationProfileSourceDataType'
+        destinationTypes:
+          type: array
+          description: List of Destination Types
+          items:
+            $ref: '#/components/schemas/NotificationProfileDestinationType'
+        destinationDetails:
+          $ref: '#/components/schemas/NotificationProfileDestinationDetailsCreateUpdatePayload'
+        consumerType:
+          $ref: '#/components/schemas/NotificationProfileConsumer'
+        isDefaultProfile:
+          type: boolean
+          default: false
+          description: Is this the default profile
+    NotificationProfileDestinationType:
+      title: NotificationProfileDestinationType
       type: string
-      description: This is a definition for the Consumer Type
+      description: This is a definition for the Destination Type
       enum:
-      - CUSTOMER
-      - INTERNAL
-    NotificationChannelList:
-      title: NotificationChannelList
-      type: array
-      description: A list of notification channel identifiers.
-      items:
-        type: string
-        format: uuid
+      - EMAIL
+      - WEBHOOK
+      - SPLUNK
+      - SLACK
+    GenericInputString:
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    NotificationProfileStatus:
+      title: NotificationProfileStatus
+      type: string
+      description: This is a definition for the current status of Notification Profile
+      enum:
+      - ACTIVE
+      - INACTIVE
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    GenericInputStringSecret:
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    NotificationProfileSourceDataType:
+      title: NotificationProfileSourceDataType
+      type: string
+      description: This is a definition for the Source Data Type
+      enum:
+      - ACTIVITY_LOGS
+      - MONITORING_ALERTS
     NotificationProfileEmailInfo:
       title: NotificationProfileEmailInfo
       type: object
@@ -386,16 +458,6 @@ components:
           type: string
           format: uuid
         emailId:
-          $ref: '#/components/schemas/GenericInputString'
-    NotificationProfileSplunkInfo:
-      title: NotificationProfileSplunkInfo
-      type: object
-      properties:
-        destId:
-          description: Same as `notificationChannelId`. This will be the primary reference going forward.
-          type: string
-          format: uuid
-        endpoint:
           $ref: '#/components/schemas/GenericInputString'
     NotificationProfileDestinationDetailsCreateUpdatePayload:
       title: NotificationProfileDestinationDetailsCreateUpdatePayload
@@ -445,45 +507,41 @@ components:
                 $ref: '#/components/schemas/NotificationProfileSlackCreateUpdatePayload'
             destinationChannels:
               $ref: '#/components/schemas/NotificationChannelList'
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    NotificationProfileSourceDataType:
-      title: NotificationProfileSourceDataType
-      type: string
-      description: This is a definition for the Source Data Type
-      enum:
-      - ACTIVITY_LOGS
-      - MONITORING_ALERTS
-    NotificationProfileInfo:
-      title: NotificationProfileInfo
+    NotificationProfileWebhookCreateUpdatePayload:
+      title: NotificationProfileWebhookCreateUpdatePayload
       type: object
       properties:
-        name:
+        endpoint:
+          $ref: '#/components/schemas/GenericInputString'
+        headers:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericInputString'
+        secretHeaders:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericInputStringSecret'
+    NotificationProfileEmailCreateUpdatePayload:
+      title: NotificationProfileEmailCreateUpdatePayload
+      type: object
+      properties:
+        emailId:
+          $ref: '#/components/schemas/GenericInputString'
+    NotificationProfileMetadata:
+      title: NotificationProfileMetadata
+      type: object
+      properties:
+        createdBy:
           type: string
-        description:
+          description: User who created the alert profile
+          default: Tessell
+        lastModifiedBy:
           type: string
+          description: User who last modified the alert profile
+          default: Tessell
+        channelsMigrated:
+          type: boolean
+          description: Tells weather the channels have been created for the destinations for existing profiles
     NotificationProfileSlackCreateUpdatePayload:
       title: NotificationProfileSlackCreateUpdatePayload
       type: object
@@ -495,58 +553,6 @@ components:
           $ref: '#/components/schemas/GenericInputStringSecret'
         slackChannel:
           $ref: '#/components/schemas/GenericInputString'
-    NotificationProfileSlackInfo:
-      title: NotificationProfileSlackInfo
-      type: object
-      properties:
-        destId:
-          description: Same as `notificationChannelId`. This will be the primary reference going forward.
-          type: string
-          format: uuid
-        slackChannel:
-          $ref: '#/components/schemas/GenericInputString'
-    NotificationProfileStatus:
-      title: NotificationProfileStatus
-      type: string
-      description: This is a definition for the current status of Notification Profile
-      enum:
-      - ACTIVE
-      - INACTIVE
-    NotificationProfileSplunkCreateUpdatePayload:
-      title: NotificationProfileSplunkCreateUpdatePayload
-      type: object
-      properties:
-        endpoint:
-          $ref: '#/components/schemas/GenericInputString'
-        token:
-          $ref: '#/components/schemas/GenericInputStringSecret'
-    NotificationProfileEmailCreateUpdatePayload:
-      title: NotificationProfileEmailCreateUpdatePayload
-      type: object
-      properties:
-        emailId:
-          $ref: '#/components/schemas/GenericInputString'
-    NotificationProfileDestinationType:
-      title: NotificationProfileDestinationType
-      type: string
-      description: This is a definition for the Destination Type
-      enum:
-      - EMAIL
-      - WEBHOOK
-      - SPLUNK
-      - SLACK
-    GenericInputString:
-      properties:
-        name:
-          type: string
-        value:
-          type: string
-    GenericInputStringSecret:
-      properties:
-        name:
-          type: string
-        value:
-          type: string
     NotificationProfileDestinationDetailsDTO:
       title: NotificationProfileDestinationDetailsDTO
       type: object
@@ -587,68 +593,62 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/NotificationProfileSlackInfo'
-    NotificationProfileCreateUpdatePayload:
-      title: NotificationProfileCreateUpdatePayload
+    NotificationProfileInfo:
+      title: NotificationProfileInfo
       type: object
       properties:
-        description:
-          type: string
-          description: Description of the profile
         name:
           type: string
-          description: Name of the profile
-        sourceDataTypes:
-          type: array
-          minItems: 1
-          maxItems: 1
-          description: List of Source Data Types
-          items:
-            $ref: '#/components/schemas/NotificationProfileSourceDataType'
-        destinationTypes:
-          type: array
-          description: List of Destination Types
-          items:
-            $ref: '#/components/schemas/NotificationProfileDestinationType'
-        destinationDetails:
-          $ref: '#/components/schemas/NotificationProfileDestinationDetailsCreateUpdatePayload'
-        consumerType:
-          $ref: '#/components/schemas/NotificationProfileConsumer'
-        isDefaultProfile:
-          type: boolean
-          default: false
-          description: Is this the default profile
-    apiStatus:
-      title: apiStatus
+        description:
+          type: string
+    NotificationChannelList:
+      title: NotificationChannelList
+      type: array
+      description: A list of notification channel identifiers.
+      items:
+        type: string
+        format: uuid
+    NotificationProfileSplunkInfo:
+      title: NotificationProfileSplunkInfo
       type: object
       properties:
-        status:
+        destId:
+          description: Same as `notificationChannelId`. This will be the primary reference going forward.
           type: string
-        message:
-          type: string
-    NotificationProfileWebhookCreateUpdatePayload:
-      title: NotificationProfileWebhookCreateUpdatePayload
+          format: uuid
+        endpoint:
+          $ref: '#/components/schemas/GenericInputString'
+    NotificationProfileWebhookInfo:
+      title: NotificationProfileWebhookInfo
       type: object
       properties:
+        destId:
+          description: Same as `notificationChannelId`. This will be the primary reference going forward.
+          type: string
+          format: uuid
         endpoint:
           $ref: '#/components/schemas/GenericInputString'
         headers:
           type: array
           items:
             $ref: '#/components/schemas/GenericInputString'
-        secretHeaders:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenericInputStringSecret'
-    NotificationProfileDTO:
-      title: NotificationProfileDTO
-      allOf:
-      - $ref: '#/components/schemas/NotificationProfileCommonProperties'
+    NotificationProfileConsumer:
+      title: NotificationProfileConsumer
+      type: string
+      description: This is a definition for the Consumer Type
+      enum:
+      - CUSTOMER
+      - INTERNAL
+    NotificationProfileSlackInfo:
+      title: NotificationProfileSlackInfo
       type: object
       properties:
-        status:
-          $ref: '#/components/schemas/NotificationProfileStatus'
-        destinationDetails:
-          $ref: '#/components/schemas/NotificationProfileDestinationDetailsDTO'
+        destId:
+          description: Same as `notificationChannelId`. This will be the primary reference going forward.
+          type: string
+          format: uuid
+        slackChannel:
+          $ref: '#/components/schemas/GenericInputString'
     NotificationProfileCommonProperties:
       title: NotificationProfileCommonProperties
       type: object

@@ -221,170 +221,19 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    GetNotificationResponse:
-      title: Get Notifications Response
-      type: array
-      items:
-        $ref: '#/components/schemas/UserEventList'
-    NotificationSummaryResponse:
-      title: Get Notifications Summary Response
-      type: array
-      items:
-        $ref: '#/components/schemas/NotificationSummary'
     AcknowledgeNotificationResponse:
       title: Acknowledge Notifications Summary Response
       type: array
       items:
         type: string
-    NotificationApiResponse:
-      title: NotificationApiResponse
+    NotificationSummaryApiResponse:
+      title: NotificationSummaryApiResponse
       type: object
       properties:
         metadata:
           $ref: '#/components/schemas/ApiMetadata'
         response:
-          $ref: '#/components/schemas/GetNotificationResponse'
-    ApiMetadata:
-      properties:
-        pagination:
-          $ref: '#/components/schemas/ApiPaginationInfo'
-        records:
-          format: int32
-          type: integer
-        timeZone:
-          type: string
-      title: ApiMetadata
-      type: object
-    BatchAcknowledgeRequest:
-      title: Batch acknowledge request
-      type: object
-      description: Batch acknowledge request
-      properties:
-        ids:
-          type: array
-          items:
-            type: string
-        acknowledgeAll:
-          type: boolean
-          default: true
-          description: acknowledges all the notifications of the user
-    NotificationCount:
-      title: Notification Count
-      type: object
-      description: Notification count object
-      required:
-      - acknowledgedCount
-      - count
-      properties:
-        count:
-          type: integer
-          description: Total number of events in the provided time range that are not acknowledged
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    UserEvent:
-      title: User Event
-      type: object
-      description: User Event object
-      required:
-      - id
-      - tenantId
-      - userId
-      - event
-      - acknowledged
-      - acknowledgedAt
-      properties:
-        id:
-          type: string
-          x-exclude-from: service
-          x-gorm-primary-key: true
-          description: notification identifier
-        tenantId:
-          x-exclude-from: service
-          x-gorm-column-attrs: not null
-          type: string
-          description: Tenant identifier
-        userId:
-          type: string
-          description: User identifier
-        event:
-          $ref: '#/components/schemas/Event'
-          description: Event corresponding to this notification
-        acknowledged:
-          type: boolean
-          description: is event acknowledged?
-        acknowledgedAt:
-          type: string
-          format: date-time
-          description: acknowledged timestamp
-        notifyUser:
-          type: boolean
-          description: whether to notify the user
-    Severity:
-      type: string
-      description: Severity of a CVE or issue
-      enum:
-      - CRITICAL
-      - HIGH
-      - MEDIUM
-      - LOW
-    NotificationSummary:
-      title: Notification Summary
-      type: object
-      description: Notification summary object
-      required:
-      - id
-      - acknowledged
-      - message
-      - entityName
-      - entityType
-      - occurredAt
-      - appName
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: notification identifier
-        acknowledged:
-          type: boolean
-          description: is event acknowledged by the user?
-        message:
-          type: string
-          description: message
-        entityName:
-          type: string
-          description: Entity name
-        entityType:
-          type: string
-          description: Entity type
-        occurredAt:
-          type: string
-          format: date-time
-          description: occurred at timestamp
-        appName:
-          type: string
-          description: App that generated the event
+          $ref: '#/components/schemas/NotificationSummaryResponse'
     Event:
       title: Event
       type: object
@@ -474,13 +323,17 @@ components:
           description: Is system generated event
         visibility:
           $ref: '#/components/schemas/Visibility'
-    Visibility:
-      title: Visibility
-      type: string
-      description: Visibility level
-      enum:
-      - USER
-      - SYSTEM
+    NotificationCount:
+      title: Notification Count
+      type: object
+      description: Notification count object
+      required:
+      - acknowledgedCount
+      - count
+      properties:
+        count:
+          type: integer
+          description: Total number of events in the provided time range that are not acknowledged
     UserEventList:
       title: User events list
       type: object
@@ -492,6 +345,153 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserEvent'
+    Visibility:
+      title: Visibility
+      type: string
+      description: Visibility level
+      enum:
+      - USER
+      - SYSTEM
+    ApiMetadata:
+      properties:
+        pagination:
+          $ref: '#/components/schemas/ApiPaginationInfo'
+        records:
+          format: int32
+          type: integer
+        timeZone:
+          type: string
+      title: ApiMetadata
+      type: object
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    NotificationSummaryResponse:
+      title: Get Notifications Summary Response
+      type: array
+      items:
+        $ref: '#/components/schemas/NotificationSummary'
+    Severity:
+      type: string
+      description: Severity of a CVE or issue
+      enum:
+      - CRITICAL
+      - HIGH
+      - MEDIUM
+      - LOW
+    NotificationSummary:
+      title: Notification Summary
+      type: object
+      description: Notification summary object
+      required:
+      - id
+      - acknowledged
+      - message
+      - entityName
+      - entityType
+      - occurredAt
+      - appName
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: notification identifier
+        acknowledged:
+          type: boolean
+          description: is event acknowledged by the user?
+        message:
+          type: string
+          description: message
+        entityName:
+          type: string
+          description: Entity name
+        entityType:
+          type: string
+          description: Entity type
+        occurredAt:
+          type: string
+          format: date-time
+          description: occurred at timestamp
+        appName:
+          type: string
+          description: App that generated the event
+    GetNotificationResponse:
+      title: Get Notifications Response
+      type: array
+      items:
+        $ref: '#/components/schemas/UserEventList'
+    UserEvent:
+      title: User Event
+      type: object
+      description: User Event object
+      required:
+      - id
+      - tenantId
+      - userId
+      - event
+      - acknowledged
+      - acknowledgedAt
+      properties:
+        id:
+          type: string
+          x-exclude-from: service
+          x-gorm-primary-key: true
+          description: notification identifier
+        tenantId:
+          x-exclude-from: service
+          x-gorm-column-attrs: not null
+          type: string
+          description: Tenant identifier
+        userId:
+          type: string
+          description: User identifier
+        event:
+          $ref: '#/components/schemas/Event'
+          description: Event corresponding to this notification
+        acknowledged:
+          type: boolean
+          description: is event acknowledged?
+        acknowledgedAt:
+          type: string
+          format: date-time
+          description: acknowledged timestamp
+        notifyUser:
+          type: boolean
+          description: whether to notify the user
+    BatchAcknowledgeRequest:
+      title: Batch acknowledge request
+      type: object
+      description: Batch acknowledge request
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+        acknowledgeAll:
+          type: boolean
+          default: true
+          description: acknowledges all the notifications of the user
     ApiPaginationInfo:
       title: ApiPaginationInfo
       type: object
@@ -505,14 +505,14 @@ components:
         pageSize:
           format: int32
           type: integer
-    NotificationSummaryApiResponse:
-      title: NotificationSummaryApiResponse
+    NotificationApiResponse:
+      title: NotificationApiResponse
       type: object
       properties:
         metadata:
           $ref: '#/components/schemas/ApiMetadata'
         response:
-          $ref: '#/components/schemas/NotificationSummaryResponse'
+          $ref: '#/components/schemas/GetNotificationResponse'
   securitySchemes:
     BearerAuth:
       type: http

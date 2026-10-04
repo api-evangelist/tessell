@@ -193,76 +193,76 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
-  parameters:
-    service-id:
-      name: service-id
-      in: path
-      required: true
-      style: simple
-      schema:
-        type: string
-        format: uuid
-    id:
-      name: id
-      description: Id of entity
-      in: path
-      style: simple
-      required: true
-      schema:
-        type: string
-        format: uuid
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
-    instance-id:
-      name: instance-id
-      in: path
-      required: true
-      style: simple
-      schema:
-        type: string
-        format: uuid
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
   schemas:
-    TessellServiceInstanceConnectString:
-      title: TessellServiceInstanceConnectString
+    AzureNetAppEncryptionKeySource:
+      enum:
+      - Microsoft.NetApp
+      - Microsoft.KeyVault
+      x-enum-varnames:
+      - MICROSOFT_NET_APP
+      - MICROSOFT_KEY_VAULT
+    ParameterProfile:
+      title: ParameterProfile
       type: object
       x-computed: true
       properties:
-        connectDescriptor:
+        id:
           type: string
-          x-computed: true
-        masterUser:
+          format: uuid
+          description: Tessell generated UUID for the the parameter profile
+        name:
           type: string
-          x-computed: true
-        endpoint:
+          minLength: 1
+          maxLength: 128
+          description: The name used to identify the parameter profile
+        version:
           type: string
-          x-computed: true
-        servicePort:
+          format: uuid
+          description: The version of the parameter profile associated with the instance
+        status:
+          $ref: '#/components/schemas/ParameterProfileStatus'
+    TessellExceptionUserView:
+      title: TessellExceptionUserView
+      type: object
+      properties:
+        message:
           type: string
-          x-computed: true
+          description: End-user representation of the message
+        resolution:
+          type: string
+          description: End-user representation of resolution
+        errorCode:
+          $ref: '#/components/schemas/TessellHTTPErrorCode'
+          description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
+    PerfInsightsConfig:
+      title: TessellPerfInsightsConfig
+      type: object
+      properties:
+        perfInsightsEnabled:
+          type: boolean
+        monitoringDeploymentId:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/PerfInsightsStatus'
+    ComputeProviderType:
+      type: string
+      enum:
+      - AWS_EC2
+      - AZURE_VM
+      - GCP_GCE
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    TessellHTTPErrorCode:
+      type: object
+      properties:
+        httpCode:
+          type: integer
+          description: HTTP code
+        code:
+          type: string
+          description: Tessell's specific code with more context on error
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -287,25 +287,144 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    AzureNetAppEncryptionKeySource:
+    InstanceAzureNetAppConfig:
+      description: Service instance level Azure NetApp config
+      type: object
+      properties:
+        azureNetAppName:
+          type: string
+        capacityPoolName:
+          type: string
+        volumeName:
+          type: string
+        azureNetAppId:
+          description: Azure NetApp Id registered with Tessell
+          type: string
+          format: uuid
+        capacityPoolId:
+          description: Capacity Pool Id of the Azure NetApp registered with Tessell
+          type: string
+          format: uuid
+        delegatedSubnetId:
+          description: Delegated Subnet name registered with Tessell for the Azure NetApp volume
+          type: string
+          format: uuid
+        delegatedSubnetName:
+          description: Delegated Subnet Id registered with Tessell for the Azure NetApp volume
+          type: string
+        encryptionKeyInfo:
+          $ref: '#/components/schemas/AzureNetAppEncryptionKeyInfo'
+        networkFeatures:
+          $ref: '#/components/schemas/AzureNetAppNetworkFeature'
+        serviceLevel:
+          $ref: '#/components/schemas/AzureNetAppCapacityPoolServiceLevel'
+    AzureNetAppCapacityPoolServiceLevel:
+      type: string
       enum:
-      - Microsoft.NetApp
-      - Microsoft.KeyVault
+      - Standard
+      - Premium
+      - Ultra
       x-enum-varnames:
-      - MICROSOFT_NET_APP
-      - MICROSOFT_KEY_VAULT
-    InstanceStorageConfig:
+      - STANDARD
+      - PREMIUM
+      - ULTRA
+    TessellServiceInstanceStatus:
+      type: string
+      description: DB Service instance status
+      enum:
+      - CREATING
+      - DELETING
+      - UP
+      - DOWN
+      - STOPPED
+      - REBUILDING
+      - REBUILD_FAILED
+      - PATCHING
+      - PATCH_FAILED
+      - UPDATING_PARAMETER_PROFILE
+      - UPDATING_OPTION_PROFILE
+      - UPDATING_SECURITY_CONFIG
+      - OPTION_PROFILE_UPDATE_FAILED
+      - PARAMETER_PROFILE_UPDATE_FAILED
+      - SECURITY_CONFIG_UPDATE_FAILED
+      - REFRESHING
+    InstanceFsxNetAppConfig:
+      type: object
+      properties:
+        fileSystemName:
+          type: string
+        svmName:
+          type: string
+        volumeName:
+          type: string
+        fileSystemId:
+          description: File System Id of the FSx NetApp registered with Tessell
+          type: string
+          format: uuid
+        svmId:
+          description: Storage Virtual Machine Id of the FSx NetApp registered with Tessell
+          type: string
+          format: uuid
+    AwsInfraConfig:
+      type: object
+      title: AwsInfraConfig
+      properties:
+        awsCpuOptions:
+          type: object
+          title: AwsCpuOptions
+          properties:
+            vcpus:
+              type: integer
+              format: int32
+              minimum: 0
+              description: Number of vcpus for aws cpu options
+    TessellServiceInstancesResponse:
+      title: TessellServiceInstancesResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/TessellServiceInstanceDTO'
+    TessellServiceInstanceRole:
+      type: string
+      description: DB Service instance role
+      enum:
+      - primary
+      - read_only_replica
+      - failover_replica
+      - dr
+    InstanceComputeConfig:
       type: object
       properties:
         provider:
-          $ref: '#/components/schemas/StorageProviderType'
-        volumeType:
-          type: string
-          description: Data disk volume type
-        fsxNetAppConfig:
-          $ref: '#/components/schemas/InstanceFsxNetAppConfig'
-        azureNetAppConfig:
-          $ref: '#/components/schemas/InstanceAzureNetAppConfig'
+          $ref: '#/components/schemas/ComputeProviderType'
+        exadataConfig:
+          $ref: '#/components/schemas/InstanceExadataComputeConfig'
+    SecurityConfigOps:
+      type: object
+      properties:
+        securityProfile:
+          $ref: '#/components/schemas/SecurityProfileInfoOps'
+    PrivateLinkPayload:
+      type: object
+      description: The interface endpoint or Gateway Load Balancer endpoint to connect to your DB service.
+      properties:
+        servicePrincipals:
+          description: The list of AWS account principals that are currently enabled. This is only applicable for DB Services hosted on AWS.
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        clientAzureSubscriptionIds:
+          description: The list of Azure subscription Ids. This is only applicable for DB Services hosted on AZURE.
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            format: uuid
     TessellServiceInstanceDTO:
       title: TessellServiceInstanceDTO
       type: object
@@ -476,133 +595,12 @@ components:
           $ref: '#/components/schemas/SecurityConfigOps'
         contextInfo:
           $ref: '#/components/schemas/TessellServiceInstanceContextInfo'
-    TessellServiceInstanceRole:
+    TessellServiceInstanceSubStatus:
       type: string
-      description: DB Service instance role
+      description: DB Service Instance could have a sub status associated along with status
       enum:
-      - primary
-      - read_only_replica
-      - failover_replica
-      - dr
-    SecurityProfileSyncStatus:
-      type: string
-      description: Sync status of the security profile applied on an instance/server
-      enum:
-      - IN_SYNC
-      - UPDATING
-      - OUT_OF_SYNC
-    InstanceAzureNetAppConfig:
-      description: Service instance level Azure NetApp config
-      type: object
-      properties:
-        azureNetAppName:
-          type: string
-        capacityPoolName:
-          type: string
-        volumeName:
-          type: string
-        azureNetAppId:
-          description: Azure NetApp Id registered with Tessell
-          type: string
-          format: uuid
-        capacityPoolId:
-          description: Capacity Pool Id of the Azure NetApp registered with Tessell
-          type: string
-          format: uuid
-        delegatedSubnetId:
-          description: Delegated Subnet name registered with Tessell for the Azure NetApp volume
-          type: string
-          format: uuid
-        delegatedSubnetName:
-          description: Delegated Subnet Id registered with Tessell for the Azure NetApp volume
-          type: string
-        encryptionKeyInfo:
-          $ref: '#/components/schemas/AzureNetAppEncryptionKeyInfo'
-        networkFeatures:
-          $ref: '#/components/schemas/AzureNetAppNetworkFeature'
-        serviceLevel:
-          $ref: '#/components/schemas/AzureNetAppCapacityPoolServiceLevel'
-    ParameterProfileStatus:
-      type: string
-      description: Association status of the instance to the parameter profile
-      enum:
-      - IN_SYNC
-      - UPDATING
-      - OUT_OF_SYNC
-      - PENDING_REBOOT
-    PrivateLinkInfo:
-      title: PrivateLinkInfo
-      allOf:
-      - $ref: '#/components/schemas/PrivateLinkPayload'
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        status:
-          $ref: '#/components/schemas/PrivateLinkStatus'
-        endpointServiceName:
-          description: The configured endpoint as a result of configuring the service-principals
-          type: string
-          x-computed: true
-        privateLinkServiceAlias:
-          type: string
-          description: The Azure private link service alias
-    TessellExceptionUserView:
-      title: TessellExceptionUserView
-      type: object
-      properties:
-        message:
-          type: string
-          description: End-user representation of the message
-        resolution:
-          type: string
-          description: End-user representation of resolution
-        errorCode:
-          $ref: '#/components/schemas/TessellHTTPErrorCode'
-          description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
-    TessellServiceInstancesResponse:
-      title: TessellServiceInstancesResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/TessellServiceInstanceDTO'
-    InstanceAccessMode:
-      type: string
-      description: Service instance access mode
-      enum:
-      - OPEN_MODE
-      - MOUNT_MODE
-    TessellServiceInstanceType:
-      type: string
-      description: DB Service instance type
-      enum:
-      - DC
-      - DR
-    ParameterProfile:
-      title: ParameterProfile
-      type: object
-      x-computed: true
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Tessell generated UUID for the the parameter profile
-        name:
-          type: string
-          minLength: 1
-          maxLength: 128
-          description: The name used to identify the parameter profile
-        version:
-          type: string
-          format: uuid
-          description: The version of the parameter profile associated with the instance
-        status:
-          $ref: '#/components/schemas/ParameterProfileStatus'
+      - SECURITY_CONFIG_UPDATE_FAILED
+      - UPDATING_SECURITY_CONFIG
     ServiceInstanceOracleEngineConfig:
       title: TessellServiceInstanceOracleEngineConfig
       type:
@@ -611,245 +609,20 @@ components:
       properties:
         accessMode:
           $ref: '#/components/schemas/InstanceAccessMode'
-    AzureNetAppNetworkFeature:
-      description: Azure NetApp network feature configuration for creating volume
+    ParameterProfileStatus:
       type: string
+      description: Association status of the instance to the parameter profile
       enum:
-      - Standard
-      - Basic
-      x-enum-varnames:
-      - STANDARD
-      - BASIC
-    AzureNetAppEncryptionKeyInfo:
-      description: Details of encryption key
-      type: object
-      properties:
-        id:
-          type: string
-          description: Id of the encryption key
-          format: uuid
-        name:
-          type: string
-          description: name of the encryption key
-        keyVaultCloudResourceId:
-          type: string
-          description: name of the encryption key vault in cloud
-        keySource:
-          $ref: '#/components/schemas/AzureNetAppEncryptionKeySource'
-    InstanceFsxNetAppConfig:
-      type: object
-      properties:
-        fileSystemName:
-          type: string
-        svmName:
-          type: string
-        volumeName:
-          type: string
-        fileSystemId:
-          description: File System Id of the FSx NetApp registered with Tessell
-          type: string
-          format: uuid
-        svmId:
-          description: Storage Virtual Machine Id of the FSx NetApp registered with Tessell
-          type: string
-          format: uuid
-    taskSummary:
-      title: taskSummary
-      type: object
-      properties:
-        taskId:
-          type: string
-          format: uuid
-        taskType:
-          type: string
-        resourceId:
-          type: string
-          format: uuid
-        associatedResourceIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        details:
-          type: object
-          additionalProperties:
-            type: string
-    InstanceExadataComputeConfig:
-      type: object
-      required:
-      - infrastructureId
-      - infrastructureName
-      - vmClusterId
-      - vmClusterName
-      - vcpus
-      - memory
-      properties:
-        infrastructureId:
-          type: string
-          format: uuid
-        infrastructureName:
-          type: string
-        vmClusterId:
-          type: string
-          format: uuid
-        vmClusterName:
-          type: string
-        vcpus:
-          type: integer
-        memory:
-          type: integer
-          format: int64
-    PerfInsightsConfig:
-      title: TessellPerfInsightsConfig
-      type: object
-      properties:
-        perfInsightsEnabled:
-          type: boolean
-        monitoringDeploymentId:
-          type: string
-          format: uuid
-        status:
-          $ref: '#/components/schemas/PerfInsightsStatus'
-    TessellServiceInstanceStatus:
-      type: string
-      description: DB Service instance status
-      enum:
-      - CREATING
-      - DELETING
-      - UP
-      - DOWN
-      - STOPPED
-      - REBUILDING
-      - REBUILD_FAILED
-      - PATCHING
-      - PATCH_FAILED
-      - UPDATING_PARAMETER_PROFILE
-      - UPDATING_OPTION_PROFILE
-      - UPDATING_SECURITY_CONFIG
-      - OPTION_PROFILE_UPDATE_FAILED
-      - PARAMETER_PROFILE_UPDATE_FAILED
-      - SECURITY_CONFIG_UPDATE_FAILED
-      - REFRESHING
-    AwsInfraConfig:
-      type: object
-      title: AwsInfraConfig
-      properties:
-        awsCpuOptions:
-          type: object
-          title: AwsCpuOptions
-          properties:
-            vcpus:
-              type: integer
-              format: int32
-              minimum: 0
-              description: Number of vcpus for aws cpu options
-    TessellServiceInstanceSubStatus:
-      type: string
-      description: DB Service Instance could have a sub status associated along with status
-      enum:
-      - SECURITY_CONFIG_UPDATE_FAILED
-      - UPDATING_SECURITY_CONFIG
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    InstanceSyncMode:
-      type: string
-      description: Service instance sync mode
-      enum:
-      - SYNC
-      - ASYNC
-    InstanceComputeConfig:
-      type: object
-      properties:
-        provider:
-          $ref: '#/components/schemas/ComputeProviderType'
-        exadataConfig:
-          $ref: '#/components/schemas/InstanceExadataComputeConfig'
-    TessellResourceUpdateInfo:
-      title: TessellResourceUpdateInfo
-      description: In progress update information for a Tessell Resource
-      properties:
-        updateType:
-          x-computed: true
-          type: string
-          description: Type of the update
-        referenceId:
-          x-computed: true
-          type: string
-          format: uuid
-          description: The reference-id of the update request
-        submittedAt:
-          x-computed: true
-          type: string
-          format: date-time
-          description: Timestamp when the resource update was requested
-        updateInfo:
-          x-computed: true
-          type: object
-          description: The specific details for a Tessell resource that are being updated
-          additionalProperties: {}
-    SecurityProfileInfoOps:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Id of the Security Profile
-        versionId:
-          type: string
-          format: uuid
-          description: Version Id of the Security Profile
-        status:
-          $ref: '#/components/schemas/SecurityProfileSyncStatus'
-    PrivateLinkStatus:
-      description: Tessell Private Link Status
-      type: string
-      enum:
-      - CREATING
-      - ACTIVE
-      - FAILED
+      - IN_SYNC
       - UPDATING
-      - UPDATION_SUCCESS
-      - UPDATION_FAILED
-      - DELETING
-      - DELETED
-      - DELETION_FAILED
-    ServiceInstanceEngineInfo:
-      title: TessellServiceInstanceInfo
-      description: This field details the DB Service Instance engine configuration details like - access mode
-      type:
-      - object
-      - 'null'
-      properties:
-        oracleConfig:
-          $ref: '#/components/schemas/ServiceInstanceOracleEngineConfig'
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    ComputeProviderType:
+      - OUT_OF_SYNC
+      - PENDING_REBOOT
+    TessellServiceInstanceType:
       type: string
+      description: DB Service instance type
       enum:
-      - AWS_EC2
-      - AZURE_VM
-      - GCP_GCE
-      - OCI_EXADATA
-      - AZURE_EXADATA
-      - AWS_EXADATA
+      - DC
+      - DR
     OptionProfileStatus:
       type: string
       description: Association status of the instance to the option profile
@@ -858,71 +631,11 @@ components:
       - UPDATING
       - OUT_OF_SYNC
       - PENDING_REBOOT
-    PerfInsightsStatus:
-      title: PerfInsightsStatus
-      type: string
-      description: Perf insights status of a Service Instance
-      enum:
-      - ENABLED
-      - ENABLING
-      - DISABLED
-      - DISABLING
-      - FAILED_ENABLE
-      - FAILED_DISABLE
-    AzureNetAppCapacityPoolServiceLevel:
-      type: string
-      enum:
-      - Standard
-      - Premium
-      - Ultra
-      x-enum-varnames:
-      - STANDARD
-      - PREMIUM
-      - ULTRA
-    PrivateLinkPayload:
-      type: object
-      description: The interface endpoint or Gateway Load Balancer endpoint to connect to your DB service.
-      properties:
-        servicePrincipals:
-          description: The list of AWS account principals that are currently enabled. This is only applicable for DB Services hosted on AWS.
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-        clientAzureSubscriptionIds:
-          description: The list of Azure subscription Ids. This is only applicable for DB Services hosted on AZURE.
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-            format: uuid
-    SecurityConfigOps:
-      type: object
-      properties:
-        securityProfile:
-          $ref: '#/components/schemas/SecurityProfileInfoOps'
-    TessellHTTPErrorCode:
-      type: object
-      properties:
-        httpCode:
-          type: integer
-          description: HTTP code
-        code:
-          type: string
-          description: Tessell's specific code with more context on error
     InstanceConnectivityUpdateRequest:
       type: object
       properties:
         privateLink:
           $ref: '#/components/schemas/PrivateLinkPayload'
-    TessellServiceInstanceContextInfo:
-      type: object
-      description: Provide more context of Service Instance state
-      properties:
-        subStatus:
-          $ref: '#/components/schemas/TessellServiceInstanceSubStatus'
-        description:
-          type: string
     ApiErrorOps:
       type: object
       description: Common error response object for non 2xx responses of internal or ops APIs
@@ -949,6 +662,19 @@ components:
           description: Unique error code specific to Tessell
         userView:
           $ref: '#/components/schemas/TessellExceptionUserView'
+    PrivateLinkStatus:
+      description: Tessell Private Link Status
+      type: string
+      enum:
+      - CREATING
+      - ACTIVE
+      - FAILED
+      - UPDATING
+      - UPDATION_SUCCESS
+      - UPDATION_FAILED
+      - DELETING
+      - DELETED
+      - DELETION_FAILED
     MonitoringConfig:
       title: MonitoringConfig
       type: object
@@ -956,6 +682,136 @@ components:
       properties:
         perfInsights:
           $ref: '#/components/schemas/PerfInsightsConfig'
+    SecurityProfileSyncStatus:
+      type: string
+      description: Sync status of the security profile applied on an instance/server
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    InstanceSyncMode:
+      type: string
+      description: Service instance sync mode
+      enum:
+      - SYNC
+      - ASYNC
+    PerfInsightsStatus:
+      title: PerfInsightsStatus
+      type: string
+      description: Perf insights status of a Service Instance
+      enum:
+      - ENABLED
+      - ENABLING
+      - DISABLED
+      - DISABLING
+      - FAILED_ENABLE
+      - FAILED_DISABLE
+    ServiceInstanceEngineInfo:
+      title: TessellServiceInstanceInfo
+      description: This field details the DB Service Instance engine configuration details like - access mode
+      type:
+      - object
+      - 'null'
+      properties:
+        oracleConfig:
+          $ref: '#/components/schemas/ServiceInstanceOracleEngineConfig'
+    AzureNetAppEncryptionKeyInfo:
+      description: Details of encryption key
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the encryption key
+          format: uuid
+        name:
+          type: string
+          description: name of the encryption key
+        keyVaultCloudResourceId:
+          type: string
+          description: name of the encryption key vault in cloud
+        keySource:
+          $ref: '#/components/schemas/AzureNetAppEncryptionKeySource'
+    GcpInfraConfig:
+      type: object
+      title: GcpInfraConfig
+      properties:
+        gcpCpuOptions:
+          type: object
+          title: GcpCpuOptions
+          properties:
+            vcpus:
+              type: integer
+              format: int32
+              minimum: 1
+              description: Number of vCPUs for GCP custom machine type
+            memory:
+              type: integer
+              format: int32
+              minimum: 1
+              description: Memory in MB for GCP custom machine type (optional)
+    StorageProviderType:
+      description: Storage Type in the cloud
+      enum:
+      - AWS_EBS
+      - AWS_FSX_NETAPP
+      - AWS_HPC
+      - AWS_S3
+      - AZURE_HPC
+      - AZURE_MANAGED_DISK
+      - GCP_HYPERDISK
+      - GCP_GCS
+      - AZURE_BLOB
+      - MINIO
+      - AZURE_NETAPP
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    InstanceStorageConfig:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/StorageProviderType'
+        volumeType:
+          type: string
+          description: Data disk volume type
+        fsxNetAppConfig:
+          $ref: '#/components/schemas/InstanceFsxNetAppConfig'
+        azureNetAppConfig:
+          $ref: '#/components/schemas/InstanceAzureNetAppConfig'
+    PrivateLinkInfo:
+      title: PrivateLinkInfo
+      allOf:
+      - $ref: '#/components/schemas/PrivateLinkPayload'
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/PrivateLinkStatus'
+        endpointServiceName:
+          description: The configured endpoint as a result of configuring the service-principals
+          type: string
+          x-computed: true
+        privateLinkServiceAlias:
+          type: string
+          description: The Azure private link service alias
     OptionProfile:
       title: OptionProfile
       type: object
@@ -976,57 +832,201 @@ components:
           description: The version of the option profile associated with the instance
         status:
           $ref: '#/components/schemas/OptionProfileStatus'
-    GcpInfraConfig:
+    SecurityProfileInfoOps:
       type: object
-      title: GcpInfraConfig
       properties:
-        gcpCpuOptions:
-          type: object
-          title: GcpCpuOptions
-          properties:
-            vcpus:
-              type: integer
-              format: int32
-              minimum: 1
-              description: Number of vCPUs for GCP custom machine type
-            memory:
-              type: integer
-              format: int32
-              minimum: 1
-              description: Memory in MB for GCP custom machine type (optional)
-    apiResponse:
-      example:
-        metadata:
-          pagination:
-            pageOffset: 0
-            pageSize: 6
-          records: 1
-          timeZone: timeZone
-        response: '{}'
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-      title: ApiResponse
+        id:
+          type: string
+          format: uuid
+          description: Id of the Security Profile
+        versionId:
+          type: string
+          format: uuid
+          description: Version Id of the Security Profile
+        status:
+          $ref: '#/components/schemas/SecurityProfileSyncStatus'
+    taskSummary:
+      title: taskSummary
       type: object
-    StorageProviderType:
-      description: Storage Type in the cloud
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        taskType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        associatedResourceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        details:
+          type: object
+          additionalProperties:
+            type: string
+    TessellServiceInstanceConnectString:
+      title: TessellServiceInstanceConnectString
+      type: object
+      x-computed: true
+      properties:
+        connectDescriptor:
+          type: string
+          x-computed: true
+        masterUser:
+          type: string
+          x-computed: true
+        endpoint:
+          type: string
+          x-computed: true
+        servicePort:
+          type: string
+          x-computed: true
+    InstanceAccessMode:
+      type: string
+      description: Service instance access mode
       enum:
-      - AWS_EBS
-      - AWS_FSX_NETAPP
-      - AWS_HPC
-      - AWS_S3
-      - AZURE_HPC
-      - AZURE_MANAGED_DISK
-      - GCP_HYPERDISK
-      - GCP_GCS
-      - AZURE_BLOB
-      - MINIO
-      - AZURE_NETAPP
-      - OCI_EXADATA
-      - AZURE_EXADATA
-      - AWS_EXADATA
+      - OPEN_MODE
+      - MOUNT_MODE
+    InstanceExadataComputeConfig:
+      type: object
+      required:
+      - infrastructureId
+      - infrastructureName
+      - vmClusterId
+      - vmClusterName
+      - vcpus
+      - memory
+      properties:
+        infrastructureId:
+          type: string
+          format: uuid
+        infrastructureName:
+          type: string
+        vmClusterId:
+          type: string
+          format: uuid
+        vmClusterName:
+          type: string
+        vcpus:
+          type: integer
+        memory:
+          type: integer
+          format: int64
+    TessellServiceInstanceContextInfo:
+      type: object
+      description: Provide more context of Service Instance state
+      properties:
+        subStatus:
+          $ref: '#/components/schemas/TessellServiceInstanceSubStatus'
+        description:
+          type: string
+    TessellResourceUpdateInfo:
+      title: TessellResourceUpdateInfo
+      description: In progress update information for a Tessell Resource
+      properties:
+        updateType:
+          x-computed: true
+          type: string
+          description: Type of the update
+        referenceId:
+          x-computed: true
+          type: string
+          format: uuid
+          description: The reference-id of the update request
+        submittedAt:
+          x-computed: true
+          type: string
+          format: date-time
+          description: Timestamp when the resource update was requested
+        updateInfo:
+          x-computed: true
+          type: object
+          description: The specific details for a Tessell resource that are being updated
+          additionalProperties: {}
+    AzureNetAppNetworkFeature:
+      description: Azure NetApp network feature configuration for creating volume
+      type: string
+      enum:
+      - Standard
+      - Basic
+      x-enum-varnames:
+      - STANDARD
+      - BASIC
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
+  parameters:
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    instance-id:
+      name: instance-id
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    service-id:
+      name: service-id
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     BearerAuth:
       type: http

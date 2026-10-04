@@ -132,6 +132,19 @@ paths:
                 $ref: '#/components/schemas/ApiErrorOps'
 components:
   schemas:
+    TessellExceptionUserView:
+      title: TessellExceptionUserView
+      type: object
+      properties:
+        message:
+          type: string
+          description: End-user representation of the message
+        resolution:
+          type: string
+          description: End-user representation of resolution
+        errorCode:
+          $ref: '#/components/schemas/TessellHTTPErrorCode'
+          description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
     TessellHTTPErrorCode:
       type: object
       properties:
@@ -141,32 +154,6 @@ components:
         code:
           type: string
           description: Tessell's specific code with more context on error
-    DPNetworkOutboundRule:
-      title: DPNetworkOutboundRule
-      type: object
-      properties:
-        destinationType:
-          type: string
-        destination:
-          type: array
-          items:
-            type: string
-        destinationDomain:
-          type: string
-        ports:
-          type: array
-          items:
-            type: string
-        purpose:
-          type: string
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
     DPNetworkInboundRule:
       title: DPNetworkInboundRule
       type: object
@@ -183,13 +170,16 @@ components:
             type: string
         purpose:
           type: string
-    apiStatus:
-      title: apiStatus
+    AllowPrivateEndpointRequest:
+      title: AllowPrivateEndpointRequest
       type: object
+      required:
+      - principalId
+      - region
       properties:
-        status:
+        principalId:
           type: string
-        message:
+        region:
           type: string
     ApiErrorOps:
       type: object
@@ -217,36 +207,6 @@ components:
           description: Unique error code specific to Tessell
         userView:
           $ref: '#/components/schemas/TessellExceptionUserView'
-    AllowPrivateEndpointRequest:
-      title: AllowPrivateEndpointRequest
-      type: object
-      required:
-      - principalId
-      - region
-      properties:
-        principalId:
-          type: string
-        region:
-          type: string
-    DpCpCommunicationResources:
-      title: DpCpCommunicationResources
-      type: object
-      properties:
-        controlPlaneEndpointService:
-          type: string
-    TessellExceptionUserView:
-      title: TessellExceptionUserView
-      type: object
-      properties:
-        message:
-          type: string
-          description: End-user representation of the message
-        resolution:
-          type: string
-          description: End-user representation of resolution
-        errorCode:
-          $ref: '#/components/schemas/TessellHTTPErrorCode'
-          description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
     DPNetworkAccessRules:
       title: DPNetworkAccessRules
       type: object
@@ -259,6 +219,46 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DPNetworkOutboundRule'
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    DpCpCommunicationResources:
+      title: DpCpCommunicationResources
+      type: object
+      properties:
+        controlPlaneEndpointService:
+          type: string
+    DPNetworkOutboundRule:
+      title: DPNetworkOutboundRule
+      type: object
+      properties:
+        destinationType:
+          type: string
+        destination:
+          type: array
+          items:
+            type: string
+        destinationDomain:
+          type: string
+        ports:
+          type: array
+          items:
+            type: string
+        purpose:
+          type: string
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
   parameters:
     tenantIdMandatory:
       name: tenant-id

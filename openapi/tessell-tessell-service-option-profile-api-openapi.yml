@@ -86,47 +86,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
-  parameters:
-    service-id:
-      name: service-id
-      in: path
-      required: true
-      style: simple
-      schema:
-        type: string
-        format: uuid
   schemas:
-    DBServiceOptionProfileUpdateRequest:
-      type: object
-      properties:
-        instanceOptionProfileConfig:
-          type: array
-          items:
-            $ref: '#/components/schemas/DBServiceInstanceOptionProfileUpdateRequest'
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
     taskSummary:
       title: taskSummary
       type: object
@@ -168,6 +128,37 @@ components:
           - 'null'
           format: uuid
           description: The option profile version to which instance needs to be updated. By default, instance is updated to the latest version of the option profile.
+    DBServiceOptionProfileUpdateRequest:
+      type: object
+      properties:
+        instanceOptionProfileConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/DBServiceInstanceOptionProfileUpdateRequest'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
     OptionProfileStatus:
       type: string
       description: Association status of the instance to the option profile
@@ -176,6 +167,15 @@ components:
       - UPDATING
       - OUT_OF_SYNC
       - PENDING_REBOOT
+  parameters:
+    service-id:
+      name: service-id
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     BearerAuth:
       type: http

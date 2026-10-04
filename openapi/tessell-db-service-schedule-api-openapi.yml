@@ -600,27 +600,38 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    StartStopScheduleMetadata:
-      title: StartStopScheduleMetadata
-      type: object
-      x-computed: true
+    TessellServiceDeletionConfig:
+      title: TessellServiceDeletionConfig
+      description: If the DB Service is to be deleted, this config would be honoured if no preference is provided during deleting the service
+      x-patchable: true
       properties:
-        scheduleCounter:
+        retainAvailabilityMachine:
+          type: boolean
+          default: false
+          x-patchable: true
+          description: If specified as true, the associated Availability Machine (snapshots, sanitized-snapshots, logs) would be retained
+    UpdateStartStopSchedulePayload:
+      title: UpdateStartStopSchedulePayload
+      description: Payload to update start/stop schedule on the DB Service
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 255
+        scheduleInfo:
+          $ref: '#/components/schemas/StartStopScheduleInfo'
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
           type: integer
           format: int32
-          x-computed: true
-    StartStopScheduleStatus:
-      description: StartStopScheduleStatus
-      enum:
-      - ACTIVE
-      - PAUSED
-      - EXPIRED
-      - DELETED
-    DeletionScheduleResponse:
-      title: DeletionScheduleResponse
-      properties:
-        response:
-          $ref: '#/components/schemas/DeletionScheduleDTO'
+        pageOffset:
+          type: integer
+          format: int32
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -645,6 +656,50 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
+    DeletionScheduleDTO:
+      title: DeletionScheduleDTO
+      description: Details of the deletion schedule on a DB Service
+      x-terraform-resource: DBServiceDeleteSchedule
+      x-terraform:
+        add-properties-from:
+        - TerraformResourceDBServiceDeleteScheduleExtra
+        render:
+        - resource
+        - data_source
+      x-patchable: true
+      required:
+      - deleteAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-computed: true
+        deleteAt:
+          type: string
+          format: date-time
+          description: Time at which the DB Service should be deleted at
+          x-patchable: true
+        deletionConfig:
+          $ref: '#/components/schemas/TessellServiceDeletionConfig'
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    StartStopScheduleInfo:
+      title: StartStopScheduleInfo
+      description: Describes the start/stop schedule of tessell service
+      x-patchable: true
+      properties:
+        oneTime:
+          $ref: '#/components/schemas/StartStopOneTimeSchedule'
+          x-patchable: true
+        recurring:
+          $ref: '#/components/schemas/StartStopRecurringSchedule'
+          x-patchable: true
     StartStopWeeklySchedule:
       title: StartStopWeeklySchedule
       type: object
@@ -659,19 +714,63 @@ components:
           items:
             $ref: '#/components/schemas/WeekDay'
             x-enum: true
-    TessellServiceDeletionConfig:
-      title: TessellServiceDeletionConfig
-      description: If the DB Service is to be deleted, this config would be honoured if no preference is provided during deleting the service
-      x-patchable: true
+    StartStopScheduleMetadata:
+      title: StartStopScheduleMetadata
+      type: object
+      x-computed: true
       properties:
-        retainAvailabilityMachine:
-          type: boolean
-          default: false
-          x-patchable: true
-          description: If specified as true, the associated Availability Machine (snapshots, sanitized-snapshots, logs) would be retained
-    UpdateStartStopSchedulePayload:
-      title: UpdateStartStopSchedulePayload
-      description: Payload to update start/stop schedule on the DB Service
+        scheduleCounter:
+          type: integer
+          format: int32
+          x-computed: true
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    StartStopScheduleResponse:
+      title: StartStopScheduleResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/StartStopScheduleDTO'
+    WeekDay:
+      description: Week Days
+      type: string
+      enum:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+      x-enum-varnames:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+    CreateStartStopSchedulePayload:
+      title: CreateStartStopSchedulePayload
+      description: Payload to create a start/stop schedule on the DB Service
       properties:
         name:
           type: string
@@ -681,6 +780,58 @@ components:
           maxLength: 255
         scheduleInfo:
           $ref: '#/components/schemas/StartStopScheduleInfo'
+    StartStopRecurringSchedule:
+      title: StartStopRecurringSchedule
+      description: Recurring start/stop schedule details for the DB Service tessell service
+      x-patchable: true
+      properties:
+        scheduleStartDate:
+          type: string
+          format: date
+          description: Date from which the given recurring schedule would be applicable from
+          x-patchable: true
+        dbServiceStartAt:
+          type: string
+          pattern: ^([0-1][0-9]|[2][0-3]):([0-5][0-9])$
+          description: Time at which the DB Service should be started at
+          x-patchable: true
+        dbServiceStopAt:
+          type: string
+          pattern: ^([0-1][0-9]|[2][0-3]):([0-5][0-9])$
+          description: Time at which the DB Service should be stopped at
+          x-patchable: true
+        scheduleExpiry:
+          $ref: '#/components/schemas/StartStopRecurringScheduleExpiry'
+        dailySchedule:
+          type: boolean
+          description: Whether the given schedule is a daily schedule i.e. a schedule which is executed daily
+          x-patchable: true
+        weeklySchedule:
+          $ref: '#/components/schemas/StartStopWeeklySchedule'
+    DeletionScheduleResponse:
+      title: DeletionScheduleResponse
+      properties:
+        response:
+          $ref: '#/components/schemas/DeletionScheduleDTO'
+    DeletionSchedulePayload:
+      title: DeletionSchedulePayload
+      description: Details of the deletion schedule on a DB Service
+      required:
+      - deleteAt
+      properties:
+        deleteAt:
+          type: string
+          format: date-time
+          description: Time at which the DB Service should be deleted at
+        deletionConfig:
+          $ref: '#/components/schemas/TessellServiceDeletionConfig'
+    StartStopScheduleStatus:
+      description: StartStopScheduleStatus
+      enum:
+      - ACTIVE
+      - PAUSED
+      - EXPIRED
+      - DELETED
     StartStopScheduleDTO:
       title: StartStopScheduleDTO
       description: Details of the start/stop schedule on a DB Service
@@ -735,34 +886,6 @@ components:
           format: date-time
           description: The date-time at which this schedule was last executed
           x-computed: true
-    StartStopRecurringSchedule:
-      title: StartStopRecurringSchedule
-      description: Recurring start/stop schedule details for the DB Service tessell service
-      x-patchable: true
-      properties:
-        scheduleStartDate:
-          type: string
-          format: date
-          description: Date from which the given recurring schedule would be applicable from
-          x-patchable: true
-        dbServiceStartAt:
-          type: string
-          pattern: ^([0-1][0-9]|[2][0-3]):([0-5][0-9])$
-          description: Time at which the DB Service should be started at
-          x-patchable: true
-        dbServiceStopAt:
-          type: string
-          pattern: ^([0-1][0-9]|[2][0-3]):([0-5][0-9])$
-          description: Time at which the DB Service should be stopped at
-          x-patchable: true
-        scheduleExpiry:
-          $ref: '#/components/schemas/StartStopRecurringScheduleExpiry'
-        dailySchedule:
-          type: boolean
-          description: Whether the given schedule is a daily schedule i.e. a schedule which is executed daily
-          x-patchable: true
-        weeklySchedule:
-          $ref: '#/components/schemas/StartStopWeeklySchedule'
     ServiceSchedulesResponse:
       title: ServiceSchedulesResponse
       description: Details about all the automated schedules on the DB Service
@@ -773,25 +896,21 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/StartStopScheduleDTO'
-    WeekDay:
-      description: Week Days
-      type: string
-      enum:
-      - Sunday
-      - Monday
-      - Tuesday
-      - Wednesday
-      - Thursday
-      - Friday
-      - Saturday
-      x-enum-varnames:
-      - Sunday
-      - Monday
-      - Tuesday
-      - Wednesday
-      - Thursday
-      - Friday
-      - Saturday
+    StartStopOneTimeSchedule:
+      title: StartStopOneTime
+      description: One time start/stop schedule details for the DB Service
+      x-patchable: true
+      properties:
+        dbServiceStartAt:
+          type: string
+          format: date-time
+          description: Time at which the DB Service should be started at
+          x-patchable: true
+        dbServiceStopAt:
+          type: string
+          format: date-time
+          description: Time at which the DB Service should be stopped at
+          x-patchable: true
     StartStopRecurringScheduleExpiry:
       title: StartStopRecurringScheduleExpiry
       description: Schedule expiry details for recurring start/stop schedule for the DB Service
@@ -812,16 +931,6 @@ components:
           type: boolean
           description: If set to True, the schedule will be applicable forever
           x-patchable: true
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
     apiMetadata:
       title: apiMetadata
       type: object
@@ -833,124 +942,16 @@ components:
           format: int32
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
-    DeletionScheduleDTO:
-      title: DeletionScheduleDTO
-      description: Details of the deletion schedule on a DB Service
-      x-terraform-resource: DBServiceDeleteSchedule
-      x-terraform:
-        add-properties-from:
-        - TerraformResourceDBServiceDeleteScheduleExtra
-        render:
-        - resource
-        - data_source
-      x-patchable: true
-      required:
-      - deleteAt
-      properties:
-        id:
-          type: string
-          format: uuid
-          x-computed: true
-        deleteAt:
-          type: string
-          format: date-time
-          description: Time at which the DB Service should be deleted at
-          x-patchable: true
-        deletionConfig:
-          $ref: '#/components/schemas/TessellServiceDeletionConfig'
-    StartStopOneTimeSchedule:
-      title: StartStopOneTime
-      description: One time start/stop schedule details for the DB Service
-      x-patchable: true
-      properties:
-        dbServiceStartAt:
-          type: string
-          format: date-time
-          description: Time at which the DB Service should be started at
-          x-patchable: true
-        dbServiceStopAt:
-          type: string
-          format: date-time
-          description: Time at which the DB Service should be stopped at
-          x-patchable: true
-    StartStopScheduleResponse:
-      title: StartStopScheduleResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      type: object
-      properties:
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/StartStopScheduleDTO'
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    StartStopScheduleInfo:
-      title: StartStopScheduleInfo
-      description: Describes the start/stop schedule of tessell service
-      x-patchable: true
-      properties:
-        oneTime:
-          $ref: '#/components/schemas/StartStopOneTimeSchedule'
-          x-patchable: true
-        recurring:
-          $ref: '#/components/schemas/StartStopRecurringSchedule'
-          x-patchable: true
-    CreateStartStopSchedulePayload:
-      title: CreateStartStopSchedulePayload
-      description: Payload to create a start/stop schedule on the DB Service
-      properties:
-        name:
-          type: string
-          maxLength: 255
-        description:
-          type: string
-          maxLength: 255
-        scheduleInfo:
-          $ref: '#/components/schemas/StartStopScheduleInfo'
-    apiResponse:
-      example:
-        metadata:
-          pagination:
-            pageOffset: 0
-            pageSize: 6
-          records: 1
-          timeZone: timeZone
-        response: '{}'
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-      title: ApiResponse
-      type: object
-    DeletionSchedulePayload:
-      title: DeletionSchedulePayload
-      description: Details of the deletion schedule on a DB Service
-      required:
-      - deleteAt
-      properties:
-        deleteAt:
-          type: string
-          format: date-time
-          description: Time at which the DB Service should be deleted at
-        deletionConfig:
-          $ref: '#/components/schemas/TessellServiceDeletionConfig'
   parameters:
-    service-id:
-      name: service-id
-      in: path
-      required: true
-      style: simple
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
       schema:
-        type: string
-        format: uuid
+        type: integer
+        format: int32
+        default: 0
     id:
       name: id
       description: Id of entity
@@ -969,15 +970,14 @@ components:
         type: integer
         format: int32
         default: 10
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
+    service-id:
+      name: service-id
+      in: path
+      required: true
+      style: simple
       schema:
-        type: integer
-        format: int32
-        default: 0
+        type: string
+        format: uuid
   securitySchemes:
     BearerAuth:
       type: http

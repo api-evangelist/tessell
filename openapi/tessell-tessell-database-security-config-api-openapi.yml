@@ -92,39 +92,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
-  parameters:
-    id:
-      name: id
-      description: Id of entity
-      in: path
-      style: simple
-      required: true
-      schema:
-        type: string
-        format: uuid
   schemas:
-    ApplyConfig:
-      title: ApplyConfig
+    ApplyStrategy:
+      type: string
+      enum:
+      - IMMEDIATELY
+      - MAINTENANCE_WINDOW
+      - CUSTOM_DATE_TIME
+      - DO_NOT_APPLY
+    taskSummary:
+      title: taskSummary
       type: object
-      description: Application Details for any operation
       properties:
-        overriddenTaskIds:
+        taskId:
+          type: string
+          format: uuid
+        taskType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        associatedResourceIds:
           type: array
-          description: Task ids that this request will override
           items:
             type: string
             format: uuid
-            uniqueItems: true
-        strategy:
-          $ref: '#/components/schemas/ApplyStrategy'
-        maintenanceWindowId:
-          type: string
-          format: uuid
-          description: Needed when strategy is MAINTENANCE_WINDOW
-        time:
-          type: string
-          format: date-time
-          description: Needed when strategy is CUSTOM_DATE_TIME
+        details:
+          type: object
+          additionalProperties:
+            type: string
     SecurityProfileUpdateConfig:
       type: object
       properties:
@@ -136,13 +132,6 @@ components:
           type: string
           format: uuid
           description: Security Profile Version Id to which instance needs to be update
-    ApplyStrategy:
-      type: string
-      enum:
-      - IMMEDIATELY
-      - MAINTENANCE_WINDOW
-      - CUSTOM_DATE_TIME
-      - DO_NOT_APPLY
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -167,36 +156,6 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    DBServerSecurityConfigUpdateRequest:
-      type: object
-      required:
-      - securityProfile
-      properties:
-        securityProfile:
-          $ref: '#/components/schemas/SecurityProfileUpdateConfig'
-        applyConfig:
-          $ref: '#/components/schemas/ApplyConfig'
-    taskSummary:
-      title: taskSummary
-      type: object
-      properties:
-        taskId:
-          type: string
-          format: uuid
-        taskType:
-          type: string
-        resourceId:
-          type: string
-          format: uuid
-        associatedResourceIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        details:
-          type: object
-          additionalProperties:
-            type: string
     DBServiceInstanceSecurityConfigUpdateRequest:
       type: object
       required:
@@ -221,6 +180,47 @@ components:
             $ref: '#/components/schemas/DBServiceInstanceSecurityConfigUpdateRequest'
         applyConfig:
           $ref: '#/components/schemas/ApplyConfig'
+    ApplyConfig:
+      title: ApplyConfig
+      type: object
+      description: Application Details for any operation
+      properties:
+        overriddenTaskIds:
+          type: array
+          description: Task ids that this request will override
+          items:
+            type: string
+            format: uuid
+            uniqueItems: true
+        strategy:
+          $ref: '#/components/schemas/ApplyStrategy'
+        maintenanceWindowId:
+          type: string
+          format: uuid
+          description: Needed when strategy is MAINTENANCE_WINDOW
+        time:
+          type: string
+          format: date-time
+          description: Needed when strategy is CUSTOM_DATE_TIME
+    DBServerSecurityConfigUpdateRequest:
+      type: object
+      required:
+      - securityProfile
+      properties:
+        securityProfile:
+          $ref: '#/components/schemas/SecurityProfileUpdateConfig'
+        applyConfig:
+          $ref: '#/components/schemas/ApplyConfig'
+  parameters:
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     BearerAuth:
       type: http

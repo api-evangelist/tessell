@@ -224,6 +224,31 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    PrivilegeDTO:
+      title: PrivilegeDTO
+      type: object
+      properties:
+        dateCreated:
+          type: string
+          description: Date when the app is created  metadata
+          format: date-time
+        dateModified:
+          type: string
+          description: Date when app is last modified  metadata
+          format: date-time
+        description:
+          type: string
+          description: Description of the app
+        id:
+          type: string
+          description: Tessell generated UUID for the app object
+          format: uuid
+        name:
+          type: string
+          description: Name of the privilege
+        status:
+          $ref: '#/components/schemas/PrivilegeStatus'
+      description: This is a definition for Tessell
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -248,6 +273,65 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
+    UpgradablePersonaServiceConsumerDTO:
+      title: UpgradablePersonaServiceConsumerDTO
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the persona
+        upgradablePersonaNames:
+          type: array
+          description: Assignable personas
+          items:
+            type: string
+      description: This is a definition for Tessell upgradable persona object for service consumers
+    PrivilegeStatus:
+      title: PrivilegeStatus
+      type: string
+      description: This is a definition for Tessell privilege status object
+      enum:
+      - DELETED
+      - ENABLED
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    UpgradablePersonaApiResponse:
+      title: UpgradablePersonaApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/UpgradablePersonaServiceConsumerDTO'
+    AppDTO:
+      title: AppDTO
+      description: Tessell Application object
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - $ref: '#/components/schemas/AppServiceConsumerDTO'
+      - properties:
+          privileges:
+            type: array
+            description: List of privileges
+            items:
+              $ref: '#/components/schemas/PrivilegeDTO'
+    AppStatusDTO:
+      title: AppStatusDTO
+      description: Status of the Application
+      type: object
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
     BaseEntity:
       type: object
       properties:
@@ -268,64 +352,26 @@ components:
           example: 123e4567-e89b-12d3-a456-426614174000
           format: uuid
           type: string
-    IamApiResponse:
-      title: IamApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: array
-          items:
-            type: object
-    AppStatusDTO:
-      title: AppStatusDTO
-      description: Status of the Application
-      type: object
-      enum:
-      - ENABLED
-      - DISABLED
-      - DELETED
-    UpgradablePersonaServiceConsumerDTO:
-      title: UpgradablePersonaServiceConsumerDTO
+    UpdatePersonaPayload:
+      title: UpdatePersonaPayload
+      description: This is a definition for Persona update object
       type: object
       properties:
         name:
           type: string
-          description: Name of the persona
-        upgradablePersonaNames:
-          type: array
-          description: Assignable personas
-          items:
-            type: string
-      description: This is a definition for Tessell upgradable persona object for service consumers
-    CreatePersonaPayload:
-      title: CreatePersonaPayload
-      type: object
-      required:
-      - name
-      - apps
-      properties:
+          description: Name of the Persona
+          minLength: 1
+          maxLength: 64
+          example: DBAdmins
         description:
           type: string
           description: Description of the Persona
           minLength: 0
           maxLength: 128
           example: Persona for Database Administrators
-        name:
-          type: string
-          description: Name of the persona
-          minLength: 1
-          maxLength: 64
-          example: DBAdmins
-        privileges:
-          type: array
-          description: List of privileges (Deprecated)
-          items:
-            type: string
         apps:
           type: array
-          description: List of Application names that the new Persona will have access to
+          description: New list of Application names that the Persona will have access to
           items:
             type: string
             minLength: 1
@@ -336,44 +382,7 @@ components:
           - My Services
           - Provisioning
           - DB Governance
-      description: This is a definition for Tessell create persona payload object
-    consumerType:
-      description: Tessell Consumer Type
-      type: string
-      enum:
-      - SERVICE
-      - OPS
-      - INTERNAL
-    AppDTO:
-      title: AppDTO
-      description: Tessell Application object
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - $ref: '#/components/schemas/AppServiceConsumerDTO'
-      - properties:
-          privileges:
-            type: array
-            description: List of privileges
-            items:
-              $ref: '#/components/schemas/PrivilegeDTO'
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    PrivilegeStatus:
-      title: PrivilegeStatus
-      type: string
-      description: This is a definition for Tessell privilege status object
-      enum:
-      - DELETED
-      - ENABLED
+          - Availability Machines
     PersonaDTO:
       title: PersonaDTO
       type: object
@@ -416,102 +425,6 @@ components:
         status:
           $ref: '#/components/schemas/PersonaStatus'
       description: This is a definition for Tessell internal persona DTO object
-    PrivilegeServiceConsumerDTO:
-      title: PrivilegeServiceConsumerDTO
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the privilege
-        description:
-          type: string
-          description: Description of the privilege
-        status:
-          $ref: '#/components/schemas/PrivilegeStatus'
-      description: This is a definition for Tessell privilege object for service consumers
-    PrivilegeDTO:
-      title: PrivilegeDTO
-      type: object
-      properties:
-        dateCreated:
-          type: string
-          description: Date when the app is created  metadata
-          format: date-time
-        dateModified:
-          type: string
-          description: Date when app is last modified  metadata
-          format: date-time
-        description:
-          type: string
-          description: Description of the app
-        id:
-          type: string
-          description: Tessell generated UUID for the app object
-          format: uuid
-        name:
-          type: string
-          description: Name of the privilege
-        status:
-          $ref: '#/components/schemas/PrivilegeStatus'
-      description: This is a definition for Tessell
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
-    PersonaStatus:
-      title: PersonaStatus
-      type: string
-      description: This is a definition for Tessell persona status object
-      enum:
-      - ENABLED
-      - DISABLED
-      - DELETED
-    UpdatePersonaPayload:
-      title: UpdatePersonaPayload
-      description: This is a definition for Persona update object
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the Persona
-          minLength: 1
-          maxLength: 64
-          example: DBAdmins
-        description:
-          type: string
-          description: Description of the Persona
-          minLength: 0
-          maxLength: 128
-          example: Persona for Database Administrators
-        apps:
-          type: array
-          description: New list of Application names that the Persona will have access to
-          items:
-            type: string
-            minLength: 1
-            maxLength: 100
-          minItems: 1
-          maxItems: 100
-          example:
-          - My Services
-          - Provisioning
-          - DB Governance
-          - Availability Machines
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
     AppServiceConsumerDTO:
       title: AppServiceConsumerDTO
       description: This is a definition for Tessell app object for service consumers
@@ -533,8 +446,8 @@ components:
             $ref: '#/components/schemas/PrivilegeServiceConsumerDTO'
         status:
           $ref: '#/components/schemas/AppStatusDTO'
-    UpgradablePersonaApiResponse:
-      title: UpgradablePersonaApiResponse
+    IamApiResponse:
+      title: IamApiResponse
       type: object
       properties:
         metadata:
@@ -542,7 +455,94 @@ components:
         response:
           type: array
           items:
-            $ref: '#/components/schemas/UpgradablePersonaServiceConsumerDTO'
+            type: object
+    consumerType:
+      description: Tessell Consumer Type
+      type: string
+      enum:
+      - SERVICE
+      - OPS
+      - INTERNAL
+    CreatePersonaPayload:
+      title: CreatePersonaPayload
+      type: object
+      required:
+      - name
+      - apps
+      properties:
+        description:
+          type: string
+          description: Description of the Persona
+          minLength: 0
+          maxLength: 128
+          example: Persona for Database Administrators
+        name:
+          type: string
+          description: Name of the persona
+          minLength: 1
+          maxLength: 64
+          example: DBAdmins
+        privileges:
+          type: array
+          description: List of privileges (Deprecated)
+          items:
+            type: string
+        apps:
+          type: array
+          description: List of Application names that the new Persona will have access to
+          items:
+            type: string
+            minLength: 1
+            maxLength: 100
+          minItems: 1
+          maxItems: 100
+          example:
+          - My Services
+          - Provisioning
+          - DB Governance
+      description: This is a definition for Tessell create persona payload object
+    PersonaStatus:
+      title: PersonaStatus
+      type: string
+      description: This is a definition for Tessell persona status object
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+    PrivilegeServiceConsumerDTO:
+      title: PrivilegeServiceConsumerDTO
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the privilege
+        description:
+          type: string
+          description: Description of the privilege
+        status:
+          $ref: '#/components/schemas/PrivilegeStatus'
+      description: This is a definition for Tessell privilege object for service consumers
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
   parameters:
     tenantIdMandatory:
       name: tenant-id

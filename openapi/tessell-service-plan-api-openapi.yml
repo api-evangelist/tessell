@@ -62,66 +62,34 @@ paths:
       tags:
       - Service Plan
 components:
+  parameters:
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
   schemas:
-    ServicePlanAppFeature:
-      description: This is a definition for Tessell app DTO object
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - title: ServicePlanAppFeature
-        type: object
-      properties:
-        name:
-          description: Name of the service plan
-          type: string
-          minLength: 1
-          maxLength: 32
-        displayName:
-          type: string
-          description: UI display name of feature
-        description:
-          type: string
-          description: Description of feature
-      title: ServicePlanCreateAppPayload
-      type: object
-    ServicePlanApp:
-      description: This is a definition for Tessell app DTO object
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - title: ServicePlanApp
-        type: object
-      properties:
-        appFamily:
-          description: Family to which this app belongs to
-          type: string
-          minLength: 1
-          maxLength: 256
-        name:
-          description: Name of the service plan
-          type: string
-          minLength: 1
-          maxLength: 32
-        features:
-          type: array
-          description: List of feature names
-          items:
-            $ref: '#/components/schemas/ServicePlanAppFeature'
-        limits:
-          type: object
-          additionalProperties:
-            uniqueItems: true
-            type: object
-      title: ServicePlanCreateAppPayload
-      type: object
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
     ServicePlanStatus:
       x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n"
       description: Service Plan Status
@@ -174,6 +142,55 @@ components:
           example: 123e4567-e89b-12d3-a456-426614174000
           format: uuid
           type: string
+    ServicePlanAppFeature:
+      description: This is a definition for Tessell app DTO object
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - title: ServicePlanAppFeature
+        type: object
+      properties:
+        name:
+          description: Name of the service plan
+          type: string
+          minLength: 1
+          maxLength: 32
+        displayName:
+          type: string
+          description: UI display name of feature
+        description:
+          type: string
+          description: Description of feature
+      title: ServicePlanCreateAppPayload
+      type: object
+    ServicePlanApp:
+      description: This is a definition for Tessell app DTO object
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - title: ServicePlanApp
+        type: object
+      properties:
+        appFamily:
+          description: Family to which this app belongs to
+          type: string
+          minLength: 1
+          maxLength: 256
+        name:
+          description: Name of the service plan
+          type: string
+          minLength: 1
+          maxLength: 32
+        features:
+          type: array
+          description: List of feature names
+          items:
+            $ref: '#/components/schemas/ServicePlanAppFeature'
+        limits:
+          type: object
+          additionalProperties:
+            uniqueItems: true
+            type: object
+      title: ServicePlanCreateAppPayload
+      type: object
     ServicePlanApiResponse:
       title: ServicePlanApiResponse
       type: object
@@ -203,6 +220,16 @@ components:
             type: array
           status:
             $ref: '#/components/schemas/ServicePlanStatus'
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
     apiMetadata:
       title: apiMetadata
       type: object
@@ -214,33 +241,6 @@ components:
           format: int32
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
-  parameters:
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
   securitySchemes:
     BearerAuth:
       type: http

@@ -666,170 +666,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ResetPasswordOnExpiryPayload:
-      title: ResetPasswordOnExpiryPayload
-      type: object
-      description: This is a definition for Tessell's user password reset payload while Password Expired
-      required:
-      - emailId
-      - oldPassword
-      - newPassword
-      properties:
-        emailId:
-          $ref: '#/components/schemas/EmailId'
-        oldPassword:
-          $ref: '#/components/schemas/OldPassword'
-        newPassword:
-          $ref: '#/components/schemas/NewPassword'
-    RefreshTokenResponse:
-      title: LoginUserPayload
-      description: Response of Refresh Token API
-      type: object
-      properties:
-        accessToken:
-          type: string
-          description: Access Token
-    UserPersonaDTO:
-      title: UserPersonaDTO
-      type: object
-      properties:
-        apps:
-          type: array
-          description: List of apps.
-          items:
-            $ref: '#/components/schemas/UserAppsDTO'
-        id:
-          type: string
-          format: uuid
-          description: Id of the persona
-        name:
-          type: string
-          description: Name of the persona
-      description: This is a definition for Tessell user persona DTO object
-    UserPersonaServiceConsumerDTO:
-      title: UserPersonaServiceConsumerDTO
-      type: object
-      properties:
-        apps:
-          type: array
-          description: List of apps.
-          items:
-            $ref: '#/components/schemas/UserAppsDTO'
-        name:
-          type: string
-          description: Name of the persona
-      description: This is a definition for Tessell user persona DTO object
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    ChangePasswordPayload:
-      title: ChangePasswordPayload
-      type: object
-      description: This is a definition for Tessell's user password update payload object
-      properties:
-        newPassword:
-          $ref: '#/components/schemas/NewPassword'
-        oldPassword:
-          $ref: '#/components/schemas/OldPassword'
-      required:
-      - newPassword
-      - oldPassword
-    AuthType:
-      title: AuthType
-      type: string
-      description: This is a definition for Tessell's auth type status object
-      enum:
-      - GOOGLE
-      - PASSWORD
-      - AZURE_AD
-      - OKTA
-    MfaVerificationPayload:
-      title: MfaVerificationPayload
-      type: object
-      description: Payload for the MFA verification
-      required:
-      - otp
-      properties:
-        otp:
-          type: string
-          pattern: ^\d{6}$
-          description: OTP for MFA verification
-          example: 098765
-    UpdateUserProfilePayload:
-      title: UpdateUserProfilePayload
-      type: object
-      description: This is a definition for Tessell's user update profile payload object
-      properties:
-        firstName:
-          $ref: '#/components/schemas/FirstName'
-        lastName:
-          $ref: '#/components/schemas/LastName'
-    TenantUserServiceConsumerAttributes:
-      title: TenantUserServiceConsumerAttributes
-      type: object
-      properties:
-        tenantId:
-          type: string
-          description: Email id of the tenant
-        tenantFirstName:
-          type: string
-          description: First Name of the tenant
-        tenantLastName:
-          type: string
-          description: Last Name of the tenant
-        tenantEmail:
-          type: string
-          description: Tenant email using which the tenant was registered
-        tenantType:
-          type: string
-          description: Type of the tenant
-        tenantDomain:
-          type: string
-          description: Type of the tenant
-        tenantServicePlan:
-          type: string
-          description: Service Plan of tenant
-        tenantDateCreated:
-          type: string
-          description: Date tenant is created on
-          format: date-time
-        personas:
-          type: array
-          description: List of personas.
-          items:
-            $ref: '#/components/schemas/UserPersonaServiceConsumerDTO'
-        subscriptions:
-          type: array
-          description: List of subscriptions of user
-          items:
-            type: string
-        accessControlFlags:
-          type: array
-          description: List of Access Control Flags of user
-          items:
-            $ref: '#/components/schemas/UserAccessControlFlags'
-      description: This is a definition for Tessell user persona DTO object
     ChangeStatusPayload:
       title: ChangeStatusPayload
       type: object
@@ -837,27 +673,6 @@ components:
         status:
           $ref: '#/components/schemas/UserStatus'
       description: This is a definition for Tessell's user status update payload object
-    UserAppFeatures:
-      title: UserAppFeatures
-      type: object
-      properties:
-        name:
-          type: string
-          description: Internal name of the feature
-        displayName:
-          type: string
-          description: Display name of feature
-        description:
-          type: string
-          description: description of the feature.
-      description: This is a definition for Tessell user's apps object
-    EmailId:
-      title: EmailId
-      type: string
-      description: Email Id of the user
-      minLength: 3
-      maxLength: 255
-      example: abc@tessell.com
     LoginUserResponse:
       title: LoginUserResponse
       type: object
@@ -903,66 +718,35 @@ components:
               maximum: 3600
             verificationMethod:
               $ref: '#/components/schemas/MfaVerificationMethod'
-    Password:
-      title: Password
-      type: string
-      description: Password of the user
-      minLength: 8
-      maxLength: 4096
-      example: Tessell@999
-    UserStatus:
-      title: UserStatus
-      type: string
-      description: This is a definition for Tessell userpool type object
-      enum:
-      - ACTIVE
-      - FORCE_CHANGE_PASSWORD
-      - INACTIVE
-      - INVITED
-    UpdateUserPayload:
-      title: UpdateUserPayload
+    ApiError:
       type: object
+      description: Common error response object for non 2xx responses
       properties:
-        persona:
+        code:
           type: string
-          minLength: 1
-          maxLength: 64
-          example: Administrator
-        accessControlFlags:
-          type: array
-          uniqueItems: true
-          maxItems: 20
-          items:
-            $ref: '#/components/schemas/UserAccessControlFlags'
-      description: This is a definition for Tessell's user update payload object
-    ResetPasswordPayload:
-      title: ResetPasswordPayload
-      type: object
-      description: This is a definition for Tessell's user password reset payload
-      required:
-      - otp
-      - emailId
-      - password
-      properties:
-        otp:
+          description: Status code for the error response
+        message:
           type: string
-          description: OTP to validate the request
-          minLength: 1
-          maxLength: 1000
-        emailId:
-          $ref: '#/components/schemas/EmailId'
-        password:
-          $ref: '#/components/schemas/NewPassword'
-    IamApiResponse:
-      title: IamApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: array
-          items:
-            type: object
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    MfaSessionToken:
+      type: string
+      description: Temporary session token (JWT) to validate the user trying to login through mfa
+      minLength: 100
+      maxLength: 1000
     NewPassword:
       title: NewPassword
       type: string
@@ -970,36 +754,28 @@ components:
       minLength: 8
       maxLength: 4096
       example: Tessell@888
-    FirstName:
-      title: FirstName
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    EmailId:
+      title: EmailId
       type: string
-      description: First name of the user
+      description: Email Id of the user
+      minLength: 3
+      maxLength: 255
+      example: abc@tessell.com
+    LastName:
+      title: LastName
+      type: string
+      description: Last name of the user
       minLength: 1
       maxLength: 60
-      example: John
-    UserAccessControlFlags:
-      type: string
-      enum:
-      - DB_SERVICE_APP_ADMIN
-    consumerType:
-      description: Tessell Consumer Type
-      type: string
-      enum:
-      - SERVICE
-      - OPS
-      - INTERNAL
-    ForceResetPasswordPayload:
-      title: ForceResetPasswordPayload
-      description: This is a definition for Tessell user's force password reset payload object
-      type: object
-      required:
-      - emailId
-      - newPassword
-      properties:
-        emailId:
-          $ref: '#/components/schemas/EmailId'
-        newPassword:
-          $ref: '#/components/schemas/NewPassword'
+      example: Martin
     UserServiceConsumerDTO:
       title: UserServiceConsumerDTO
       type: object
@@ -1024,6 +800,67 @@ components:
           description: Date when the user last logged into Tessell (null if logging in for first time)
           format: date-time
       description: This is a definition for Tessell user object for service consumers
+    ResetPasswordPayload:
+      title: ResetPasswordPayload
+      type: object
+      description: This is a definition for Tessell's user password reset payload
+      required:
+      - otp
+      - emailId
+      - password
+      properties:
+        otp:
+          type: string
+          description: OTP to validate the request
+          minLength: 1
+          maxLength: 1000
+        emailId:
+          $ref: '#/components/schemas/EmailId'
+        password:
+          $ref: '#/components/schemas/NewPassword'
+    UpdateUserProfilePayload:
+      title: UpdateUserProfilePayload
+      type: object
+      description: This is a definition for Tessell's user update profile payload object
+      properties:
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+    UpdateUserPayload:
+      title: UpdateUserPayload
+      type: object
+      properties:
+        persona:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: Administrator
+        accessControlFlags:
+          type: array
+          uniqueItems: true
+          maxItems: 20
+          items:
+            $ref: '#/components/schemas/UserAccessControlFlags'
+      description: This is a definition for Tessell's user update payload object
+    MfaVerificationMethod:
+      type: string
+      description: Verification method for Multi Factor Authentication
+      enum:
+      - EMAIL
+      default: EMAIL
+    ChangePasswordPayload:
+      title: ChangePasswordPayload
+      type: object
+      description: This is a definition for Tessell's user password update payload object
+      properties:
+        newPassword:
+          $ref: '#/components/schemas/NewPassword'
+        oldPassword:
+          $ref: '#/components/schemas/OldPassword'
+      required:
+      - newPassword
+      - oldPassword
     LoginUserPayload:
       title: LoginUserPayload
       type: object
@@ -1038,76 +875,6 @@ components:
           $ref: '#/components/schemas/EmailId'
         password:
           $ref: '#/components/schemas/Password'
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    InviteUserPayload:
-      title: InviteUserPayload
-      type: object
-      description: This is a definition for Tessell's user payload object
-      properties:
-        emailId:
-          $ref: '#/components/schemas/EmailId'
-        personas:
-          type: array
-          description: List of personas
-          items:
-            type: string
-            minLength: 1
-            maxLength: 255
-          minItems: 1
-          maxItems: 1
-          example:
-          - Administrator
-        subscriptions:
-          type: array
-          description: List of subscription names
-          items:
-            type: string
-            minLength: 1
-            maxLength: 255
-          example:
-          - default
-          - Test123
-      required:
-      - emailId
-    OldPassword:
-      title: OldPassword
-      type: string
-      description: Old password of the user
-      minLength: 8
-      maxLength: 4096
-      example: Tessell@999
-    LastName:
-      title: LastName
-      type: string
-      description: Last name of the user
-      minLength: 1
-      maxLength: 60
-      example: Martin
-    MfaSessionToken:
-      type: string
-      description: Temporary session token (JWT) to validate the user trying to login through mfa
-      minLength: 100
-      maxLength: 1000
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
     TenantUserAttributes:
       title: TenantUserAttributes
       type: object
@@ -1153,6 +920,200 @@ components:
           items:
             $ref: '#/components/schemas/UserAccessControlFlags'
       description: This is a definition for Tessell user persona DTO object
+    MfaVerificationPayload:
+      title: MfaVerificationPayload
+      type: object
+      description: Payload for the MFA verification
+      required:
+      - otp
+      properties:
+        otp:
+          type: string
+          pattern: ^\d{6}$
+          description: OTP for MFA verification
+          example: 098765
+    ResetPasswordOnExpiryPayload:
+      title: ResetPasswordOnExpiryPayload
+      type: object
+      description: This is a definition for Tessell's user password reset payload while Password Expired
+      required:
+      - emailId
+      - oldPassword
+      - newPassword
+      properties:
+        emailId:
+          $ref: '#/components/schemas/EmailId'
+        oldPassword:
+          $ref: '#/components/schemas/OldPassword'
+        newPassword:
+          $ref: '#/components/schemas/NewPassword'
+    UserAppsDTO:
+      title: UserAppsDTO
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the app
+        privileges:
+          type: array
+          description: List of privileges of user on the app.
+          items:
+            type: string
+        features:
+          type: array
+          description: List of features of user on the app.
+          items:
+            $ref: '#/components/schemas/UserAppFeatures'
+      description: This is a definition for Tessell user's apps object
+    UserSubscriptionDTO:
+      title: UserSubscriptionDTO
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Id of the subscription
+        name:
+          type: string
+          description: Name of the subscription
+      description: This is a definition for Tessell user subscription DTO object
+    Password:
+      title: Password
+      type: string
+      description: Password of the user
+      minLength: 8
+      maxLength: 4096
+      example: Tessell@999
+    AuthType:
+      title: AuthType
+      type: string
+      description: This is a definition for Tessell's auth type status object
+      enum:
+      - GOOGLE
+      - PASSWORD
+      - AZURE_AD
+      - OKTA
+    FirstName:
+      title: FirstName
+      type: string
+      description: First name of the user
+      minLength: 1
+      maxLength: 60
+      example: John
+    IamApiResponse:
+      title: IamApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            type: object
+    UserAppFeatures:
+      title: UserAppFeatures
+      type: object
+      properties:
+        name:
+          type: string
+          description: Internal name of the feature
+        displayName:
+          type: string
+          description: Display name of feature
+        description:
+          type: string
+          description: description of the feature.
+      description: This is a definition for Tessell user's apps object
+    ForceResetPasswordPayload:
+      title: ForceResetPasswordPayload
+      description: This is a definition for Tessell user's force password reset payload object
+      type: object
+      required:
+      - emailId
+      - newPassword
+      properties:
+        emailId:
+          $ref: '#/components/schemas/EmailId'
+        newPassword:
+          $ref: '#/components/schemas/NewPassword'
+    InviteUserPayload:
+      title: InviteUserPayload
+      type: object
+      description: This is a definition for Tessell's user payload object
+      properties:
+        emailId:
+          $ref: '#/components/schemas/EmailId'
+        personas:
+          type: array
+          description: List of personas
+          items:
+            type: string
+            minLength: 1
+            maxLength: 255
+          minItems: 1
+          maxItems: 1
+          example:
+          - Administrator
+        subscriptions:
+          type: array
+          description: List of subscription names
+          items:
+            type: string
+            minLength: 1
+            maxLength: 255
+          example:
+          - default
+          - Test123
+      required:
+      - emailId
+    consumerType:
+      description: Tessell Consumer Type
+      type: string
+      enum:
+      - SERVICE
+      - OPS
+      - INTERNAL
+    OldPassword:
+      title: OldPassword
+      type: string
+      description: Old password of the user
+      minLength: 8
+      maxLength: 4096
+      example: Tessell@999
+    UserAccessControlFlags:
+      type: string
+      enum:
+      - DB_SERVICE_APP_ADMIN
+    UserStatus:
+      title: UserStatus
+      type: string
+      description: This is a definition for Tessell userpool type object
+      enum:
+      - ACTIVE
+      - FORCE_CHANGE_PASSWORD
+      - INACTIVE
+      - INVITED
+    UserPersonaServiceConsumerDTO:
+      title: UserPersonaServiceConsumerDTO
+      type: object
+      properties:
+        apps:
+          type: array
+          description: List of apps.
+          items:
+            $ref: '#/components/schemas/UserAppsDTO'
+        name:
+          type: string
+          description: Name of the persona
+      description: This is a definition for Tessell user persona DTO object
+    RefreshTokenResponse:
+      title: LoginUserPayload
+      description: Response of Refresh Token API
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: Access Token
     AcceptInviteUserPayload:
       title: AcceptInviteUserPayload
       type: object
@@ -1179,51 +1140,98 @@ components:
           $ref: '#/components/schemas/Password'
         authType:
           $ref: '#/components/schemas/AuthType'
-    UserAppsDTO:
-      title: UserAppsDTO
+    UserPersonaDTO:
+      title: UserPersonaDTO
       type: object
       properties:
-        name:
-          type: string
-          description: Name of the app
-        privileges:
+        apps:
           type: array
-          description: List of privileges of user on the app.
+          description: List of apps.
           items:
-            type: string
-        features:
-          type: array
-          description: List of features of user on the app.
-          items:
-            $ref: '#/components/schemas/UserAppFeatures'
-      description: This is a definition for Tessell user's apps object
-    MfaVerificationMethod:
-      type: string
-      description: Verification method for Multi Factor Authentication
-      enum:
-      - EMAIL
-      default: EMAIL
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    UserSubscriptionDTO:
-      title: UserSubscriptionDTO
-      type: object
-      properties:
+            $ref: '#/components/schemas/UserAppsDTO'
         id:
           type: string
           format: uuid
-          description: Id of the subscription
+          description: Id of the persona
         name:
           type: string
-          description: Name of the subscription
-      description: This is a definition for Tessell user subscription DTO object
+          description: Name of the persona
+      description: This is a definition for Tessell user persona DTO object
+    TenantUserServiceConsumerAttributes:
+      title: TenantUserServiceConsumerAttributes
+      type: object
+      properties:
+        tenantId:
+          type: string
+          description: Email id of the tenant
+        tenantFirstName:
+          type: string
+          description: First Name of the tenant
+        tenantLastName:
+          type: string
+          description: Last Name of the tenant
+        tenantEmail:
+          type: string
+          description: Tenant email using which the tenant was registered
+        tenantType:
+          type: string
+          description: Type of the tenant
+        tenantDomain:
+          type: string
+          description: Type of the tenant
+        tenantServicePlan:
+          type: string
+          description: Service Plan of tenant
+        tenantDateCreated:
+          type: string
+          description: Date tenant is created on
+          format: date-time
+        personas:
+          type: array
+          description: List of personas.
+          items:
+            $ref: '#/components/schemas/UserPersonaServiceConsumerDTO'
+        subscriptions:
+          type: array
+          description: List of subscriptions of user
+          items:
+            type: string
+        accessControlFlags:
+          type: array
+          description: List of Access Control Flags of user
+          items:
+            $ref: '#/components/schemas/UserAccessControlFlags'
+      description: This is a definition for Tessell user persona DTO object
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
   parameters:
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
     tenantIdMandatory:
       name: tenant-id
       in: header
@@ -1234,23 +1242,6 @@ components:
         minLength: 1
         maxLength: 128
         example: 12345678-abcd-1234-abcd-1234abcd5678
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
     pageOffset:
       name: page-offset
       in: query
@@ -1260,6 +1251,15 @@ components:
         type: integer
         format: int32
         default: 0
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
   securitySchemes:
     BearerAuth:
       type: http

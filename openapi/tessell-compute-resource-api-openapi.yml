@@ -724,12 +724,296 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    AzureNetAppEncryptionKeySource:
+      enum:
+      - Microsoft.NetApp
+      - Microsoft.KeyVault
+      x-enum-varnames:
+      - MICROSOFT_NET_APP
+      - MICROSOFT_KEY_VAULT
+    ExadataComputeConfig:
+      type: object
+      required:
+      - infrastructureId
+      - infrastructureName
+      - vmClusterId
+      - vmClusterName
+      properties:
+        infrastructureId:
+          type: string
+          format: uuid
+        infrastructureName:
+          type: string
+        vmClusterId:
+          type: string
+          format: uuid
+        vmClusterName:
+          type: string
+        ocpu:
+          type: integer
+        memoryInGbs:
+          type: integer
+        floatingIpAddress:
+          type: string
+        dbServer:
+          type: string
+        privateIpAddress:
+          type: string
+        localStorageInGbs:
+          type: integer
+        dnsName:
+          type: string
+    MaintenanceCadence:
+      type: string
+      enum:
+      - DAILY
+      - WEEKLY
+      - MONTHLY
+      description: Frequency of maintenance window
+    PatchActivity:
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        versionNo:
+          type: string
+        typeOfPatch:
+          $ref: '#/components/schemas/PatchType'
+        impact:
+          type: string
+        scheduledBy:
+          type: string
+        status:
+          $ref: '#/components/schemas/TaskStatus'
+    UpdateComputeResourceOwnerPayload:
+      type: object
+      properties:
+        owner:
+          type: string
+    ComputeProviderType:
+      type: string
+      enum:
+      - AWS_EC2
+      - AZURE_VM
+      - GCP_GCE
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    TessellTag:
+      title: TessellTag
+      type:
+      - object
+      - 'null'
+      properties:
+        name:
+          description: Case sensitive, tag name
+          type: string
+          maxLength: 128
+          minLength: 1
+        value:
+          description: Case sensitive, tag value
+          type: string
+          maxLength: 256
+          minLength: 0
+    TessellIntegrationRequestType:
+      type: string
+      description: Request type enum for the addition/removal/updation of the Integration for the DB Service.
+      enum:
+      - ADD
+      - UPDATE
+      - REMOVE
+    InstanceAzureNetAppConfig:
+      description: Service instance level Azure NetApp config
+      type: object
+      properties:
+        azureNetAppName:
+          type: string
+        capacityPoolName:
+          type: string
+        volumeName:
+          type: string
+        azureNetAppId:
+          description: Azure NetApp Id registered with Tessell
+          type: string
+          format: uuid
+        capacityPoolId:
+          description: Capacity Pool Id of the Azure NetApp registered with Tessell
+          type: string
+          format: uuid
+        delegatedSubnetId:
+          description: Delegated Subnet name registered with Tessell for the Azure NetApp volume
+          type: string
+          format: uuid
+        delegatedSubnetName:
+          description: Delegated Subnet Id registered with Tessell for the Azure NetApp volume
+          type: string
+        encryptionKeyInfo:
+          $ref: '#/components/schemas/AzureNetAppEncryptionKeyInfo'
+        networkFeatures:
+          $ref: '#/components/schemas/AzureNetAppNetworkFeature'
+        serviceLevel:
+          $ref: '#/components/schemas/AzureNetAppCapacityPoolServiceLevel'
+    AzureNetAppCapacityPoolServiceLevel:
+      type: string
+      enum:
+      - Standard
+      - Premium
+      - Ultra
+      x-enum-varnames:
+      - STANDARD
+      - PREMIUM
+      - ULTRA
+    TessellServiceInstanceStatus:
+      type: string
+      description: DB Service instance status
+      enum:
+      - CREATING
+      - DELETING
+      - UP
+      - DOWN
+      - STOPPED
+      - REBUILDING
+      - REBUILD_FAILED
+      - PATCHING
+      - PATCH_FAILED
+      - UPDATING_PARAMETER_PROFILE
+      - UPDATING_OPTION_PROFILE
+      - UPDATING_SECURITY_CONFIG
+      - OPTION_PROFILE_UPDATE_FAILED
+      - PARAMETER_PROFILE_UPDATE_FAILED
+      - SECURITY_CONFIG_UPDATE_FAILED
+      - REFRESHING
+    InstanceFsxNetAppConfig:
+      type: object
+      properties:
+        fileSystemName:
+          type: string
+        svmName:
+          type: string
+        volumeName:
+          type: string
+        fileSystemId:
+          description: File System Id of the FSx NetApp registered with Tessell
+          type: string
+          format: uuid
+        svmId:
+          description: Storage Virtual Machine Id of the FSx NetApp registered with Tessell
+          type: string
+          format: uuid
     PatchType:
       type: string
       enum:
       - CRITICAL
       - NON_CRITICAL
       description: Type of patch
+    EntityAclSharingInfo:
+      title: EntityAclSharingInfo
+      description: Tessell Entity ACL Sharing Info
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityUserAclSharingInfo'
+    DbServerTimelineResponse:
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      - type: object
+        properties:
+          response:
+            type: array
+            items:
+              $ref: '#/components/schemas/EntityTimelineDTO'
+    CreateUpdateTessellTagPayload:
+      title: CreateUpdateTessellTagPayload
+      description: Create or update Tessell tag Payload
+      properties:
+        tags:
+          description: List of tags
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellTag'
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    TessellServiceInstanceRole:
+      type: string
+      description: DB Service instance role
+      enum:
+      - primary
+      - read_only_replica
+      - failover_replica
+      - dr
+    DbServerUpdates:
+      type: object
+      description: Update availability information for a DB Server
+      properties:
+        availableUpdates:
+          $ref: '#/components/schemas/AvailableUpdatesSimple'
+        upcomingMaintenanceWindow:
+          $ref: '#/components/schemas/UpcomingMaintenanceWindowInfo'
+    ComputeResourceStatus:
+      type: string
+      description: The current status of the Compute Resource
+      enum:
+      - CREATING
+      - RUNNING
+      - STOPPING
+      - STOPPED
+      - STARTING
+      - REBUILDING
+      - REBUILD_FAILED
+    TessellDbserverComputeResourceListResponse:
+      title: TessellDbserverComputeResourceListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/TessellDbserverComputeResourceDTO'
+    ComputeConfig:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/ComputeProviderType'
+        exadataConfig:
+          $ref: '#/components/schemas/ExadataComputeConfig'
+    SecurityConfigOps:
+      type: object
+      properties:
+        securityProfile:
+          $ref: '#/components/schemas/SecurityProfileInfoOps'
     SharableDbserverComputeResourceDTO:
       required:
       - name
@@ -859,6 +1143,76 @@ components:
         updatesInfo:
           $ref: '#/components/schemas/DbServerUpdates'
           description: Information about available updates for this DB Server. Only populated when load-updates-info=true in the request.
+    MachineType:
+      type: string
+      description: Infrastructure behind the Compute Resource
+      enum:
+      - BARE_METAL
+      - VM
+      - CONTAINER
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    ParameterProfileStatus:
+      type: string
+      description: Association status of the instance to the parameter profile
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+      - PENDING_REBOOT
+    AssociatedActivities:
+      type: object
+      properties:
+        dbPatch:
+          $ref: '#/components/schemas/PatchActivity'
+        osPatch:
+          $ref: '#/components/schemas/PatchActivity'
+        parameterProfileUpdate:
+          $ref: '#/components/schemas/PatchActivity'
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    EntityUserAclSharingInfo:
+      title: EntityUserAclSharingInfo
+      description: Tessell Entity ACL Sharing Info for a user
+      properties:
+        emailId:
+          type: string
+        role:
+          type: string
+        sharedBy:
+          type: string
+          description: Email of the user who shared the entity
+        sharedOn:
+          type: string
+          format: date-time
+          description: Date when the entity was shared
+    SecurityProfileSyncStatus:
+      type: string
+      description: Sync status of the security profile applied on an instance/server
+      enum:
+      - IN_SYNC
+      - UPDATING
+      - OUT_OF_SYNC
+    ComputeResourceSubStatus:
+      type: string
+      description: DB Server could have a sub status associated along with status
+      enum:
+      - REBUILDING
+      - REBUILD_FAILED
+      - START_FAILED
+      - STOP_FAILED
+      - UPDATING_SECURITY_CONFIG
+      - SECURITY_CONFIG_UPDATE_FAILED
     DBServiceOnComputeResource:
       description: DB Service details hosted on a compute resource
       properties:
@@ -936,40 +1290,105 @@ components:
           format: date-time
         softwareImageVersion:
           type: string
-    MachineType:
-      type: string
-      description: Infrastructure behind the Compute Resource
-      enum:
-      - BARE_METAL
-      - VM
-      - CONTAINER
-      - OCI_EXADATA
-      - AZURE_EXADATA
-      - AWS_EXADATA
-    ApiError:
+    DbServerStorageConfig:
       type: object
-      description: Common error response object for non 2xx responses
       properties:
-        code:
+        provider:
+          $ref: '#/components/schemas/StorageProviderType'
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
+    ActionWithCommentPayload:
+      type: object
+      properties:
+        comment:
           type: string
-          description: Status code for the error response
-        message:
+          description: Comment for the action
+    DeleteTagPayload:
+      title: DeleteTagPayload
+      description: Delete Tessell tag Payload
+      properties:
+        tagNames:
+          description: List of tag names to be deleted
+          type: array
+          items:
+            type: string
+    UpcomingMaintenanceWindowInfo:
+      type: object
+      description: Information about the upcoming maintenance window
+      properties:
+        maintenanceWindowId:
           type: string
-          description: Error message for API response
-        resolution:
+          format: uuid
+          description: Unique identifier of the maintenance window
+        cadence:
+          $ref: '#/components/schemas/MaintenanceCadence'
+        date:
           type: string
-        timestamp:
+          format: date
+          description: Date in YYYY-MM-DD format (ISO 8601)
+          example: '2026-03-15'
+        time:
           type: string
-          format: date-time
-        contextId:
+          description: Time in HH:mm format
+          example: 02:00
+        duration:
+          type: integer
+          description: Duration in minutes
+          example: 30
+        downtime:
           type: string
-          description: ContextId of API request
-        sessionId:
+          description: Expected downtime description
+          example: 05 min downtime
+        associatedActivities:
+          $ref: '#/components/schemas/AssociatedActivities'
+    ScriptInfo:
+      title: ScriptInfo
+      type:
+      - object
+      - 'null'
+      properties:
+        scriptId:
           type: string
-          description: SessionId of API request
-        tessellErrorCode:
+          format: uuid
+          description: The Tessell Script ID
+        scriptName:
           type: string
-          description: Unique error code specific to Tessell
+          description: The Tessell Script Name
+        scriptVersion:
+          type: string
+          description: The Tessell Script version
+        useActiveVersion:
+          type: boolean
+          default: false
+          description: 'When set to true, the scriptVersion field should be null and the system
+
+            will automatically use the active version of the script.
+
+            When set to false (default), the scriptVersion field specifies the
+
+            exact version to use.
+
+            '
+    tessellServiceTopology:
+      type: string
+      description: DB Service topology. This would specify whether the DB Service is single-node, or multi-node.
+      enum:
+      - single_instance
+      - high_availability
     ComputeResourceMaintenanceWindow:
       title: ComputeResourceMaintenanceWindow
       type: object
@@ -1019,387 +1438,6 @@ components:
           MONTHLY: '#/components/schemas/CrMonthlyMaintenanceWindow'
           QUARTERLY: '#/components/schemas/CrQuarterlyMaintenanceWindow'
           NO_PREFERENCE: '#/components/schemas/CrNoPreferenceMaintenanceWindow'
-    InstanceStorageConfig:
-      type: object
-      properties:
-        provider:
-          $ref: '#/components/schemas/StorageProviderType'
-        volumeType:
-          type: string
-          description: Data disk volume type
-        fsxNetAppConfig:
-          $ref: '#/components/schemas/InstanceFsxNetAppConfig'
-        azureNetAppConfig:
-          $ref: '#/components/schemas/InstanceAzureNetAppConfig'
-    AzureNetAppEncryptionKeySource:
-      enum:
-      - Microsoft.NetApp
-      - Microsoft.KeyVault
-      x-enum-varnames:
-      - MICROSOFT_NET_APP
-      - MICROSOFT_KEY_VAULT
-    EntityUserAclSharingInfo:
-      title: EntityUserAclSharingInfo
-      description: Tessell Entity ACL Sharing Info for a user
-      properties:
-        emailId:
-          type: string
-        role:
-          type: string
-        sharedBy:
-          type: string
-          description: Email of the user who shared the entity
-        sharedOn:
-          type: string
-          format: date-time
-          description: Date when the entity was shared
-    UpcomingMaintenanceWindowInfo:
-      type: object
-      description: Information about the upcoming maintenance window
-      properties:
-        maintenanceWindowId:
-          type: string
-          format: uuid
-          description: Unique identifier of the maintenance window
-        cadence:
-          $ref: '#/components/schemas/MaintenanceCadence'
-        date:
-          type: string
-          format: date
-          description: Date in YYYY-MM-DD format (ISO 8601)
-          example: '2026-03-15'
-        time:
-          type: string
-          description: Time in HH:mm format
-          example: 02:00
-        duration:
-          type: integer
-          description: Duration in minutes
-          example: 30
-        downtime:
-          type: string
-          description: Expected downtime description
-          example: 05 min downtime
-        associatedActivities:
-          $ref: '#/components/schemas/AssociatedActivities'
-    TimeZone:
-      type: string
-      description: The timezone detail
-      maxLength: 256
-    SecurityProfileSyncStatus:
-      type: string
-      description: Sync status of the security profile applied on an instance/server
-      enum:
-      - IN_SYNC
-      - UPDATING
-      - OUT_OF_SYNC
-    ParameterProfileStatus:
-      type: string
-      description: Association status of the instance to the parameter profile
-      enum:
-      - IN_SYNC
-      - UPDATING
-      - OUT_OF_SYNC
-      - PENDING_REBOOT
-    TessellServiceInstanceRole:
-      type: string
-      description: DB Service instance role
-      enum:
-      - primary
-      - read_only_replica
-      - failover_replica
-      - dr
-    TessellServiceStatus:
-      type: string
-      description: The current status of the DB Service
-      enum:
-      - CREATING
-      - FAILED
-      - READY
-      - STOPPING
-      - STOPPED
-      - DEGRADED
-      - HEALING
-      - DOWN
-      - STARTING
-      - DELETING
-      - SWITCHOVER
-      - REBUILDING
-      - PATCHING
-      - PATCH_FAILED
-      - UPDATING
-      - UNDER_MAINTENANCE
-      - REFRESHING
-      - RESTORING
-      - RESTORE_FAILED
-    InstanceAzureNetAppConfig:
-      description: Service instance level Azure NetApp config
-      type: object
-      properties:
-        azureNetAppName:
-          type: string
-        capacityPoolName:
-          type: string
-        volumeName:
-          type: string
-        azureNetAppId:
-          description: Azure NetApp Id registered with Tessell
-          type: string
-          format: uuid
-        capacityPoolId:
-          description: Capacity Pool Id of the Azure NetApp registered with Tessell
-          type: string
-          format: uuid
-        delegatedSubnetId:
-          description: Delegated Subnet name registered with Tessell for the Azure NetApp volume
-          type: string
-          format: uuid
-        delegatedSubnetName:
-          description: Delegated Subnet Id registered with Tessell for the Azure NetApp volume
-          type: string
-        encryptionKeyInfo:
-          $ref: '#/components/schemas/AzureNetAppEncryptionKeyInfo'
-        networkFeatures:
-          $ref: '#/components/schemas/AzureNetAppNetworkFeature'
-        serviceLevel:
-          $ref: '#/components/schemas/AzureNetAppCapacityPoolServiceLevel'
-    databaseEngineType:
-      description: Database Engine Type
-      type: string
-      enum:
-      - ORACLE
-      - POSTGRESQL
-      - SQLSERVER
-      - MYSQL
-      - APACHE_KAFKA
-      - MONGODB
-      - MILVUS
-    ComputeConfig:
-      type: object
-      properties:
-        provider:
-          $ref: '#/components/schemas/ComputeProviderType'
-        exadataConfig:
-          $ref: '#/components/schemas/ExadataComputeConfig'
-    EntityTimelineDTO:
-      type: object
-      description: This is a definition of the Entity Timeline object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Tessell generated UUID for the entity.
-        initiatedBy:
-          type: string
-          description: User id of person who initiated the action
-        initiatedTime:
-          type: string
-          description: Time at which action was initiated
-          format: date-time
-        completedTime:
-          type: string
-          description: Time at which action was completed
-          format: date-time
-        comment:
-          type: string
-          description: User specified comment for the action
-        initiationMessage:
-          type: string
-          description: System generated description at the start of action
-        completionMessage:
-          type: string
-          description: System generated description after action is successfully completed
-        eventType:
-          type: string
-          description: System generated description of action
-        contextInfo:
-          type:
-          - array
-          - 'null'
-          description: Contextual information for the action, if any.
-          items:
-            type: string
-    DbServerTimelineResponse:
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      - type: object
-        properties:
-          response:
-            type: array
-            items:
-              $ref: '#/components/schemas/EntityTimelineDTO'
-    AzureNetAppNetworkFeature:
-      description: Azure NetApp network feature configuration for creating volume
-      type: string
-      enum:
-      - Standard
-      - Basic
-      x-enum-varnames:
-      - STANDARD
-      - BASIC
-    SharableDbserverComputeResourceListResponse:
-      title: SharableDbserverComputeResourceListResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      type: object
-      properties:
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/SharableDbserverComputeResourceDTO'
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
-    AzureNetAppEncryptionKeyInfo:
-      description: Details of encryption key
-      type: object
-      properties:
-        id:
-          type: string
-          description: Id of the encryption key
-          format: uuid
-        name:
-          type: string
-          description: name of the encryption key
-        keyVaultCloudResourceId:
-          type: string
-          description: name of the encryption key vault in cloud
-        keySource:
-          $ref: '#/components/schemas/AzureNetAppEncryptionKeySource'
-    TessellUpdateDatabaseIntegrationDTO:
-      title: TessellUpdateDatabaseIntegrationDTO
-      type: object
-      properties:
-        request:
-          $ref: '#/components/schemas/TessellIntegrationRequestType'
-        id:
-          type: string
-          format: uuid
-          description: ID of the integration to add/remove/update from database
-        tenantId:
-          type: string
-          minLength: 1
-          maxLength: 128
-          description: Tenant ID of the integration to add/remove/update from database
-    ComputeResourceContextInfo:
-      type: object
-      description: Provide more context of DB Server state
-      properties:
-        subStatus:
-          $ref: '#/components/schemas/ComputeResourceSubStatus'
-        description:
-          type: string
-    ComputeResourceStatus:
-      type: string
-      description: The current status of the Compute Resource
-      enum:
-      - CREATING
-      - RUNNING
-      - STOPPING
-      - STOPPED
-      - STARTING
-      - REBUILDING
-      - REBUILD_FAILED
-    InstanceFsxNetAppConfig:
-      type: object
-      properties:
-        fileSystemName:
-          type: string
-        svmName:
-          type: string
-        volumeName:
-          type: string
-        fileSystemId:
-          description: File System Id of the FSx NetApp registered with Tessell
-          type: string
-          format: uuid
-        svmId:
-          description: Storage Virtual Machine Id of the FSx NetApp registered with Tessell
-          type: string
-          format: uuid
-    taskSummary:
-      title: taskSummary
-      type: object
-      properties:
-        taskId:
-          type: string
-          format: uuid
-        taskType:
-          type: string
-        resourceId:
-          type: string
-          format: uuid
-        associatedResourceIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        details:
-          type: object
-          additionalProperties:
-            type: string
-    DeleteTagPayload:
-      title: DeleteTagPayload
-      description: Delete Tessell tag Payload
-      properties:
-        tagNames:
-          description: List of tag names to be deleted
-          type: array
-          items:
-            type: string
-    ComputeResourceSubStatus:
-      type: string
-      description: DB Server could have a sub status associated along with status
-      enum:
-      - REBUILDING
-      - REBUILD_FAILED
-      - START_FAILED
-      - STOP_FAILED
-      - UPDATING_SECURITY_CONFIG
-      - SECURITY_CONFIG_UPDATE_FAILED
-    UpdateDbServerPayload:
-      type: object
-      properties:
-        name:
-          type: string
-          description: If not specified, this field will be ignored and the existing value will be assumed.
-        description:
-          type: string
-          description: If not specified, this field will be ignored and the existing value will be assumed.
-        enableDeletionProtection:
-          type: boolean
-          description: If not specified, this field will be ignored and the existing setting will be assumed.
-        enableStopProtection:
-          type: boolean
-          description: If not specified, this field will be ignored and the existing setting will be assumed.
-        restrictProvision:
-          type: boolean
-          description: If not specified, this field will be ignored and the existing setting will be assumed.
-    TessellServiceInstanceStatus:
-      type: string
-      description: DB Service instance status
-      enum:
-      - CREATING
-      - DELETING
-      - UP
-      - DOWN
-      - STOPPED
-      - REBUILDING
-      - REBUILD_FAILED
-      - PATCHING
-      - PATCH_FAILED
-      - UPDATING_PARAMETER_PROFILE
-      - UPDATING_OPTION_PROFILE
-      - UPDATING_SECURITY_CONFIG
-      - OPTION_PROFILE_UPDATE_FAILED
-      - PARAMETER_PROFILE_UPDATE_FAILED
-      - SECURITY_CONFIG_UPDATE_FAILED
-      - REFRESHING
     TessellDbserverComputeResourceDTO:
       required:
       - name
@@ -1592,6 +1630,204 @@ components:
         isHostingHAService:
           type: boolean
           description: Whether the Compute Resource is hosting HA service
+    TimeZone:
+      type: string
+      description: The timezone detail
+      maxLength: 256
+    AzureNetAppEncryptionKeyInfo:
+      description: Details of encryption key
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the encryption key
+          format: uuid
+        name:
+          type: string
+          description: name of the encryption key
+        keyVaultCloudResourceId:
+          type: string
+          description: name of the encryption key vault in cloud
+        keySource:
+          $ref: '#/components/schemas/AzureNetAppEncryptionKeySource'
+    TessellServiceStatus:
+      type: string
+      description: The current status of the DB Service
+      enum:
+      - CREATING
+      - FAILED
+      - READY
+      - STOPPING
+      - STOPPED
+      - DEGRADED
+      - HEALING
+      - DOWN
+      - STARTING
+      - DELETING
+      - SWITCHOVER
+      - REBUILDING
+      - PATCHING
+      - PATCH_FAILED
+      - UPDATING
+      - UNDER_MAINTENANCE
+      - REFRESHING
+      - RESTORING
+      - RESTORE_FAILED
+    EnableComputeSharingPayload:
+      type: object
+      properties:
+        enableSharing:
+          type: boolean
+    StorageProviderType:
+      description: Storage Type in the cloud
+      enum:
+      - AWS_EBS
+      - AWS_FSX_NETAPP
+      - AWS_HPC
+      - AWS_S3
+      - AZURE_HPC
+      - AZURE_MANAGED_DISK
+      - GCP_HYPERDISK
+      - GCP_GCS
+      - AZURE_BLOB
+      - MINIO
+      - AZURE_NETAPP
+      - OCI_EXADATA
+      - AZURE_EXADATA
+      - AWS_EXADATA
+    TessellUpdateDatabaseIntegrationDTO:
+      title: TessellUpdateDatabaseIntegrationDTO
+      type: object
+      properties:
+        request:
+          $ref: '#/components/schemas/TessellIntegrationRequestType'
+        id:
+          type: string
+          format: uuid
+          description: ID of the integration to add/remove/update from database
+        tenantId:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: Tenant ID of the integration to add/remove/update from database
+    UpdateDbServerPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          description: If not specified, this field will be ignored and the existing value will be assumed.
+        description:
+          type: string
+          description: If not specified, this field will be ignored and the existing value will be assumed.
+        enableDeletionProtection:
+          type: boolean
+          description: If not specified, this field will be ignored and the existing setting will be assumed.
+        enableStopProtection:
+          type: boolean
+          description: If not specified, this field will be ignored and the existing setting will be assumed.
+        restrictProvision:
+          type: boolean
+          description: If not specified, this field will be ignored and the existing setting will be assumed.
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    ComputeResourceContextInfo:
+      type: object
+      description: Provide more context of DB Server state
+      properties:
+        subStatus:
+          $ref: '#/components/schemas/ComputeResourceSubStatus'
+        description:
+          type: string
+    SecurityProfileInfoOps:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Id of the Security Profile
+        versionId:
+          type: string
+          format: uuid
+          description: Version Id of the Security Profile
+        status:
+          $ref: '#/components/schemas/SecurityProfileSyncStatus'
+    InstanceStorageConfig:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/StorageProviderType'
+        volumeType:
+          type: string
+          description: Data disk volume type
+        fsxNetAppConfig:
+          $ref: '#/components/schemas/InstanceFsxNetAppConfig'
+        azureNetAppConfig:
+          $ref: '#/components/schemas/InstanceAzureNetAppConfig'
+    taskSummary:
+      title: taskSummary
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        taskType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        associatedResourceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        details:
+          type: object
+          additionalProperties:
+            type: string
+    EntityTimelineDTO:
+      type: object
+      description: This is a definition of the Entity Timeline object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tessell generated UUID for the entity.
+        initiatedBy:
+          type: string
+          description: User id of person who initiated the action
+        initiatedTime:
+          type: string
+          description: Time at which action was initiated
+          format: date-time
+        completedTime:
+          type: string
+          description: Time at which action was completed
+          format: date-time
+        comment:
+          type: string
+          description: User specified comment for the action
+        initiationMessage:
+          type: string
+          description: System generated description at the start of action
+        completionMessage:
+          type: string
+          description: System generated description after action is successfully completed
+        eventType:
+          type: string
+          description: System generated description of action
+        contextInfo:
+          type:
+          - array
+          - 'null'
+          description: Contextual information for the action, if any.
+          items:
+            type: string
     ResizeDbServerComputeResourceRequest:
       type: object
       required:
@@ -1600,32 +1836,51 @@ components:
         computeType:
           type: string
           description: The new compute type for the DB Server
-    apiPaginationInfo:
-      title: apiPaginationInfo
+    TaskStatus:
+      type: string
+      description: The status of Task
+      enum:
+      - AVAILABLE
+      - QUEUED
+      - CANCELLED
+      - OVERRIDDEN
+      - IN_PROGRESS
+      - SUCCESS
+      - FAILED
+    AzureNetAppNetworkFeature:
+      description: Azure NetApp network feature configuration for creating volume
+      type: string
+      enum:
+      - Standard
+      - Basic
+      x-enum-varnames:
+      - STANDARD
+      - BASIC
+    SharableDbserverComputeResourceListResponse:
+      title: SharableDbserverComputeResourceListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
       type: object
       properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    PatchActivity:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/SharableDbserverComputeResourceDTO'
+    ServerIntegrationsInfo:
+      description: Tessell provides support to integrate third party softwares with DB Server. This fields details the information about what third-party integrations are configured with the DB Server.
       type: object
       properties:
-        taskId:
-          type: string
-          format: uuid
-        versionNo:
-          type: string
-        typeOfPatch:
-          $ref: '#/components/schemas/PatchType'
-        impact:
-          type: string
-        scheduledBy:
-          type: string
-        status:
-          $ref: '#/components/schemas/TaskStatus'
+        integrations:
+          type: array
+          items:
+            type: string
+            format: uuid
+    StopDbServerPayload:
+      allOf:
+      - $ref: '#/components/schemas/ActionWithCommentPayload'
+    StartDbServerPayload:
+      allOf:
+      - $ref: '#/components/schemas/ActionWithCommentPayload'
     TessellResourceUpdateInfo:
       title: TessellResourceUpdateInfo
       description: In progress update information for a Tessell Resource
@@ -1649,6 +1904,12 @@ components:
           type: object
           description: The specific details for a Tessell resource that are being updated
           additionalProperties: {}
+    CrMaintenanceWindowPreference:
+      enum:
+      - MONTHLY
+      - WEEKLY
+      - QUARTERLY
+      - NO_PREFERENCE
     AvailableUpdatesSimple:
       type: object
       description: Simple boolean flags indicating available updates
@@ -1661,66 +1922,16 @@ components:
           type: boolean
           description: Whether a DB patch update is available
           example: true
-    DbServerUpdates:
-      type: object
-      description: Update availability information for a DB Server
-      properties:
-        availableUpdates:
-          $ref: '#/components/schemas/AvailableUpdatesSimple'
-        upcomingMaintenanceWindow:
-          $ref: '#/components/schemas/UpcomingMaintenanceWindowInfo'
-    ScriptInfo:
-      title: ScriptInfo
-      type:
-      - object
-      - 'null'
-      properties:
-        scriptId:
-          type: string
-          format: uuid
-          description: The Tessell Script ID
-        scriptName:
-          type: string
-          description: The Tessell Script Name
-        scriptVersion:
-          type: string
-          description: The Tessell Script version
-        useActiveVersion:
-          type: boolean
-          default: false
-          description: 'When set to true, the scriptVersion field should be null and the system
-
-            will automatically use the active version of the script.
-
-            When set to false (default), the scriptVersion field specifies the
-
-            exact version to use.
-
-            '
-    SecurityProfileInfoOps:
+    apiPaginationInfo:
+      title: apiPaginationInfo
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-          description: Id of the Security Profile
-        versionId:
-          type: string
-          format: uuid
-          description: Version Id of the Security Profile
-        status:
-          $ref: '#/components/schemas/SecurityProfileSyncStatus'
-    TaskStatus:
-      type: string
-      description: The status of Task
-      enum:
-      - AVAILABLE
-      - QUEUED
-      - CANCELLED
-      - OVERRIDDEN
-      - IN_PROGRESS
-      - SUCCESS
-      - FAILED
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
     apiMetadata:
       title: apiMetadata
       type: object
@@ -1732,229 +1943,43 @@ components:
           format: int32
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
-    StopDbServerPayload:
-      allOf:
-      - $ref: '#/components/schemas/ActionWithCommentPayload'
-    TessellDbserverComputeResourceListResponse:
-      title: TessellDbserverComputeResourceListResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      type: object
-      properties:
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/TessellDbserverComputeResourceDTO'
-    ComputeProviderType:
-      type: string
-      enum:
-      - AWS_EC2
-      - AZURE_VM
-      - GCP_GCE
-      - OCI_EXADATA
-      - AZURE_EXADATA
-      - AWS_EXADATA
-    UpdateComputeResourceOwnerPayload:
-      type: object
-      properties:
-        owner:
-          type: string
-    CreateUpdateTessellTagPayload:
-      title: CreateUpdateTessellTagPayload
-      description: Create or update Tessell tag Payload
-      properties:
-        tags:
-          description: List of tags
-          type: array
-          items:
-            $ref: '#/components/schemas/TessellTag'
-    AzureNetAppCapacityPoolServiceLevel:
-      type: string
-      enum:
-      - Standard
-      - Premium
-      - Ultra
-      x-enum-varnames:
-      - STANDARD
-      - PREMIUM
-      - ULTRA
-    ServerIntegrationsInfo:
-      description: Tessell provides support to integrate third party softwares with DB Server. This fields details the information about what third-party integrations are configured with the DB Server.
-      type: object
-      properties:
-        integrations:
-          type: array
-          items:
-            type: string
-            format: uuid
-    CrMaintenanceWindowPreference:
-      enum:
-      - MONTHLY
-      - WEEKLY
-      - QUARTERLY
-      - NO_PREFERENCE
-    StartDbServerPayload:
-      allOf:
-      - $ref: '#/components/schemas/ActionWithCommentPayload'
-    ActionWithCommentPayload:
-      type: object
-      properties:
-        comment:
-          type: string
-          description: Comment for the action
-    SecurityConfigOps:
-      type: object
-      properties:
-        securityProfile:
-          $ref: '#/components/schemas/SecurityProfileInfoOps'
-    TessellIntegrationRequestType:
-      type: string
-      description: Request type enum for the addition/removal/updation of the Integration for the DB Service.
-      enum:
-      - ADD
-      - UPDATE
-      - REMOVE
-    AssociatedActivities:
-      type: object
-      properties:
-        dbPatch:
-          $ref: '#/components/schemas/PatchActivity'
-        osPatch:
-          $ref: '#/components/schemas/PatchActivity'
-        parameterProfileUpdate:
-          $ref: '#/components/schemas/PatchActivity'
-    EnableComputeSharingPayload:
-      type: object
-      properties:
-        enableSharing:
-          type: boolean
-    TessellTag:
-      title: TessellTag
-      type:
-      - object
-      - 'null'
-      properties:
-        name:
-          description: Case sensitive, tag name
-          type: string
-          maxLength: 128
-          minLength: 1
-        value:
-          description: Case sensitive, tag value
-          type: string
-          maxLength: 256
-          minLength: 0
-    MaintenanceCadence:
-      type: string
-      enum:
-      - DAILY
-      - WEEKLY
-      - MONTHLY
-      description: Frequency of maintenance window
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    DbServerStorageConfig:
-      type: object
-      properties:
-        provider:
-          $ref: '#/components/schemas/StorageProviderType'
-    tessellServiceTopology:
-      type: string
-      description: DB Service topology. This would specify whether the DB Service is single-node, or multi-node.
-      enum:
-      - single_instance
-      - high_availability
-    ExadataComputeConfig:
-      type: object
-      required:
-      - infrastructureId
-      - infrastructureName
-      - vmClusterId
-      - vmClusterName
-      properties:
-        infrastructureId:
-          type: string
-          format: uuid
-        infrastructureName:
-          type: string
-        vmClusterId:
-          type: string
-          format: uuid
-        vmClusterName:
-          type: string
-        ocpu:
-          type: integer
-        memoryInGbs:
-          type: integer
-        floatingIpAddress:
-          type: string
-        dbServer:
-          type: string
-        privateIpAddress:
-          type: string
-        localStorageInGbs:
-          type: integer
-        dnsName:
-          type: string
-    apiResponse:
-      example:
-        metadata:
-          pagination:
-            pageOffset: 0
-            pageSize: 6
-          records: 1
-          timeZone: timeZone
-        response: '{}'
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-      title: ApiResponse
-      type: object
-    EntityAclSharingInfo:
-      title: EntityAclSharingInfo
-      description: Tessell Entity ACL Sharing Info
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/EntityUserAclSharingInfo'
-    StorageProviderType:
-      description: Storage Type in the cloud
-      enum:
-      - AWS_EBS
-      - AWS_FSX_NETAPP
-      - AWS_HPC
-      - AWS_S3
-      - AZURE_HPC
-      - AZURE_MANAGED_DISK
-      - GCP_HYPERDISK
-      - GCP_GCS
-      - AZURE_BLOB
-      - MINIO
-      - AZURE_NETAPP
-      - OCI_EXADATA
-      - AZURE_EXADATA
-      - AWS_EXADATA
+  parameters:
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
   examples:
-    StopDbServerSummary:
-      summary: Summary for DB Server stop request
-      value:
-        taskId: ae101e0a-0ca3-4644-8621-0d761aa25e3a
-        taskType: stop_tessell_server
-        resourceId: 65fed0c0-8dcc-42e1-8b9f-233518951a2d
-        details:
-          workflowName: stop-db-server
-          action: stop_db_server
-          serverName: finance-db-server
-          serverId: 65fed0c0-8dcc-42e1-8b9f-233518951a2d
     StartDbServerSummary:
       summary: Summary for DB Server start request
       value:
@@ -1966,42 +1991,17 @@ components:
           action: start_db_server
           serverName: finance-db-server
           serverId: 65fed0c0-8dcc-42e1-8b9f-233518951a2d
-  parameters:
-    id:
-      name: id
-      description: Id of entity
-      in: path
-      style: simple
-      required: true
-      schema:
-        type: string
-        format: uuid
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
+    StopDbServerSummary:
+      summary: Summary for DB Server stop request
+      value:
+        taskId: ae101e0a-0ca3-4644-8621-0d761aa25e3a
+        taskType: stop_tessell_server
+        resourceId: 65fed0c0-8dcc-42e1-8b9f-233518951a2d
+        details:
+          workflowName: stop-db-server
+          action: stop_db_server
+          serverName: finance-db-server
+          serverId: 65fed0c0-8dcc-42e1-8b9f-233518951a2d
   securitySchemes:
     BearerAuth:
       type: http

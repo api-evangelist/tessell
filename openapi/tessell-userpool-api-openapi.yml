@@ -194,26 +194,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    IamApiResponse:
-      title: IamApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: array
-          items:
-            type: object
     UserpoolDTO:
       title: UserpoolDTO
       type: object
@@ -247,21 +227,16 @@ components:
           type: string
           description: AWS userpool id
       description: This is a definition for Tessell managed userpool payload object
-    UserpoolStatus:
-      title: UserpoolStatus
-      type: string
-      description: This is a definition for Tessell userpool status object
-      enum:
-      - DELETED
-      - DISABLED
-      - ENABLED
-    UserpoolType:
-      title: UserpoolType
-      type: string
-      description: This is a definition for Tessell userpool type object
-      enum:
-      - GLOBAL
-      - LOCAL
+    IamApiResponse:
+      title: IamApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            type: object
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -305,6 +280,21 @@ components:
           type: string
           description: AWS userpool id
       description: This is a definition for Tessell internal create userpool payload object
+    UserpoolType:
+      title: UserpoolType
+      type: string
+      description: This is a definition for Tessell userpool type object
+      enum:
+      - GLOBAL
+      - LOCAL
+    UserpoolStatus:
+      title: UserpoolStatus
+      type: string
+      description: This is a definition for Tessell userpool status object
+      enum:
+      - DELETED
+      - DISABLED
+      - ENABLED
     apiStatus:
       title: apiStatus
       type: object
@@ -313,6 +303,16 @@ components:
           type: string
         message:
           type: string
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
     apiMetadata:
       title: apiMetadata
       type: object

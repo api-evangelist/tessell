@@ -336,17 +336,6 @@ components:
         metadata:
           type: object
           description: Metadata for the invoice
-    TessellPaymentDTO:
-      title: TessellPaymentDTO
-      type: object
-      description: Details required for changing payment option of tenant
-      properties:
-        setupIntentId:
-          type: string
-          description: Id of the intent to change payment option
-        clientSecret:
-          type: string
-          description: Client secret for updating payment method in Tessell
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -415,6 +404,17 @@ components:
           description: Last four digits of the card
         address:
           $ref: '#/components/schemas/TessellCustomerAddress'
+    TessellPaymentDTO:
+      title: TessellPaymentDTO
+      type: object
+      description: Details required for changing payment option of tenant
+      properties:
+        setupIntentId:
+          type: string
+          description: Id of the intent to change payment option
+        clientSecret:
+          type: string
+          description: Client secret for updating payment method in Tessell
   securitySchemes:
     BearerAuth:
       type: http

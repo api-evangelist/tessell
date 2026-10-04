@@ -559,154 +559,15 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    TessellMeteringRateCardEntityName:
-      title: Billing Rate Card's Entity Name
+    TessellCreditStatus:
+      title: Credit Status
       type: string
-      description: Rate card entity name
+      description: Status of a credit entry
       enum:
-      - i3.large
-      - i3en.large
-      - i3.xlarge
-      - i3en.xlarge
-      - i3.2xlarge
-      - i3en.2xlarge
-      - i3en.3xlarge
-      - i3en.4xlarge
-      - i3en.6xlarge
-      - i3en.8xlarge
-      - i3en.16xlarge
-      - i3en.24xlarge
-      - Standard_L8s_v2
-      - Standard_L16s_v2
-      - Standard_L32s_v2
-      - Standard_L48s_v2
-      - Standard_L64s_v2
-      - Standard_L80s_v2
-      - Availability Machine (AWS)
-      - Availability Machine (Azure)
-    AMResourceInfo:
-      title: AM Resource Object
-      description: This is a definition for resources in AM
-      type: object
-      properties:
-        entityId:
-          type: string
-          format: uuid
-          description: The entity Id
-        entityType:
-          $ref: '#/components/schemas/TessellMeteringEntityType'
-        cloudType:
-          $ref: '#/components/schemas/CloudType'
-        region:
-          type: string
-          description: The region of the resource
-        userName:
-          type: string
-          description: The User Name
-        usage:
-          type: number
-          format: double
-          description: The usage for the duration of the meter
-        usageUnit:
-          type: string
-          description: The units of the usage
-        meterHours:
-          type: integer
-          description: The number of hours that were involved in the meter
-        dateCreated:
-          type: string
-          format: date-time
-          description: The date when the entity is created
-    TessellDiscountDTO:
-      title: Discount Object
-      description: This is a definition for Tessell discount object
-      type: object
-      properties:
-        discountPercentage:
-          type: number
-          format: float
-          minimum: 0
-          maximum: 100
-          description: Discount percentage for the tenant
-        effectiveStartDate:
-          type: string
-          format: date-time
-          description: Date when the discount rate becomes effective
-        endDate:
-          type: string
-          format: date-time
-          description: Date when the discount rate ends
-        skipBillGeneration:
-          type: boolean
-          default: false
-          description: Skip bill and invoice generation for tenant if set
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    MeterDuration:
-      title: Meter Duration
-      type: string
-      description: Meter Duration Type
-      enum:
-      - HOURLY
-      - DAILY
-      - MONTHLY
-    databaseEngineType:
-      description: Database Engine Type
-      type: string
-      enum:
-      - ORACLE
-      - POSTGRESQL
-      - SQLSERVER
-      - MYSQL
-      - APACHE_KAFKA
-      - MONGODB
-      - MILVUS
-    TessellInvoiceConfigDTO:
-      title: Tessell Invoice properties
-      description: Tessell Invoice properties
-      type: object
-      properties:
-        finalizeInvoice:
-          type: boolean
-          description: Indicates if the tenant's invoice should be finalized or kept in draft state
-    TessellCreditSummaryDTO:
-      title: Billing configuration for tenant
-      description: Billing configuration for tenant
-      type: object
-      properties:
-        amount:
-          type: number
-          format: double
-          description: Total credit amount
-        balance:
-          type: number
-          format: double
-          description: Total credit balance
-        activeCredits:
-          type: integer
-          description: The number of hours that were involved in the meter
+      - ACTIVE
+      - DELETED
+      - EXPIRED
+      - EXHAUSTED
     TessellBillDTO:
       title: Bill Object
       description: This is a definition for Tessell Bill
@@ -747,6 +608,55 @@ components:
           description: Bill metadata
         duration:
           $ref: '#/components/schemas/TessellBillDuration'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    TessellMeteringRateCardEntityName:
+      title: Billing Rate Card's Entity Name
+      type: string
+      description: Rate card entity name
+      enum:
+      - i3.large
+      - i3en.large
+      - i3.xlarge
+      - i3en.xlarge
+      - i3.2xlarge
+      - i3en.2xlarge
+      - i3en.3xlarge
+      - i3en.4xlarge
+      - i3en.6xlarge
+      - i3en.8xlarge
+      - i3en.16xlarge
+      - i3en.24xlarge
+      - Standard_L8s_v2
+      - Standard_L16s_v2
+      - Standard_L32s_v2
+      - Standard_L48s_v2
+      - Standard_L64s_v2
+      - Standard_L80s_v2
+      - Availability Machine (AWS)
+      - Availability Machine (Azure)
     TessellBillingRateCardDTO:
       title: Rate Card Object
       description: This is a definition for Tessell billing rate card
@@ -780,50 +690,14 @@ components:
           type: boolean
           description: Whether the rate card is custom
           default: false
-    TessellBillSummaryDTO:
-      title: Billing configuration for tenant
-      description: Billing configuration for tenant
-      type: object
-      properties:
-        serviceEnabled:
-          type: boolean
-          description: Indicates if Tessell service is enabled for this tenant
-        validPaymentMethod:
-          type: boolean
-          description: Indicates weather the customer has configured a valid bill payment method with Tessell
-        discount:
-          $ref: '#/components/schemas/TessellDiscountDTO'
-        credit:
-          $ref: '#/components/schemas/TessellCreditSummaryDTO'
-        invoice:
-          $ref: '#/components/schemas/TessellInvoiceConfigDTO'
-    TessellMeteringEntityType:
-      title: Metering Entity Type
+    TessellBillingEntityType:
+      title: Billing Entity Type
       type: string
-      description: The type of metering entity
+      description: The type of billing entity
       enum:
-      - SERVICE
-      - AVAILABILITY_MACHINE
-      - BACKUP
-      - LOGS
-      - BENCHMARK
-    TessellBillDuration:
-      title: Bill Duration
-      type: string
-      description: Bill Duration Type
-      enum:
-      - HOURLY
-      - MONTHLY
-      - YEARLY
-    TessellCreditStatus:
-      title: Credit Status
-      type: string
-      description: Status of a credit entry
-      enum:
-      - ACTIVE
-      - DELETED
-      - EXPIRED
-      - EXHAUSTED
+      - COMPUTE
+      - STORAGE
+      - NETWORK
     TessellMonthlyCostInfoDTO:
       title: Monthly Meter Cost Object
       description: This is a definition for monthly meter cost
@@ -841,80 +715,56 @@ components:
           type: number
           format: double
           description: Meter cost for this month
-    TessellBillingEntityType:
-      title: Billing Entity Type
-      type: string
-      description: The type of billing entity
-      enum:
-      - COMPUTE
-      - STORAGE
-      - NETWORK
-    TessellCustomerBillingProfileAddress:
-      title: customer address
-      description: This is a definition for customer address in billing profile
+    AMResourceInfo:
+      title: AM Resource Object
+      description: This is a definition for resources in AM
       type: object
       properties:
-        city:
-          type: string
-          description: city of customer
-        country:
-          type: string
-          description: country of customer
-        state:
-          type: string
-          description: state of customer
-        addressLine1:
-          type: string
-          description: addressLine1 of customer
-        addressLine2:
-          type: string
-          description: addressLine2 of customer
-        zipCode:
-          type: string
-          description: zipCode of customer
-    TessellCreditType:
-      title: Credit Type
-      type: string
-      description: Credit entry type
-      enum:
-      - TRIAL
-      - SLA
-      - PURCHASED
-    CloudType:
-      title: Clouds
-      type: string
-      description: Cloud Type
-      enum:
-      - AWS
-      - AZURE
-    TessellBillingProfileDTO:
-      title: Billing Profile
-      description: This is a definition for Tessell Billing Profile
-      type: object
-      properties:
-        id:
+        entityId:
           type: string
           format: uuid
-          description: The id for which the Billing profile should be created
-        name:
+          description: The entity Id
+        entityType:
+          $ref: '#/components/schemas/TessellMeteringEntityType'
+        cloudType:
+          $ref: '#/components/schemas/CloudType'
+        region:
           type: string
-          description: The name of the billing profile
-        companyName:
+          description: The region of the resource
+        userName:
           type: string
-          description: The company name of customer in billing profile
-        emailLists:
-          type: array
-          items:
-            type: string
-          description: The list of all emails where invoice need to send
-        description:
+          description: The User Name
+        usage:
+          type: number
+          format: double
+          description: The usage for the duration of the meter
+        usageUnit:
           type: string
-          description: The description of the billing profile
-        tenantId:
+          description: The units of the usage
+        meterHours:
+          type: integer
+          description: The number of hours that were involved in the meter
+        dateCreated:
           type: string
-          description: Tenant this billing profile belongs to
-        address:
-          $ref: '#/components/schemas/TessellCustomerBillingProfileAddress'
+          format: date-time
+          description: The date when the entity is created
+    TessellBillSummaryDTO:
+      title: Billing configuration for tenant
+      description: Billing configuration for tenant
+      type: object
+      properties:
+        serviceEnabled:
+          type: boolean
+          description: Indicates if Tessell service is enabled for this tenant
+        validPaymentMethod:
+          type: boolean
+          description: Indicates weather the customer has configured a valid bill payment method with Tessell
+        discount:
+          $ref: '#/components/schemas/TessellDiscountDTO'
+        credit:
+          $ref: '#/components/schemas/TessellCreditSummaryDTO'
+        invoice:
+          $ref: '#/components/schemas/TessellInvoiceConfigDTO'
     TessellMeterDTO:
       title: Meter Object
       description: This is a definition for Tessell Meter
@@ -978,6 +828,80 @@ components:
           items:
             $ref: '#/components/schemas/AMResourceInfo'
           description: The details of backups and logs in the AM
+    databaseEngineType:
+      description: Database Engine Type
+      type: string
+      enum:
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
+    TessellBillDuration:
+      title: Bill Duration
+      type: string
+      description: Bill Duration Type
+      enum:
+      - HOURLY
+      - MONTHLY
+      - YEARLY
+    TessellInvoiceConfigDTO:
+      title: Tessell Invoice properties
+      description: Tessell Invoice properties
+      type: object
+      properties:
+        finalizeInvoice:
+          type: boolean
+          description: Indicates if the tenant's invoice should be finalized or kept in draft state
+    TessellDiscountDTO:
+      title: Discount Object
+      description: This is a definition for Tessell discount object
+      type: object
+      properties:
+        discountPercentage:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100
+          description: Discount percentage for the tenant
+        effectiveStartDate:
+          type: string
+          format: date-time
+          description: Date when the discount rate becomes effective
+        endDate:
+          type: string
+          format: date-time
+          description: Date when the discount rate ends
+        skipBillGeneration:
+          type: boolean
+          default: false
+          description: Skip bill and invoice generation for tenant if set
+    TessellCreditSummaryDTO:
+      title: Billing configuration for tenant
+      description: Billing configuration for tenant
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+          description: Total credit amount
+        balance:
+          type: number
+          format: double
+          description: Total credit balance
+        activeCredits:
+          type: integer
+          description: The number of hours that were involved in the meter
+    TessellCreditType:
+      title: Credit Type
+      type: string
+      description: Credit entry type
+      enum:
+      - TRIAL
+      - SLA
+      - PURCHASED
     TessellCreditDTO:
       title: Credit Object
       description: This is a definition for Tessell credits object
@@ -1023,16 +947,83 @@ components:
         metadata:
           type: object
           description: Credit metadata
+    TessellBillingProfileDTO:
+      title: Billing Profile
+      description: This is a definition for Tessell Billing Profile
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The id for which the Billing profile should be created
+        name:
+          type: string
+          description: The name of the billing profile
+        companyName:
+          type: string
+          description: The company name of customer in billing profile
+        emailLists:
+          type: array
+          items:
+            type: string
+          description: The list of all emails where invoice need to send
+        description:
+          type: string
+          description: The description of the billing profile
+        tenantId:
+          type: string
+          description: Tenant this billing profile belongs to
+        address:
+          $ref: '#/components/schemas/TessellCustomerBillingProfileAddress'
+    CloudType:
+      title: Clouds
+      type: string
+      description: Cloud Type
+      enum:
+      - AWS
+      - AZURE
+    TessellCustomerBillingProfileAddress:
+      title: customer address
+      description: This is a definition for customer address in billing profile
+      type: object
+      properties:
+        city:
+          type: string
+          description: city of customer
+        country:
+          type: string
+          description: country of customer
+        state:
+          type: string
+          description: state of customer
+        addressLine1:
+          type: string
+          description: addressLine1 of customer
+        addressLine2:
+          type: string
+          description: addressLine2 of customer
+        zipCode:
+          type: string
+          description: zipCode of customer
+    MeterDuration:
+      title: Meter Duration
+      type: string
+      description: Meter Duration Type
+      enum:
+      - HOURLY
+      - DAILY
+      - MONTHLY
+    TessellMeteringEntityType:
+      title: Metering Entity Type
+      type: string
+      description: The type of metering entity
+      enum:
+      - SERVICE
+      - AVAILABILITY_MACHINE
+      - BACKUP
+      - LOGS
+      - BENCHMARK
   parameters:
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
     pageOffset:
       name: page-offset
       in: query
@@ -1042,6 +1033,15 @@ components:
         type: integer
         format: int32
         default: 0
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
   securitySchemes:
     BearerAuth:
       type: http

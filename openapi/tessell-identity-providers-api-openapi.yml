@@ -160,53 +160,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    CreateIdpPayload:
-      title: CreateIdpPayload
-      type: object
-      description: Payload for Creating Identity Provider
-      required:
-      - type
-      - entityId
-      - loginUrl
-      - certificate
-      properties:
-        type:
-          $ref: '#/components/schemas/IdentityProviderType'
-        entityId:
-          type: string
-          description: Entity ID of Identity Provider
-          minLength: 1
-          maxLength: 2000
-          example: http://www.okta.com/abcd1234
-        loginUrl:
-          type: string
-          description: Login URL of Identity Provider
-          minLength: 1
-          maxLength: 2000
-          example: https://sandwich.okta.com/app/sandwich_app_1/abcd1234/sso/saml
-        certificate:
-          type: string
-          description: Certificate of Identity Provider
-          minLength: 1
-          maxLength: 10000
-          example: '-----BEGIN CERTIFICATE-----\nMIIF0jCCA ... tg3g\n-----END CERTIFICATE-----'
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
-    IdentityProviderType:
-      title: IdentityProviderType
-      type: string
-      description: Currently supported Identity Providers for SSO
-      enum:
-      - AZURE_AD
-      - OKTA
     IdentityProviderDTO:
       title: IdentityProviderDTO
       type: object
@@ -237,17 +190,6 @@ components:
           type: string
           description: Date when the IDP configuration was last modified
           format: date-time
-    ConfiguredIdpsApiResponse:
-      title: ConfiguredIdpsApiResponse
-      description: Array of currently configured IDP types
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdentityProviderType'
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -272,6 +214,62 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
+    IdentityProviderType:
+      title: IdentityProviderType
+      type: string
+      description: Currently supported Identity Providers for SSO
+      enum:
+      - AZURE_AD
+      - OKTA
+    ConfiguredIdpsApiResponse:
+      title: ConfiguredIdpsApiResponse
+      description: Array of currently configured IDP types
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityProviderType'
+    CreateIdpPayload:
+      title: CreateIdpPayload
+      type: object
+      description: Payload for Creating Identity Provider
+      required:
+      - type
+      - entityId
+      - loginUrl
+      - certificate
+      properties:
+        type:
+          $ref: '#/components/schemas/IdentityProviderType'
+        entityId:
+          type: string
+          description: Entity ID of Identity Provider
+          minLength: 1
+          maxLength: 2000
+          example: http://www.okta.com/abcd1234
+        loginUrl:
+          type: string
+          description: Login URL of Identity Provider
+          minLength: 1
+          maxLength: 2000
+          example: https://sandwich.okta.com/app/sandwich_app_1/abcd1234/sso/saml
+        certificate:
+          type: string
+          description: Certificate of Identity Provider
+          minLength: 1
+          maxLength: 10000
+          example: '-----BEGIN CERTIFICATE-----\nMIIF0jCCA ... tg3g\n-----END CERTIFICATE-----'
+    IdentityProviderStatus:
+      title: IdentityProviderStatus
+      type: string
+      description: Status of Identity Provider for SSO
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
     apiStatus:
       title: apiStatus
       type: object
@@ -280,6 +278,16 @@ components:
           type: string
         message:
           type: string
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
     apiMetadata:
       title: apiMetadata
       type: object
@@ -291,14 +299,6 @@ components:
           format: int32
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
-    IdentityProviderStatus:
-      title: IdentityProviderStatus
-      type: string
-      description: Status of Identity Provider for SSO
-      enum:
-      - ENABLED
-      - DISABLED
-      - DELETED
   parameters:
     tenantIdMandatory:
       name: tenant-id

@@ -124,6 +124,36 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    AttachmentDTO:
+      title: Ticket conversation attachment
+      type: object
+      description: Conversation attachment
+      properties:
+        attachment_url:
+          type: string
+          description: attachment url
+        content_type:
+          type: string
+          description: attachment content type
+        id:
+          type: integer
+          format: int64
+          description: attachment identifier
+        name:
+          type: string
+          description: attachment name
+        size:
+          type: integer
+          format: int64
+          description: attachment size
+    NoteTicketRequestBodyV2:
+      title: Note to ticket body
+      type: object
+      description: Note to ticket body
+      properties:
+        body:
+          type: string
+          description: reply body
     TicketConversationResponseV2:
       title: Ticket Conversation Response
       description: array of conversations
@@ -168,14 +198,6 @@ components:
           items:
             type: string
             format: binary
-    NoteTicketRequestBodyV2:
-      title: Note to ticket body
-      type: object
-      description: Note to ticket body
-      properties:
-        body:
-          type: string
-          description: reply body
     ConversationDTOV2:
       title: Ticket conversation
       type: object
@@ -204,28 +226,6 @@ components:
         name:
           type: string
           description: user who made this conversation
-    AttachmentDTO:
-      title: Ticket conversation attachment
-      type: object
-      description: Conversation attachment
-      properties:
-        attachment_url:
-          type: string
-          description: attachment url
-        content_type:
-          type: string
-          description: attachment content type
-        id:
-          type: integer
-          format: int64
-          description: attachment identifier
-        name:
-          type: string
-          description: attachment name
-        size:
-          type: integer
-          format: int64
-          description: attachment size
   securitySchemes:
     BearerAuth:
       type: http

@@ -55,26 +55,7 @@ paths:
         schema:
           type: string
 components:
-  parameters:
-    id:
-      name: id
-      description: Id of entity
-      in: path
-      style: simple
-      required: true
-      schema:
-        type: string
-        format: uuid
   schemas:
-    DatabaseSchema:
-      type: object
-      description: Represents the complete schema structure of a database, including databases, schemas within databases, tables, and columns.
-      properties:
-        databases:
-          type: array
-          description: List of databases in the schema.
-          items:
-            $ref: '#/components/schemas/DatabaseSchemaDb'
     DatabaseSchemaDbSchema:
       type: object
       description: Represents a schema within a database instance.
@@ -90,51 +71,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DatabaseSchemaDbSchemaTable'
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    DatabaseSchemaDbSchemaTableColumn:
-      type: object
-      description: Represents a column within a table.
-      properties:
-        columnName:
-          type: string
-          example: ID
-        dataType:
-          type: string
-          example: NUMBER
-        isEligibleForDataPipeline:
-          type: boolean
-          description: Indicates if this column's dataType is supported across all target databases for data pipeline operations.
-          example: true
-        constraints:
-          type: array
-          items:
-            type: string
-          example:
-          - Primary Key
-          - Not Null
     DatabaseSchemaDb:
       type: object
       description: Represents a database instance within the schema structure.
@@ -187,6 +123,70 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DatabaseSchemaDbSchemaTableColumn'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    DatabaseSchemaDbSchemaTableColumn:
+      type: object
+      description: Represents a column within a table.
+      properties:
+        columnName:
+          type: string
+          example: ID
+        dataType:
+          type: string
+          example: NUMBER
+        isEligibleForDataPipeline:
+          type: boolean
+          description: Indicates if this column's dataType is supported across all target databases for data pipeline operations.
+          example: true
+        constraints:
+          type: array
+          items:
+            type: string
+          example:
+          - Primary Key
+          - Not Null
+    DatabaseSchema:
+      type: object
+      description: Represents the complete schema structure of a database, including databases, schemas within databases, tables, and columns.
+      properties:
+        databases:
+          type: array
+          description: List of databases in the schema.
+          items:
+            $ref: '#/components/schemas/DatabaseSchemaDb'
+  parameters:
+    id:
+      name: id
+      description: Id of entity
+      in: path
+      style: simple
+      required: true
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     BearerAuth:
       type: http

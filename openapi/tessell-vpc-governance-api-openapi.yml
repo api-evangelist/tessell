@@ -726,6 +726,389 @@ paths:
           type: string
 components:
   schemas:
+    DiscoverVpcPayload:
+      title: DiscoverVpcPayload
+      type: object
+      required:
+      - subscription
+      - cloud
+      - region
+      properties:
+        subscription:
+          type: string
+          description: Name of the subscription
+          minLength: 1
+          maxLength: 255
+          example: byoa-sub-1
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+        region:
+          type: string
+          description: Region
+          minLength: 1
+          maxLength: 128
+          example: us-east-1
+        vpcId:
+          type: string
+          description: Cloud Id of the VPC
+          minLength: 1
+          maxLength: 500
+          example: vpc-a1b2c3d4
+    SecurityGroups:
+      title: SecurityGroups
+      type: object
+      properties:
+        securityGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/SecurityGroupResource'
+    AclRevokePayload:
+      title: AclRevokePayload
+      description: Payload to revoke Tessell ACLs
+      required:
+      - users
+      properties:
+        users:
+          description: List of users to be deleted
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          minItems: 1
+          maxItems: 100
+    SubnetServiceConsumer:
+      title: Subnet
+      type: object
+      properties:
+        publicSubnets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubnetBasicDetails'
+        privateSubnets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubnetBasicDetails'
+    RegisterClientSubnetServiceConsumer:
+      title: Subnet
+      type: object
+      required:
+      - privateSubnets
+      properties:
+        publicSubnets:
+          type: array
+          items:
+            maxItems: 100
+            $ref: '#/components/schemas/RegisterClientSubnet'
+        privateSubnets:
+          type: array
+          items:
+            maxItems: 100
+            $ref: '#/components/schemas/RegisterClientSubnet'
+    AclUserPayload:
+      title: AclUserPayload
+      description: Payload to create an user's entity ACL
+      required:
+      - emailId
+      - role
+      properties:
+        emailId:
+          description: Email id of the user
+          type: string
+          minLength: 1
+          maxLength: 256
+        role:
+          description: Role Info
+          type: string
+          minLength: 1
+          maxLength: 64
+    RegisterPrivateEndpointsPayload:
+      title: RegisterPrivateEndpointsPayload
+      type: object
+      properties:
+        awsEndpoints:
+          type: array
+          maxItems: 10
+          items:
+            $ref: '#/components/schemas/RegisterAWSPrivateEndpointPayload'
+        azureEndpoints:
+          type: array
+          maxItems: 10
+          items:
+            $ref: '#/components/schemas/RegisterAzurePrivateEndpointPayload'
+        gcpEndpoints:
+          type: array
+          maxItems: 10
+          items:
+            $ref: '#/components/schemas/RegisterGCPPrivateEndpointPayload'
+    Progress:
+      title: Progress
+      type: object
+      description: Progress of the execution
+      properties:
+        percentageCompleted:
+          type: integer
+          description: Completed percentage of the execution
+          default: 0
+          minimum: 0
+          maximum: 100
+        estimatedTimeRemainingInMinutes:
+          type: integer
+          description: Estimated time remaining in minutes
+          minimum: 0
+    ActivityStatus:
+      x-gorm-column-attrs: not null
+      x-gorm-index: true
+      description: The status of Activity
+      type: string
+      enum:
+      - QUEUED
+      - RUNNING
+      - SKIPPED
+      - SUSPENDED
+      - SUCCESS
+      - FAILED
+      - UNKNOWN
+    AWSPrivateEndpointResource:
+      allOf:
+      - $ref: '#/components/schemas/CloudResource'
+      properties:
+        endpointType:
+          $ref: '#/components/schemas/AWSPrivateEndpointType'
+    PrivateEndpointResponse:
+      title: PrivateEndpointResponse
+      type: object
+      properties:
+        awsEndpoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/AWSPrivateEndpointResource'
+        azureEndpoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/AzurePrivateEndpointResource'
+        gcpEndpoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/GCPPrivateEndpointResource'
+    RegisterClientSubnet:
+      title: Subnet
+      type: object
+      required:
+      - cloudId
+      properties:
+        cloudId:
+          type: string
+          description: Cloud id of the subnet
+          example: subnet-1a2b3c4d
+          minLength: 1
+          maxLength: 512
+        subnetGroups:
+          type: array
+          items:
+            maxItems: 1
+            type: string
+          example:
+          - group-1
+        gcpNetworkTag:
+          $ref: '#/components/schemas/GcpNetworkTag'
+    DiscoverVpcRouteTablePayload:
+      title: DiscoverRouteTablePayload
+      type: object
+      required:
+      - subscription
+      - region
+      - cloud
+      properties:
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+        subscription:
+          type: string
+          description: Name of the subscription
+          minLength: 1
+          maxLength: 255
+          example: byoa-sub-1
+        region:
+          type: string
+          description: Region
+          minLength: 1
+          maxLength: 128
+          example: us-east-1
+        vpcId:
+          type: string
+          description: Cloud Id of the VPC
+          minLength: 1
+          maxLength: 500
+          example: vpc-a1b2c3d4
+    AWSPrivateEndpointType:
+      description: AWS Private Endpoint Types
+      type: string
+      enum:
+      - SQS
+      - SECRET_MANAGER
+      - CLOUDWATCH_LOGS
+      - EC2
+      - TESSELL_CONTROL_PLANE
+      - S3
+    GCPPrivateEndpointType:
+      description: GCP Private Endpoint Types (Private Service Connect)
+      type: string
+      enum:
+      - TESSELL_CONTROL_PLANE
+    GcpNetworkTagType:
+      type: string
+      description: Type of network tag
+      enum:
+      - NETWORK_TAG
+      - SECURE_TAG
+    LoggedInUserRoles:
+      description: Tessell Logged In User Role Types
+      type: string
+      enum:
+      - OWNER
+      - CO_OWNER
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    RegisterPrivateLinkScopePayload:
+      title: RegisterPrivateLinkScopePayload
+      type: object
+      properties:
+        privateLinkScopeId:
+          type: string
+          minLength: 1
+          maxLength: 2048
+    NetworkActionOnMaturity:
+      description: Action to be performed on Entity
+      type: string
+      enum:
+      - publish
+      - unpublish
+      - draft
+      x-enum-varnames:
+      - publish
+      - unpublish
+      - draft
+    VpcUsageType:
+      description: Usage type of the VPC (GENERAL or EXADATA)
+      type: string
+      enum:
+      - GENERAL
+      - EXADATA
+      default: GENERAL
+    EntityUserAclSharingInfo:
+      title: EntityUserAclSharingInfo
+      description: Tessell Entity ACL Sharing Info for a user
+      properties:
+        emailId:
+          type: string
+        role:
+          type: string
+        sharedBy:
+          type: string
+          description: Email of the user who shared the entity
+        sharedOn:
+          type: string
+          format: date-time
+          description: Date when the entity was shared
+    VpcOnboardingInfo:
+      description: VPC Onboarding Info
+      type: object
+      properties:
+        activityId:
+          type: string
+          description: Uber level activity id for tracking VPC onboarding.
+        workflowId:
+          type: string
+          description: Onboarding workflow id.
+    TessellExceptionUserView:
+      title: TessellExceptionUserView
+      type: object
+      properties:
+        message:
+          type: string
+          description: End-user representation of the message
+        resolution:
+          type: string
+          description: End-user representation of resolution
+        errorCode:
+          $ref: '#/components/schemas/TessellHTTPErrorCode'
+          description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
+    DiscoverVpcSecurityGroupPayload:
+      title: DiscoverVpcSecurityGroupPayload
+      type: object
+      required:
+      - subscription
+      - region
+      - cloud
+      properties:
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+        subscription:
+          type: string
+          description: Name of the subscription
+          minLength: 1
+          maxLength: 255
+          example: byoa-sub-1
+        region:
+          type: string
+          description: Region
+          minLength: 1
+          maxLength: 128
+          example: us-east-1
+        vpcId:
+          type: string
+          description: Cloud Id of the VPC
+          minLength: 1
+          maxLength: 500
+          example: vpc-a1b2c3d4
+    CloudResource:
+      title: Resource
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 2048
+        id:
+          type: string
+          maxLength: 2048
+        vpcId:
+          type: string
+          maxLength: 2048
+    VpcRegistrationTrackingDetails:
+      description: VPC Registration Tracking Details
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/VpcStatus'
+        name:
+          type: string
+          description: name of the VPC
+        subscriptionName:
+          type: string
+          description: name of the subscription
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        region:
+          type: string
+          description: region of the VPC
+        progress:
+          $ref: '#/components/schemas/Progress'
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/Step'
+    AzurePrivateEndpointResource:
+      allOf:
+      - $ref: '#/components/schemas/CloudResource'
+      properties:
+        endpointType:
+          $ref: '#/components/schemas/AzurePrivateEndpointType'
     Step:
       title: Step
       type: object
@@ -759,113 +1142,64 @@ components:
           description: Child steps
           items:
             $ref: '#/components/schemas/Step'
-    ClientVpc:
-      title: ClientVpc
+    GcpNetworkTag:
       type: object
+      description: Specifies the network tag for a subnet in GCP.
       properties:
-        name:
-          type: string
-          description: Name of the VPC
-        cidrBlock:
-          type: string
-          description: Cidr block of the VPC
-        cloudId:
-          type: string
-          description: Cloud Id of the VPC
-        region:
-          type: string
-          description: Region of the VPC
-        subnets:
+        type:
+          $ref: '#/components/schemas/GcpNetworkTagType'
+        networkTags:
           type: array
           items:
-            $ref: '#/components/schemas/SubnetBasicDetails'
-        registrable:
-          type: boolean
-          description: Whether the VPC is registrable or not
-        reason:
-          type: string
-          description: Reason for which VPC is not registrable
-    SubnetType:
-      title: SubnetType
-      type: string
-      description: Subnet Connectivity Type
-      enum:
-      - PRIVATE
-      - PUBLIC
-      - UNKNOWN
-    SubnetGroupMapping:
-      title: SubnetGroupMapping
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Unique Id of the Subnet Group
-          example: 12345678-abcd-1234-abcd-1234abcd5678
-        name:
-          type: string
-          description: Name of the Subnet Group
-          example: Group-1
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
-    PrivateLinkScopes:
-      title: PrivateLinkScopes
-      type: object
-      properties:
-        privateLinkScopes:
-          type: array
-          items:
-            $ref: '#/components/schemas/PrivateLinkScopeResource'
-    VpcEndpointTargetServiceType:
-      type: string
-      description: Type of target service of a VPC Endpoint
-      enum:
-      - EC2
-      - CLOUDWATCH_LOGS
-      - SECRET_MANAGER
-      - SQS
-      - S3
-      - TESSELL_PROXY_NLB
-      - TESSELL_NATS
-      - TESSELL_PUSHPROX
-      - TESSELL_FRPS
-      - TESSELL_MINIO
-      - LOG_MONITOR
-    RegisterClientSubnetServiceConsumer:
-      title: Subnet
+            type: string
+            minLength: 1
+            maxLength: 128
+          description: List of network tags
+        secureTag:
+          $ref: '#/components/schemas/RegisterSecureTagPayload'
+    CreateSubnetServiceConsumerPayload:
+      title: SubnetServiceConsumerPayload
       type: object
       required:
+      - publicSubnets
       - privateSubnets
       properties:
         publicSubnets:
           type: array
           items:
             maxItems: 100
-            $ref: '#/components/schemas/RegisterClientSubnet'
+            $ref: '#/components/schemas/CreateSubnetPayload'
         privateSubnets:
           type: array
           items:
             maxItems: 100
-            $ref: '#/components/schemas/RegisterClientSubnet'
-    CloudResource:
-      title: Resource
+            $ref: '#/components/schemas/CreateSubnetPayload'
+    ApiErrorOps:
       type: object
+      description: Common error response object for non 2xx responses of internal or ops APIs
       properties:
-        name:
+        code:
           type: string
-          maxLength: 2048
-        id:
+          description: Status code for the error response
+        message:
           type: string
-          maxLength: 2048
-        vpcId:
+          description: Error message for API response
+        resolution:
           type: string
-          maxLength: 2048
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+        userView:
+          $ref: '#/components/schemas/TessellExceptionUserView'
     DiscoverPrivateLinkScopePayload:
       title: DiscoverPrivateLinkScopePayload
       type: object
@@ -888,289 +1222,26 @@ components:
           minLength: 1
           maxLength: 128
           example: us-east-1
-    NetworkActionOnMaturity:
-      description: Action to be performed on Entity
-      type: string
-      enum:
-      - publish
-      - unpublish
-      - draft
-      x-enum-varnames:
-      - publish
-      - unpublish
-      - draft
-    AclRevokePayload:
-      title: AclRevokePayload
-      description: Payload to revoke Tessell ACLs
-      required:
-      - users
-      properties:
-        users:
-          description: List of users to be deleted
-          type: array
-          items:
-            type: string
-            minLength: 1
-            maxLength: 256
-          minItems: 1
-          maxItems: 100
-    GCPPrivateEndpointResource:
+    SecurityGroupResource:
       allOf:
       - $ref: '#/components/schemas/CloudResource'
-      properties:
-        endpointType:
-          $ref: '#/components/schemas/GCPPrivateEndpointType'
-        region:
-          type: string
-          description: Region of the GCP Private Endpoint (GCP endpoints are regional)
-    RegisterAWSPrivateEndpointPayload:
-      title: RegisterAWSPrivateEndpointPayload
-      type: object
-      required:
-      - endpointType
-      properties:
-        endpointId:
-          type: string
-          minLength: 1
-          maxLength: 2048
-        dnsName:
-          type: string
-          minLength: 0
-          maxLength: 2048
-        endpointType:
-          $ref: '#/components/schemas/AWSPrivateEndpointType'
-    PrivateLinkScopeResource:
-      properties:
-        name:
-          type: string
-          maxLength: 2048
-        id:
-          type: string
-          maxLength: 2048
-        privateEndpoints:
-          type: array
-          items:
-            $ref: '#/components/schemas/CloudResource'
-    DiscoverVpcSecurityGroupPayload:
-      title: DiscoverVpcSecurityGroupPayload
-      type: object
-      required:
-      - subscription
-      - region
-      - cloud
-      properties:
-        cloud:
-          $ref: '#/components/schemas/cloudType'
-        subscription:
-          type: string
-          description: Name of the subscription
-          minLength: 1
-          maxLength: 255
-          example: byoa-sub-1
-        region:
-          type: string
-          description: Region
-          minLength: 1
-          maxLength: 128
-          example: us-east-1
-        vpcId:
-          type: string
-          description: Cloud Id of the VPC
-          minLength: 1
-          maxLength: 500
-          example: vpc-a1b2c3d4
-    EntityUserAclSharingInfo:
-      title: EntityUserAclSharingInfo
-      description: Tessell Entity ACL Sharing Info for a user
-      properties:
-        emailId:
-          type: string
-        role:
-          type: string
-        sharedBy:
-          type: string
-          description: Email of the user who shared the entity
-        sharedOn:
-          type: string
-          format: date-time
-          description: Date when the entity was shared
-    VpcRegistrationTrackingDetails:
-      description: VPC Registration Tracking Details
+    RegisterSecureTagPayload:
+      title: RegisterSecureTagPayload
+      description: Network tag information for GCP VPC registration
       type: object
       properties:
-        status:
-          $ref: '#/components/schemas/VpcStatus'
-        name:
+        tagKeyId:
           type: string
-          description: name of the VPC
-        subscriptionName:
-          type: string
-          description: name of the subscription
-        cloudType:
-          $ref: '#/components/schemas/cloudType'
-        region:
-          type: string
-          description: region of the VPC
-        progress:
-          $ref: '#/components/schemas/Progress'
-        steps:
-          type: array
-          items:
-            $ref: '#/components/schemas/Step'
-    VpcUsageTypeFilter:
-      description: Filter for VPC Usage Type (used in query parameters)
-      type: string
-      enum:
-      - GENERAL
-      - EXADATA
-    RegisterPrivateLinkScopePayload:
-      title: RegisterPrivateLinkScopePayload
-      type: object
-      properties:
-        privateLinkScopeId:
-          type: string
-          minLength: 1
-          maxLength: 2048
-    AclUserPayload:
-      title: AclUserPayload
-      description: Payload to create an user's entity ACL
-      required:
-      - emailId
-      - role
-      properties:
-        emailId:
-          description: Email id of the user
-          type: string
+          description: Tag key Id for the GCP network tag
           minLength: 1
           maxLength: 256
-        role:
-          description: Role Info
+          example: tagKeys/281480073415006
+        tagValueId:
           type: string
+          description: Tag value Id for the GCP network tag
           minLength: 1
-          maxLength: 64
-    DelegatedTo:
-      type: object
-      description: Additional information for delegated subnet.
-      properties:
-        service:
-          type: string
-      required:
-      - service
-    AzurePrivateEndpointType:
-      description: AZURE Private Endpoint Types
-      type: string
-      enum:
-      - TESSELL_GATEWAY
-      - TESSELL_METRICS
-      - TESSELL_GENIE
-      - LOG_MONITOR
-      - TESSELL_CONTROL_PLANE
-    VpcEndpoint:
-      type: object
-      required:
-      - targetServiceType
-      - privateDnsEnabled
-      properties:
-        targetServiceType:
-          $ref: '#/components/schemas/VpcEndpointTargetServiceType'
-        privateDnsEnabled:
-          type: boolean
-        dnsEntries:
-          type: array
-          minItems: 1
-          maxItems: 20
-          items:
-            $ref: '#/components/schemas/VpcEndpointDnsEntry'
-    AclPayload:
-      title: AclPayload
-      description: Payload to create an entity ACL
-      required:
-      - users
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/AclUserPayload'
-          minItems: 1
-          maxItems: 100
-    RegisterClientSubnet:
-      title: Subnet
-      type: object
-      required:
-      - cloudId
-      properties:
-        cloudId:
-          type: string
-          description: Cloud id of the subnet
-          example: subnet-1a2b3c4d
-          minLength: 1
-          maxLength: 512
-        subnetGroups:
-          type: array
-          items:
-            maxItems: 1
-            type: string
-          example:
-          - group-1
-        gcpNetworkTag:
-          $ref: '#/components/schemas/GcpNetworkTag'
-    VpcEndpointDnsEntry:
-      type: object
-      required:
-      - dnsName
-      properties:
-        dnsName:
-          type: string
-          minLength: 1
-          maxLength: 1000
-        fqdn:
-          type: string
-    RegisterClientVpcServiceConsumerPayload:
-      title: RegisterClientVpcServiceConsumerPayload
-      type: object
-      required:
-      - name
-      - cloudId
-      - cloudType
-      - subscriptionName
-      - subnets
-      properties:
-        name:
-          type: string
-          description: Name of the VPC
-          minLength: 1
-          maxLength: 80
-          example: Prod-VPC-01
-        cloudId:
-          type: string
-          description: Cloud Id of the VPC
-          minLength: 1
-          maxLength: 512
-          example: vpc-1a2b3c4d
-        owner:
-          type: string
-          description: Owner of the Tessell client VPC
-          maxLength: 250
-        cloudType:
-          $ref: '#/components/schemas/cloudType'
-        region:
-          type: string
-          description: Region of the VPC
-          minLength: 1
-          maxLength: 128
-          example: us-east-1
-        subscriptionName:
-          type: string
-          description: Name of the Tessell Subscription
-          minLength: 1
-          maxLength: 255
-          example: default
-        subnets:
-          $ref: '#/components/schemas/RegisterClientSubnetServiceConsumer'
-        privateEndpoints:
-          $ref: '#/components/schemas/RegisterPrivateEndpointsPayload'
-        privateLinkScope:
-          $ref: '#/components/schemas/RegisterPrivateLinkScopePayload'
+          maxLength: 256
+          example: tagValues/281479109151347
     VpcServiceConsumer:
       title: VpcServiceConsumer
       type: object
@@ -1225,447 +1296,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NetworkAction'
-    PrivateEndpointResponse:
-      title: PrivateEndpointResponse
-      type: object
-      properties:
-        awsEndpoints:
-          type: array
-          items:
-            $ref: '#/components/schemas/AWSPrivateEndpointResource'
-        azureEndpoints:
-          type: array
-          items:
-            $ref: '#/components/schemas/AzurePrivateEndpointResource'
-        gcpEndpoints:
-          type: array
-          items:
-            $ref: '#/components/schemas/GCPPrivateEndpointResource'
-    RegisterSecureTagPayload:
-      title: RegisterSecureTagPayload
-      description: Network tag information for GCP VPC registration
-      type: object
-      properties:
-        tagKeyId:
-          type: string
-          description: Tag key Id for the GCP network tag
-          minLength: 1
-          maxLength: 256
-          example: tagKeys/281480073415006
-        tagValueId:
-          type: string
-          description: Tag value Id for the GCP network tag
-          minLength: 1
-          maxLength: 256
-          example: tagValues/281479109151347
-    SecurityGroups:
-      title: SecurityGroups
-      type: object
-      properties:
-        securityGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/SecurityGroupResource'
-    SubnetConfigurations:
-      type: object
-      description: Specifies the configurations for a subnet with related details.
-      properties:
-        delegations:
-          type: array
-          items:
-            $ref: '#/components/schemas/DelegatedTo'
-          maxItems: 1
-        gcpNetworkTag:
-          $ref: '#/components/schemas/GcpNetworkTag'
-    RouteTables:
-      title: RouteTables
-      type: object
-      properties:
-        routeTables:
-          type: array
-          items:
-            $ref: '#/components/schemas/RouteTableResource'
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    StepError:
-      title: StepError
-      type: object
-      description: Step error details
-      properties:
-        code:
-          type: string
-          description: Error code of the failure
-        message:
-          type: string
-          description: Reason message for the failure
-        resolution:
-          type: string
-          description: Resolution for the failure
-        possibleActions:
-          type: array
-          description: Possible action, which can be performed by the user. To be consumed by UI to show any CTA.
-          items:
-            type: string
-    VpcUsageType:
-      description: Usage type of the VPC (GENERAL or EXADATA)
-      type: string
-      enum:
-      - GENERAL
-      - EXADATA
-      default: GENERAL
-    MaturityStatus:
-      description: Maturity Status
-      type: string
-      enum:
-      - DRAFT
-      - PUBLISHED
-      - UNPUBLISHED
-    LoggedInUserRoles:
-      description: Tessell Logged In User Role Types
-      type: string
-      enum:
-      - OWNER
-      - CO_OWNER
-    GcpNetworkTag:
-      type: object
-      description: Specifies the network tag for a subnet in GCP.
-      properties:
-        type:
-          $ref: '#/components/schemas/GcpNetworkTagType'
-        networkTags:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            maxLength: 128
-          description: List of network tags
-        secureTag:
-          $ref: '#/components/schemas/RegisterSecureTagPayload'
-    GcpNetworkTagType:
-      type: string
-      description: Type of network tag
-      enum:
-      - NETWORK_TAG
-      - SECURE_TAG
-    CreateSubnetServiceConsumerPayload:
-      title: SubnetServiceConsumerPayload
-      type: object
-      required:
-      - publicSubnets
-      - privateSubnets
-      properties:
-        publicSubnets:
-          type: array
-          items:
-            maxItems: 100
-            $ref: '#/components/schemas/CreateSubnetPayload'
-        privateSubnets:
-          type: array
-          items:
-            maxItems: 100
-            $ref: '#/components/schemas/CreateSubnetPayload'
-    CreateSubnetPayload:
-      title: CreateSubnetPayload
-      type: object
-      required:
-      - name
-      - cidrBlock
-      properties:
-        name:
-          type: string
-          description: Name of the Subnet
-          minLength: 1
-          maxLength: 100
-          example: subnet-1
-        cidrBlock:
-          type: string
-          description: Cidr block of the Subnet
-          example: 10.10.5.0/24
-        availabilityZone:
-          type: string
-          description: Availability Zone (applicable for AWS and Azure, not used for GCP)
-          example: us-east-1a
-          maxLength: 128
-        region:
-          type: string
-          description: Region of the Subnet. Required for GCP (subnets are regional). Not applicable for AWS and Azure (use availabilityZone instead).
-          example: us-central1
-          maxLength: 128
-        subnetGroups:
-          type: array
-          description: Groups subnet belongs to
-          items:
-            maxItems: 1
-            type: string
-          example:
-          - group-1
-    VpcMetadata:
-      description: Tessell Metadata for Vpc
-      type: object
-      properties:
-        validationFailureReason:
-          type: string
-        vpcEndpoints:
-          type: string
-          additionalProperties:
-            $ref: '#/components/schemas/VpcEndpoint'
-        privateLinkScopeId:
-          type: string
-          maxLength: 2048
-        gcpNetworkTag:
-          $ref: '#/components/schemas/GcpNetworkTag'
-        onboardingInfo:
-          $ref: '#/components/schemas/VpcOnboardingInfo'
-    SubnetServiceConsumer:
-      title: Subnet
-      type: object
-      properties:
-        publicSubnets:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubnetBasicDetails'
-        privateSubnets:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubnetBasicDetails'
-    Roles:
-      description: Tessell Role Types
-      type: string
-      enum:
-      - CO_OWNER
-    AWSPrivateEndpointType:
-      description: AWS Private Endpoint Types
-      type: string
-      enum:
-      - SQS
-      - SECRET_MANAGER
-      - CLOUDWATCH_LOGS
-      - EC2
-      - TESSELL_CONTROL_PLANE
-      - S3
-    ApiErrorOps:
-      type: object
-      description: Common error response object for non 2xx responses of internal or ops APIs
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-        userView:
-          $ref: '#/components/schemas/TessellExceptionUserView'
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    RegisterGCPPrivateEndpointPayload:
-      title: RegisterGCPPrivateEndpointPayload
-      type: object
-      required:
-      - endpointId
-      - endpointType
-      properties:
-        endpointId:
-          type: string
-          minLength: 1
-          maxLength: 2048
-        dnsName:
-          type: string
-          minLength: 0
-          maxLength: 2048
-        endpointType:
-          $ref: '#/components/schemas/GCPPrivateEndpointType'
-    EntityAclSharingInfo:
-      title: EntityAclSharingInfo
-      description: Tessell Entity ACL Sharing Info
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/EntityUserAclSharingInfo'
-    VpcOnboardingInfo:
-      description: VPC Onboarding Info
-      type: object
-      properties:
-        activityId:
-          type: string
-          description: Uber level activity id for tracking VPC onboarding.
-        workflowId:
-          type: string
-          description: Onboarding workflow id.
-    SubnetBasicDetails:
-      title: SubnetBasicDetails
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the subnet
-          example: Default Subnet
-        cloudId:
-          type: string
-          description: cloudId of the subnet
-          example: Default Subnet
-        cidrBlock:
-          type: string
-          description: cidr block of the Subnet
-          example: 10.0.0.4/24
-        availabilityZone:
-          type: string
-          description: Availability Zone (applicable for AWS and Azure, not used for GCP)
-        region:
-          type: string
-          description: Region of the subnet (applicable for GCP where subnets are regional, not per-AZ)
-        type:
-          $ref: '#/components/schemas/SubnetType'
-        eligibleForPrivate:
-          type: boolean
-          description: Flag to identify if Subnet is eligible to become Private
-        registeredWithTessell:
-          type: boolean
-          description: Flag to identify if Subnet is registered already
-          default: false
-        subnetGroupIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        configurations:
-          $ref: '#/components/schemas/SubnetConfigurations'
-    CreateVpcServiceConsumerPayload:
-      title: CreateVpcServiceConsumerPayload
-      type: object
-      required:
-      - name
-      - cloudType
-      - subscriptionName
-      properties:
-        name:
-          type: string
-          description: Name of the VPC
-          minLength: 3
-          maxLength: 80
-          example: Prod-VPC-01
-        cidrBlock:
-          type: string
-          description: CIDR block of the VPC. Required for AWS and Azure. Not applicable for GCP (GCP VPCs don't have a CIDR block, subnets do).
-          example: 10.10.0.0/16
-        cloudType:
-          $ref: '#/components/schemas/cloudType'
-        region:
-          type: string
-          description: Region of the VPC
-          minLength: 1
-          maxLength: 128
-          example: us-east-1
-        subscriptionName:
-          type: string
-          description: Name of the subscription
-          minLength: 1
-          maxLength: 255
-          example: default
-        publicAccess:
-          type: boolean
-          description: If Public Access is required on this Network
-          default: true
-        subnets:
-          $ref: '#/components/schemas/CreateSubnetServiceConsumerPayload'
-    VpcSubnetServiceConsumer:
-      title: Subnet
-      type: object
-      properties:
-        vpc:
-          type: string
-          description: Name of the vpc
-          example: Default vpc
-        cloudType:
-          $ref: '#/components/schemas/cloudType'
-        region:
-          type: string
-          description: Region of the VPC
-        onlyForPrivateAccess:
-          type: boolean
-          default: false
-        isTessellCreated:
-          type: boolean
-          default: true
-        subnetGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubnetGroupMapping'
-        subnets:
-          $ref: '#/components/schemas/SubnetServiceConsumer'
-        usageType:
-          $ref: '#/components/schemas/VpcUsageType'
-          description: Usage type of the VPC (GENERAL or EXADATA)
-    DiscoverVpcPayload:
-      title: DiscoverVpcPayload
-      type: object
-      required:
-      - subscription
-      - cloud
-      - region
-      properties:
-        subscription:
-          type: string
-          description: Name of the subscription
-          minLength: 1
-          maxLength: 255
-          example: byoa-sub-1
-        cloud:
-          $ref: '#/components/schemas/cloudType'
-        region:
-          type: string
-          description: Region
-          minLength: 1
-          maxLength: 128
-          example: us-east-1
-        vpcId:
-          type: string
-          description: Cloud Id of the VPC
-          minLength: 1
-          maxLength: 500
-          example: vpc-a1b2c3d4
     DiscoverVpcEndpointPayload:
       title: DiscoverVpcEndpointPayload
       type: object
@@ -1706,19 +1336,116 @@ components:
           maxItems: 10
           items:
             $ref: '#/components/schemas/GCPPrivateEndpointType'
-    TessellExceptionUserView:
-      title: TessellExceptionUserView
+    RouteTableResource:
+      allOf:
+      - $ref: '#/components/schemas/CloudResource'
+    CreateSubnetPayload:
+      title: CreateSubnetPayload
       type: object
+      required:
+      - name
+      - cidrBlock
       properties:
+        name:
+          type: string
+          description: Name of the Subnet
+          minLength: 1
+          maxLength: 100
+          example: subnet-1
+        cidrBlock:
+          type: string
+          description: Cidr block of the Subnet
+          example: 10.10.5.0/24
+        availabilityZone:
+          type: string
+          description: Availability Zone (applicable for AWS and Azure, not used for GCP)
+          example: us-east-1a
+          maxLength: 128
+        region:
+          type: string
+          description: Region of the Subnet. Required for GCP (subnets are regional). Not applicable for AWS and Azure (use availabilityZone instead).
+          example: us-central1
+          maxLength: 128
+        subnetGroups:
+          type: array
+          description: Groups subnet belongs to
+          items:
+            maxItems: 1
+            type: string
+          example:
+          - group-1
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
         message:
           type: string
-          description: End-user representation of the message
+          description: Error message for API response
         resolution:
           type: string
-          description: End-user representation of resolution
-        errorCode:
-          $ref: '#/components/schemas/TessellHTTPErrorCode'
-          description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    NetworkAction:
+      description: Actions that can be performed on Network
+      type: string
+      enum:
+      - CHANGE_MATURITY
+      - DELETE
+      - DEREGISTER
+    Roles:
+      description: Tessell Role Types
+      type: string
+      enum:
+      - CO_OWNER
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    RegisterAWSPrivateEndpointPayload:
+      title: RegisterAWSPrivateEndpointPayload
+      type: object
+      required:
+      - endpointType
+      properties:
+        endpointId:
+          type: string
+          minLength: 1
+          maxLength: 2048
+        dnsName:
+          type: string
+          minLength: 0
+          maxLength: 2048
+        endpointType:
+          $ref: '#/components/schemas/AWSPrivateEndpointType'
+    AclPayload:
+      title: AclPayload
+      description: Payload to create an entity ACL
+      required:
+      - users
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/AclUserPayload'
+          minItems: 1
+          maxItems: 100
     RegisterClientVpcSubnetServiceConsumerPayload:
       title: RegisterClientVpcSubnetServiceConsumerPayload
       type: object
@@ -1743,47 +1470,179 @@ components:
           example: default
         subnets:
           $ref: '#/components/schemas/RegisterClientSubnetServiceConsumer'
-    AzurePrivateEndpointResource:
+    VpcUsageTypeFilter:
+      description: Filter for VPC Usage Type (used in query parameters)
+      type: string
+      enum:
+      - GENERAL
+      - EXADATA
+    DelegatedTo:
+      type: object
+      description: Additional information for delegated subnet.
+      properties:
+        service:
+          type: string
+      required:
+      - service
+    StepError:
+      title: StepError
+      type: object
+      description: Step error details
+      properties:
+        code:
+          type: string
+          description: Error code of the failure
+        message:
+          type: string
+          description: Reason message for the failure
+        resolution:
+          type: string
+          description: Resolution for the failure
+        possibleActions:
+          type: array
+          description: Possible action, which can be performed by the user. To be consumed by UI to show any CTA.
+          items:
+            type: string
+    GCPPrivateEndpointResource:
       allOf:
       - $ref: '#/components/schemas/CloudResource'
       properties:
         endpointType:
-          $ref: '#/components/schemas/AzurePrivateEndpointType'
-    Progress:
-      title: Progress
+          $ref: '#/components/schemas/GCPPrivateEndpointType'
+        region:
+          type: string
+          description: Region of the GCP Private Endpoint (GCP endpoints are regional)
+    VpcEndpoint:
       type: object
-      description: Progress of the execution
+      required:
+      - targetServiceType
+      - privateDnsEnabled
       properties:
-        percentageCompleted:
+        targetServiceType:
+          $ref: '#/components/schemas/VpcEndpointTargetServiceType'
+        privateDnsEnabled:
+          type: boolean
+        dnsEntries:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: '#/components/schemas/VpcEndpointDnsEntry'
+    PrivateLinkScopeResource:
+      properties:
+        name:
+          type: string
+          maxLength: 2048
+        id:
+          type: string
+          maxLength: 2048
+        privateEndpoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/CloudResource'
+    VpcMetadata:
+      description: Tessell Metadata for Vpc
+      type: object
+      properties:
+        validationFailureReason:
+          type: string
+        vpcEndpoints:
+          type: string
+          additionalProperties:
+            $ref: '#/components/schemas/VpcEndpoint'
+        privateLinkScopeId:
+          type: string
+          maxLength: 2048
+        gcpNetworkTag:
+          $ref: '#/components/schemas/GcpNetworkTag'
+        onboardingInfo:
+          $ref: '#/components/schemas/VpcOnboardingInfo'
+    VpcEndpointDnsEntry:
+      type: object
+      required:
+      - dnsName
+      properties:
+        dnsName:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        fqdn:
+          type: string
+    TessellHTTPErrorCode:
+      type: object
+      properties:
+        httpCode:
           type: integer
-          description: Completed percentage of the execution
-          default: 0
-          minimum: 0
-          maximum: 100
-        estimatedTimeRemainingInMinutes:
-          type: integer
-          description: Estimated time remaining in minutes
-          minimum: 0
-    ActivityStatus:
-      x-gorm-column-attrs: not null
-      x-gorm-index: true
-      description: The status of Activity
+          description: HTTP code
+        code:
+          type: string
+          description: Tessell's specific code with more context on error
+    VpcSubnetServiceConsumer:
+      title: Subnet
+      type: object
+      properties:
+        vpc:
+          type: string
+          description: Name of the vpc
+          example: Default vpc
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        region:
+          type: string
+          description: Region of the VPC
+        onlyForPrivateAccess:
+          type: boolean
+          default: false
+        isTessellCreated:
+          type: boolean
+          default: true
+        subnetGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubnetGroupMapping'
+        subnets:
+          $ref: '#/components/schemas/SubnetServiceConsumer'
+        usageType:
+          $ref: '#/components/schemas/VpcUsageType'
+          description: Usage type of the VPC (GENERAL or EXADATA)
+    SubnetType:
+      title: SubnetType
       type: string
+      description: Subnet Connectivity Type
       enum:
-      - QUEUED
-      - RUNNING
-      - SKIPPED
-      - SUSPENDED
-      - SUCCESS
-      - FAILED
+      - PRIVATE
+      - PUBLIC
       - UNKNOWN
-    NetworkAction:
-      description: Actions that can be performed on Network
+    EntityAclSharingInfo:
+      title: EntityAclSharingInfo
+      description: Tessell Entity ACL Sharing Info
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityUserAclSharingInfo'
+    VpcEndpointTargetServiceType:
+      type: string
+      description: Type of target service of a VPC Endpoint
+      enum:
+      - EC2
+      - CLOUDWATCH_LOGS
+      - SECRET_MANAGER
+      - SQS
+      - S3
+      - TESSELL_PROXY_NLB
+      - TESSELL_NATS
+      - TESSELL_PUSHPROX
+      - TESSELL_FRPS
+      - TESSELL_MINIO
+      - LOG_MONITOR
+    MaturityStatus:
+      description: Maturity Status
       type: string
       enum:
-      - CHANGE_MATURITY
-      - DELETE
-      - DEREGISTER
+      - DRAFT
+      - PUBLISHED
+      - UNPUBLISHED
     RegisterAzurePrivateEndpointPayload:
       title: RegisterAzurePrivateEndpointPayload
       type: object
@@ -1801,36 +1660,6 @@ components:
           maxLength: 2048
         endpointType:
           $ref: '#/components/schemas/AzurePrivateEndpointType'
-    AWSPrivateEndpointResource:
-      allOf:
-      - $ref: '#/components/schemas/CloudResource'
-      properties:
-        endpointType:
-          $ref: '#/components/schemas/AWSPrivateEndpointType'
-    RegisterPrivateEndpointsPayload:
-      title: RegisterPrivateEndpointsPayload
-      type: object
-      properties:
-        awsEndpoints:
-          type: array
-          maxItems: 10
-          items:
-            $ref: '#/components/schemas/RegisterAWSPrivateEndpointPayload'
-        azureEndpoints:
-          type: array
-          maxItems: 10
-          items:
-            $ref: '#/components/schemas/RegisterAzurePrivateEndpointPayload'
-        gcpEndpoints:
-          type: array
-          maxItems: 10
-          items:
-            $ref: '#/components/schemas/RegisterGCPPrivateEndpointPayload'
-    GCPPrivateEndpointType:
-      description: GCP Private Endpoint Types (Private Service Connect)
-      type: string
-      enum:
-      - TESSELL_CONTROL_PLANE
     VpcStatus:
       description: Tessell Vpc Status
       type: string
@@ -1843,49 +1672,53 @@ components:
       - VALIDATION_FAILED
       - DELETING
       - DELETED
-    RouteTableResource:
-      allOf:
-      - $ref: '#/components/schemas/CloudResource'
-    SecurityGroupResource:
-      allOf:
-      - $ref: '#/components/schemas/CloudResource'
-    DiscoverVpcRouteTablePayload:
-      title: DiscoverRouteTablePayload
+    AzurePrivateEndpointType:
+      description: AZURE Private Endpoint Types
+      type: string
+      enum:
+      - TESSELL_GATEWAY
+      - TESSELL_METRICS
+      - TESSELL_GENIE
+      - LOG_MONITOR
+      - TESSELL_CONTROL_PLANE
+    CreateVpcServiceConsumerPayload:
+      title: CreateVpcServiceConsumerPayload
       type: object
       required:
-      - subscription
-      - region
-      - cloud
+      - name
+      - cloudType
+      - subscriptionName
       properties:
-        cloud:
+        name:
+          type: string
+          description: Name of the VPC
+          minLength: 3
+          maxLength: 80
+          example: Prod-VPC-01
+        cidrBlock:
+          type: string
+          description: CIDR block of the VPC. Required for AWS and Azure. Not applicable for GCP (GCP VPCs don't have a CIDR block, subnets do).
+          example: 10.10.0.0/16
+        cloudType:
           $ref: '#/components/schemas/cloudType'
-        subscription:
+        region:
+          type: string
+          description: Region of the VPC
+          minLength: 1
+          maxLength: 128
+          example: us-east-1
+        subscriptionName:
           type: string
           description: Name of the subscription
           minLength: 1
           maxLength: 255
-          example: byoa-sub-1
-        region:
-          type: string
-          description: Region
-          minLength: 1
-          maxLength: 128
-          example: us-east-1
-        vpcId:
-          type: string
-          description: Cloud Id of the VPC
-          minLength: 1
-          maxLength: 500
-          example: vpc-a1b2c3d4
-    TessellHTTPErrorCode:
-      type: object
-      properties:
-        httpCode:
-          type: integer
-          description: HTTP code
-        code:
-          type: string
-          description: Tessell's specific code with more context on error
+          example: default
+        publicAccess:
+          type: boolean
+          description: If Public Access is required on this Network
+          default: true
+        subnets:
+          $ref: '#/components/schemas/CreateSubnetServiceConsumerPayload'
     AclEligibleUser:
       title: AclEligibleUser
       description: Eligible user for sharing the entity
@@ -1905,52 +1738,174 @@ components:
           items:
             type: string
           description: List of subscriptions user has access to
+    RegisterClientVpcServiceConsumerPayload:
+      title: RegisterClientVpcServiceConsumerPayload
+      type: object
+      required:
+      - name
+      - cloudId
+      - cloudType
+      - subscriptionName
+      - subnets
+      properties:
+        name:
+          type: string
+          description: Name of the VPC
+          minLength: 1
+          maxLength: 80
+          example: Prod-VPC-01
+        cloudId:
+          type: string
+          description: Cloud Id of the VPC
+          minLength: 1
+          maxLength: 512
+          example: vpc-1a2b3c4d
+        owner:
+          type: string
+          description: Owner of the Tessell client VPC
+          maxLength: 250
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        region:
+          type: string
+          description: Region of the VPC
+          minLength: 1
+          maxLength: 128
+          example: us-east-1
+        subscriptionName:
+          type: string
+          description: Name of the Tessell Subscription
+          minLength: 1
+          maxLength: 255
+          example: default
+        subnets:
+          $ref: '#/components/schemas/RegisterClientSubnetServiceConsumer'
+        privateEndpoints:
+          $ref: '#/components/schemas/RegisterPrivateEndpointsPayload'
+        privateLinkScope:
+          $ref: '#/components/schemas/RegisterPrivateLinkScopePayload'
+    RouteTables:
+      title: RouteTables
+      type: object
+      properties:
+        routeTables:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouteTableResource'
+    PrivateLinkScopes:
+      title: PrivateLinkScopes
+      type: object
+      properties:
+        privateLinkScopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrivateLinkScopeResource'
+    SubnetConfigurations:
+      type: object
+      description: Specifies the configurations for a subnet with related details.
+      properties:
+        delegations:
+          type: array
+          items:
+            $ref: '#/components/schemas/DelegatedTo'
+          maxItems: 1
+        gcpNetworkTag:
+          $ref: '#/components/schemas/GcpNetworkTag'
+    RegisterGCPPrivateEndpointPayload:
+      title: RegisterGCPPrivateEndpointPayload
+      type: object
+      required:
+      - endpointId
+      - endpointType
+      properties:
+        endpointId:
+          type: string
+          minLength: 1
+          maxLength: 2048
+        dnsName:
+          type: string
+          minLength: 0
+          maxLength: 2048
+        endpointType:
+          $ref: '#/components/schemas/GCPPrivateEndpointType'
+    ClientVpc:
+      title: ClientVpc
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the VPC
+        cidrBlock:
+          type: string
+          description: Cidr block of the VPC
+        cloudId:
+          type: string
+          description: Cloud Id of the VPC
+        region:
+          type: string
+          description: Region of the VPC
+        subnets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubnetBasicDetails'
+        registrable:
+          type: boolean
+          description: Whether the VPC is registrable or not
+        reason:
+          type: string
+          description: Reason for which VPC is not registrable
+    SubnetBasicDetails:
+      title: SubnetBasicDetails
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the subnet
+          example: Default Subnet
+        cloudId:
+          type: string
+          description: cloudId of the subnet
+          example: Default Subnet
+        cidrBlock:
+          type: string
+          description: cidr block of the Subnet
+          example: 10.0.0.4/24
+        availabilityZone:
+          type: string
+          description: Availability Zone (applicable for AWS and Azure, not used for GCP)
+        region:
+          type: string
+          description: Region of the subnet (applicable for GCP where subnets are regional, not per-AZ)
+        type:
+          $ref: '#/components/schemas/SubnetType'
+        eligibleForPrivate:
+          type: boolean
+          description: Flag to identify if Subnet is eligible to become Private
+        registeredWithTessell:
+          type: boolean
+          description: Flag to identify if Subnet is registered already
+          default: false
+        subnetGroupIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        configurations:
+          $ref: '#/components/schemas/SubnetConfigurations'
+    SubnetGroupMapping:
+      title: SubnetGroupMapping
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique Id of the Subnet Group
+          example: 12345678-abcd-1234-abcd-1234abcd5678
+        name:
+          type: string
+          description: Name of the Subnet Group
+          example: Group-1
   parameters:
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    subscriptionNameMandatoryOldConvention:
-      name: subscriptionName
-      in: query
-      description: Name of the Subscription
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 255
-      example: default
-    stepId:
-      name: step-id
-      in: path
-      required: true
-      description: ID of the step
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-    includeSubnets:
-      name: include-subnets
-      in: query
-      description: Boolean flag to specify if Subnet details are required in response
-      required: false
-      schema:
-        type: boolean
-        default: false
     roles:
       name: roles
       in: query
@@ -1962,36 +1917,11 @@ components:
           $ref: '#/components/schemas/Roles'
         minItems: 1
         maxItems: 32
-    nameInPath:
-      name: name
-      in: path
-      required: true
-      description: Name of the Entity
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 512
-      example: entity-123
-    includeSharedWith:
-      name: includeSharedWith
-      in: query
-      description: Include Shared with Info
-      required: false
-      schema:
-        type: boolean
-        default: false
-    cloudTypeOldConventionMandatory:
-      name: cloudType
-      in: query
-      description: Name of the Cloud
-      required: true
-      schema:
-        $ref: '#/components/schemas/cloudType'
-    cloudRegionMandatory:
+    cloudRegion:
       name: region
-      in: query
       description: Cloud Region
-      required: true
+      in: query
+      required: false
       schema:
         type: string
         minLength: 1
@@ -2003,13 +1933,59 @@ components:
         azure:
           value: eastUS
           summary: azure region example
-    actionInPath:
-      name: action
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    nameInPath:
+      name: name
       in: path
       required: true
-      description: Action to be performed
+      description: Name of the Entity
       schema:
-        $ref: '#/components/schemas/NetworkActionOnMaturity'
+        type: string
+        minLength: 1
+        maxLength: 512
+      example: entity-123
+    cloudTypeOldConventionMandatory:
+      name: cloudType
+      in: query
+      description: Name of the Cloud
+      required: true
+      schema:
+        $ref: '#/components/schemas/cloudType'
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    subscriptionNameMandatoryOldConvention:
+      name: subscriptionName
+      in: query
+      description: Name of the Subscription
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 255
+      example: default
+    includeSubnets:
+      name: include-subnets
+      in: query
+      description: Boolean flag to specify if Subnet details are required in response
+      required: false
+      schema:
+        type: boolean
+        default: false
     owners:
       name: owners
       in: query
@@ -2019,11 +1995,11 @@ components:
         type: array
         items:
           type: string
-    cloudRegion:
+    cloudRegionMandatory:
       name: region
-      description: Cloud Region
       in: query
-      required: false
+      description: Cloud Region
+      required: true
       schema:
         type: string
         minLength: 1
@@ -2049,6 +2025,13 @@ components:
       required: false
       schema:
         $ref: '#/components/schemas/cloudType'
+    actionInPath:
+      name: action
+      in: path
+      required: true
+      description: Action to be performed
+      schema:
+        $ref: '#/components/schemas/NetworkActionOnMaturity'
     subscriptionName:
       name: subscriptionName
       in: query
@@ -2059,6 +2042,23 @@ components:
         minLength: 1
         maxLength: 255
       example: default
+    includeSharedWith:
+      name: includeSharedWith
+      in: query
+      description: Include Shared with Info
+      required: false
+      schema:
+        type: boolean
+        default: false
+    stepId:
+      name: step-id
+      in: path
+      required: true
+      description: ID of the step
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
   securitySchemes:
     BearerAuth:
       type: http

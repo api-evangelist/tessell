@@ -147,13 +147,6 @@ components:
           type: string
           description: Name of the privilege
       description: This is a definition for Tessell internal create privilege payload object
-    PrivilegeStatus:
-      title: PrivilegeStatus
-      type: string
-      description: This is a definition for Tessell privilege status object
-      enum:
-      - DELETED
-      - ENABLED
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -178,17 +171,6 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    PrivilegeUpdatePayload:
-      title: PrivilegeUpdatePayload
-      type: object
-      properties:
-        description:
-          type: string
-          description: Description of the privilege
-        name:
-          type: string
-          description: Name of the privilege
-      description: This is a definition for Tessell privilege update object
     PrivilegeDTO:
       title: PrivilegeDTO
       type: object
@@ -214,6 +196,24 @@ components:
         status:
           $ref: '#/components/schemas/PrivilegeStatus'
       description: This is a definition for Tessell
+    PrivilegeUpdatePayload:
+      title: PrivilegeUpdatePayload
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the privilege
+        name:
+          type: string
+          description: Name of the privilege
+      description: This is a definition for Tessell privilege update object
+    PrivilegeStatus:
+      title: PrivilegeStatus
+      type: string
+      description: This is a definition for Tessell privilege status object
+      enum:
+      - DELETED
+      - ENABLED
     apiStatus:
       title: apiStatus
       type: object
