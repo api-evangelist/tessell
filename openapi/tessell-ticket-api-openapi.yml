@@ -235,90 +235,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    TicketDTOV2:
-      title: Ticket
-      type: object
-      description: Ticket DTO
-      properties:
-        id:
-          type: integer
-          format: int64
-          description: ticket identifier
-        key:
-          type: string
-          description: key for jira ticket
-        description:
-          type: string
-          description: ticket description
-        created_at:
-          type: string
-          format: date-time
-          description: ticket creation date
-        updated_at:
-          type: string
-          format: date-time
-          description: ticket last updated
-        watchlist:
-          type: array
-          items:
-            type: string
-          description: Email address in watchlist
-        priority:
-          type: string
-          description: Ticket priority
-        status:
-          type: string
-          description: Ticket status
-        subject:
-          type: string
-          description: Ticket subject
-        owner:
-          type: string
-          description: Email of owner
-        name:
-          type: string
-          description: Name of owner
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    TicketRequestBodyV2:
-      title: Create ticket request body
-      type: object
-      description: Create ticket payload
-      properties:
-        entityType:
-          type: string
-          description: Associated entityType
-        entityId:
-          type: string
-          description: Associated entityId
-        ccEmails:
-          type: array
-          items:
-            type: string
-        jiraFields:
-          $ref: '#/components/schemas/RequestFieldValues'
     TicketsResponseV2:
       title: Get Tickets Response
       description: array of tickets
@@ -366,6 +282,90 @@ components:
             id:
               type: string
               description: user id of assignee
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    TicketDTOV2:
+      title: Ticket
+      type: object
+      description: Ticket DTO
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ticket identifier
+        key:
+          type: string
+          description: key for jira ticket
+        description:
+          type: string
+          description: ticket description
+        created_at:
+          type: string
+          format: date-time
+          description: ticket creation date
+        updated_at:
+          type: string
+          format: date-time
+          description: ticket last updated
+        watchlist:
+          type: array
+          items:
+            type: string
+          description: Email address in watchlist
+        priority:
+          type: string
+          description: Ticket priority
+        status:
+          type: string
+          description: Ticket status
+        subject:
+          type: string
+          description: Ticket subject
+        owner:
+          type: string
+          description: Email of owner
+        name:
+          type: string
+          description: Name of owner
+    TicketRequestBodyV2:
+      title: Create ticket request body
+      type: object
+      description: Create ticket payload
+      properties:
+        entityType:
+          type: string
+          description: Associated entityType
+        entityId:
+          type: string
+          description: Associated entityId
+        ccEmails:
+          type: array
+          items:
+            type: string
+        jiraFields:
+          $ref: '#/components/schemas/RequestFieldValues'
     TicketUpdateRequestBodyV2:
       title: Update ticket request body
       type: object

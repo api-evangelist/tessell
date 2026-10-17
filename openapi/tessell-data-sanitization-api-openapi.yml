@@ -244,49 +244,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
-  parameters:
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
-    loadAcls:
-      name: load-acls
-      in: query
-      description: Load ACL information
-      required: false
-      schema:
-        type: boolean
-        default: false
   schemas:
-    SanitizationScheduleStatus:
-      type: string
-      description: Status of the sanitization schedule
-      enum:
-      - ACTIVE
-      - PAUSED
-      - DELETING
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
     GetSanitizationSchedulesServiceApiResponse:
       title: GetSanitizationSchedulesServiceApiResponse
       allOf:
@@ -297,14 +266,21 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/TessellSanitizationScheduleServiceDTO'
-    TessellApiResponse:
-      title: TessellApiResponse
+    apiStatus:
+      title: apiStatus
       type: object
       properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
+        status:
+          type: string
+        message:
+          type: string
+    SanitizationScheduleStatus:
+      type: string
+      description: Status of the sanitization schedule
+      enum:
+      - ACTIVE
+      - PAUSED
+      - DELETING
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -329,14 +305,6 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
     WeekDay:
       description: Week Days
       type: string
@@ -356,41 +324,16 @@ components:
       - Thursday
       - Friday
       - Saturday
-    SanitizationScheduleInfo:
-      title: SanitizationScheduleInfo
+    apiPaginationInfo:
+      title: apiPaginationInfo
       type: object
       properties:
-        dailySchedule:
-          type: object
-          properties:
-            retainForDays:
-              type: integer
-              format: int32
-              description: Retention period for sanitized backups (in days)
-        weeklySchedule:
-          type: object
-          properties:
-            weekDays:
-              description: Days in a week to retain weekly backups for
-              uniqueItems: true
-              type: array
-              items:
-                $ref: '#/components/schemas/WeekDay'
-            retainForWeeks:
-              type: integer
-              format: int32
-              description: Retention period for sanitized backups (in weeks)
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
+        pageSize:
           type: integer
           format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
+        pageOffset:
+          type: integer
+          format: int32
     TessellSanitizationScheduleUpdatePayload:
       description: Tessell Sanitization Schedule update payload definition
       type: object
@@ -427,6 +370,38 @@ components:
               description: If useActiveVersion is false, use the specified version, else use the active version
         scheduleInfo:
           $ref: '#/components/schemas/SanitizationScheduleInfo'
+    TessellApiResponse:
+      title: TessellApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+    SanitizationScheduleInfo:
+      title: SanitizationScheduleInfo
+      type: object
+      properties:
+        dailySchedule:
+          type: object
+          properties:
+            retainForDays:
+              type: integer
+              format: int32
+              description: Retention period for sanitized backups (in days)
+        weeklySchedule:
+          type: object
+          properties:
+            weekDays:
+              description: Days in a week to retain weekly backups for
+              uniqueItems: true
+              type: array
+              items:
+                $ref: '#/components/schemas/WeekDay'
+            retainForWeeks:
+              type: integer
+              format: int32
+              description: Retention period for sanitized backups (in weeks)
     TessellSanitizationScheduleServiceDTO:
       description: Tessell Sanitization Schedule Service View DTO definition
       type: object
@@ -473,16 +448,6 @@ components:
         dateCreated:
           type: string
           format: date-time
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
     TessellSanitizationScheduleCreatePayload:
       description: Tessell Sanitization Schedule create payload definition
       type: object
@@ -524,6 +489,41 @@ components:
               description: If useActiveVersion is false, use the specified version, else use the active version
         scheduleInfo:
           $ref: '#/components/schemas/SanitizationScheduleInfo'
+  parameters:
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    loadAcls:
+      name: load-acls
+      in: query
+      description: Load ACL information
+      required: false
+      schema:
+        type: boolean
+        default: false
   securitySchemes:
     BearerAuth:
       type: http

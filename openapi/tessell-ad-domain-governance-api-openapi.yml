@@ -166,36 +166,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 components:
-  parameters:
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
-    tenantIdMandatory:
-      name: tenant-id
-      in: header
-      description: Id of the Tenant
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-        example: 12345678-abcd-1234-abcd-1234abcd5678
   schemas:
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ReconfigureAdDomainPayload:
+      description: Reconfigure Ad Domain Payload
+      type: object
+      properties:
+        dnsServer:
+          type: array
+          items:
+            type: string
+        domainAccountUser:
+          type: string
+          description: Domain Account User
+        domainAccountPassword:
+          type: string
+          description: Domain Account Password
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -220,20 +213,6 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    ReconfigureAdDomainPayload:
-      description: Reconfigure Ad Domain Payload
-      type: object
-      properties:
-        dnsServer:
-          type: array
-          items:
-            type: string
-        domainAccountUser:
-          type: string
-          description: Domain Account User
-        domainAccountPassword:
-          type: string
-          description: Domain Account Password
     RegisterAdDomainPayload:
       description: Register Ad Domain Payload
       type: object
@@ -257,14 +236,6 @@ components:
         domainAccountPassword:
           type: string
           description: Domain Account Password
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
     AdDomain:
       description: AD Domain Details
       type: object
@@ -288,6 +259,35 @@ components:
         domainAccountUser:
           type: string
           description: Domain Account User
+  parameters:
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
   securitySchemes:
     BearerAuth:
       type: http

@@ -132,28 +132,26 @@ paths:
                 $ref: '#/components/schemas/ApiErrorOps'
 components:
   schemas:
-    TessellExceptionUserView:
-      title: TessellExceptionUserView
+    apiStatus:
+      title: apiStatus
       type: object
       properties:
+        status:
+          type: string
         message:
           type: string
-          description: End-user representation of the message
-        resolution:
-          type: string
-          description: End-user representation of resolution
-        errorCode:
-          $ref: '#/components/schemas/TessellHTTPErrorCode'
-          description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
-    TessellHTTPErrorCode:
+    DPNetworkAccessRules:
+      title: DPNetworkAccessRules
       type: object
       properties:
-        httpCode:
-          type: integer
-          description: HTTP code
-        code:
-          type: string
-          description: Tessell's specific code with more context on error
+        inbound:
+          type: array
+          items:
+            $ref: '#/components/schemas/DPNetworkInboundRule'
+        outbound:
+          type: array
+          items:
+            $ref: '#/components/schemas/DPNetworkOutboundRule'
     DPNetworkInboundRule:
       title: DPNetworkInboundRule
       type: object
@@ -170,17 +168,28 @@ components:
             type: string
         purpose:
           type: string
-    AllowPrivateEndpointRequest:
-      title: AllowPrivateEndpointRequest
+    TessellHTTPErrorCode:
       type: object
-      required:
-      - principalId
-      - region
       properties:
-        principalId:
+        httpCode:
+          type: integer
+          description: HTTP code
+        code:
           type: string
-        region:
+          description: Tessell's specific code with more context on error
+    TessellExceptionUserView:
+      title: TessellExceptionUserView
+      type: object
+      properties:
+        message:
           type: string
+          description: End-user representation of the message
+        resolution:
+          type: string
+          description: End-user representation of resolution
+        errorCode:
+          $ref: '#/components/schemas/TessellHTTPErrorCode'
+          description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
     ApiErrorOps:
       type: object
       description: Common error response object for non 2xx responses of internal or ops APIs
@@ -207,31 +216,16 @@ components:
           description: Unique error code specific to Tessell
         userView:
           $ref: '#/components/schemas/TessellExceptionUserView'
-    DPNetworkAccessRules:
-      title: DPNetworkAccessRules
+    AllowPrivateEndpointRequest:
+      title: AllowPrivateEndpointRequest
       type: object
+      required:
+      - principalId
+      - region
       properties:
-        inbound:
-          type: array
-          items:
-            $ref: '#/components/schemas/DPNetworkInboundRule'
-        outbound:
-          type: array
-          items:
-            $ref: '#/components/schemas/DPNetworkOutboundRule'
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
+        principalId:
           type: string
-        message:
-          type: string
-    DpCpCommunicationResources:
-      title: DpCpCommunicationResources
-      type: object
-      properties:
-        controlPlaneEndpointService:
+        region:
           type: string
     DPNetworkOutboundRule:
       title: DPNetworkOutboundRule
@@ -259,6 +253,12 @@ components:
       - AZURE
       - GCP
       - OCI
+    DpCpCommunicationResources:
+      title: DpCpCommunicationResources
+      type: object
+      properties:
+        controlPlaneEndpointService:
+          type: string
   parameters:
     tenantIdMandatory:
       name: tenant-id

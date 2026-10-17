@@ -189,6 +189,17 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    apiMetadata:
+      title: apiMetadata
+      type: object
+      properties:
+        timeZone:
+          type: string
+        records:
+          type: integer
+          format: int32
+        pagination:
+          $ref: '#/components/schemas/apiPaginationInfo'
     licenseCategory:
       description: Class to determine licenses
       type: string
@@ -197,30 +208,176 @@ components:
       - INTEGRATION
       - OS
       - OTHERS
-    licenseAuditResponse:
+    licenseDirectoryResponse:
       type: object
       properties:
         licenseId:
           description: license identifier
           type: string
           format: uuid
-        quantityImpacted:
+        licenseCategory:
+          $ref: '#/components/schemas/licenseCategory'
+        licenseType:
+          $ref: '#/components/schemas/licenseType'
+        vendor:
+          $ref: '#/components/schemas/vendor'
+        description:
+          type: string
+        edition:
+          description: edition for the license ie Standard/enterprise
+          type: string
+        version:
+          description: license version
+          type: string
+        subscriptionId:
+          description: Subscription identifier
+          type: string
+        licenseKey:
+          description: license key specific
+          type: string
+        availableQuantity:
           description: quantity of license capacity to be registered
           type: number
           format: double
-        acquirerId:
-          type: string
+        quantity:
+          description: quantity of license capacity to be registered
+          type: number
+          format: double
         status:
           $ref: '#/components/schemas/licenseStatus'
+        maturityStatus:
+          $ref: '#/components/schemas/maturityStatus'
         quantityMetric:
+          description: capacity metric to determine quantity
           type: string
-        metadata:
-          type: string
-        createdBy:
-          type: string
-        createdAt:
+        maxUsageAllowed:
+          description: quantity that are permissable for provisioning
+          type: number
+          format: double
+        startDate:
+          description: start-date of the licenses.
           type: string
           format: date-time
+        endDate:
+          description: end-date of the license
+          type: string
+          format: date-time
+        metadata:
+          type: string
+        lastModifiedBy:
+          type: string
+        lastModifiedAt:
+          type: string
+          format: date-time
+        licenseAudit:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/licenseAuditResponse'
+    licenseRegisterResponse:
+      type: object
+      properties:
+        licenseId:
+          description: license identifier
+          type: string
+          format: uuid
+        licenseCategory:
+          $ref: '#/components/schemas/licenseCategory'
+        licenseType:
+          $ref: '#/components/schemas/licenseType'
+        vendor:
+          $ref: '#/components/schemas/vendor'
+        description:
+          type: string
+        edition:
+          description: edition for the license ie Standard/enterprise
+          type: string
+        version:
+          description: license version
+          type: string
+        subscriptionId:
+          description: Subscription identifier
+          type: string
+        licenseKey:
+          description: license key specific
+          type: string
+        quantity:
+          description: quantity of license capacity to be registered
+          type: number
+          format: double
+        status:
+          $ref: '#/components/schemas/licenseStatus'
+        maturityStatus:
+          $ref: '#/components/schemas/maturityStatus'
+        quantityMetric:
+          description: capacity metric to determine quantity
+          type: string
+        maxUsageAllowed:
+          description: quantity that are permissable for provisioning
+          type: number
+          format: double
+        startDate:
+          description: start-date of the license
+          type: string
+          format: date-time
+        endDate:
+          description: endDate of the license
+          type: string
+          format: date-time
+        metadata:
+          type: string
+    licenseDirectoriesResponse:
+      type: object
+      properties:
+        responses:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/licenseDirectoryResponse'
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    maturityStatus:
+      description: maturity of license
+      type: string
+      enum:
+      - DRAFT
+      - PUBLISHED
+      - DELETED
+      - ALL
     vendor:
       description: Database Engine Type
       type: string
@@ -314,16 +471,30 @@ components:
       - RELEASED
       - FAILED
       - DELETED
-    apiPaginationInfo:
-      title: apiPaginationInfo
+    licenseAuditResponse:
       type: object
       properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
+        licenseId:
+          description: license identifier
+          type: string
+          format: uuid
+        quantityImpacted:
+          description: quantity of license capacity to be registered
+          type: number
+          format: double
+        acquirerId:
+          type: string
+        status:
+          $ref: '#/components/schemas/licenseStatus'
+        quantityMetric:
+          type: string
+        metadata:
+          type: string
+        createdBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
     deleteLicenseResponse:
       type: object
       description: License Repositories Chronicle Response
@@ -335,30 +506,6 @@ components:
           type: string
         status:
           $ref: '#/components/schemas/licenseStatus'
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
     licenseType:
       description: Type of licenses
       type: string
@@ -367,153 +514,6 @@ components:
       - SUBSCRIPTION
       - PERPETUAL
       - OTHERS
-    licenseRegisterResponse:
-      type: object
-      properties:
-        licenseId:
-          description: license identifier
-          type: string
-          format: uuid
-        licenseCategory:
-          $ref: '#/components/schemas/licenseCategory'
-        licenseType:
-          $ref: '#/components/schemas/licenseType'
-        vendor:
-          $ref: '#/components/schemas/vendor'
-        description:
-          type: string
-        edition:
-          description: edition for the license ie Standard/enterprise
-          type: string
-        version:
-          description: license version
-          type: string
-        subscriptionId:
-          description: Subscription identifier
-          type: string
-        licenseKey:
-          description: license key specific
-          type: string
-        quantity:
-          description: quantity of license capacity to be registered
-          type: number
-          format: double
-        status:
-          $ref: '#/components/schemas/licenseStatus'
-        maturityStatus:
-          $ref: '#/components/schemas/maturityStatus'
-        quantityMetric:
-          description: capacity metric to determine quantity
-          type: string
-        maxUsageAllowed:
-          description: quantity that are permissable for provisioning
-          type: number
-          format: double
-        startDate:
-          description: start-date of the license
-          type: string
-          format: date-time
-        endDate:
-          description: endDate of the license
-          type: string
-          format: date-time
-        metadata:
-          type: string
-    licenseDirectoryResponse:
-      type: object
-      properties:
-        licenseId:
-          description: license identifier
-          type: string
-          format: uuid
-        licenseCategory:
-          $ref: '#/components/schemas/licenseCategory'
-        licenseType:
-          $ref: '#/components/schemas/licenseType'
-        vendor:
-          $ref: '#/components/schemas/vendor'
-        description:
-          type: string
-        edition:
-          description: edition for the license ie Standard/enterprise
-          type: string
-        version:
-          description: license version
-          type: string
-        subscriptionId:
-          description: Subscription identifier
-          type: string
-        licenseKey:
-          description: license key specific
-          type: string
-        availableQuantity:
-          description: quantity of license capacity to be registered
-          type: number
-          format: double
-        quantity:
-          description: quantity of license capacity to be registered
-          type: number
-          format: double
-        status:
-          $ref: '#/components/schemas/licenseStatus'
-        maturityStatus:
-          $ref: '#/components/schemas/maturityStatus'
-        quantityMetric:
-          description: capacity metric to determine quantity
-          type: string
-        maxUsageAllowed:
-          description: quantity that are permissable for provisioning
-          type: number
-          format: double
-        startDate:
-          description: start-date of the licenses.
-          type: string
-          format: date-time
-        endDate:
-          description: end-date of the license
-          type: string
-          format: date-time
-        metadata:
-          type: string
-        lastModifiedBy:
-          type: string
-        lastModifiedAt:
-          type: string
-          format: date-time
-        licenseAudit:
-          type: array
-          items:
-            allOf:
-            - $ref: '#/components/schemas/licenseAuditResponse'
-    maturityStatus:
-      description: maturity of license
-      type: string
-      enum:
-      - DRAFT
-      - PUBLISHED
-      - DELETED
-      - ALL
-    licenseDirectoriesResponse:
-      type: object
-      properties:
-        responses:
-          type: array
-          items:
-            allOf:
-            - $ref: '#/components/schemas/licenseDirectoryResponse'
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-    apiMetadata:
-      title: apiMetadata
-      type: object
-      properties:
-        timeZone:
-          type: string
-        records:
-          type: integer
-          format: int32
-        pagination:
-          $ref: '#/components/schemas/apiPaginationInfo'
   parameters:
     timeZoneOldConvention:
       in: query

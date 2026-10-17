@@ -136,8 +136,23 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    PrivilegeCreatePayload:
-      title: PrivilegeCreatePayload
+    PrivilegeStatus:
+      title: PrivilegeStatus
+      type: string
+      description: This is a definition for Tessell privilege status object
+      enum:
+      - DELETED
+      - ENABLED
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    PrivilegeUpdatePayload:
+      title: PrivilegeUpdatePayload
       type: object
       properties:
         description:
@@ -146,31 +161,7 @@ components:
         name:
           type: string
           description: Name of the privilege
-      description: This is a definition for Tessell internal create privilege payload object
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
+      description: This is a definition for Tessell privilege update object
     PrivilegeDTO:
       title: PrivilegeDTO
       type: object
@@ -196,8 +187,32 @@ components:
         status:
           $ref: '#/components/schemas/PrivilegeStatus'
       description: This is a definition for Tessell
-    PrivilegeUpdatePayload:
-      title: PrivilegeUpdatePayload
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    PrivilegeCreatePayload:
+      title: PrivilegeCreatePayload
       type: object
       properties:
         description:
@@ -206,22 +221,7 @@ components:
         name:
           type: string
           description: Name of the privilege
-      description: This is a definition for Tessell privilege update object
-    PrivilegeStatus:
-      title: PrivilegeStatus
-      type: string
-      description: This is a definition for Tessell privilege status object
-      enum:
-      - DELETED
-      - ENABLED
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
+      description: This is a definition for Tessell internal create privilege payload object
   securitySchemes:
     BearerAuth:
       type: http

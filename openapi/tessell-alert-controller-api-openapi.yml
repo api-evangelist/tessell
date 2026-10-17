@@ -688,193 +688,159 @@ paths:
         schema:
           type: string
 components:
-  schemas:
-    TessellExceptionUserView:
-      title: TessellExceptionUserView
-      type: object
-      properties:
-        message:
-          type: string
-          description: End-user representation of the message
-        resolution:
-          type: string
-          description: End-user representation of resolution
-        errorCode:
-          $ref: '#/components/schemas/TessellHTTPErrorCode'
-          description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
-    AlertEntityUpdateRequest:
-      title: AlertEntityUpdateRequest
-      type: object
-      properties:
-        alertProfileId:
-          $ref: '#/components/schemas/AlertProfileId'
-        notificationProfileId:
-          $ref: '#/components/schemas/NotificationProfileId'
-        status:
-          $ref: '#/components/schemas/AlertEntityStatus'
-    AlertEntityDto:
-      title: AlertEntityDto
-      allOf:
-      - $ref: '#/components/schemas/AlertEntityCommonProperties'
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Id of the Alert profile
-        status:
-          $ref: '#/components/schemas/AlertEntityStatus'
-        metadata:
-          description: Alert Entity Metadata information
-          $ref: '#/components/schemas/AlertEntityMetadata'
-        dateCreated:
-          type: string
-          description: Timestamp when the entity was created
-          format: date-time
-        dateModified:
-          type: string
-          description: Timestamp when the entity was last modified
-          format: date-time
-    TessellHTTPErrorCode:
-      type: object
-      properties:
-        httpCode:
-          type: integer
-          description: HTTP code
-        code:
-          type: string
-          description: Tessell's specific code with more context on error
-    AlertRuleAnnotations:
-      type: object
-      description: Annotations of the alert rule
-      default: {}
-      additionalProperties:
+  parameters:
+    entity-id-in-query:
+      name: entity-id
+      in: query
+      description: Entity id corresponding to Alert Profile
+      required: false
+      schema:
+        $ref: '#/components/schemas/EntityId'
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    status-in-query:
+      name: status
+      in: query
+      description: Status of the Alert Profile
+      required: false
+      schema:
+        $ref: '#/components/schemas/AlertProfileStatus'
+    notification-profile-id-in-query:
+      name: notification-profile-id
+      in: query
+      description: Notification Profile Id
+      required: false
+      schema:
         type: string
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    AlertPolicyRequest:
-      title: AlertPolicyRequest
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/AlertProfileRequest'
-      - $ref: '#/components/schemas/AlertPolicyCommonProperties'
-    AlertPolicyListResponse:
-      title: AlertPolicyListResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      type: object
-      properties:
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/AlertPolicyDto'
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    AlertEntityListResponse:
-      title: AlertEntityListResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      type: object
-      properties:
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/AlertEntityDto'
-    EntityId:
-      title: EntityId
-      type: string
-      description: Id of the entity(service or compute resource or subscription)
-      format: uuid
-    AlertEntityCommonProperties:
-      title: AlertEntityCommonProperties
+        format: uuid
+      style: form
+    alert-profile-id-in-query:
+      name: alert-profile-id
+      in: query
+      description: Alert Profile Id
+      required: false
+      schema:
+        type: integer
+        format: int64
+    alert-entity-id-in-path:
+      name: id
+      in: path
+      description: Alert Entity Id
+      required: true
+      schema:
+        type: string
+        format: uuid
+      style: simple
+    subscriptionNameQuery:
+      name: subscription-name
+      description: Subscription name
+      in: query
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 64
+        example: Sub-Experiments-2
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    tenant-id-in-header-required:
+      name: tenant-id
+      in: header
+      description: Tenant ID
+      required: true
+      style: simple
+      schema:
+        type: string
+        format: uuid
+    alert-entity-type-in-query:
+      name: entity-type
+      in: query
+      description: Supported entity type for the Alert Profile
+      required: false
+      schema:
+        $ref: '#/components/schemas/AlertEntityType'
+    subscription-id-in-query:
+      name: subscription-id
+      description: Subscription ID
+      in: query
+      required: false
+      schema:
+        type: string
+        format: uuid
+    user-type-in-query:
+      name: user-type
+      in: query
+      description: User type for the Alert Profile
+      required: false
+      schema:
+        $ref: '#/components/schemas/UserType'
+    is-default-in-query:
+      name: is-default
+      in: query
+      description: If True then only default alert profile
+      required: false
+      schema:
+        type: boolean
+    alert-entity-status-in-query:
+      name: status
+      in: query
+      description: Status of Alert Entity
+      required: false
+      schema:
+        $ref: '#/components/schemas/AlertEntityStatus'
+    check-entity-associations-in-query:
+      name: check-entity-associations
+      in: query
+      description: Check if entity associations exists against the profile id
+      required: false
+      schema:
+        type: boolean
+        default: true
+    alert-profile-id-in-path:
+      name: id
+      in: path
+      description: Alert Profile Id
+      required: true
+      schema:
+        type: integer
+        format: int64
+      style: simple
+  schemas:
+    AlertProfileAnnotation:
+      title: AlertProfileAnnotation
       type: object
       required:
-      - entityType
-      - entityId
-      - alertProfileId
+      - displayName
+      - value
       properties:
-        entityType:
-          $ref: '#/components/schemas/AlertEntityType'
-        entityId:
-          $ref: '#/components/schemas/EntityId'
-        alertProfileId:
-          $ref: '#/components/schemas/AlertProfileId'
-        notificationProfileId:
-          $ref: '#/components/schemas/NotificationProfileId'
-    AlertProfileRuleConfigResponse:
-      type: object
-      properties:
-        alertRules:
-          type: array
-          items:
-            $ref: '#/components/schemas/AlertProfileRuleConfig'
-    AlertProfileRequest:
-      title: AlertProfileRequest
-      allOf:
-      - $ref: '#/components/schemas/AlertProfileCommonProperties'
-      - type: object
-        properties:
-          status:
-            $ref: '#/components/schemas/AlertProfileStatusRequest'
-          createdBy:
-            type: string
-            description: User who created the alert profile
-            default: Tessell
-    AlertProfileListResponse:
-      title: AlertProfileListResponse
-      allOf:
-      - $ref: '#/components/schemas/apiResponse'
-      type: object
-      properties:
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/AlertProfileDto'
-    NotificationProfileId:
+        displayName:
+          type: string
+          description: User-friendly label shown in UI or configuration
+        value:
+          type: string
+          description: Either a literal value or a templated reference
+        category:
+          type: string
+          description: Category grouping for the annotation
+    AlertProfileStatusRequest:
       type: string
-      format: uuid
-      description: Id of the Notification profile
-    AlertEntityStatus:
-      type: string
-      description: Status of the alert entity
+      description: Status of the Alert profile
       enum:
       - ACTIVE
       - INACTIVE
-      - DELETED
-      - DELETING
-      - CREATING
-      - CREATION_FAILED
-      - UPDATING
-      - UPDATION_FAILED
-      - DELETION_FAILED
     AlertAnnotation:
       type: object
       properties:
@@ -910,22 +876,46 @@ components:
         category:
           type: string
           description: Category grouping for the annotation
-    AlertProfileAnnotation:
-      title: AlertProfileAnnotation
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    AlertEntityCommonProperties:
+      title: AlertEntityCommonProperties
       type: object
       required:
-      - displayName
-      - value
+      - entityType
+      - entityId
+      - alertProfileId
       properties:
-        displayName:
-          type: string
-          description: User-friendly label shown in UI or configuration
-        value:
-          type: string
-          description: Either a literal value or a templated reference
-        category:
-          type: string
-          description: Category grouping for the annotation
+        entityType:
+          $ref: '#/components/schemas/AlertEntityType'
+        entityId:
+          $ref: '#/components/schemas/EntityId'
+        alertProfileId:
+          $ref: '#/components/schemas/AlertProfileId'
+        notificationProfileId:
+          $ref: '#/components/schemas/NotificationProfileId'
     AlertProfileUpdateRequest:
       title: AlertProfileUpdateRequest
       type: object
@@ -957,146 +947,29 @@ components:
           description: List of annotations for alert customization
           items:
             $ref: '#/components/schemas/AlertProfileAnnotation'
-    ApiErrorOps:
-      type: object
-      description: Common error response object for non 2xx responses of internal or ops APIs
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-        userView:
-          $ref: '#/components/schemas/TessellExceptionUserView'
-    AlertEntityType:
-      type: string
-      description: Entity Type
-      enum:
-      - DB
-      - NODE
-      - DB_SUBSCRIPTION
-      - NODE_SUBSCRIPTION
-    AlertAnnotationsCatalog:
-      type: array
-      items:
-        $ref: '#/components/schemas/AlertAnnotation'
-    AlertPolicyUpdateRequest:
-      title: AlertPolicyUpdateRequest
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/AlertProfileUpdateRequest'
-      - $ref: '#/components/schemas/AlertPolicyCommonProperties'
-    apiResponse:
-      example:
-        metadata:
-          pagination:
-            pageOffset: 0
-            pageSize: 6
-          records: 1
-          timeZone: timeZone
-        response: '{}'
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: object
-      title: ApiResponse
-      type: object
-    AlertProfileMetadata:
-      type: object
-      properties:
-        createdBy:
-          type: string
-          description: User who created the alert profile
-          default: Tessell
-        lastModifiedBy:
-          type: string
-          description: User who last modified the alert profile
-          default: Tessell
-      title: AlertProfileMetadata
     UserType:
       type: string
       description: User Type
       enum:
       - SRE
       - CUSTOMER
-    AlertProfileId:
-      type: integer
-      format: int64
-      description: Id of the Alert profile
-    ComparisonOperator:
-      type: string
-      description: Comparison Operator
-      default: GreaterThanThreshold
-      enum:
-      - GreaterThanOrEqualToThreshold
-      - GreaterThanThreshold
-      - LessThanThreshold
-      - LessThanOrEqualToThreshold
-      - EqualToThreshold
-      - NotEqualToThreshold
-    AlertPolicyAssociationRequest:
-      title: AlertPolicyAssociationRequest
-      type: object
-      required:
-      - subscriptionName
-      - alertProfileId
-      properties:
-        subscriptionName:
-          type: string
-        alertProfileId:
-          $ref: '#/components/schemas/AlertProfileId'
-        notificationProfileId:
-          $ref: '#/components/schemas/NotificationProfileId'
-    AlertProfileCommonProperties:
-      title: AlertProfileCommonProperties
-      required:
-      - name
-      - entityType
-      - userType
+    AlertEntityMetadata:
       type: object
       properties:
-        name:
+        activityId:
           type: string
-          description: Name of the Alert profile
-        entityType:
-          $ref: '#/components/schemas/AlertEntityType'
-        rules:
-          type: array
-          description: List of rules for the Alert profile
-          items:
-            $ref: '#/components/schemas/AlertProfileRule'
-          minItems: 0
-          maxItems: 100
-        userType:
-          $ref: '#/components/schemas/UserType'
-        isDefault:
-          type: boolean
-          description: True if this is the default alert Profile
-          default: false
-        description:
+          description: User level activity id for tracking alert policy associations.
+        entityName:
           type: string
-          description: Description of the Alert profile
-        annotations:
-          type: array
-          description: List of annotations for alert customization
-          items:
-            $ref: '#/components/schemas/AlertProfileAnnotation'
+          default: ''
+          description: Name of the entity
+      title: AlertEntityMetadata
+    AlertPolicyRequest:
+      title: AlertPolicyRequest
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AlertProfileRequest'
+      - $ref: '#/components/schemas/AlertPolicyCommonProperties'
     AlertPolicyAssociationResponse:
       title: AlertPolicyAssociationResponse
       type: object
@@ -1107,12 +980,6 @@ components:
           $ref: '#/components/schemas/AlertProfileDto'
         notificationProfile:
           type: object
-    AlertProfileStatusRequest:
-      type: string
-      description: Status of the Alert profile
-      enum:
-      - ACTIVE
-      - INACTIVE
     AlertProfileRuleConfig:
       title: Alert Profiles Rules Configuration
       description: This is the alert profile rules configuration
@@ -1146,72 +1013,6 @@ components:
         alertCategory:
           type: string
           description: Category of the alert
-    AlertRuleSeverity:
-      type: string
-      description: Severity of the Alert
-      default: Warning
-      enum:
-      - Critical
-      - High
-      - Warning
-    AlertEntityRequest:
-      title: AlertEntityRequest
-      allOf:
-      - $ref: '#/components/schemas/AlertEntityCommonProperties'
-      type: object
-    AlertPolicyCommonProperties:
-      title: AlertPolicyCommonProperties
-      type: object
-      properties:
-        notificationProfileId:
-          $ref: '#/components/schemas/NotificationProfileId'
-        targetSubscriptions:
-          type: array
-          description: List of target subscription names for the alert policy
-          items:
-            type: string
-    AlertProfileRule:
-      type: object
-      required:
-      - id
-      - name
-      - threshold
-      - severity
-      - evaluationWindow
-      - comparisonOperator
-      properties:
-        id:
-          type: integer
-          description: Id of the Alert profile rule
-        name:
-          type: string
-          description: Name of the Alert profile rule
-        threshold:
-          type: number
-          format: double
-          description: Threshold of the rule
-        severity:
-          $ref: '#/components/schemas/AlertRuleSeverity'
-        evaluationWindow:
-          type: integer
-          description: Evaluation window in minutes over which data should be compared with threshold
-          minimum: 0
-          maximum: 1440
-        comparisonOperator:
-          $ref: '#/components/schemas/ComparisonOperator'
-        annotations:
-          $ref: '#/components/schemas/AlertRuleAnnotations'
-    AlertEntityMetadata:
-      type: object
-      properties:
-        activityId:
-          type: string
-          description: User level activity id for tracking alert policy associations.
-        entityName:
-          type: string
-          default: ''
-          description: Name of the entity
-      title: AlertEntityMetadata
     AlertPolicyDto:
       title: AlertPolicyDto
       type: object
@@ -1249,25 +1050,160 @@ components:
             $ref: '#/components/schemas/AlertProfileMetadata'
       required:
       - id
-    AlertProfileStatus:
-      type: string
-      description: Status of the Alert profile
-      enum:
-      - ACTIVE
-      - INACTIVE
-      - CREATING
-      - DELETED
-      - CREATION_FAILED
-    apiPaginationInfo:
-      title: apiPaginationInfo
+    AlertEntityListResponse:
+      title: AlertEntityListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
       type: object
       properties:
-        pageSize:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertEntityDto'
+    AlertEntityType:
+      type: string
+      description: Entity Type
+      enum:
+      - DB
+      - NODE
+      - DB_SUBSCRIPTION
+      - NODE_SUBSCRIPTION
+    AlertProfileRule:
+      type: object
+      required:
+      - id
+      - name
+      - threshold
+      - severity
+      - evaluationWindow
+      - comparisonOperator
+      properties:
+        id:
           type: integer
-          format: int32
-        pageOffset:
+          description: Id of the Alert profile rule
+        name:
+          type: string
+          description: Name of the Alert profile rule
+        threshold:
+          type: number
+          format: double
+          description: Threshold of the rule
+        severity:
+          $ref: '#/components/schemas/AlertRuleSeverity'
+        evaluationWindow:
           type: integer
-          format: int32
+          description: Evaluation window in minutes over which data should be compared with threshold
+          minimum: 0
+          maximum: 1440
+        comparisonOperator:
+          $ref: '#/components/schemas/ComparisonOperator'
+        annotations:
+          $ref: '#/components/schemas/AlertRuleAnnotations'
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    AlertAnnotationsCatalog:
+      type: array
+      items:
+        $ref: '#/components/schemas/AlertAnnotation'
+    AlertProfileCommonProperties:
+      title: AlertProfileCommonProperties
+      required:
+      - name
+      - entityType
+      - userType
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the Alert profile
+        entityType:
+          $ref: '#/components/schemas/AlertEntityType'
+        rules:
+          type: array
+          description: List of rules for the Alert profile
+          items:
+            $ref: '#/components/schemas/AlertProfileRule'
+          minItems: 0
+          maxItems: 100
+        userType:
+          $ref: '#/components/schemas/UserType'
+        isDefault:
+          type: boolean
+          description: True if this is the default alert Profile
+          default: false
+        description:
+          type: string
+          description: Description of the Alert profile
+        annotations:
+          type: array
+          description: List of annotations for alert customization
+          items:
+            $ref: '#/components/schemas/AlertProfileAnnotation'
+    NotificationProfileId:
+      type: string
+      format: uuid
+      description: Id of the Notification profile
+    AlertProfileRequest:
+      title: AlertProfileRequest
+      allOf:
+      - $ref: '#/components/schemas/AlertProfileCommonProperties'
+      - type: object
+        properties:
+          status:
+            $ref: '#/components/schemas/AlertProfileStatusRequest'
+          createdBy:
+            type: string
+            description: User who created the alert profile
+            default: Tessell
+    AlertEntityRequest:
+      title: AlertEntityRequest
+      allOf:
+      - $ref: '#/components/schemas/AlertEntityCommonProperties'
+      type: object
+    AlertProfileRuleConfigResponse:
+      type: object
+      properties:
+        alertRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertProfileRuleConfig'
+    AlertRuleSeverity:
+      type: string
+      description: Severity of the Alert
+      default: Warning
+      enum:
+      - Critical
+      - High
+      - Warning
+    AlertEntityDto:
+      title: AlertEntityDto
+      allOf:
+      - $ref: '#/components/schemas/AlertEntityCommonProperties'
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Id of the Alert profile
+        status:
+          $ref: '#/components/schemas/AlertEntityStatus'
+        metadata:
+          description: Alert Entity Metadata information
+          $ref: '#/components/schemas/AlertEntityMetadata'
+        dateCreated:
+          type: string
+          description: Timestamp when the entity was created
+          format: date-time
+        dateModified:
+          type: string
+          description: Timestamp when the entity was last modified
+          format: date-time
     apiMetadata:
       title: apiMetadata
       type: object
@@ -1279,136 +1215,200 @@ components:
           format: int32
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
-  parameters:
-    subscription-id-in-query:
-      name: subscription-id
-      description: Subscription ID
-      in: query
-      required: false
-      schema:
+    AlertEntityStatus:
+      type: string
+      description: Status of the alert entity
+      enum:
+      - ACTIVE
+      - INACTIVE
+      - DELETED
+      - DELETING
+      - CREATING
+      - CREATION_FAILED
+      - UPDATING
+      - UPDATION_FAILED
+      - DELETION_FAILED
+    AlertEntityUpdateRequest:
+      title: AlertEntityUpdateRequest
+      type: object
+      properties:
+        alertProfileId:
+          $ref: '#/components/schemas/AlertProfileId'
+        notificationProfileId:
+          $ref: '#/components/schemas/NotificationProfileId'
+        status:
+          $ref: '#/components/schemas/AlertEntityStatus'
+    AlertPolicyAssociationRequest:
+      title: AlertPolicyAssociationRequest
+      type: object
+      required:
+      - subscriptionName
+      - alertProfileId
+      properties:
+        subscriptionName:
+          type: string
+        alertProfileId:
+          $ref: '#/components/schemas/AlertProfileId'
+        notificationProfileId:
+          $ref: '#/components/schemas/NotificationProfileId'
+    TessellHTTPErrorCode:
+      type: object
+      properties:
+        httpCode:
+          type: integer
+          description: HTTP code
+        code:
+          type: string
+          description: Tessell's specific code with more context on error
+    AlertPolicyUpdateRequest:
+      title: AlertPolicyUpdateRequest
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AlertProfileUpdateRequest'
+      - $ref: '#/components/schemas/AlertPolicyCommonProperties'
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    TessellExceptionUserView:
+      title: TessellExceptionUserView
+      type: object
+      properties:
+        message:
+          type: string
+          description: End-user representation of the message
+        resolution:
+          type: string
+          description: End-user representation of resolution
+        errorCode:
+          $ref: '#/components/schemas/TessellHTTPErrorCode'
+          description: User specific code might be different in some cases with internal code (Say some internal entity is not present, so 404 for Tessell while 500 for end-user
+    AlertProfileMetadata:
+      type: object
+      properties:
+        createdBy:
+          type: string
+          description: User who created the alert profile
+          default: Tessell
+        lastModifiedBy:
+          type: string
+          description: User who last modified the alert profile
+          default: Tessell
+      title: AlertProfileMetadata
+    AlertProfileId:
+      type: integer
+      format: int64
+      description: Id of the Alert profile
+    AlertPolicyListResponse:
+      title: AlertPolicyListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertPolicyDto'
+    AlertProfileStatus:
+      type: string
+      description: Status of the Alert profile
+      enum:
+      - ACTIVE
+      - INACTIVE
+      - CREATING
+      - DELETED
+      - CREATION_FAILED
+    EntityId:
+      title: EntityId
+      type: string
+      description: Id of the entity(service or compute resource or subscription)
+      format: uuid
+    AlertRuleAnnotations:
+      type: object
+      description: Annotations of the alert rule
+      default: {}
+      additionalProperties:
         type: string
-        format: uuid
-    alert-entity-status-in-query:
-      name: status
-      in: query
-      description: Status of Alert Entity
-      required: false
-      schema:
-        $ref: '#/components/schemas/AlertEntityStatus'
-    alert-entity-type-in-query:
-      name: entity-type
-      in: query
-      description: Supported entity type for the Alert Profile
-      required: false
-      schema:
-        $ref: '#/components/schemas/AlertEntityType'
-    tenant-id-in-header-required:
-      name: tenant-id
-      in: header
-      description: Tenant ID
-      required: true
-      style: simple
-      schema:
-        type: string
-        format: uuid
-    subscriptionNameQuery:
-      name: subscription-name
-      description: Subscription name
-      in: query
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 64
-        example: Sub-Experiments-2
-    status-in-query:
-      name: status
-      in: query
-      description: Status of the Alert Profile
-      required: false
-      schema:
-        $ref: '#/components/schemas/AlertProfileStatus'
-    alert-entity-id-in-path:
-      name: id
-      in: path
-      description: Alert Entity Id
-      required: true
-      schema:
-        type: string
-        format: uuid
-      style: simple
-    is-default-in-query:
-      name: is-default
-      in: query
-      description: If True then only default alert profile
-      required: false
-      schema:
-        type: boolean
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    notification-profile-id-in-query:
-      name: notification-profile-id
-      in: query
-      description: Notification Profile Id
-      required: false
-      schema:
-        type: string
-        format: uuid
-      style: form
-    entity-id-in-query:
-      name: entity-id
-      in: query
-      description: Entity id corresponding to Alert Profile
-      required: false
-      schema:
-        $ref: '#/components/schemas/EntityId'
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
-    alert-profile-id-in-path:
-      name: id
-      in: path
-      description: Alert Profile Id
-      required: true
-      schema:
-        type: integer
-        format: int64
-      style: simple
-    alert-profile-id-in-query:
-      name: alert-profile-id
-      in: query
-      description: Alert Profile Id
-      required: false
-      schema:
-        type: integer
-        format: int64
-    user-type-in-query:
-      name: user-type
-      in: query
-      description: User type for the Alert Profile
-      required: false
-      schema:
-        $ref: '#/components/schemas/UserType'
-    check-entity-associations-in-query:
-      name: check-entity-associations
-      in: query
-      description: Check if entity associations exists against the profile id
-      required: false
-      schema:
-        type: boolean
-        default: true
+    AlertProfileListResponse:
+      title: AlertProfileListResponse
+      allOf:
+      - $ref: '#/components/schemas/apiResponse'
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertProfileDto'
+    ComparisonOperator:
+      type: string
+      description: Comparison Operator
+      default: GreaterThanThreshold
+      enum:
+      - GreaterThanOrEqualToThreshold
+      - GreaterThanThreshold
+      - LessThanThreshold
+      - LessThanOrEqualToThreshold
+      - EqualToThreshold
+      - NotEqualToThreshold
+    AlertPolicyCommonProperties:
+      title: AlertPolicyCommonProperties
+      type: object
+      properties:
+        notificationProfileId:
+          $ref: '#/components/schemas/NotificationProfileId'
+        targetSubscriptions:
+          type: array
+          description: List of target subscription names for the alert policy
+          items:
+            type: string
+    ApiErrorOps:
+      type: object
+      description: Common error response object for non 2xx responses of internal or ops APIs
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+        userView:
+          $ref: '#/components/schemas/TessellExceptionUserView'
+    apiResponse:
+      example:
+        metadata:
+          pagination:
+            pageOffset: 0
+            pageSize: 6
+          records: 1
+          timeZone: timeZone
+        response: '{}'
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: object
+      title: ApiResponse
+      type: object
   securitySchemes:
     BearerAuth:
       type: http

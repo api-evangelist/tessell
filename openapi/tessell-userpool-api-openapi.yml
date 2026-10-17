@@ -194,6 +194,66 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    UserpoolStatus:
+      title: UserpoolStatus
+      type: string
+      description: This is a definition for Tessell userpool status object
+      enum:
+      - DELETED
+      - DISABLED
+      - ENABLED
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    IamApiResponse:
+      title: IamApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            type: object
     UserpoolDTO:
       title: UserpoolDTO
       type: object
@@ -227,40 +287,6 @@ components:
           type: string
           description: AWS userpool id
       description: This is a definition for Tessell managed userpool payload object
-    IamApiResponse:
-      title: IamApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: array
-          items:
-            type: object
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
     UserpoolPayload:
       title: UserpoolPayload
       type: object
@@ -287,32 +313,6 @@ components:
       enum:
       - GLOBAL
       - LOCAL
-    UserpoolStatus:
-      title: UserpoolStatus
-      type: string
-      description: This is a definition for Tessell userpool status object
-      enum:
-      - DELETED
-      - DISABLED
-      - ENABLED
-    apiStatus:
-      title: apiStatus
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
     apiMetadata:
       title: apiMetadata
       type: object

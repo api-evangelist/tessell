@@ -127,10 +127,31 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    computeProfileMaxBurstIops:
-      type: integer
-      format: int32
-      description: Maximum Burst IOPS supported by underlying disks
+    UpdateComputeRegionRequest:
+      type: object
+      properties:
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+        regions:
+          type: array
+          items:
+            type: string
+      required:
+      - cloud
+      - regions
+    UpdateComputeRegionResponse:
+      type: object
+      properties:
+        subscriptionName:
+          type: string
+        name:
+          type: string
+        cloud:
+          $ref: '#/components/schemas/cloudType'
+        regions:
+          type: array
+          items:
+            type: string
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -155,6 +176,16 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
+    DiskControllerType:
+      description: Disk controller type supported by a compute shape
+      type: string
+      enum:
+      - SCSI
+      - NVME
+    computeProfileMaxBurstIops:
+      type: integer
+      format: int32
+      description: Maximum Burst IOPS supported by underlying disks
     apiStatus:
       title: apiStatus
       type: object
@@ -163,146 +194,6 @@ components:
           type: string
         message:
           type: string
-    computeProfileMaxThroughputMBps:
-      type: integer
-      format: int32
-      description: Maximum Throughput supported by underlying disks (in MB/s)
-    ComputeUseCase:
-      description: Compute Use Cases
-      type: string
-      enum:
-      - PROVISIONING
-      - BMA
-      - MILVUS
-    ComputeProfileInfo:
-      description: Compute Profile Metadata
-      type: object
-      properties:
-        readIops:
-          description: Read IOPS throughput supported by an instance
-          type: integer
-        writeIops:
-          description: Write IOPS throughput supported by an instance
-          format: int32
-          type: integer
-        memoryGB:
-          description: Amount of memory (GB) in this compute
-          format: float
-          type: number
-        maxNoOfDisks:
-          description: No of disks attached to a compute instance
-          format: int32
-          type: integer
-        minStorageGB:
-          description: Amount of min storage (GB) supported by this compute shape (Only for Standard)
-          format: int32
-          type: integer
-        maxStorageGB:
-          description: Amount of max storage (GB) supported by this compute shape (Only for Standard)
-          format: int32
-          type: integer
-        storageGB:
-          description: Amount of storage (GB) supported by this compute shape (Only for High Performance)
-          format: int32
-          type: integer
-        vcpus:
-          description: Number of VCPUs in this compute
-          format: int32
-          type: integer
-        allowedVcpuValues:
-          description: Allowed Values of Vcpu in the shape
-          type: array
-          items:
-            format: int32
-            type: integer
-        io2BlockExpressEnabled:
-          description: Shape Supports io2 Block Express volume
-          type: boolean
-          default: false
-        workloadType:
-          description: Type of compute
-          type: string
-        architecture:
-          $ref: '#/components/schemas/ComputeArchitecture'
-        maxThroughputMBps:
-          $ref: '#/components/schemas/computeProfileMaxThroughputMBps'
-        maxBurstThroughputMBps:
-          $ref: '#/components/schemas/computeProfileMaxBurstThroughputMBps'
-        maxIops:
-          $ref: '#/components/schemas/computeProfileMaxIops'
-        maxBurstIops:
-          $ref: '#/components/schemas/computeProfileMaxBurstIops'
-    computeProfileMaxBurstThroughputMBps:
-      type: integer
-      format: int32
-      description: Maximum Burst Throughput supported by underlying disks (in MB/s)
-    DiskControllerType:
-      description: Disk controller type supported by a compute shape
-      type: string
-      enum:
-      - SCSI
-      - NVME
-    UpdateComputeRegionRequest:
-      type: object
-      properties:
-        cloud:
-          $ref: '#/components/schemas/cloudType'
-        regions:
-          type: array
-          items:
-            type: string
-      required:
-      - cloud
-      - regions
-    ComputeArchitecture:
-      description: Compute Architecture
-      type: string
-      enum:
-      - x86
-      - arm64
-    StorageUtilizationDatabaseEngineTypes:
-      description: Database Engine Type
-      type: string
-      enum:
-      - GENERIC
-      - ORACLE
-      - POSTGRESQL
-      - SQLSERVER
-      - MYSQL
-      - APACHE_KAFKA
-      - MONGODB
-      - MILVUS
-    cloudType:
-      description: Tessell supported cloud types
-      type: string
-      enum:
-      - AWS
-      - AZURE
-      - GCP
-      - OCI
-    computeProfileMaxIops:
-      type: integer
-      format: int32
-      description: Maximum IOPS supported by underlying disks
-    ComputeVmCompatibility:
-      type: object
-      description: VM compatibility requirements for a compute shape
-      properties:
-        diskControllerTypes:
-          type: array
-          description: Disk controller types supported by this compute shape (e.g. SCSI, NVME). Sourced from Azure SKU API DiskControllerTypes capability.
-          items:
-            $ref: '#/components/schemas/DiskControllerType'
-    UpdateComputeStatusRequest:
-      type: object
-      properties:
-        cloud:
-          $ref: '#/components/schemas/cloudType'
-        status:
-          $ref: '#/components/schemas/ComputeProfileStatus'
-      required:
-      - cloud
-      - status
     ComputeAdminView:
       description: Compute Response Object
       type: object
@@ -369,19 +260,107 @@ components:
       - ENABLED
       - DISABLED
       - DELETED
-    UpdateComputeRegionResponse:
+    computeProfileMaxIops:
+      type: integer
+      format: int32
+      description: Maximum IOPS supported by underlying disks
+    UpdateComputeStatusRequest:
       type: object
       properties:
-        subscriptionName:
-          type: string
-        name:
-          type: string
         cloud:
           $ref: '#/components/schemas/cloudType'
-        regions:
+        status:
+          $ref: '#/components/schemas/ComputeProfileStatus'
+      required:
+      - cloud
+      - status
+    ComputeProfileInfo:
+      description: Compute Profile Metadata
+      type: object
+      properties:
+        readIops:
+          description: Read IOPS throughput supported by an instance
+          type: integer
+        writeIops:
+          description: Write IOPS throughput supported by an instance
+          format: int32
+          type: integer
+        memoryGB:
+          description: Amount of memory (GB) in this compute
+          format: float
+          type: number
+        maxNoOfDisks:
+          description: No of disks attached to a compute instance
+          format: int32
+          type: integer
+        minStorageGB:
+          description: Amount of min storage (GB) supported by this compute shape (Only for Standard)
+          format: int32
+          type: integer
+        maxStorageGB:
+          description: Amount of max storage (GB) supported by this compute shape (Only for Standard)
+          format: int32
+          type: integer
+        storageGB:
+          description: Amount of storage (GB) supported by this compute shape (Only for High Performance)
+          format: int32
+          type: integer
+        vcpus:
+          description: Number of VCPUs in this compute
+          format: int32
+          type: integer
+        allowedVcpuValues:
+          description: Allowed Values of Vcpu in the shape
           type: array
           items:
-            type: string
+            format: int32
+            type: integer
+        io2BlockExpressEnabled:
+          description: Shape Supports io2 Block Express volume
+          type: boolean
+          default: false
+        workloadType:
+          description: Type of compute
+          type: string
+        architecture:
+          $ref: '#/components/schemas/ComputeArchitecture'
+        maxThroughputMBps:
+          $ref: '#/components/schemas/computeProfileMaxThroughputMBps'
+        maxBurstThroughputMBps:
+          $ref: '#/components/schemas/computeProfileMaxBurstThroughputMBps'
+        maxIops:
+          $ref: '#/components/schemas/computeProfileMaxIops'
+        maxBurstIops:
+          $ref: '#/components/schemas/computeProfileMaxBurstIops'
+    ComputeArchitecture:
+      description: Compute Architecture
+      type: string
+      enum:
+      - x86
+      - arm64
+    ComputeUseCase:
+      description: Compute Use Cases
+      type: string
+      enum:
+      - PROVISIONING
+      - BMA
+      - MILVUS
+    cloudType:
+      description: Tessell supported cloud types
+      type: string
+      enum:
+      - AWS
+      - AZURE
+      - GCP
+      - OCI
+    computeProfileMaxBurstThroughputMBps:
+      type: integer
+      format: int32
+      description: Maximum Burst Throughput supported by underlying disks (in MB/s)
+    computeProfileMaxThroughputMBps:
+      type: integer
+      format: int32
+      description: Maximum Throughput supported by underlying disks (in MB/s)
     ComputeMetadata:
       title: ComputeMetadata
       type: object
@@ -398,40 +377,33 @@ components:
                 type: integer
               tsmUsableStorageGB:
                 type: integer
+    ComputeVmCompatibility:
+      type: object
+      description: VM compatibility requirements for a compute shape
+      properties:
+        diskControllerTypes:
+          type: array
+          description: Disk controller types supported by this compute shape (e.g. SCSI, NVME). Sourced from Azure SKU API DiskControllerTypes capability.
+          items:
+            $ref: '#/components/schemas/DiskControllerType'
+    StorageUtilizationDatabaseEngineTypes:
+      description: Database Engine Type
+      type: string
+      enum:
+      - GENERIC
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
   parameters:
-    compute-name-in-path:
+    subscription-name-in-path:
       in: path
-      name: name
-      description: Compute Name
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-      example: tesl_2_b
-    tenantIdMandatory:
-      name: tenant-id
-      in: header
-      description: Id of the Tenant
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-        example: 12345678-abcd-1234-abcd-1234abcd5678
-    include-availability-in-query:
-      in: query
-      name: include-availability
-      description: Whether to include availability info
-      required: false
-      schema:
-        type: boolean
-        default: false
-    subscription-name-in-query:
-      in: query
       name: subscription-name
       description: Subscription Name
-      required: false
+      required: true
       schema:
         type: string
         minLength: 1
@@ -455,6 +427,23 @@ components:
         type: array
         items:
           $ref: '#/components/schemas/ComputeUseCase'
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    include-availability-in-query:
+      in: query
+      name: include-availability
+      description: Whether to include availability info
+      required: false
+      schema:
+        type: boolean
+        default: false
     cloud-type-in-query:
       name: cloud-type
       in: query
@@ -466,25 +455,36 @@ components:
       style: form
       example:
         cloudType: aws
-    pageSize:
-      name: page-size
+    subscription-name-in-query:
       in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
-    subscription-name-in-path:
-      in: path
       name: subscription-name
       description: Subscription Name
-      required: true
+      required: false
       schema:
         type: string
         minLength: 1
         maxLength: 255
       example: default
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
+    compute-name-in-path:
+      in: path
+      name: name
+      description: Compute Name
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+      example: tesl_2_b
   securitySchemes:
     BearerAuth:
       type: http

@@ -147,42 +147,29 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    AclUserPayload:
-      title: AclUserPayload
-      description: Payload to create an user's entity ACL
+    apiStatus:
+      title: apiStatus
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    AclRevokePayload:
+      title: AclRevokePayload
+      description: Payload to revoke Tessell ACLs
       required:
-      - emailId
-      - role
+      - users
       properties:
-        emailId:
-          description: Email id of the user
-          type: string
-          minLength: 1
-          maxLength: 256
-        role:
-          description: Role Info
-          type: string
-          minLength: 1
-          maxLength: 64
-    AclEligibleUser:
-      title: AclEligibleUser
-      description: Eligible user for sharing the entity
-      properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
-        emailId:
-          type: string
-        eligibleRoles:
+        users:
+          description: List of users to be deleted
           type: array
           items:
             type: string
-        accessibleSubscriptions:
-          type: array
-          items:
-            type: string
-          description: List of subscriptions user has access to
+            minLength: 1
+            maxLength: 256
+          minItems: 1
+          maxItems: 100
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -207,21 +194,23 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    AclRevokePayload:
-      title: AclRevokePayload
-      description: Payload to revoke Tessell ACLs
+    AclUserPayload:
+      title: AclUserPayload
+      description: Payload to create an user's entity ACL
       required:
-      - users
+      - emailId
+      - role
       properties:
-        users:
-          description: List of users to be deleted
-          type: array
-          items:
-            type: string
-            minLength: 1
-            maxLength: 256
-          minItems: 1
-          maxItems: 100
+        emailId:
+          description: Email id of the user
+          type: string
+          minLength: 1
+          maxLength: 256
+        role:
+          description: Role Info
+          type: string
+          minLength: 1
+          maxLength: 64
     AclPayload:
       title: AclPayload
       description: Payload to create an entity ACL
@@ -234,14 +223,25 @@ components:
             $ref: '#/components/schemas/AclUserPayload'
           minItems: 1
           maxItems: 100
-    apiStatus:
-      title: apiStatus
-      type: object
+    AclEligibleUser:
+      title: AclEligibleUser
+      description: Eligible user for sharing the entity
       properties:
-        status:
+        firstName:
           type: string
-        message:
+        lastName:
           type: string
+        emailId:
+          type: string
+        eligibleRoles:
+          type: array
+          items:
+            type: string
+        accessibleSubscriptions:
+          type: array
+          items:
+            type: string
+          description: List of subscriptions user has access to
   securitySchemes:
     BearerAuth:
       type: http

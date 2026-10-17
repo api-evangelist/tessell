@@ -596,6 +596,25 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    TessellLogEventsMetadata:
+      title: Log Events Metadata
+      description: This is a definition for the metadata of log events
+      type: object
+      properties:
+        fileName:
+          type: string
+          description: The name of the log file
+        count:
+          type: number
+          description: The number of log events in the returned list
+        firstEventTimestamp:
+          type: string
+          format: date-time
+          description: The timestamp of the first log event in the list
+        lastEventTimestamp:
+          type: string
+          format: date-time
+          description: The timestamp of the last log event in the list
     DBLogFilesInfoDTO:
       title: DB Files Info
       description: This is a definition for DB log file object
@@ -612,18 +631,6 @@ components:
           type: number
           format: long
           description: The time of the last event in the log file in Epoch timestamp(in milliseconds). This will be 0 in case of Azure.
-    TessellLogEventsDTO:
-      title: Log Events
-      description: This is a definition for the list of log events
-      type: object
-      properties:
-        logs:
-          type: array
-          items:
-            type: string
-          description: The list of log events
-        metadata:
-          $ref: '#/components/schemas/TessellLogEventsMetadata'
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -661,6 +668,18 @@ components:
             type: string
           region:
             type: string
+    TessellLogEventsDTO:
+      title: Log Events
+      description: This is a definition for the list of log events
+      type: object
+      properties:
+        logs:
+          type: array
+          items:
+            type: string
+          description: The list of log events
+        metadata:
+          $ref: '#/components/schemas/TessellLogEventsMetadata'
     TessellLogsCloudInfo:
       oneOf:
       - $ref: '#/components/schemas/TessellLogsAWSStorageCloudInfo'
@@ -720,25 +739,6 @@ components:
         serviceInstanceName:
           type: string
           description: Service Instance Name
-    TessellLogEventsMetadata:
-      title: Log Events Metadata
-      description: This is a definition for the metadata of log events
-      type: object
-      properties:
-        fileName:
-          type: string
-          description: The name of the log file
-        count:
-          type: number
-          description: The number of log events in the returned list
-        firstEventTimestamp:
-          type: string
-          format: date-time
-          description: The timestamp of the first log event in the list
-        lastEventTimestamp:
-          type: string
-          format: date-time
-          description: The timestamp of the last log event in the list
   securitySchemes:
     BearerAuth:
       type: http

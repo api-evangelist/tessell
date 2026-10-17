@@ -93,6 +93,76 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
+    ApplyConfig:
+      title: ApplyConfig
+      type: object
+      description: Application Details for any operation
+      properties:
+        overriddenTaskIds:
+          type: array
+          description: Task ids that this request will override
+          items:
+            type: string
+            format: uuid
+            uniqueItems: true
+        strategy:
+          $ref: '#/components/schemas/ApplyStrategy'
+        maintenanceWindowId:
+          type: string
+          format: uuid
+          description: Needed when strategy is MAINTENANCE_WINDOW
+        time:
+          type: string
+          format: date-time
+          description: Needed when strategy is CUSTOM_DATE_TIME
+    DBServiceSecurityConfigUpdateRequest:
+      type: object
+      description: Object to capture the security configuration update request for a DB Service
+      required:
+      - instanceSecurityUpdateConfig
+      properties:
+        instanceSecurityUpdateConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/DBServiceInstanceSecurityConfigUpdateRequest'
+        applyConfig:
+          $ref: '#/components/schemas/ApplyConfig'
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    DBServiceInstanceSecurityConfigUpdateRequest:
+      type: object
+      required:
+      - instanceId
+      - securityProfile
+      properties:
+        instanceId:
+          type: string
+          format: uuid
+          description: The instance Id for which security configuration update needs to be triggered
+        securityProfile:
+          $ref: '#/components/schemas/SecurityProfileUpdateConfig'
     ApplyStrategy:
       type: string
       enum:
@@ -132,76 +202,6 @@ components:
           type: string
           format: uuid
           description: Security Profile Version Id to which instance needs to be update
-    ApiError:
-      type: object
-      description: Common error response object for non 2xx responses
-      properties:
-        code:
-          type: string
-          description: Status code for the error response
-        message:
-          type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
-    DBServiceInstanceSecurityConfigUpdateRequest:
-      type: object
-      required:
-      - instanceId
-      - securityProfile
-      properties:
-        instanceId:
-          type: string
-          format: uuid
-          description: The instance Id for which security configuration update needs to be triggered
-        securityProfile:
-          $ref: '#/components/schemas/SecurityProfileUpdateConfig'
-    DBServiceSecurityConfigUpdateRequest:
-      type: object
-      description: Object to capture the security configuration update request for a DB Service
-      required:
-      - instanceSecurityUpdateConfig
-      properties:
-        instanceSecurityUpdateConfig:
-          type: array
-          items:
-            $ref: '#/components/schemas/DBServiceInstanceSecurityConfigUpdateRequest'
-        applyConfig:
-          $ref: '#/components/schemas/ApplyConfig'
-    ApplyConfig:
-      title: ApplyConfig
-      type: object
-      description: Application Details for any operation
-      properties:
-        overriddenTaskIds:
-          type: array
-          description: Task ids that this request will override
-          items:
-            type: string
-            format: uuid
-            uniqueItems: true
-        strategy:
-          $ref: '#/components/schemas/ApplyStrategy'
-        maintenanceWindowId:
-          type: string
-          format: uuid
-          description: Needed when strategy is MAINTENANCE_WINDOW
-        time:
-          type: string
-          format: date-time
-          description: Needed when strategy is CUSTOM_DATE_TIME
     DBServerSecurityConfigUpdateRequest:
       type: object
       required:

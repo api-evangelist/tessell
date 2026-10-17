@@ -88,36 +88,27 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   parameters:
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
-    tenantIdMandatory:
-      name: tenant-id
-      in: header
-      description: Id of the Tenant
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 128
-        example: 12345678-abcd-1234-abcd-1234abcd5678
-    include-availability-in-query:
-      in: query
-      name: include-availability
-      description: Whether to include availability info
-      required: false
-      schema:
-        type: boolean
-        default: false
     include-internal-in-query:
       in: query
       name: include-internal
       description: Includes Internal Computes
+      required: false
+      schema:
+        type: boolean
+        default: false
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    all-computes-in-query:
+      in: query
+      name: all-computes
+      description: Returns All Computes
       required: false
       schema:
         type: boolean
@@ -138,25 +129,6 @@ components:
         azure:
           value: eastUS
           summary: azure region example
-    subscription-name-in-query:
-      in: query
-      name: subscription-name
-      description: Subscription Name
-      required: false
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 255
-      example: default
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
     use-cases-in-query:
       name: use-cases
       in: query
@@ -166,10 +138,19 @@ components:
         type: array
         items:
           $ref: '#/components/schemas/ComputeUseCase'
-    all-computes-in-query:
+    pageSize:
+      name: page-size
       in: query
-      name: all-computes
-      description: Returns All Computes
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    include-availability-in-query:
+      in: query
+      name: include-availability
+      description: Whether to include availability info
       required: false
       schema:
         type: boolean
@@ -185,20 +166,35 @@ components:
       style: form
       example:
         cloudType: aws
-    pageSize:
-      name: page-size
+    subscription-name-in-query:
       in: query
-      description: Page size for get query
+      name: subscription-name
+      description: Subscription Name
       required: false
       schema:
-        type: integer
-        format: int32
-        default: 10
+        type: string
+        minLength: 1
+        maxLength: 255
+      example: default
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    tenantIdMandatory:
+      name: tenant-id
+      in: header
+      description: Id of the Tenant
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: 12345678-abcd-1234-abcd-1234abcd5678
   schemas:
-    computeProfileMaxBurstIops:
-      type: integer
-      format: int32
-      description: Maximum Burst IOPS supported by underlying disks
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -223,68 +219,38 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    Compute:
-      description: Compute Response Object
+    getAllAvailableVcpusResponse:
+      description: Response returned by service view all vcpus API
       type: object
       properties:
-        description:
-          type: string
-          description: Description of the Compute.
-          maxLength: 512
-        name:
-          type: string
-          maxLength: 128
-          description: Name of the Compute
-        family:
-          type: string
-          maxLength: 128
-          description: Name of the Tessell Family
-        cloudType:
-          $ref: '#/components/schemas/cloudType'
-        availability:
+        vcpus:
           type: array
           items:
-            type: object
-            properties:
-              subscriptionName:
-                type: string
-                example: default
-              status:
-                $ref: '#/components/schemas/ComputeProfileStatus'
-              regions:
-                type: array
-                items:
-                  type: string
-                example:
-                - us-east-1
-                - eu-west-2
-        tsm:
-          type: boolean
-          default: false
-          description: Is TSM Shape
-        profileInfo:
-          $ref: '#/components/schemas/ComputeProfileInfo'
-        useCases:
-          type: array
-          items:
-            $ref: '#/components/schemas/ComputeUseCase'
-        isInternal:
-          type: boolean
-        metadata:
-          $ref: '#/components/schemas/ComputeMetadata'
-        vmCompatibility:
-          $ref: '#/components/schemas/ComputeVmCompatibility'
-    computeProfileMaxThroughputMBps:
-      type: integer
-      format: int32
-      description: Maximum Throughput supported by underlying disks (in MB/s)
-    ComputeUseCase:
-      description: Compute Use Cases
+            type: integer
+            format: int32
+    DiskControllerType:
+      description: Disk controller type supported by a compute shape
       type: string
       enum:
-      - PROVISIONING
-      - BMA
-      - MILVUS
+      - SCSI
+      - NVME
+    computeProfileMaxBurstIops:
+      type: integer
+      format: int32
+      description: Maximum Burst IOPS supported by underlying disks
+    ComputeProfileStatus:
+      description: Compute Profile Response
+      type: string
+      x-dao-query: true
+      x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n"
+      enum:
+      - ENABLED
+      - DISABLED
+      - DELETED
+    computeProfileMaxIops:
+      type: integer
+      format: int32
+      description: Maximum IOPS supported by underlying disks
     ComputeProfileInfo:
       description: Compute Profile Metadata
       type: object
@@ -343,42 +309,18 @@ components:
           $ref: '#/components/schemas/computeProfileMaxIops'
         maxBurstIops:
           $ref: '#/components/schemas/computeProfileMaxBurstIops'
-    computeProfileMaxBurstThroughputMBps:
-      type: integer
-      format: int32
-      description: Maximum Burst Throughput supported by underlying disks (in MB/s)
-    DiskControllerType:
-      description: Disk controller type supported by a compute shape
-      type: string
-      enum:
-      - SCSI
-      - NVME
-    getAllAvailableVcpusResponse:
-      description: Response returned by service view all vcpus API
-      type: object
-      properties:
-        vcpus:
-          type: array
-          items:
-            type: integer
-            format: int32
     ComputeArchitecture:
       description: Compute Architecture
       type: string
       enum:
       - x86
       - arm64
-    StorageUtilizationDatabaseEngineTypes:
-      description: Database Engine Type
+    ComputeUseCase:
+      description: Compute Use Cases
       type: string
       enum:
-      - GENERIC
-      - ORACLE
-      - POSTGRESQL
-      - SQLSERVER
-      - MYSQL
-      - APACHE_KAFKA
-      - MONGODB
+      - PROVISIONING
+      - BMA
       - MILVUS
     cloudType:
       description: Tessell supported cloud types
@@ -388,28 +330,14 @@ components:
       - AZURE
       - GCP
       - OCI
-    computeProfileMaxIops:
+    computeProfileMaxBurstThroughputMBps:
       type: integer
       format: int32
-      description: Maximum IOPS supported by underlying disks
-    ComputeVmCompatibility:
-      type: object
-      description: VM compatibility requirements for a compute shape
-      properties:
-        diskControllerTypes:
-          type: array
-          description: Disk controller types supported by this compute shape (e.g. SCSI, NVME). Sourced from Azure SKU API DiskControllerTypes capability.
-          items:
-            $ref: '#/components/schemas/DiskControllerType'
-    ComputeProfileStatus:
-      description: Compute Profile Response
-      type: string
-      x-dao-query: true
-      x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n"
-      enum:
-      - ENABLED
-      - DISABLED
-      - DELETED
+      description: Maximum Burst Throughput supported by underlying disks (in MB/s)
+    computeProfileMaxThroughputMBps:
+      type: integer
+      format: int32
+      description: Maximum Throughput supported by underlying disks (in MB/s)
     ComputeMetadata:
       title: ComputeMetadata
       type: object
@@ -426,6 +354,78 @@ components:
                 type: integer
               tsmUsableStorageGB:
                 type: integer
+    Compute:
+      description: Compute Response Object
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the Compute.
+          maxLength: 512
+        name:
+          type: string
+          maxLength: 128
+          description: Name of the Compute
+        family:
+          type: string
+          maxLength: 128
+          description: Name of the Tessell Family
+        cloudType:
+          $ref: '#/components/schemas/cloudType'
+        availability:
+          type: array
+          items:
+            type: object
+            properties:
+              subscriptionName:
+                type: string
+                example: default
+              status:
+                $ref: '#/components/schemas/ComputeProfileStatus'
+              regions:
+                type: array
+                items:
+                  type: string
+                example:
+                - us-east-1
+                - eu-west-2
+        tsm:
+          type: boolean
+          default: false
+          description: Is TSM Shape
+        profileInfo:
+          $ref: '#/components/schemas/ComputeProfileInfo'
+        useCases:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComputeUseCase'
+        isInternal:
+          type: boolean
+        metadata:
+          $ref: '#/components/schemas/ComputeMetadata'
+        vmCompatibility:
+          $ref: '#/components/schemas/ComputeVmCompatibility'
+    ComputeVmCompatibility:
+      type: object
+      description: VM compatibility requirements for a compute shape
+      properties:
+        diskControllerTypes:
+          type: array
+          description: Disk controller types supported by this compute shape (e.g. SCSI, NVME). Sourced from Azure SKU API DiskControllerTypes capability.
+          items:
+            $ref: '#/components/schemas/DiskControllerType'
+    StorageUtilizationDatabaseEngineTypes:
+      description: Database Engine Type
+      type: string
+      enum:
+      - GENERIC
+      - ORACLE
+      - POSTGRESQL
+      - SQLSERVER
+      - MYSQL
+      - APACHE_KAFKA
+      - MONGODB
+      - MILVUS
   securitySchemes:
     BearerAuth:
       type: http

@@ -124,42 +124,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    AttachmentDTO:
-      title: Ticket conversation attachment
-      type: object
-      description: Conversation attachment
-      properties:
-        attachment_url:
-          type: string
-          description: attachment url
-        content_type:
-          type: string
-          description: attachment content type
-        id:
-          type: integer
-          format: int64
-          description: attachment identifier
-        name:
-          type: string
-          description: attachment name
-        size:
-          type: integer
-          format: int64
-          description: attachment size
-    NoteTicketRequestBodyV2:
-      title: Note to ticket body
-      type: object
-      description: Note to ticket body
-      properties:
-        body:
-          type: string
-          description: reply body
-    TicketConversationResponseV2:
-      title: Ticket Conversation Response
-      description: array of conversations
-      type: array
-      items:
-        $ref: '#/components/schemas/ConversationDTOV2'
     ApiError:
       type: object
       description: Common error response object for non 2xx responses
@@ -184,20 +148,14 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    ReplyTicketRequestBodyV2:
-      title: Reply to ticket body
+    NoteTicketRequestBodyV2:
+      title: Note to ticket body
       type: object
-      description: Reply to ticket body
+      description: Note to ticket body
       properties:
         body:
           type: string
           description: reply body
-        attachments:
-          type: array
-          description: File content
-          items:
-            type: string
-            format: binary
     ConversationDTOV2:
       title: Ticket conversation
       type: object
@@ -226,6 +184,48 @@ components:
         name:
           type: string
           description: user who made this conversation
+    AttachmentDTO:
+      title: Ticket conversation attachment
+      type: object
+      description: Conversation attachment
+      properties:
+        attachment_url:
+          type: string
+          description: attachment url
+        content_type:
+          type: string
+          description: attachment content type
+        id:
+          type: integer
+          format: int64
+          description: attachment identifier
+        name:
+          type: string
+          description: attachment name
+        size:
+          type: integer
+          format: int64
+          description: attachment size
+    TicketConversationResponseV2:
+      title: Ticket Conversation Response
+      description: array of conversations
+      type: array
+      items:
+        $ref: '#/components/schemas/ConversationDTOV2'
+    ReplyTicketRequestBodyV2:
+      title: Reply to ticket body
+      type: object
+      description: Reply to ticket body
+      properties:
+        body:
+          type: string
+          description: reply body
+        attachments:
+          type: array
+          description: File content
+          items:
+            type: string
+            format: binary
   securitySchemes:
     BearerAuth:
       type: http

@@ -270,6 +270,57 @@ components:
         country:
           type: string
           description: Country
+    ApiError:
+      type: object
+      description: Common error response object for non 2xx responses
+      properties:
+        code:
+          type: string
+          description: Status code for the error response
+        message:
+          type: string
+          description: Error message for API response
+        resolution:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          description: ContextId of API request
+        sessionId:
+          type: string
+          description: SessionId of API request
+        tessellErrorCode:
+          type: string
+          description: Unique error code specific to Tessell
+    TessellCardDTO:
+      title: TessellCardDTO
+      type: object
+      description: Definition of a card in tessell
+      properties:
+        id:
+          type: string
+          description: Id of credit card
+        brand:
+          type: string
+          description: Credit card branch (Visa, Mastercard, etc)
+        expMonth:
+          type: number
+          format: long
+          description: Card expiry month
+        expYear:
+          type: number
+          format: long
+          description: Card expiry year
+        cardType:
+          type: string
+          description: Credit Card Type (Credit, Debit, etc)
+        last4:
+          type: string
+          description: Last four digits of the card
+        address:
+          $ref: '#/components/schemas/TessellCustomerAddress'
     TessellInvoiceDTO:
       title: TessellInvoiceDTO
       type: object
@@ -336,30 +387,17 @@ components:
         metadata:
           type: object
           description: Metadata for the invoice
-    ApiError:
+    TessellPaymentDTO:
+      title: TessellPaymentDTO
       type: object
-      description: Common error response object for non 2xx responses
+      description: Details required for changing payment option of tenant
       properties:
-        code:
+        setupIntentId:
           type: string
-          description: Status code for the error response
-        message:
+          description: Id of the intent to change payment option
+        clientSecret:
           type: string
-          description: Error message for API response
-        resolution:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        contextId:
-          type: string
-          description: ContextId of API request
-        sessionId:
-          type: string
-          description: SessionId of API request
-        tessellErrorCode:
-          type: string
-          description: Unique error code specific to Tessell
+          description: Client secret for updating payment method in Tessell
     TessellInvoicePaymentDTO:
       title: TessellPaymentDTO
       type: object
@@ -377,44 +415,6 @@ components:
         paymentErrorMessage:
           type: string
           description: Payment error code if payment failed for invoice
-    TessellCardDTO:
-      title: TessellCardDTO
-      type: object
-      description: Definition of a card in tessell
-      properties:
-        id:
-          type: string
-          description: Id of credit card
-        brand:
-          type: string
-          description: Credit card branch (Visa, Mastercard, etc)
-        expMonth:
-          type: number
-          format: long
-          description: Card expiry month
-        expYear:
-          type: number
-          format: long
-          description: Card expiry year
-        cardType:
-          type: string
-          description: Credit Card Type (Credit, Debit, etc)
-        last4:
-          type: string
-          description: Last four digits of the card
-        address:
-          $ref: '#/components/schemas/TessellCustomerAddress'
-    TessellPaymentDTO:
-      title: TessellPaymentDTO
-      type: object
-      description: Details required for changing payment option of tenant
-      properties:
-        setupIntentId:
-          type: string
-          description: Id of the intent to change payment option
-        clientSecret:
-          type: string
-          description: Client secret for updating payment method in Tessell
   securitySchemes:
     BearerAuth:
       type: http

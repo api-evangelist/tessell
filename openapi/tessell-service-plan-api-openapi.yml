@@ -62,34 +62,86 @@ paths:
       tags:
       - Service Plan
 components:
-  parameters:
-    pageOffset:
-      name: page-offset
-      in: query
-      description: Page offset for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    timeZone:
-      name: time-zone
-      in: query
-      description: Timezone for return data
-      required: false
-      schema:
-        type: string
-        default: UTC
-    pageSize:
-      name: page-size
-      in: query
-      description: Page size for get query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        default: 10
   schemas:
+    ServicePlan:
+      description: This is a definition for Tessell app DTO object
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - title: ServicePlan
+        type: object
+        properties:
+          description:
+            type: string
+          name:
+            description: Name of the app
+            type: string
+          apps:
+            description: List of features associated with the app
+            items:
+              $ref: '#/components/schemas/ServicePlanApp'
+            type: array
+          status:
+            $ref: '#/components/schemas/ServicePlanStatus'
+    BaseEntity:
+      type: object
+      properties:
+        dateCreated:
+          x-dao-annotations: "@Column(name = \"DATE_CREATED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @CreationTimestamp\n"
+          description: Timestamp when the entity was created
+          format: date-time
+          type: string
+        dateModified:
+          x-dao-annotations: "@Column(name = \"DATE_MODIFIED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @UpdateTimestamp\n"
+          description: Timestamp when the entity was last modified
+          format: date-time
+          type: string
+        id:
+          x-dao-query: true
+          x-dao-annotations: "@Id\n  @GeneratedValue(generator = \"UUID\")\n  @GenericGenerator(name = \"UUID\", strategy = \"org.hibernate.id.UUIDGenerator\")\n  @Column(name = \"id\", updatable = false, nullable = false)\n"
+          description: generated UUID for the entity
+          example: 123e4567-e89b-12d3-a456-426614174000
+          format: uuid
+          type: string
+    ServicePlanApiResponse:
+      title: ServicePlanApiResponse
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/apiMetadata'
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServicePlan'
+    apiPaginationInfo:
+      title: apiPaginationInfo
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageOffset:
+          type: integer
+          format: int32
+    ServicePlanAppFeature:
+      description: This is a definition for Tessell app DTO object
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - title: ServicePlanAppFeature
+        type: object
+      properties:
+        name:
+          description: Name of the service plan
+          type: string
+          minLength: 1
+          maxLength: 32
+        displayName:
+          type: string
+          description: UI display name of feature
+        description:
+          type: string
+          description: Description of feature
+      title: ServicePlanCreateAppPayload
+      type: object
     ServicePlanStatus:
       x-dao-annotations: "@Enumerated(EnumType.STRING)\n  @NotNull\n"
       description: Service Plan Status
@@ -122,46 +174,6 @@ components:
         tessellErrorCode:
           type: string
           description: Unique error code specific to Tessell
-    BaseEntity:
-      type: object
-      properties:
-        dateCreated:
-          x-dao-annotations: "@Column(name = \"DATE_CREATED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @CreationTimestamp\n"
-          description: Timestamp when the entity was created
-          format: date-time
-          type: string
-        dateModified:
-          x-dao-annotations: "@Column(name = \"DATE_MODIFIED\", columnDefinition = \"TIMESTAMP WITH TIME ZONE NOT NULL\", nullable = false, updatable = false)\n  @UpdateTimestamp\n"
-          description: Timestamp when the entity was last modified
-          format: date-time
-          type: string
-        id:
-          x-dao-query: true
-          x-dao-annotations: "@Id\n  @GeneratedValue(generator = \"UUID\")\n  @GenericGenerator(name = \"UUID\", strategy = \"org.hibernate.id.UUIDGenerator\")\n  @Column(name = \"id\", updatable = false, nullable = false)\n"
-          description: generated UUID for the entity
-          example: 123e4567-e89b-12d3-a456-426614174000
-          format: uuid
-          type: string
-    ServicePlanAppFeature:
-      description: This is a definition for Tessell app DTO object
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - title: ServicePlanAppFeature
-        type: object
-      properties:
-        name:
-          description: Name of the service plan
-          type: string
-          minLength: 1
-          maxLength: 32
-        displayName:
-          type: string
-          description: UI display name of feature
-        description:
-          type: string
-          description: Description of feature
-      title: ServicePlanCreateAppPayload
-      type: object
     ServicePlanApp:
       description: This is a definition for Tessell app DTO object
       allOf:
@@ -191,45 +203,6 @@ components:
             type: object
       title: ServicePlanCreateAppPayload
       type: object
-    ServicePlanApiResponse:
-      title: ServicePlanApiResponse
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/apiMetadata'
-        response:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServicePlan'
-    ServicePlan:
-      description: This is a definition for Tessell app DTO object
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - title: ServicePlan
-        type: object
-        properties:
-          description:
-            type: string
-          name:
-            description: Name of the app
-            type: string
-          apps:
-            description: List of features associated with the app
-            items:
-              $ref: '#/components/schemas/ServicePlanApp'
-            type: array
-          status:
-            $ref: '#/components/schemas/ServicePlanStatus'
-    apiPaginationInfo:
-      title: apiPaginationInfo
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          format: int32
-        pageOffset:
-          type: integer
-          format: int32
     apiMetadata:
       title: apiMetadata
       type: object
@@ -241,6 +214,33 @@ components:
           format: int32
         pagination:
           $ref: '#/components/schemas/apiPaginationInfo'
+  parameters:
+    pageSize:
+      name: page-size
+      in: query
+      description: Page size for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    timeZone:
+      name: time-zone
+      in: query
+      description: Timezone for return data
+      required: false
+      schema:
+        type: string
+        default: UTC
+    pageOffset:
+      name: page-offset
+      in: query
+      description: Page offset for get query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
   securitySchemes:
     BearerAuth:
       type: http
